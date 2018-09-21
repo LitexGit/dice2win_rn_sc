@@ -7,11 +7,17 @@ import DebugConfig from '../Config/DebugConfig'
 
 import { StartupTypes } from '../Redux/StartupRedux'
 import { GithubTypes } from '../Redux/GithubRedux'
+import { ActivityTypes } from '../Redux/ActivityRedux'
+import { RecordTypes } from '../Redux/RecordRedux'
+import { WalletTypes } from '../Redux/WalletRedux'
 
 /* ------------- Sagas ------------- */
 
 import { startup } from './StartupSagas'
 import { getUserAvatar } from './GithubSagas'
+import { getActivity } from './ActivitySagas'
+import { getRecord } from './RecordSagas'
+import { getWallet } from './WalletSagas'
 
 /* ------------- API ------------- */
 
@@ -24,9 +30,18 @@ const api = DebugConfig.useFixtures ? FixtureAPI : API.create()
 export default function * root () {
   yield all([
     // some sagas only receive an action
-    takeLatest(StartupTypes.STARTUP, startup),
+    // takeLatest(StartupTypes.STARTUP, startup),
 
     // some sagas receive extra parameters in addition to an action
-    takeLatest(GithubTypes.USER_REQUEST, getUserAvatar, api)
+    takeLatest(GithubTypes.USER_REQUEST, getUserAvatar, api),
+
+    // get data for activities
+    takeLatest(ActivityTypes.ACTIVITY_REQUEST, getActivity, api),
+
+    // get records
+    takeLatest(RecordTypes.RECORD_REQUEST, getRecord, api),
+
+    // get wallet info
+    takeLatest(WalletTypes.WALLET_REQUEST, getWallet, api),
   ])
 }

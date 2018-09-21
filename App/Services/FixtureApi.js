@@ -20,5 +20,29 @@ export default {
       ok: true,
       data: username.toLowerCase() === 'gantman' ? gantmanData : skellockData
     }
+  },
+
+  getActivity: () => {
+    const bannerData = require('../Fixtures/banner.json')
+    return {
+      ok: true,
+      data: {banners: bannerData}
+    }
+  },
+
+  getRecord: ({type}) => {
+    const recordData = require('../Fixtures/records.json')[type]
+    return {
+      ok: true,
+      data: recordData
+    }
+  },
+
+  getWallet: () => {
+    const walletData = require('../Fixtures/wallet.json')
+    return {
+      ok: true,
+      data: walletData
+    }
   }
 }

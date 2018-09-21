@@ -1,0 +1,33 @@
+{
+    "game":{
+        "total_count": 100,
+        "sections":[
+            {"key":"Today", "data":[
+                {"txhash":"0xadfjkfdjadsfds", "type":"dice", "in": 1, "out": 1.96},
+                {"txhash":"0xadfjkfdjadsfds", "type":"dice2", "in": 1, "out": 1.96},
+                {"txhash":"0xadfjkfdjadsfds", "type":"coin", "in": 1, "out": 1.96} ]
+            },
+            {"key":"Yesterday", "data":[
+                {"txhash":"0xadfjkfdjadsfds", "type":"roll", "in": 1, "out": 1.96},
+                {"txhash":"0xadfjkfdjadsfds", "type":"coin", "in": 1, "out": 1.96},
+                {"txhash":"0xadfjkfdjadsfds", "type":"dice", "in": 1, "out": 1.96} ]
+            }
+        ]
+    },
+
+    "tx":{
+        "total_count": 100,
+        "sections":[
+            {"key":"Today", "data":[
+                {"txhash":"0xadfjkfdjadsfds", "type":"in", "amount": 1.96},
+                {"txhash":"0xadfjkfdjadsfds", "type":"out", "amount": 1.96},
+                {"txhash":"0xadfjkfdjadsfds", "type":"bonus", "amount": 1.96} ]
+            },
+            {"key":"Yesterday", "data":[
+                {"txhash":"0xadfjkfdjadsfds", "type":"in", "amount": 1.96},
+                {"txhash":"0xadfjkfdjadsfds", "type":"out", "amount": 1.96},
+                {"txhash":"0xadfjkfdjadsfds", "type":"bonus", "amount": 1.96} ]
+            }
+        ]
+    }
+}

@@ -44,7 +44,9 @@ const ApplicationStyles = {
       ...Fonts.style.h2,
       fontSize: 14,
       color: Colors.text
-    }
+    },
+    // TODO see why this works wired
+    tabIconSize: 26,
   },
   darkLabelContainer: {
     padding: Metrics.smallMargin,

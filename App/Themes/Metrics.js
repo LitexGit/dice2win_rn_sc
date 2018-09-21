@@ -1,4 +1,5 @@
 import {Dimensions, Platform} from 'react-native'
+import {getStatusBarHeight} from 'react-native-iphone-x-helper'
 
 const { width, height } = Dimensions.get('window')
 
@@ -14,6 +15,7 @@ const metrics = {
   horizontalLineHeight: 1,
   screenWidth: width < height ? width : height,
   screenHeight: width < height ? height : width,
+  statusBarHeight: getStatusBarHeight(),
   navBarHeight: (Platform.OS === 'ios') ? 64 : 54,
   buttonRadius: 4,
   icons: {

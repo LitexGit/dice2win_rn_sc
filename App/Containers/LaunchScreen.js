@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
-import { ScrollView, Text, Image, View } from 'react-native'
+import { ScrollView, Text, Image, View, TouchableOpacity } from 'react-native'
 import DevscreensButton from '../../ignite/DevScreens/DevscreensButton.js'
+import { NavigationActions } from 'react-navigation'
 
 import { Images } from '../Themes'
 
@@ -24,7 +25,9 @@ export default class LaunchScreen extends Component {
             </Text>
           </View>
 
-          <DevscreensButton />
+          {/* <DevscreensButton /> */}
+          {/* <TouchableOpacity onPress={()=>this.props.dispatch(NavigationActions.navigate({routeName: 'MainContainer'}))}>MainContainer</TouchableOpacity> */}
+          <TouchableOpacity style={styles.centered} onPress={({dispatch})=>dispatch(NavigationActions.navigate({routeName: 'MainContainer'}))}><Text>MainContainer</Text></TouchableOpacity>
         </ScrollView>
       </View>
     )
