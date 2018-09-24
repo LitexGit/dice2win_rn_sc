@@ -8,7 +8,8 @@ const metrics = {
   marginHorizontal: 10,
   marginVertical: 10,
   section: 25,
-  baseMargin: 10,
+  // baseMargin: 10,
+  baseMargin: 0,
   doubleBaseMargin: 20,
   smallMargin: 5,
   doubleSection: 50,
@@ -18,6 +19,7 @@ const metrics = {
   statusBarHeight: getStatusBarHeight(),
   navBarHeight: (Platform.OS === 'ios') ? 64 : 54,
   buttonRadius: 4,
+  bottomTabIconSize: 24,
   icons: {
     tiny: 15,
     small: 20,

@@ -4,7 +4,6 @@ import {Fonts, Metrics, Colors} from '../../Themes/'
 export default StyleSheet.create({
   applicationView: {
     flex: 1,
-    paddingTop: Metrics.statusBarHeight,
   },
   container: {
     flex: 1,

@@ -1,6 +1,13 @@
 const colors = {
-  tint: 'purple',
-  background: '#1F0808',
+  activeTint: 'gold',
+  inActiveTint: '#ccc',
+  // background: '#1F0808',
+  background: 'rgb(30,40,62)',
+
+  neetGray: 'rgb(59, 66, 80)',
+  casinoBlue: 'rgb(41,53,87)',
+  casinoGreen: 'rgb(51,204,51)',
+
   clear: 'rgba(0,0,0,0)',
   facebook: '#3b5998',
   transparent: 'rgba(0,0,0,0)',
