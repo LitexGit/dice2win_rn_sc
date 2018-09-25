@@ -95,16 +95,16 @@ def enableProguardInReleaseBuilds = false
 
 android {
     compileSdkVersion 23
-    buildToolsVersion '27.0.3'
+    buildToolsVersion '28.0.2'
 
     defaultConfig {
-        applicationId "com.dice2win"
+        applicationId "fun.eth4.game"
         minSdkVersion 16
         targetSdkVersion 22
         versionCode 1
         versionName "1.0"
         manifestPlaceholders = [
-                JPUSH_APPKEY: "50cc004c57c9a6511ec05b34",
+                JPUSH_APPKEY: "baec4f18866a43237a7fc845",
                 APP_CHANNEL : "default"
         ]
 
@@ -144,12 +144,13 @@ android {
 dependencies {
     compile project(':jcore-react-native')
     compile project(':jpush-react-native')
+    compile project(':react-native-svg')
     compile project(':react-native-config')
     compile project(':react-native-i18n')
     compile project(':react-native-vector-icons')
     compile project(':react-native-device-info')
     compile fileTree(dir: "libs", include: ["*.jar"])
-    compile "com.android.support:appcompat-v7:23.0.1"
+//    compile "com.android.support:appcompat-v7:23.0.1"
     compile "com.facebook.react:react-native:+"  // From node_modules
 }
 

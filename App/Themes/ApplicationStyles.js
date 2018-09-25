@@ -21,7 +21,7 @@ const ApplicationStyles = {
     container: {
       flex: 1,
       paddingTop: Metrics.baseMargin,
-      backgroundColor: Colors.transparent
+      backgroundColor: Colors.background
     },
     section: {
       margin: Metrics.section,
@@ -45,8 +45,10 @@ const ApplicationStyles = {
       fontSize: 14,
       color: Colors.text
     },
-    // TODO see why this works wired
-    tabIconSize: 26,
+    divider: {
+      height: 1,
+      backgroundColor: Colors.facebook,
+    }
   },
   darkLabelContainer: {
     padding: Metrics.smallMargin,

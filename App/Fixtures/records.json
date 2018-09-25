@@ -3,14 +3,14 @@
         "total_count": 100,
         "sections":[
             {"key":"Today", "data":[
-                {"txhash":"0xadfjkfdjadsfds", "type":"dice", "in": 1, "out": 1.96},
-                {"txhash":"0xadfjkfdjadsfds", "type":"dice2", "in": 1, "out": 1.96},
-                {"txhash":"0xadfjkfdjadsfds", "type":"coin", "in": 1, "out": 1.96} ]
+                {"txhash":"0xadfjkfdjadsfds", "time": "08:22:21", "type":"dice1", "in": 1.00, "out": 1.96},
+                {"txhash":"0xadfjkfdjadsfds", "time": "18:12:28", "type":"dice2", "in": 1.00, "out": 1.96},
+                {"txhash":"0xadfjkfdjadsfds", "time": "23:02:01", "type":"coin", "in": 1.00, "out": 1.96} ]
             },
             {"key":"Yesterday", "data":[
-                {"txhash":"0xadfjkfdjadsfds", "type":"roll", "in": 1, "out": 1.96},
-                {"txhash":"0xadfjkfdjadsfds", "type":"coin", "in": 1, "out": 1.96},
-                {"txhash":"0xadfjkfdjadsfds", "type":"dice", "in": 1, "out": 1.96} ]
+                {"txhash":"0xadfjkfdjadsfds", "time": "08:22:21", "type":"roll", "in": 1.00, "out": 1.96},
+                {"txhash":"0xadfjkfdjadsfds", "time": "08:22:21", "type":"coin", "in": 1.00, "out": 1.96},
+                {"txhash":"0xadfjkfdjadsfds", "time": "08:22:21", "type":"dice1", "in": 1.00, "out": 1.96} ]
             }
         ]
     },
@@ -19,14 +19,14 @@
         "total_count": 100,
         "sections":[
             {"key":"Today", "data":[
-                {"txhash":"0xadfjkfdjadsfds", "type":"in", "amount": 1.96},
-                {"txhash":"0xadfjkfdjadsfds", "type":"out", "amount": 1.96},
-                {"txhash":"0xadfjkfdjadsfds", "type":"bonus", "amount": 1.96} ]
+                {"txhash":"0xadfjkfdjadsfds", "time": "08:22:21", "remark":"奖金", "type":"in", "amount": 1.96},
+                {"txhash":"0xadfjkfdjadsfds", "time": "08:22:21", "remark":"投注", "type":"out", "amount": 1.96},
+                {"txhash":"0xadfjkfdjadsfds", "time": "08:22:21", "remark":"充值", "type":"in", "amount": 1.96} ]
             },
             {"key":"Yesterday", "data":[
-                {"txhash":"0xadfjkfdjadsfds", "type":"in", "amount": 1.96},
-                {"txhash":"0xadfjkfdjadsfds", "type":"out", "amount": 1.96},
-                {"txhash":"0xadfjkfdjadsfds", "type":"bonus", "amount": 1.96} ]
+                {"txhash":"0xadfjkfdjadsfds", "time": "08:22:21", "remark":"充值", "type":"in", "amount": 1.96},
+                {"txhash":"0xadfjkfdjadsfds", "time": "08:22:21", "remark":"转出", "type":"out", "amount": 1.96},
+                {"txhash":"0xadfjkfdjadsfds", "time": "08:22:21", "remark":"投注", "type":"out", "amount": 1.96} ]
             }
         ]
     }

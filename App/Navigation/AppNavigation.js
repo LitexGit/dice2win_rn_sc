@@ -16,7 +16,13 @@ const BottomTabNav = TabNavigator({
   animationEnabled: true,
   tabBarOptions: {
     // activeTintColor: '#e91e63'
-    activeTintColor: Colors.tint
+    activeTintColor: Colors.activeTint,
+    inactiveTintColor: Colors.inActiveTint,
+    tabStyle: styles.tab,
+
+    style:{
+      backgroundColor: Colors.casinoBlue
+    }
   }
 })
 
@@ -26,11 +32,12 @@ const PrimaryNav = StackNavigator({
   LaunchScreen: { screen: LaunchScreen }
 }, {
   // Default config for all screens
-  headerMode: 'none',
+  headerMode: 'float',
   cardStyle: {shadowColor: 'transparent'},
   initialRouteName: 'BottomTab',
   navigationOptions: {
-    headerStyle: styles.header
+    headerStyle: styles.header,
+    headerTintColor: Colors.snow,
   }
 })
 

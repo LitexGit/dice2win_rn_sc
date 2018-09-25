@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "ipx": "react-native run-ios --simulator \"iPhone X\"",
+    "ipxsx": "react-native run-ios --simulator \"iPhone XS Max\"",
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "test": "jest",
     "clean": "rm -rf $TMPDIR/react-* && watchman watch-del-all && npm cache clean --force",
@@ -25,6 +26,7 @@
     "git-hook": "npm run lint -s && npm run test -s"
   },
   "dependencies": {
+    "ajv": "^6.5.4",
     "apisauce": "^0.14.2",
     "format-json": "^1.0.3",
     "identity-obj-proxy": "^3.0.0",
@@ -42,9 +44,10 @@
     "react-native-easy-grid": "^0.2.0",
     "react-native-i18n": "^1.0.0",
     "react-native-iphone-x-helper": "^1.1.0",
-    "react-native-qrcode": "^0.2.7",
+    "react-native-qrcode-svg": "^5.1.1",
     "react-native-root-toast": "^3.0.1",
     "react-native-scrollable-tab-view": "^0.8.0",
+    "react-native-svg": "^6.5.2",
     "react-native-swiper": "^1.5.13",
     "react-native-vector-icons": "^5.0.0",
     "react-navigation": "^1.6.0",

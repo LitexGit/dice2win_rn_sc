@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, SectionList, TouchableOpacity} from 'react-native'
+import { View, Text, Image, SectionList, TouchableOpacity} from 'react-native'
 import FA5 from 'react-native-vector-icons/FontAwesome5'
 import ScrollableTabView, { ScrollableTabBar, } from 'react-native-scrollable-tab-view';
 import Toast from 'react-native-root-toast'
@@ -10,14 +10,15 @@ import { connect } from 'react-redux'
 // import YourActions from '../Redux/YourRedux'
 
 // Styles
-import Colors from '../Themes/Colors'
+import { Colors, Images, Metrics } from '../Themes'
 import styles from './Styles/RecordScreenStyle'
 
 class RecordScreen extends Component {
   static navigationOptions = {
+    title: 'Records',
     tabBarLabel: 'Records',
     tabBarIcon:({tintColor}) => (
-      <FA5 name={'list'} size={26} color={tintColor}/>
+      <FA5 name={'list'} size={Metrics.bottomTabIconSize} color={tintColor}/>
     )
   }
   componentDidMount(){
@@ -25,7 +26,7 @@ class RecordScreen extends Component {
   }
 
   _renderSectionHeader = ({section}) => {
-    return <View style={styles.sectionHeader}><Text style={styles.sectionHeaderText}>Date: {section.key}</Text></View>
+    return <View style={styles.sectionHeader}><Text style={styles.sectionHeaderText}>{section.key}</Text></View>
   }
 
   _itemPressed = (item) => {
@@ -33,17 +34,27 @@ class RecordScreen extends Component {
   }
 
   _renderGameItem = ({item}) => {
+    let icon = Images[item.type]
+    let inValue = item.in && item.in.toFixed(2)
+    let outValue = item.out && item.out.toFixed(2)
+    let time = item.time
+
     return <TouchableOpacity style={styles.gameItem} onPress={_=>this._itemPressed(item)}>
-      <View style={styles.valueWrapper}><Text style={styles.gameText}>{item.type}</Text></View>
-      <View style={styles.valueWrapper}><Text>in: </Text><Text style={styles.inValue}>{item.in}</Text></View>
-      <View style={styles.valueWrapper}><Text>out: </Text><Text style={styles.outValue}>{item.out}</Text></View>
+      <View style={styles.timeWrapper}><Text style={styles.timeText}>{time}</Text></View>
+      <View style={styles.iconWrapper}><Image style={styles.icon} resizeMode='contain' source={icon} /></View>
+      <View style={styles.valueWrapper}><Text style={styles.label}>in: </Text><Text style={styles.inValue}>{inValue}</Text></View>
+      <View style={styles.valueWrapper}><Text style={styles.label}>out: </Text><Text style={styles.outValue}>{outValue}</Text></View>
     </TouchableOpacity>
   }
   
   _renderTxItem = ({item}) => {
+    let { type, remark, time, amount } = item
+    amount = amount && amount.toFixed(2)
+
     return <TouchableOpacity style={styles.gameItem} onPress={_=>this._itemPressed(item)}>
-      <View style={styles.valueWrapper}><Text style={styles.gameText}>{item.type}</Text></View>
-      <View style={styles.valueWrapper}><Text style={styles.outValue}>{item.amount}</Text></View>
+      <View style={styles.timeWrapper}><Text style={styles.timeText}>{time}</Text></View>
+      <View style={styles.valueWrapper}><Text style={styles.remarkText}>{remark}</Text></View>
+      <View style={styles.valueWrapper}><Text style={styles[type+'comeValue']}>{(type==='in'?'+':'-') + amount}</Text></View>
     </TouchableOpacity>
   }
 
@@ -52,11 +63,12 @@ class RecordScreen extends Component {
       <View style={styles.container}>
         <ScrollableTabView 
           initialPage={0}
-          tabBarActiveTextColor={Colors.tint}
+          style={styles.tabBarStyle}
+          tabBarActiveTextColor={Colors.activeTint}
+          tabBarInactiveTextColor={Colors.inActiveTint}
           tabBarUnderlineStyle={styles.tabBarUnderlineStyle}
-          renderTabBar={()=><ScrollableTabBar />}
+          renderTabBar={()=><ScrollableTabBar style={{borderBottomWidth:0}} />}
           onChangeTab={({i, ref}) => {
-            console.tron.log('TAB:', i)
             this.props.loadRecords(i===1?'tx':'game')
           }}>
           <View tabLabel='Game History' style={styles.container}>

@@ -8,12 +8,14 @@ target 'Dice2Win' do
   # Pods for Dice2Win
 
   pod 'React', :path => '../node_modules/react-native',:subspecs => [
-  'DevSupport',
-  'RCTNetwork',
-  'RCTSettings',
-  'RCTText',
-  'RCTVibration',
-  'RCTWebSocket'
+	'Core',
+  	'CxxBridge',
+  	'RCTText',
+  	'RCTNetwork',
+  	'RCTWebSocket',
+  	'RCTImage',
+  	'RCTNetwork',
+  	'DevSupport'
   ]
   pod 'yoga', :path => '../node_modules/react-native/ReactCommon/yoga'
   pod 'JPushRN', :path => '../node_modules/jpush-react-native'

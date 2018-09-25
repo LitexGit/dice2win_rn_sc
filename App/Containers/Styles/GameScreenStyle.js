@@ -1,22 +1,23 @@
 import { StyleSheet } from 'react-native'
-import { ApplicationStyles } from '../../Themes'
-import Colors from '../../Themes/Colors'
+import { ApplicationStyles, Colors, Fonts } from '../../Themes'
 
-const ENTRY_HEIGHT = 100
+const SLIDE_HEIGHT = 150
+const ENTRY_HEIGHT = 80
+
 export default StyleSheet.create({
   ...ApplicationStyles.screen,
 
   swiper:{
-    height: 180,
+    height: SLIDE_HEIGHT,
   },
   slide: {
-    height: 180,
+    height: SLIDE_HEIGHT,
     justifyContent: 'center',
-    backgroundColor: 'transparent'
+    backgroundColor: Colors.coal
   },
   image: {
     flex:1,
-    height: 180,
+    height: SLIDE_HEIGHT,
     backgroundColor: 'transparent'
   },
 
@@ -28,27 +29,30 @@ export default StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     height: ENTRY_HEIGHT,
-    borderTopWidth: 1,
-    borderTopColor: Colors.cloud,
+    borderTopWidth: 0,
     borderBottomWidth: 1,
-    borderBottomColor: Colors.cloud
+    borderBottomColor: Colors.border
   },
   entryLeft: {
-    width: ENTRY_HEIGHT
+    width: ENTRY_HEIGHT,
+    alignItems: 'center', 
   },
   entryRight: {
     flex: 1
   },
   entryImage: {
-    width: ENTRY_HEIGHT,
-    height: ENTRY_HEIGHT,
+    width: ENTRY_HEIGHT/2,
+    height: ENTRY_HEIGHT/2,
   },
   entryTitle: {
-    fontSize: 24,
-    color: Colors.banner,
+    ...Fonts.style.h5,
+    color: Colors.activeTint,
+    fontWeight: 'bold',
+    padding: 3
   },
   entryDesc: {
     fontSize: 14,
-    color: Colors.facebook
+    color: Colors.text,
+    padding: 3
   },
 })
