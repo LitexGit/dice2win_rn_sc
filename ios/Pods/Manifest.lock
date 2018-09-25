@@ -1,0 +1,59 @@
+PODS:
+  - JCoreRN (1.2.10):
+    - React
+  - JPushRN (2.2.9):
+    - React
+  - React (0.55.1):
+    - React/Core (= 0.55.1)
+  - React/Core (0.55.1):
+    - yoga (= 0.55.1.React)
+  - React/DevSupport (0.55.1):
+    - React/Core
+    - React/RCTWebSocket
+  - React/fishhook (0.55.1)
+  - React/RCTBlob (0.55.1):
+    - React/Core
+  - React/RCTNetwork (0.55.1):
+    - React/Core
+  - React/RCTSettings (0.55.1):
+    - React/Core
+  - React/RCTText (0.55.1):
+    - React/Core
+  - React/RCTVibration (0.55.1):
+    - React/Core
+  - React/RCTWebSocket (0.55.1):
+    - React/Core
+    - React/fishhook
+    - React/RCTBlob
+  - yoga (0.55.1.React)
+
+DEPENDENCIES:
+  - JCoreRN (from `../node_modules/jcore-react-native`)
+  - JPushRN (from `../node_modules/jpush-react-native`)
+  - React/DevSupport (from `../node_modules/react-native`)
+  - React/RCTNetwork (from `../node_modules/react-native`)
+  - React/RCTSettings (from `../node_modules/react-native`)
+  - React/RCTText (from `../node_modules/react-native`)
+  - React/RCTVibration (from `../node_modules/react-native`)
+  - React/RCTWebSocket (from `../node_modules/react-native`)
+  - yoga (from `../node_modules/react-native/ReactCommon/yoga`)
+
+EXTERNAL SOURCES:
+  JCoreRN:
+    :path: "../node_modules/jcore-react-native"
+  JPushRN:
+    :path: "../node_modules/jpush-react-native"
+  React:
+    :path: "../node_modules/react-native"
+  yoga:
+    :path: "../node_modules/react-native/ReactCommon/yoga"
+
+SPEC CHECKSUMS:
+  JCoreRN: 5dff1e0264ee9fd57a0bc9b8cb2411b3c553e241
+  JPushRN: bdaefc1f0442d90ef4035f47e29e4268ee6a11f2
+  React: aa2040dbb6f317b95314968021bd2888816e03d5
+  yoga: a23273df0088bf7f2bb7e5d7b00044ea57a2a54a
+
+PODFILE CHECKSUM: a720c36de02e65d3f001357822a0ce1e2bd7d340
+
+COCOAPODS: 1.5.3
