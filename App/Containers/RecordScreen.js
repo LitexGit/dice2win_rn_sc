@@ -49,7 +49,6 @@ class RecordScreen extends Component {
   
   _renderTxItem = ({item}) => {
     let { type, remark, time, amount } = item
-    // let icon = type && Images[type]
     amount = amount && amount.toFixed(2)
 
     return <TouchableOpacity style={styles.gameItem} onPress={_=>this._itemPressed(item)}>
@@ -70,7 +69,6 @@ class RecordScreen extends Component {
           tabBarUnderlineStyle={styles.tabBarUnderlineStyle}
           renderTabBar={()=><ScrollableTabBar style={{borderBottomWidth:0}} />}
           onChangeTab={({i, ref}) => {
-            console.tron.log('TAB:', i)
             this.props.loadRecords(i===1?'tx':'game')
           }}>
           <View tabLabel='Game History' style={styles.container}>

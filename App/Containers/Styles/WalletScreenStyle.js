@@ -11,7 +11,16 @@ export default StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-
+  walletEditWrapper:{
+    position: 'absolute',
+    top: 0, left: 0, right: 0, bottom: 0,
+    alignItems: 'flex-end',
+    justifyContent: 'flex-start'
+  },
+  walletEdit:{
+    color: Colors.facebook,
+    margin: 15,
+  },
   balanceWrapper:{
     flexDirection: 'row',
     justifyContent: 'center',
@@ -25,7 +34,7 @@ export default StyleSheet.create({
     fontSize: 16,
     color: Colors.text,
   },
-
+  
   qr:{
     margin: 10
   },

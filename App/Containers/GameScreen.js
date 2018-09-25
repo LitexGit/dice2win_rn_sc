@@ -17,11 +17,6 @@ const Slide = props => {
   return (
   <View style={styles.slide}>
     <Image style={styles.image} source={{uri: props.uri}} />
-    {/* {
-      !props.loaded && <View style={styles.loadingView}>
-        <Image style={styles.loadingImage} source={loading} />
-      </View>
-    }*/} 
   </View>)
 }
 
