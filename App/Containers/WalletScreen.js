@@ -14,6 +14,7 @@ import { connect } from 'react-redux'
 // Styles
 import { Metrics, Colors } from '../Themes'
 import styles from './Styles/WalletScreenStyle'
+import NavigationActions from 'react-navigation/src/NavigationActions';
 
 class WalletScreen extends Component {
   static navigationOptions = {
@@ -47,7 +48,12 @@ class WalletScreen extends Component {
   }
 
   _goto = (where) => {
-
+    switch(where){
+      case 'settings': this.props.navigate('SettingScreen');break;
+      case 'wallet': this.props.navigate('WalletManageScreen');break;
+      case 'promotion': this.props.navigate('PromotionScreen');break;
+      
+    }
   }
 
   _checkUpdate = () => {
@@ -71,7 +77,7 @@ class WalletScreen extends Component {
             <Text style={styles.balance}>{wallet.balance}</Text>
             <Text style={styles.unit}> ETH</Text>
           </View>
-          <View style={styles.qr}><QR value={wallet.address} size={120} color={Colors.silver} backgroundColor={Colors.casinoBlue} /></View>
+      <View style={styles.qr}>{wallet.address && <QR value={wallet.address} size={120} color={Colors.silver} backgroundColor={Colors.casinoBlue} />}</View>
           <TouchableOpacity style={styles.addressWrapper} onPress={_=>this._copyAddress()}>
             <Text style={styles.addressText}>{wallet.address}</Text>
           </TouchableOpacity>
@@ -128,7 +134,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    loadWallet: () => dispatch(WalletActions.walletRequest())
+    loadWallet: () => dispatch(WalletActions.walletRequest()),
+    navigate: (target) => dispatch(NavigationActions.navigate({routeName: target}))
   }
 }
 
