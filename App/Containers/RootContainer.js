@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
-import { View, StatusBar, SafeAreaView} from 'react-native'
+import { View, StatusBar, SafeAreaView, Platform } from 'react-native'
 import ReduxNavigation from '../Navigation/ReduxNavigation'
 import { connect } from 'react-redux'
 import StartupActions from '../Redux/StartupRedux'
 import ReduxPersist from '../Config/ReduxPersist'
+import JPushModule from 'jpush-react-native'
 
 // Styles
 import styles from './Styles/RootContainerStyles'
@@ -14,6 +15,27 @@ class RootContainer extends Component {
     if (!ReduxPersist.active) {
       this.props.startup()
     }
+
+    if (Platform.OS === 'android') {
+      JPushModule.initPush()
+      // JPushModule.getInfo(map => {
+        // this.setState({
+        //   appkey: map.myAppKey,
+        //   imei: map.myImei,
+        //   package: map.myPackageName,
+        //   deviceId: map.myDeviceId,
+        //   version: map.myVersion
+        // })
+      // })
+      JPushModule.notifyJSDidLoad(resultCode => {
+        if (resultCode === 0) {
+        }
+      })
+    } else {
+      JPushModule.setupPush()
+    }
+
+
   }
 
   render () {
