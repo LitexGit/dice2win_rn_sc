@@ -12,7 +12,10 @@ export default StyleSheet.create({
 
   setting: {
     flex: 1,
+    height: 60,
+    padding: 10,
     flexDirection: 'row',
+    alignItems: 'center',
     borderTopWidth: 0,
     borderBottomWidth: 1,
     borderBottomColor: Colors.border
@@ -20,24 +23,20 @@ export default StyleSheet.create({
 
   settingLeft: {
     flex: 1,
-    marginLeft: 5
   },
 
   settingRight: {
-    marginRight: 5,
-    paddingTop: 12,
   },
 
   settingTitle: {
-    padding: 3,
     ...Fonts.style.h5,
     color: Colors.silver,
     fontWeight: 'bold'
   },
 
   settingDesc: {
-    padding: 3,
     fontSize: 14,
-    color: Colors.steel
+    color: Colors.steel,
+    paddingLeft: 3
   },
 })
