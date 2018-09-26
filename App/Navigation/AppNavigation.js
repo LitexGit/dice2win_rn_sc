@@ -1,5 +1,6 @@
 import { StackNavigator, TabNavigator } from 'react-navigation'
 import GameContainer from '../Containers/GameContainer'
+import WebviewScreen from '../Containers/WebviewScreen'
 import PromotionScreen from '../Containers/PromotionScreen'
 import WalletManageScreen from '../Containers/WalletManageScreen'
 import SettingScreen from '../Containers/SettingScreen'
@@ -12,7 +13,7 @@ import styles from './Styles/NavigationStyles'
 import Colors from '../Themes/Colors'
 
 const BottomTabNav = TabNavigator({
-  Game: { screen: GameScreen },
+  Game: {screen: GameScreen},
   Record: {screen: RecordScreen},
   Wallet: {screen: WalletScreen}
 }, {
@@ -24,7 +25,7 @@ const BottomTabNav = TabNavigator({
     inactiveTintColor: Colors.inActiveTint,
     tabStyle: styles.tab,
 
-    style:{
+    style: {
       backgroundColor: Colors.casinoBlue
     }
   }
@@ -32,13 +33,14 @@ const BottomTabNav = TabNavigator({
 
 // Manifest of possible screens
 const PrimaryNav = StackNavigator({
-  GameContainer: { screen: GameContainer },
-  PromotionScreen: { screen: PromotionScreen },
-  WalletManageScreen: { screen: WalletManageScreen },
-  WalletScreen: { screen: WalletScreen },
-  SettingScreen: { screen: SettingScreen },
+  GameContainer: {screen: GameContainer},
+  WebviewScreen: {screen: WebviewScreen},
+  PromotionScreen: {screen: PromotionScreen},
+  WalletManageScreen: {screen: WalletManageScreen},
+  WalletScreen: {screen: WalletScreen},
+  SettingScreen: {screen: SettingScreen},
   BottomTab: {screen: BottomTabNav},
-  LaunchScreen: { screen: LaunchScreen }
+  LaunchScreen: {screen: LaunchScreen}
 }, {
   // Default config for all screens
   headerMode: 'float',

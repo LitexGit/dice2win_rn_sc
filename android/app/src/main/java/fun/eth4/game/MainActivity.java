@@ -1,4 +1,4 @@
-package com.dice2win;
+package fun.eth4.game;
 
 import com.facebook.react.ReactActivity;
 

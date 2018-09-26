@@ -98,11 +98,16 @@ android {
     buildToolsVersion '28.0.2'
 
     defaultConfig {
-        applicationId "com.dice2win"
+        applicationId "fun.eth4.game"
         minSdkVersion 16
         targetSdkVersion 22
         versionCode 1
         versionName "1.0"
+        manifestPlaceholders = [
+                JPUSH_APPKEY: "baec4f18866a43237a7fc845",
+                APP_CHANNEL : "default"
+        ]
+
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
@@ -137,6 +142,8 @@ android {
 }
 
 dependencies {
+    compile project(':jcore-react-native')
+    compile project(':jpush-react-native')
     compile project(':react-native-svg')
     compile project(':react-native-config')
     compile project(':react-native-i18n')

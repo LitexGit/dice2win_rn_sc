@@ -96,7 +96,6 @@ class RecordScreen extends Component {
 }
 
 const mapStateToProps = (state) => {
-  console.tron.log('NEW STATE', state.record.payload)
   return {
     sectionData: state.record.payload.sections,
   }
