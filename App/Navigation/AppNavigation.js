@@ -1,4 +1,5 @@
 import { StackNavigator, TabNavigator } from 'react-navigation'
+import GameContainer from '../Containers/GameContainer'
 import PromotionScreen from '../Containers/PromotionScreen'
 import WalletManageScreen from '../Containers/WalletManageScreen'
 import SettingScreen from '../Containers/SettingScreen'
@@ -31,6 +32,7 @@ const BottomTabNav = TabNavigator({
 
 // Manifest of possible screens
 const PrimaryNav = StackNavigator({
+  GameContainer: { screen: GameContainer },
   PromotionScreen: { screen: PromotionScreen },
   WalletManageScreen: { screen: WalletManageScreen },
   WalletScreen: { screen: WalletScreen },
