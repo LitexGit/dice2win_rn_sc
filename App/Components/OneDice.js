@@ -42,7 +42,7 @@ class OneDice extends Component {
     return (
       <TouchableOpacity key={idx} onPress={() => this.props.clickOneDice(idx)}>
         <Image style={styles.oneDiceItem}
-               source={this.props.bets[idx] ? diceImage[idx].pos : diceImage[idx].neg}/>
+          source={this.props.bets[idx] ? diceImage[idx].pos : diceImage[idx].neg}/>
       </TouchableOpacity>
     )
   }
@@ -50,11 +50,14 @@ class OneDice extends Component {
   render () {
     return (
       <React.Fragment>
-        <View style={styles.oneDiceBox}>
-          {this.props.diceWeights.map((value, idx) => this.renderDice(value, idx))}
-        </View>
         <View style={styles.infoBox}>
-          <Text style={styles.infoText}>选择硬币的一面来进行投注</Text>
+          <Text style={styles.infoText}>Choose the dice number(s) to bet on</Text>
+        </View>
+        <View style={styles.oneDiceBox}>
+          {this.props.diceWeights.map((value, idx) => (idx < 3) && this.renderDice(value, idx))}
+        </View>
+        <View style={styles.oneDiceBox}>
+          {this.props.diceWeights.map((value, idx) => (idx >= 3) && this.renderDice(value, idx))}
         </View>
       </React.Fragment>
     )

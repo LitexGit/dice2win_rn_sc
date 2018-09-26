@@ -8,7 +8,7 @@ PODS:
   - glog (0.3.4)
   - JCoreRN (1.2.10):
     - React
-  - JPushRN (2.2.10):
+  - JPushRN (2.2.9):
     - React
   - React (0.55.1):
     - React/Core (= 0.55.1)

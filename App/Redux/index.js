@@ -16,7 +16,8 @@ export const reducers = combineReducers({
   bet: require('./BetRedux').reducer,
   stakeModal: require('./StakeModalRedux').reducer,
   config: require('./ConfigRedux').reducer,
-  setting: require('./SettingRedux').reducer
+  setting: require('./SettingRedux').reducer,
+  notification: require('./NotificationRedux').reducer,
 })
 
 export default () => {

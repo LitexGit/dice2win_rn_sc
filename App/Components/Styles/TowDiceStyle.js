@@ -1,21 +1,43 @@
 import { StyleSheet } from 'react-native'
+import { Colors } from '../../Themes';
+
+const DICE_SIZE = 70
 
 export default StyleSheet.create({
   twoDiceBox: {
-    flex: 4,
+    flex: 1,
     flexDirection: 'row',
-    flexWrap: 'wrap',
     justifyContent: 'space-around',
-    backgroundColor: '#2C3658'
+    padding: 8,
+    paddingLeft: 32,
+    paddingRight: 32,
+  },
+
+  towDiceWrapper:{
+    flex:1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 
   twoDiceItem: {
-    width: 45, height: 45
+    flex:1,
+    width: DICE_SIZE,
+    height: DICE_SIZE,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
+
+  twoDiceText: {
+    fontSize: 16,
+  },
+
   infoBox: {
-    flex: 1, alignSelf: 'center'
+    flex: 1,
+    alignSelf: 'center',
+    margin: 10
   },
   infoText: {
-    color: '#fff', fontSize: 20
+    color: Colors.ricePaper,
+    fontSize: 18
   },
 })

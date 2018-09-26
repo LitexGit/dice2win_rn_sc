@@ -2,21 +2,42 @@ import React, { Component } from 'react'
 // import PropTypes from 'prop-types';
 import { View, Text, TouchableOpacity, Image, Slider } from 'react-native'
 import styles from './Styles/EtherollStyle'
-import Images from '../Themes/Images'
 import BetActions from '../Redux/BetRedux'
 import connect from 'react-redux/es/connect/connect'
 
 class Etheroll extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      displayValue: 50,
+    }
+  }
 
   render () {
     return (
       <React.Fragment>
-        <Slider minimumValue={1} maximumValue={97} step={1}
-                value={50} onValueChange={(val) => this.props.clickEtheroll(val)}
-        />
         <View style={styles.infoBox}>
-          <Text style={styles.infoText}>选择硬币的一面来进行投注</Text>
+          <Text style={styles.infoText}>adjust you winning chance</Text>
         </View>
+        <Slider minimumValue={1} maximumValue={97} step={1} value={50} 
+          onSlidingComplete={(val) => this.props.clickEtheroll(val)}
+          onValueChange={(val) => this.setState({displayValue: val})} />
+          <View style={{flex: 1, flexDirection: 'row'}}>
+            <View style={styles.rateWrapper}>
+              <View style={{alignItems:'center'}}>
+                <Text style={styles.label}>winning</Text>
+                <Text style={styles.label}> chance:</Text> 
+              </View>
+              <Text style={styles.rateText}>{this.state.displayValue}%</Text>
+            </View>
+            <View style={styles.rateWrapper}>
+              <View style={{alignItems:'center'}}>
+                <Text style={styles.label}>winning</Text>
+                <Text style={styles.label}> pays:</Text> 
+              </View>
+              <Text style={styles.rateText}>{(95 * 0.99 / this.state.displayValue + 0.05).toFixed(2)}x</Text>
+            </View>
+          </View>
       </React.Fragment>
     )
   }

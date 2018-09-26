@@ -12,6 +12,7 @@ import { RecordTypes } from '../Redux/RecordRedux'
 import { WalletTypes } from '../Redux/WalletRedux'
 import { ConfigTypes } from '../Redux/ConfigRedux'
 import { SettingTypes } from '../Redux/SettingRedux'
+import { NotificationTypes } from '../Redux/NotificationRedux'
 
 /* ------------- Sagas ------------- */
 
@@ -22,6 +23,7 @@ import { getRecord } from './RecordSagas'
 import { getWallet } from './WalletSagas'
 import { getConfig } from './ConfigSagas'
 import { getSetting } from './SettingSagas'
+import { getNotification } from './NotificationSagas'
 
 /* ------------- API ------------- */
 
@@ -53,5 +55,8 @@ export default function * root () {
 
     // get setting info
     takeLatest(SettingTypes.SETTING_REQUEST, getSetting, api),
+
+    // get setting info
+    // takeLatest(NotificationTypes.NOTIFICATION_REQUEST, getNotification),
   ])
 }

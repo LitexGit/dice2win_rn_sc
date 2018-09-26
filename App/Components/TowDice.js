@@ -1,12 +1,14 @@
 import React, { Component } from 'react'
 // import PropTypes from 'prop-types';
-import { View, Text, TouchableOpacity, Image } from 'react-native'
+import { View, Text, TouchableOpacity, ImageBackground } from 'react-native'
 import styles from './Styles/TowDiceStyle'
 import Images from '../Themes/Images'
 import BetActions from '../Redux/BetRedux'
 import connect from 'react-redux/es/connect/connect'
+import { Colors } from '../Themes';
 
 const bets = [true, false, true, false, true, false, true, false, true, false, true]
+
 
 class TwoDice extends Component {
   componentDidMount () {
@@ -15,10 +17,10 @@ class TwoDice extends Component {
 
   renderDice (freq, idx) {
     return (
-      <TouchableOpacity key={idx} onPress={() => this.props.clickTwoDice(idx)}>
-        <Image style={styles.twoDiceItem}
-               source={this.props.bets[idx] ? Images.diceLight : Images.diceDark}/>
-        <Text> {idx + 2} </Text>
+      <TouchableOpacity style={styles.towDiceWrapper} key={idx} onPress={() => this.props.clickTwoDice(idx)}>
+        <ImageBackground style={styles.twoDiceItem} source={this.props.bets[idx] ? Images.diceBGLight : Images.diceBGDark}>
+          <Text style={[styles.twoDiceText, !this.props.bets[idx] && {color:Colors.border}]}> {idx + 2} </Text>
+        </ImageBackground>
       </TouchableOpacity>
     )
   }
@@ -26,13 +28,12 @@ class TwoDice extends Component {
   render () {
     return (
       <React.Fragment>
-        <View style={styles.twoDiceBox}>
-          {this.props.diceWeights.map((value, idx) => this.renderDice(value, idx))}
-        </View>
-
         <View style={styles.infoBox}>
-          <Text style={styles.infoText}>选择硬币的一面来进行投注</Text>
+          <Text style={styles.infoText}>Choose sum of dice to bet on </Text>
         </View>
+        <View style={styles.twoDiceBox}> {this.props.diceWeights.map((value, idx) => idx < 4 && this.renderDice(value, idx))} </View>
+        <View style={styles.twoDiceBox}> {this.props.diceWeights.map((value, idx) => idx >= 4 && idx < 8 && this.renderDice(value, idx))} </View>
+        <View style={styles.twoDiceBox}> {this.props.diceWeights.map((value, idx) => idx >= 8 && this.renderDice(value, idx))} </View>
       </React.Fragment>
     )
   }

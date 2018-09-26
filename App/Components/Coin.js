@@ -15,6 +15,9 @@ class Coin extends Component {
     const {bets, clickCoin} = this.props
     return (
       <React.Fragment>
+        <View style={styles.infoBox}>
+          <Text style={styles.infoText}>choose coin side to bet on</Text>
+        </View>
         <View style={styles.coinBox}>
           <TouchableOpacity onPress={clickCoin}>
             <Image style={styles.coinItem}
@@ -24,9 +27,6 @@ class Coin extends Component {
             <Image style={styles.coinItem}
                    source={bets[1] ? Images.coinNegLight : Images.coinNegDark}/>
           </TouchableOpacity>
-        </View>
-        <View style={styles.infoBox}>
-          <Text style={styles.infoText}>选择硬币的一面来进行投注</Text>
         </View>
       </React.Fragment>
     )

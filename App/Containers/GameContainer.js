@@ -9,7 +9,7 @@ import GameActions from '../Redux/GameRedux'
 // Styles
 import styles from './Styles/GameContainerStyle'
 
-import { Images } from '../Themes'
+import { Images, Colors } from '../Themes'
 import Coin from '../Components/Coin'
 import OneDice from '../Components/OneDice'
 import TwoDice from '../Components/TowDice'
@@ -41,45 +41,44 @@ class GameContainer extends Component {
             {this.renderDice(this.props.index)}
             <View style={styles.stakeBox}>
               <TouchableOpacity style={styles.stakeButton} onPress={() => this.props.setStake('0.05')}>
-                <Text>0.05</Text>
+                <Text style={styles.stakeButtonText}>0.05</Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.stakeButton} onPress={() => this.props.setStake('0.10')}>
-                <Text>0.10</Text>
+                <Text style={styles.stakeButtonText}>0.10</Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.stakeButton} onPress={() => this.props.setStake('0.15')}>
-                <Text>0.15</Text>
+                <Text style={styles.stakeButtonText}>0.15</Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.stakeButton}>
-                <Text>最大</Text>
+                <Text style={styles.stakeButtonText}>Max</Text>
               </TouchableOpacity>
             </View>
-            <View
-              style={styles.stakeBox}
-            >
+            <View style={styles.stakeBox} >
               <TouchableOpacity style={styles.stakeButton} onPress={this.props.rmUnit}>
-                <Text>-</Text>
+                <Text style={[styles.stakeButtonText, {fontSize: 28}]}>-</Text>
               </TouchableOpacity>
               <TextInput value={this.props.stake} style={styles.stakeInput}
                          onChangeText={(val) => this.props.setStake(val)}/>
               <TouchableOpacity style={styles.stakeButton} onPress={this.props.addUnit}>
-                <Text>+</Text>
+                <Text style={[styles.stakeButtonText, {fontSize: 28}]}>+</Text>
               </TouchableOpacity>
             </View>
-            <View>
-              <TouchableOpacity onPress={this.props.openStakeModal}>
-                <Text> 下 注 </Text>
+            <View style={styles.balanceWrapper}>
+              <Text style={styles.balanceText}>your balance: </Text>
+              <Text style={[styles.balanceText, {color: Colors.casinoGreen}]}>{this.props.balance}</Text>
+            </View>
+            <View style={styles.startButtonWrapper}>
+              <TouchableOpacity style={styles.startButton} onPress={this.props.openStakeModal}>
+                <Text style={styles.startButtonText}> Start </Text>
               </TouchableOpacity>
             </View>
-            <View>
-              <Text style={styles.balanceText}>余额：0</Text>
-            </View>
-            <View>
-              <Text
-                style={styles.rewardText}>赢得投注{(this.props.rewardTime).toFixed(2)}X️，胜率{(this.props.winRate).toFixed(2)}</Text>
-              <Text style={styles.rewardText}>您将赢得{(this.props.rewardTime * this.props.stake).toFixed(5)}以太坊</Text>
+            <View style={styles.rewardWrapper}>
+              <Text style={styles.rewardText}>winning pays <Text style={styles.keyText}>{(this.props.rewardTime).toFixed(2)}x</Text>️, winning chance: <Text style={styles.keyText}>{(this.props.winRate * 100).toFixed(2)}%</Text></Text>
+              <Text style={styles.label}>1% fee, 5% of reward to inviter</Text>
+              <Text style={styles.rewardText}>you will win <Text style={styles.keyText}>{(this.props.rewardTime * this.props.stake).toFixed(5)}ETH</Text></Text>
             </View>
           </View>
-          <StakeModal/>
+          <StakeModal />
         </View>
       </ScrollView>
     )
@@ -98,6 +97,7 @@ const mapStateToProps = (state) => {
     winRate: state.bet.winRate,
     rewardTime: state.bet.rewardTime,
 
+    balance: state.wallet.payload.balance,
   }
 }
 
