@@ -12,6 +12,7 @@ export const reducers = combineReducers({
   activity: require('./ActivityRedux').reducer,
   record: require('./RecordRedux').reducer,
   wallet: require('./WalletRedux').reducer,
+  config: require('./ConfigRedux').reducer,
 })
 
 export default () => {

@@ -1,4 +1,5 @@
 import { StackNavigator, TabNavigator } from 'react-navigation'
+import WebviewScreen from '../Containers/WebviewScreen'
 import PromotionScreen from '../Containers/PromotionScreen'
 import WalletManageScreen from '../Containers/WalletManageScreen'
 import SettingScreen from '../Containers/SettingScreen'
@@ -31,6 +32,7 @@ const BottomTabNav = TabNavigator({
 
 // Manifest of possible screens
 const PrimaryNav = StackNavigator({
+  WebviewScreen: { screen: WebviewScreen },
   PromotionScreen: { screen: PromotionScreen },
   WalletManageScreen: { screen: WalletManageScreen },
   WalletScreen: { screen: WalletScreen },

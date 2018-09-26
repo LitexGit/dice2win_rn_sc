@@ -1,4 +1,4 @@
-import { takeLatest, all } from 'redux-saga/effects'
+import { takeLatest, all, take } from 'redux-saga/effects'
 import API from '../Services/Api'
 import FixtureAPI from '../Services/FixtureApi'
 import DebugConfig from '../Config/DebugConfig'
@@ -10,6 +10,7 @@ import { GithubTypes } from '../Redux/GithubRedux'
 import { ActivityTypes } from '../Redux/ActivityRedux'
 import { RecordTypes } from '../Redux/RecordRedux'
 import { WalletTypes } from '../Redux/WalletRedux'
+import { ConfigTypes } from '../Redux/ConfigRedux'
 
 /* ------------- Sagas ------------- */
 
@@ -18,6 +19,7 @@ import { getUserAvatar } from './GithubSagas'
 import { getActivity } from './ActivitySagas'
 import { getRecord } from './RecordSagas'
 import { getWallet } from './WalletSagas'
+import { getConfig } from './ConfigSagas'
 
 /* ------------- API ------------- */
 
@@ -43,5 +45,8 @@ export default function * root () {
 
     // get wallet info
     takeLatest(WalletTypes.WALLET_REQUEST, getWallet, api),
+
+    // get config
+    takeLatest(ConfigTypes.CONFIG_REQUEST, getConfig, api)
   ])
 }
