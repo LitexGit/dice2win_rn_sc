@@ -11,6 +11,7 @@ import { ActivityTypes } from '../Redux/ActivityRedux'
 import { RecordTypes } from '../Redux/RecordRedux'
 import { WalletTypes } from '../Redux/WalletRedux'
 import { ConfigTypes } from '../Redux/ConfigRedux'
+import { SettingTypes } from '../Redux/SettingRedux'
 
 /* ------------- Sagas ------------- */
 
@@ -20,6 +21,7 @@ import { getActivity } from './ActivitySagas'
 import { getRecord } from './RecordSagas'
 import { getWallet } from './WalletSagas'
 import { getConfig } from './ConfigSagas'
+import { getSetting } from './SettingSagas'
 
 /* ------------- API ------------- */
 
@@ -47,6 +49,9 @@ export default function * root () {
     takeLatest(WalletTypes.WALLET_REQUEST, getWallet, api),
 
     // get config
-    takeLatest(ConfigTypes.CONFIG_REQUEST, getConfig, api)
+    takeLatest(ConfigTypes.CONFIG_REQUEST, getConfig, api),
+
+    // get setting info
+    takeLatest(SettingTypes.SETTING_REQUEST, getSetting, api),
   ])
 }

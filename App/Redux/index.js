@@ -13,6 +13,7 @@ export const reducers = combineReducers({
   record: require('./RecordRedux').reducer,
   wallet: require('./WalletRedux').reducer,
   config: require('./ConfigRedux').reducer,
+  setting: require('./SettingRedux').reducer,
 })
 
 export default () => {
@@ -23,7 +24,7 @@ export default () => {
     finalReducers = persistReducer(persistConfig, reducers)
   }
 
-  let { store, sagasManager, sagaMiddleware } = configureStore(finalReducers, rootSaga)
+  let {store, sagasManager, sagaMiddleware} = configureStore(finalReducers, rootSaga)
 
   if (module.hot) {
     module.hot.accept(() => {

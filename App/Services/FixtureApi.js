@@ -44,5 +44,13 @@ export default {
       ok: true,
       data: walletData
     }
+  },
+
+  getSetting: () => {
+    const getSetting = require('../Fixtures/setting.json')
+    return {
+      ok: true,
+      data: getSetting
+    }
   }
 }

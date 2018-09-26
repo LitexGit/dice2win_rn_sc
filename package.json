@@ -33,7 +33,7 @@
     "format-json": "^1.0.3",
     "identity-obj-proxy": "^3.0.0",
     "jcore-react-native": "^1.2.10",
-    "jpush-react-native": "^2.2.9",
+    "jpush-react-native": "^2.2.10",
     "lodash": "^4.17.4",
     "prop-types": "^15.6.2",
     "querystringify": "1.0.0",
