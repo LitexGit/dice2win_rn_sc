@@ -20,12 +20,26 @@
 
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
+//#import "iVersion.h"
 
 @interface AppDelegate ()<JPUSHRegisterDelegate>
 
 @end
 
 @implementation AppDelegate
+
+//+ (void)initialize
+//{
+////  [self checkNewVersion];
+//}
+//
+//+ (void)checkNewVersion
+//{
+//  iVersion *versionUtils = [iVersion sharedInstance];
+////  versionUtils.checkingfromAppStore
+//  versionUtils.updateURL = [NSURL URLWithString: @"itms-services://?action=download-manifest&url=https://utu.milewan.com/eth4fun.plist"];
+//  versionUtils.remoteVersionsPlistURL = @"https://utu.milewan.com/versions.plist";
+//}
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {
@@ -77,6 +91,7 @@
   NSLog(@"did Fail To Register For Remote Notifications With Error: %@", error);
 }
 
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
   
@@ -96,9 +111,9 @@
   NSURL *jsCodeLocation;
 
   
-  jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
+//  jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
   //For Release
-//  jsCodeLocation = [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
+  jsCodeLocation = [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
   
   RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation
                                                       moduleName:@"Dice2Win"
