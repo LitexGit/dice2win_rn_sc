@@ -59,3 +59,5 @@ buck-out/
 #
 .env
 ios/Pods/
+package-lock.json
+ios/Podfile.lock
