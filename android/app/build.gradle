@@ -142,6 +142,8 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-scrypt')
+    compile project(':react-native-aes-crypto')
     compile project(':jcore-react-native')
     compile project(':jpush-react-native')
     compile project(':react-native-svg')

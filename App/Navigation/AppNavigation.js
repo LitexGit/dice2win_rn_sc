@@ -1,4 +1,9 @@
 import { StackNavigator, TabNavigator } from 'react-navigation'
+import Transfer from '../Containers/Transfer'
+import Backup from '../Containers/Backup'
+import PreBackup from '../Containers/PreBackup'
+import NewWallet from '../Containers/NewWallet'
+import ImportWallet from '../Containers/ImportWallet'
 import GameContainer from '../Containers/GameContainer'
 import WebviewScreen from '../Containers/WebviewScreen'
 import PromotionScreen from '../Containers/PromotionScreen'
@@ -33,6 +38,11 @@ const BottomTabNav = TabNavigator({
 
 // Manifest of possible screens
 const PrimaryNav = StackNavigator({
+  Transfer: { screen: Transfer },
+  Backup: { screen: Backup },
+  PreBackup: { screen: PreBackup },
+  NewWallet: { screen: NewWallet },
+  ImportWallet: { screen: ImportWallet },
   GameContainer: {screen: GameContainer},
   WebviewScreen: {screen: WebviewScreen},
   PromotionScreen: {screen: PromotionScreen},

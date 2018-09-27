@@ -3,7 +3,7 @@ import Immutable from 'seamless-immutable'
 
 /* ------------- Types and Action Creators ------------- */
 
-const { Types, Creators } = createActions({
+const {Types, Creators} = createActions({
   activityRequest: ['data'],
   activitySuccess: ['payload'],
   activityFailure: null
@@ -17,7 +17,7 @@ export default Creators
 export const INITIAL_STATE = Immutable({
   data: null,
   fetching: null,
-  payload: {banners:{items:[]}},
+  payload: {banners: {items: []}},
   error: null
 })
 
@@ -30,18 +30,18 @@ export const ActivitySelectors = {
 /* ------------- Reducers ------------- */
 
 // request the data from an api
-export const request = (state, { data }) =>
-  state.merge({ fetching: true, data, payload: null })
+export const request = (state, {data}) =>
+  state.merge({fetching: true, data, payload: null})
 
 // successful api lookup
 export const success = (state, action) => {
-  const { payload } = action
-  return state.merge({ fetching: false, error: null, payload })
+  const {payload} = action
+  return state.merge({fetching: false, error: null, payload})
 }
 
 // Something went wrong somewhere.
 export const failure = state =>
-  state.merge({ fetching: false, error: true, payload: null })
+  state.merge({fetching: false, error: true, payload: null})
 
 /* ------------- Hookup Reducers To Types ------------- */
 

@@ -15,10 +15,6 @@ import { connect } from 'react-redux'
 import { Metrics } from '../Themes'
 import styles from './Styles/GameScreenStyle'
 import NavigationActions from 'react-navigation/src/NavigationActions'
-import Coin from '../Components/Coin'
-import OneDice from '../Components/OneDice'
-import TwoDice from '../Components/TowDice'
-import Etheroll from '../Components/Etheroll'
 
 const Slide = props => {
   return (
@@ -48,7 +44,7 @@ class GameScreen extends Component {
   }
 
   Entry = ({item}) => {
-    console.log('Entry this:', this)
+    // console.log('Entry this:', this)
     return (
       <TouchableOpacity style={styles.entry} onPress={() => {
         this.props.setGameKey(item.key)

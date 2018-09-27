@@ -41,6 +41,7 @@ export const INITIAL_STATE = Immutable({
   rewardTime: 1.93,
   betMaskArr: [],
   betMask: new BN('0', 2),
+  modulo: 2,
 
   data: null,
   fetching: null,
@@ -63,6 +64,7 @@ export const loadCoin = (state) =>
     diceWeights: [1, 1],
     winRate: 0.5,
     rewardTime: 1.93,
+    modulo: 2,
     betMaskArr: [
       new BN('01', 2),
       new BN('10', 2)
@@ -77,6 +79,7 @@ export const loadOneDice = (state) =>
     diceWeights: [1, 1, 1, 1, 1, 1],
     winRate: 0.5,
     rewardTime: 1.93,
+    modulo: 6,
     betMaskArr: [
       new BN('000001', 2),
       new BN('000010', 2),
@@ -95,6 +98,7 @@ export const loadTwoDice = (state) =>
     diceWeights: [1, 2, 3, 4, 5, 6, 5, 4, 3, 2, 1],
     winRate: 0.5,
     rewardTime: 1.93,
+    modulo: 36,
     betMaskArr: [
       new BN('000000000000000000000000000000000001', 2),
       new BN('000000000000000000000000000001000010', 2),
@@ -109,7 +113,7 @@ export const loadTwoDice = (state) =>
       new BN('100000000000000000000000000000000000', 2)]
   })
 
-export const loadEtheroll = (state) => state.merge({betMask: 50})
+export const loadEtheroll = (state) => state.merge({betMask: 50, modulo: 100})
 
 export const clickCoin = (state) => {
   console.tron.log('bets', state.bets)
@@ -123,7 +127,7 @@ export const clickCoin = (state) => {
       betMaskSum = betMaskSum.iadd(state.betMaskArr[i])
     }
   }
-  let betMask = betMaskSum
+  let betMask = betMaskSum.toNumber()
   let winRate = 0.5
   let rewardTime = getRewardTime(winRate)
   return state.merge({
@@ -153,7 +157,7 @@ export const clickOneDice = (state, action) => {
         diceCount = diceCount + state.diceWeights[i]
       }
     }
-    let betMask = betMaskSum
+    let betMask = betMaskSum.toNumber()
 
     let winRate = diceCount / 6
     let rewardTime = getRewardTime(winRate)
@@ -187,7 +191,7 @@ export const clickTwoDice = (state, action) => {
         diceCount = diceCount + state.diceWeights[i]
       }
     }
-    let betMask = betMaskSum
+    let betMask = betMaskSum.toNumber()
 
     let winRate = diceCount / 36
     let rewardTime = getRewardTime(winRate)
