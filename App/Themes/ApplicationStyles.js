@@ -45,6 +45,9 @@ const ApplicationStyles = {
       fontSize: 14,
       color: Colors.text
     },
+    label: {
+      color: Colors.text,
+    },
     divider: {
       height: 1,
       backgroundColor: Colors.facebook,

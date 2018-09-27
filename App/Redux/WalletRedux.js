@@ -15,6 +15,10 @@ export default Creators
 /* ------------- Initial State ------------- */
 
 export const INITIAL_STATE = Immutable({
+  walletData: {
+    address: '',
+    balance: ''
+  },
   data: null,
   fetching: null,
   payload: {address: ''},

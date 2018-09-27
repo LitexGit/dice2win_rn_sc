@@ -71,6 +71,7 @@
 		997CA78305D046FA9168B7DD /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1E7429CCB15A4D11B4C4D182 /* MaterialCommunityIcons.ttf */; };
 		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
 		ADC61CD5A6C745E2A89C5AC1 /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 354CB333B399464DB5794D04 /* Octicons.ttf */; };
+		B4FD11BC4F604132903AABB8 /* libRNSVG-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 422B685ADA21487FAA8D8695 /* libRNSVG-tvOS.a */; };
 		B855922FB9FD465C8209DBAB /* libRNDeviceInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DF311F8F866644EE8CE5CB53 /* libRNDeviceInfo.a */; };
 		C9651CDCEB3D4EE1AAE94A7C /* libRNSVG.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D809A07946F415A8FFF280D /* libRNSVG.a */; };
 		D69EFE43193B4E0F9DE070FB /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 91C8AC28587346D8A3427550 /* EvilIcons.ttf */; };
@@ -242,6 +243,20 @@
 			proxyType = 2;
 			remoteGlobalIDString = 9936F32F1F5F2E5B0010BF04;
 			remoteInfo = "privatedata-tvOS";
+		};
+		354CD15F215A1507006CE490 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AA37059937A1471BAAA41747 /* RNSVG.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 0CF68AC11AF0540F00FF9E5C;
+			remoteInfo = RNSVG;
+		};
+		354CD161215A1507006CE490 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AA37059937A1471BAAA41747 /* RNSVG.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 94DDAC5C1F3D024300EED511;
+			remoteInfo = "RNSVG-tvOS";
 		};
 		3DAD3E831DF850E9000B6D8A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -722,6 +737,15 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		354CD15B215A1507006CE490 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				354CD160215A1507006CE490 /* libRNSVG.a */,
+				354CD162215A1507006CE490 /* libRNSVG-tvOS.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		5E91572E1DD0AC6500FF2AA8 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -989,7 +1013,7 @@
 					};
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = QG8NK8GEE7;
-						ProvisioningStyle = Manual;
+						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.Push = {
 								enabled = 1;
@@ -1080,7 +1104,7 @@
 					ProjectRef = 292A635A123E4C9B960E5256 /* RNI18n.xcodeproj */;
 				},
 				{
-					ProductGroup = 1FC1B7382159F9F3008BE09D /* Products */;
+					ProductGroup = 354CD15B215A1507006CE490 /* Products */;
 					ProjectRef = AA37059937A1471BAAA41747 /* RNSVG.xcodeproj */;
 				},
 				{
@@ -1244,6 +1268,20 @@
 			fileType = archive.ar;
 			path = "libprivatedata-tvOS.a";
 			remoteRef = 2DF0FFEC2056DD460020B375 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		354CD160215A1507006CE490 /* libRNSVG.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNSVG.a;
+			remoteRef = 354CD15F215A1507006CE490 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		354CD162215A1507006CE490 /* libRNSVG-tvOS.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libRNSVG-tvOS.a";
+			remoteRef = 354CD161215A1507006CE490 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		3DAD3E841DF850E9000B6D8A /* libRCTImage-tvOS.a */ = {
@@ -1712,10 +1750,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Dice2Win/Dice2Win.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
-				DEVELOPMENT_TEAM = QG8NK8GEE7;
+				DEVELOPMENT_TEAM = "";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-device-info/RNDeviceInfo",
@@ -1734,7 +1772,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = fun.eth4.game;
 				PRODUCT_NAME = Dice2Win;
-				PROVISIONING_PROFILE_SPECIFIER = fun.eth4.game_dev;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -1746,9 +1784,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Dice2Win/Dice2Win.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = QG8NK8GEE7;
+				DEVELOPMENT_TEAM = "";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-device-info/RNDeviceInfo",
@@ -1767,7 +1805,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = fun.eth4.game;
 				PRODUCT_NAME = Dice2Win;
-				PROVISIONING_PROFILE_SPECIFIER = fun.eth4.game_dev;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;

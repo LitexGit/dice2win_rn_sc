@@ -1,0 +1,105 @@
+import { StyleSheet, Dimensions, Platform } from 'react-native'
+// import { Colors, Metrics } from '../../Themes/'
+import { ApplicationStyles, Colors } from '../../Themes'
+
+const deviceHeight = Dimensions.get('window').height
+const STAKE_BOX_HEIGHT = 50
+const STAKE_BUTTON_SIZE = 36
+const START_BUTTON_SIZE = 48
+
+export default StyleSheet.create({
+  ...ApplicationStyles.screen,
+
+  gameContainer: {
+    backgroundColor: Colors.casinoBlue,
+  },
+  gameConetent: {
+    flex: 1,
+    padding: 20,
+  },
+  stakeBox: {
+    flex: 1,
+    height: STAKE_BOX_HEIGHT,
+    marginTop: 20,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+
+  stakeButton: {
+    height: STAKE_BUTTON_SIZE,
+    width: STAKE_BUTTON_SIZE * 2,
+    borderRadius: 5,
+    backgroundColor: Colors.facebook,
+    alignItems: 'center', 
+    justifyContent: 'center',
+  },
+  stakeButtonText: {
+    color: Colors.silver,
+    fontSize: 16,
+  },
+
+  stakeInput: {
+    flex: 1,
+    textAlign: 'center',
+    color: Colors.activeTint,
+    fontSize: 30,
+    marginLeft:10,
+    marginRight:10,
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.facebook,
+  },
+
+
+  startButtonWrapper: {
+    flex:1,
+    alignItems: 'stretch',
+    marginTop: 20,
+  },
+  startButton: {
+    height: START_BUTTON_SIZE,
+    borderRadius: 5,
+    borderColor: Colors.activeTint,
+    borderWidth: 1,
+    backgroundColor: Colors.facebook,
+    alignItems: 'center', 
+    justifyContent: 'center',
+  },
+
+  startButtonText: {
+    color: Colors.silver,
+    fontSize: 28,
+  },
+
+  balanceWrapper: {
+    marginTop: 20,
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+
+  balanceText: {
+    color: Colors.text, 
+    fontSize: 20
+  },
+
+  rewardWrapper:{
+    marginTop: 20,
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+
+  keyText: {
+    color: Colors.bloodOrange,
+    fontSize: 16,
+  },
+
+  rewardText: {
+    color: Colors.snow, 
+    fontSize: 16,
+    padding: 3,
+  },
+
+})

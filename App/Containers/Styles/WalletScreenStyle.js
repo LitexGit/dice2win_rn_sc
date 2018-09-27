@@ -119,9 +119,6 @@ export default StyleSheet.create({
   },
 
 
-  label: {
-    color: Colors.text,
-  },
   bonus: {
     ...Fonts.style.h4,
     color: Colors.bloodOrange,

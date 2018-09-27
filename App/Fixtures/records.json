@@ -29,5 +29,21 @@
                 {"txhash":"0xadfjkfdjadsfds", "time": "08:22:21", "remark":"投注", "type":"out", "amount": 1.96} ]
             }
         ]
+    },
+
+    "bonus":{
+        "total_count": 100,
+        "sections":[
+            {"key":"Today", "data":[
+                {"fromUser":"0xDc788AF054e68BB012792a77b4f6b74c29335071", "time": "08:22:21", "fromLevel":3, "amount": 1.96, "status": "pending"},
+                {"fromUser":"0xDc788AF054e68BB012792a77b4f6b74c29335071", "time": "08:22:21", "fromLevel":1, "amount": 1.96, "status": "success"},
+                {"fromUser":"0xDc788AF054e68BB012792a77b4f6b74c29335071", "time": "08:22:21", "fromLevel":2, "amount": 1.96, "status": "failure"} ]
+            },
+            {"key":"Yesterday", "data":[
+                {"fromUser":"0xDc788AF054e68BB012792a77b4f6b74c29335071", "time": "08:22:21", "fromLevel":2, "amount": 1.96, "status": "success"},
+                {"fromUser":"0xDc788AF054e68BB012792a77b4f6b74c29335071", "time": "08:22:21", "fromLevel":2, "amount": 1.96, "status": "success"},
+                {"fromUser":"0xDc788AF054e68BB012792a77b4f6b74c29335071", "time": "08:22:21", "fromLevel":1, "amount": 1.96, "status": "success"} ]
+            }
+        ]
     }
 }

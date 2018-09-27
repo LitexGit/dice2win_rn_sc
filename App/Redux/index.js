@@ -12,6 +12,12 @@ export const reducers = combineReducers({
   activity: require('./ActivityRedux').reducer,
   record: require('./RecordRedux').reducer,
   wallet: require('./WalletRedux').reducer,
+  game: require('./GameRedux').reducer,
+  bet: require('./BetRedux').reducer,
+  stakeModal: require('./StakeModalRedux').reducer,
+  config: require('./ConfigRedux').reducer,
+  setting: require('./SettingRedux').reducer,
+  notification: require('./NotificationRedux').reducer,
 })
 
 export default () => {
@@ -22,7 +28,7 @@ export default () => {
     finalReducers = persistReducer(persistConfig, reducers)
   }
 
-  let { store, sagasManager, sagaMiddleware } = configureStore(finalReducers, rootSaga)
+  let {store, sagasManager, sagaMiddleware} = configureStore(finalReducers, rootSaga)
 
   if (module.hot) {
     module.hot.accept(() => {
