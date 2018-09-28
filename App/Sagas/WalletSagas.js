@@ -21,7 +21,9 @@ let axios = require('axios')
 console.log('ethers', ethers)
 
 export function * newWallet (api, action) {
-  const wallet = yield call(ethers.Wallet.createRandom)
+  console.tron.log('newWallet begin')
+  const wallet = yield call(ethers.Wallet.RNCreateRandom)
+  console.tron.log('newWallet', wallet)
   AppConfig.wallet = wallet
   yield put(WalletActions.setWallet(wallet))
 }

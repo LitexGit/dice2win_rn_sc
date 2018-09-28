@@ -21,6 +21,8 @@ target 'Dice2Win' do
   pod 'JPushRN', :path => '../node_modules/jpush-react-native'
   pod 'JCoreRN', :path => '../node_modules/jcore-react-native'
 
+
+
   pod 'react-native-aes', :path => '../node_modules/react-native-aes-crypto'
 
   target 'Dice2WinTests' do

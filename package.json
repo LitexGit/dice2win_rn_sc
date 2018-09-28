@@ -31,7 +31,7 @@
     "ajv": "^6.5.4",
     "apisauce": "^0.14.2",
     "bn.js": "^4.11.8",
-    "ethers": "^3.0.29",
+    "ethers": "git+ssh://git@gitlab.milewan.com:dapp/ethers.js.git",
     "format-json": "^1.0.3",
     "identity-obj-proxy": "^3.0.0",
     "jcore-react-native": "^1.2.10",

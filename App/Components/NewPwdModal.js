@@ -27,7 +27,8 @@ class NewPwdModal extends Component {
     if (this.state.pwd1 === this.state.pwd2) {
 
       // this.props.encryptWallet({this.props.wallet ,this.state.pwd2})
-      this.props.encryptWallet({wallet: this.props.wallet, pwd: this.state.pwd2})
+      // this.props.encryptWallet({wallet: this.props.wallet, pwd: this.state.pwd2})
+      this.props.newWallet({wallet: this.props.wallet, pwd: this.state.pwd2})
       // if (this.props.navigateName) {
       //   this.props.navigate(this.props.navigateName)
       // }
@@ -80,6 +81,7 @@ const mapDispatchToProps = (dispatch) => {
     openNewPwdModal: () => dispatch(NewPwdModalActions.openNewPwdModal()),
     setPwd: (pwd) => dispatch(NewPwdModalActions.setPwd(pwd)),
     encryptWallet: (data) => dispatch(WalletActions.encryptWallet(data)),
+    newWallet: (data) => dispatch(WalletActions.newWallet(data)),
     navigate: (target) => dispatch(NavigationActions.navigate({routeName: target})),
     closeNewPwdModal: () => dispatch(NewPwdModalActions.closeNewPwdModal())
   }
