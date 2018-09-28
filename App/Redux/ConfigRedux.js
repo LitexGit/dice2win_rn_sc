@@ -17,6 +17,23 @@ export default Creators
 export const INITIAL_STATE = Immutable({
   data: null,
   fetching: null,
+  api: {
+    contract_address: "0xAe985667078744A8EFb0C6c0300D7861EF427148",
+    base_domain: "http://api.eth4.fun",
+    api_list: {
+      get_abi: "http://api.eth4.fun/api/v1/games/dev/abi",
+      put_deviceinfo: "http://api.eth4.fun/api/v1/games/dev/deviceinfo",
+      put_random: "http://api.eth4.fun/api/v1/games/dev/random",
+      put_blockchain: "http://api.eth4.fun/api/v1/games/dev/blockchain",
+      get_bet_history: "http://api.eth4.fun/api/v1/games/dev/bet/history",
+      get_jackpot: "http://api.eth4.fun/api/v1/games/dev/jackpot",
+      get_24h_top: "http://api.eth4.fun/api/v1/games/dev/24h",
+      put_user: "http://api.eth4.fun/api/v1/games/dev/member",
+      get_user_list: "http://api.eth4.fun/api/v1/games/dev/member",
+      get_earning_list: "http://api.eth4.fun/api/v1/games/dev/earning",
+      pit_withdraw: "http://api.eth4.fun/api/v1/games/dev/withdraw"
+    }
+  },
   payload: {
     telegroup:'tg://resolve/?domain=ftc_shades',
     faq: 'http://litex.io',
@@ -24,7 +41,9 @@ export const INITIAL_STATE = Immutable({
       message:'ETH 4 FUN! \n shared from app',
       link: 'eth4.fun',
       title: 'share to friends and get bonus'
-    }
+    },
+    ws: 'http://eth4.fun:7001',
+    // ws: 'ws://echo.websocket.org',
   },
   error: null
 })

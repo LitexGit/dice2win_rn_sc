@@ -13,6 +13,10 @@ class Etheroll extends Component {
     }
   }
 
+  componentDidMount () {
+    this.props.loadEtheroll()
+  }
+
   render () {
     return (
       <React.Fragment>

@@ -113,7 +113,12 @@ export const loadTwoDice = (state) =>
       new BN('100000000000000000000000000000000000', 2)]
   })
 
-export const loadEtheroll = (state) => state.merge({betMask: 50, modulo: 100})
+export const loadEtheroll = (state) => state.merge({
+  betMask: 50, 
+  modulo: 100,
+  winRate: 0.5,
+  rewardTime: 1.93, 
+})
 
 export const clickCoin = (state) => {
   console.tron.log('bets', state.bets)

@@ -22,7 +22,6 @@ class SettingScreen extends Component {
 
   _switchValueChanged = (item, newValue) => {
     let newState = {[item.key]:newValue}
-    console.tron.log('new setting', newState)
     this.props.setSetting(newState)
   }
 

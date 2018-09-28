@@ -10,6 +10,7 @@ const { Types, Creators } = createActions({
 })
 
 export const RecordTypes = Types
+export const RecordTags = ['game', 'tx', 'bonus', 'global']
 export default Creators
 
 /* ------------- Initial State ------------- */
@@ -17,7 +18,12 @@ export default Creators
 export const INITIAL_STATE = Immutable({
   data: null,
   fetching: null,
-  payload: {sections:[]},
+  payload:{
+    game: {sections:[]},
+    tx: {sections:[]},
+    bonus: {sections:[]},
+    global: {items:[]},
+  },
   error: null
 })
 
@@ -31,11 +37,12 @@ export const RecordSelectors = {
 
 // request the data from an api
 export const request = (state, { data }) =>
-  state.merge({ fetching: true, data, payload: null })
+  state.merge({ fetching: true, data, payload:state.payload })
 
 // successful api lookup
 export const success = (state, action) => {
-  const { payload } = action
+  let { payload } = action
+  payload = {...state.payload, ...payload}
   return state.merge({ fetching: false, error: null, payload })
 }
 

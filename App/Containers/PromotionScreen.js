@@ -73,9 +73,8 @@ class PromotionScreen extends Component {
 }
 
 const mapStateToProps = (state) => {
-  console.tron.log('state', state)
   return {
-    sectionData: state.record.payload.sections,
+    sectionData: state.record.payload.bonus.sections,
     wallet: state.wallet.payload,
   }
 }
