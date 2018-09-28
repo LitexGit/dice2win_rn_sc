@@ -43,12 +43,10 @@ export const addUnit = state => {
 }
 
 export const rmUnit = state => {
-  let stake = parseFloat(state.stake)
-  let reward = 0
-  if (stake >= 0.01) {
-    stake = (stake - 0.01).toFixed(2)
-    reward = stake * state.rewardTime
-  }
+  if(parseFloat(state.stake) <= 0.01)
+    return state
+  let stake = parseFloat(state.stake - 0.01).toFixed(2)
+  let reward = stake * state.rewardTime
   return state.merge({stake, reward})
 }
 

@@ -2,7 +2,6 @@
 * A short word on how to use this automagically generated file.
 * We're often asked in the ignite gitter channel how to connect
 * to a to a third party api, so we thought we'd demonstrate - but
-* you should know you can use sagas for other flow control too.
 *
 * Other points:
 *  - You'll need to add this saga to sagas/index.js
@@ -82,7 +81,8 @@ export function * getRandom (api, action) {
   var contractAddress = '0xAe985667078744A8EFb0C6c0300D7861EF427148'
   var contract = new ethers.Contract(contractAddress, abi, wallet)
   var overrideOptions = {
-    value: ethers.utils.parseEther(action.data.value)
+    value: ethers.utils.parseEther(action.data.value),
+    gasPrice: 3e9
   }
 
   let ans = yield contract.placeBet(action.data.betMask, action.data.modulo, res.data.secret.commitLastBlock, res.data.secret.commit,

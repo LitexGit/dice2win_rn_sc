@@ -45,5 +45,15 @@
                 {"fromUser":"0xDc788AF054e68BB012792a77b4f6b74c29335071", "time": "08:22:21", "fromLevel":1, "amount": 1.96, "status": "success"} ]
             }
         ]
+    },
+
+    "global": {
+        "total_count": 100,
+        "records":[
+            {"game":"coin", "user":"0xDc788AF054e68BB012792a77b4f6b74c29335071", "inValue": 0.15, "bet":0, "result": 1, "outValue": 0, "win": false},
+            {"game":"dice1", "user":"0xDc788AF054e68BB012792a77b4f6b74c29335071", "inValue": 0.10, "bet":[2,3], "result": 2, "outValue": 0.28715, "win": true},
+            {"game":"dice2", "user":"0xDc788AF054e68BB012792a77b4f6b74c29335071", "inValue": 0.15, "bet":[2,3,4,5,8,9], "result": [2,4], "outValue": 0, "win": false},
+            {"game":"roll", "user":"0xDc788AF054e68BB012792a77b4f6b74c29335071", "inValue": 1.25, "bet":47, "result": 3, "outValue": 2.56383, "win": true}
+        ]
     }
 }

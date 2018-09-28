@@ -1,15 +1,17 @@
 import React, { Component } from 'react'
-import { View, StatusBar, SafeAreaView, Platform } from 'react-native'
+import { View, StatusBar, Platform } from 'react-native'
 import ReduxNavigation from '../Navigation/ReduxNavigation'
 import { connect } from 'react-redux'
 import StartupActions from '../Redux/StartupRedux'
 import NotificationActions from '../Redux/NotificationRedux'
 import ReduxPersist from '../Config/ReduxPersist'
 import JPushModule from 'jpush-react-native'
+import SocketIOClient from 'socket.io-client'
 
 // Styles
 import styles from './Styles/RootContainerStyles'
 
+global.socket = null
 class RootContainer extends Component {
   componentDidMount () {
     // if redux persist is not active fire startup action
@@ -39,8 +41,13 @@ class RootContainer extends Component {
     } else {
       JPushModule.setupPush()
     }
-
-
+    if(!socket){
+      socket = SocketIOClient(this.props.config.ws)
+        .on('connect', socketConnected)
+        .on('settle', socketMessage)
+        .on('error', socketError)
+        .on('disconnect', socketClosed)
+    }
   }
 
   render () {
@@ -53,10 +60,30 @@ class RootContainer extends Component {
   }
 }
 
+const socketConnected = () => {
+  console.tron.log('Socket OPEN')
+}
+
+const socketMessage = (msg) => {
+  console.tron.log('Socket MSG:', msg)
+}
+
+const socketError = (err) => {
+  console.tron.log('Socket ERROR:', err.message)
+}
+
+const socketClosed = (e) => {
+  console.tron.log('Socket CLOSE', e)
+}
+
 // wraps dispatch to create nicer functions to call within our component
+const mapStateToProps = (state) => ({
+  config: state.config.payload
+})
+
 const mapDispatchToProps = (dispatch) => ({
   startup: () => dispatch(StartupActions.startup()),
   setNotification: (message) => dispatch(NotificationActions.notificationSuccess({message: message}))
 })
 
-export default connect(null, mapDispatchToProps)(RootContainer)
+export default connect(mapStateToProps, mapDispatchToProps)(RootContainer)

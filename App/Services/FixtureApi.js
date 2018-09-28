@@ -34,7 +34,7 @@ export default {
     const recordData = require('../Fixtures/records.json')[type]
     return {
       ok: true,
-      data: recordData
+      data: {[type]:recordData}
     }
   },
 

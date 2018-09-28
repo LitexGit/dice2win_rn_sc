@@ -4,7 +4,7 @@ import FA5 from 'react-native-vector-icons/FontAwesome5'
 import ScrollableTabView, { ScrollableTabBar, } from 'react-native-scrollable-tab-view'
 import Toast from 'react-native-root-toast'
 
-import RecordActions from '../Redux/RecordRedux'
+import RecordActions, {RecordTags} from '../Redux/RecordRedux'
 import { connect } from 'react-redux'
 // Add Actions - replace 'Your' with whatever your reducer is called :)
 // import YourActions from '../Redux/YourRedux'
@@ -12,6 +12,7 @@ import { connect } from 'react-redux'
 // Styles
 import { Colors, Images, Metrics } from '../Themes'
 import styles from './Styles/RecordScreenStyle'
+
 
 class RecordScreen extends Component {
   static navigationOptions = {
@@ -73,19 +74,19 @@ class RecordScreen extends Component {
           tabBarUnderlineStyle={styles.tabBarUnderlineStyle}
           renderTabBar={() => <ScrollableTabBar style={{borderBottomWidth: 0}}/>}
           onChangeTab={({i, ref}) => {
-            this.props.loadRecords(i === 1 ? 'tx' : 'game')
+            this.props.loadRecords(RecordTags[i])
           }}>
           <View tabLabel='Game History' style={styles.container}>
             {/* Game Section */}
             <SectionList
-              sections={this.props.sectionData}
+              sections={this.props.gameSections}
               renderSectionHeader={this._renderSectionHeader}
               renderItem={this._renderGameItem}/>
           </View>
           <View tabLabel='Transactions' style={styles.container}>
             {/* Tx Section */}
             <SectionList
-              sections={this.props.sectionData}
+              sections={this.props.txSections.sections}
               renderSectionHeader={this._renderSectionHeader}
               renderItem={this._renderTxItem}/>
           </View>
@@ -97,7 +98,8 @@ class RecordScreen extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    sectionData: state.record.payload.sections,
+    gameSections: state.record.payload.game.sections,
+    txSections: state.record.payload.tx,
   }
 }
 

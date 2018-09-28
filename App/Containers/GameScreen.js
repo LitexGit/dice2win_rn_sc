@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Image, Text, View, FlatList, TouchableOpacity } from 'react-native'
+import { Image, Text, View, FlatList, TouchableOpacity, TouchableWithoutFeedback } from 'react-native'
 import { Images } from '../Themes'
 import FA5 from 'react-native-vector-icons/FontAwesome5'
 import Swiper from 'react-native-swiper'
@@ -16,12 +16,6 @@ import { Metrics } from '../Themes'
 import styles from './Styles/GameScreenStyle'
 import NavigationActions from 'react-navigation/src/NavigationActions'
 
-const Slide = props => {
-  return (
-    <View style={styles.slide}>
-      <Image style={styles.image} source={{uri: props.uri}}/>
-    </View>)
-}
 
 const entryData = [
   {img: Images.coin, title: 'Coin Flip', desc: 'Fifty-fifty Winning bet pays 1.98×', key: 0},
@@ -43,6 +37,16 @@ class GameScreen extends Component {
     this.props.loadBanners('game')
   }
 
+  Slide = (item) => {
+    console.tron.log('SLIDE', item)
+    return (
+      <TouchableWithoutFeedback onPress={_=>{
+        this.props.navigate('WebviewScreen', {url:item.img_href, title:item.title})
+      }} style={styles.slide} >
+        <Image style={styles.image} source={item.img_url}/>
+      </TouchableWithoutFeedback>)
+  }
+
   Entry = ({item}) => {
     // console.log('Entry this:', this)
     return (
@@ -50,7 +54,7 @@ class GameScreen extends Component {
         this.props.setGameKey(item.key)
         switch (item.key) {
           case 0:
-            this.props.loadOneDice()
+            this.props.loadCoin()
             break
           case 1:
             this.props.loadOneDice()
@@ -80,13 +84,7 @@ class GameScreen extends Component {
       <View style={styles.container}>
         <View style={styles.swiper}>
           <Swiper autoplay={true} showsPagination={false}>
-            {
-              this.props.banners && this.props.banners.items.map((item, i) => <Slide
-                loaded={true}
-                uri={item.img}
-                i={i}
-                key={i}/>)
-            }
+            { this.props.banners && this.props.banners.items.map((item, i) => this.Slide(item)) }
           </Swiper>
         </View>
         <FlatList
@@ -110,7 +108,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     loadBanners: (type) => dispatch(ActivityActions.activityRequest({type: type})),
     setGameKey: (key) => dispatch(GameActions.setGameKey(key)),
-    navigate: (target) => dispatch(NavigationActions.navigate({routeName: target})),
+    navigate: (target, params) => dispatch(NavigationActions.navigate({routeName: target, params: params})),
     loadCoin: () => dispatch(BetActions.loadCoin()),
     loadOneDice: () => dispatch(BetActions.loadOneDice()),
     loadTwoDice: () => dispatch(BetActions.loadTwoDice()),

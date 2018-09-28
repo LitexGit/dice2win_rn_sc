@@ -102,4 +102,33 @@ export default StyleSheet.create({
     padding: 3,
   },
 
+  recordList: {
+    height: 200,
+  },
+
+  recordItem: {
+    flex:1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent:'space-between',
+  },
+  userColWrapper: {
+    width: 70,
+  },
+  userColText: {
+    color: Colors.facebook,
+  },
+  valueWrapper: {
+    flexDirection: 'row'
+  },
+  inValue:{
+    fontSize: 24,
+    color: Colors.casinoGreen
+  },
+  outValue:{
+    fontSize: 24,
+    color: Colors.activeTint
+  },
+
+
 })
