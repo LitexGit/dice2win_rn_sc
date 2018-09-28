@@ -20,7 +20,7 @@ import { startup } from './StartupSagas'
 import { getUserAvatar } from './GithubSagas'
 import { getActivity } from './ActivitySagas'
 import { getRecord } from './RecordSagas'
-import { getWallet } from './WalletSagas'
+import { getWallet, newWallet, importWallet, encryptWallet, importEncryptWallet, transfer, getRandom } from './WalletSagas'
 import { getConfig } from './ConfigSagas'
 import { getSetting } from './SettingSagas'
 import { getNotification } from './NotificationSagas'
@@ -56,7 +56,18 @@ export default function * root () {
     // get setting info
     takeLatest(SettingTypes.SETTING_REQUEST, getSetting, api),
 
-    // get setting info
-    // takeLatest(NotificationTypes.NOTIFICATION_REQUEST, getNotification),
+    // new a wallet
+    takeLatest(WalletTypes.NEW_WALLET, newWallet, api),
+
+    takeLatest(WalletTypes.IMPORT_WALLET, importWallet, api),
+
+    takeLatest(WalletTypes.ENCRYPT_WALLET, encryptWallet, api),
+
+    takeLatest(WalletTypes.IMPORT_ENCRYPT_WALLET, importEncryptWallet, api),
+
+    takeLatest(WalletTypes.TRANSFER, transfer, api),
+
+    takeLatest(WalletTypes.GET_RANDOM, getRandom, api)
+
   ])
 }

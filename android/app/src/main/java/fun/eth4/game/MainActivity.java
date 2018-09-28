@@ -241,7 +241,7 @@ public class MainActivity extends ReactActivity {
                      */
                     @Override
                     public void onBefore() {
-                        CProgressDialogUtils.showProgressDialog(MainActivity.this);
+//                        CProgressDialogUtils.showProgressDialog(MainActivity.this);
                     }
 
                     /**
@@ -249,7 +249,7 @@ public class MainActivity extends ReactActivity {
                      */
                     @Override
                     public void onAfter() {
-                        CProgressDialogUtils.cancelProgressDialog(MainActivity.this);
+//                        CProgressDialogUtils.cancelProgressDialog(MainActivity.this);
                     }
 
                     /**

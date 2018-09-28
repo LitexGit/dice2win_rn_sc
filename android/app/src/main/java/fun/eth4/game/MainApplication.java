@@ -3,6 +3,8 @@ package fun.eth4.game;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.crypho.scrypt.RNScryptPackage;
+import com.tectiv3.aes.RCTAesPackage;
 import com.horcrux.svg.SvgPackage;
 import com.lugg.ReactNativeConfig.ReactNativeConfigPackage;
 import com.i18n.reactnativei18n.ReactNativeI18n;
@@ -32,6 +34,8 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNScryptPackage(),
+            new RCTAesPackage(),
             new JPushPackage(SHUTDOWN_TOAST, SHUTDOWN_LOG),
       new SvgPackage(),
             new ReactNativeConfigPackage(),

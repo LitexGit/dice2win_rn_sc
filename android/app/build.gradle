@@ -145,6 +145,8 @@ dependencies {
     compile 'com.qianwen:update-app:3.5.2'
     compile 'com.lzy.net:okgo:3.0.4'
     compile 'com.qianwen:okhttp-utils:3.8.0'
+    compile project(':react-native-scrypt')
+    compile project(':react-native-aes-crypto')
     compile project(':jcore-react-native')
     compile project(':jpush-react-native')
     compile project(':react-native-svg')

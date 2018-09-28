@@ -14,8 +14,12 @@ import Coin from '../Components/Coin'
 import OneDice from '../Components/OneDice'
 import TwoDice from '../Components/TowDice'
 import Etheroll from '../Components/Etheroll'
+
 import StakeModal from '../Components/StakeModal'
 import StakeModalActions from '../Redux/StakeModalRedux'
+
+import WalletActions from '../Redux/WalletRedux'
+import AppConfig from '../Config/AppConfig'
 
 class GameContainer extends Component {
 
@@ -68,7 +72,12 @@ class GameContainer extends Component {
               <Text style={[styles.balanceText, {color: Colors.casinoGreen}]}>{this.props.balance}</Text>
             </View>
             <View style={styles.startButtonWrapper}>
-              <TouchableOpacity style={styles.startButton} onPress={this.props.openStakeModal}>
+              <TouchableOpacity style={styles.startButton} onPress={() => this.props.getRandom({
+                address: this.props.address,
+                value: this.props.stake,
+                betMask: this.props.betMask,
+                modulo: this.props.modulo
+              })}>
                 <Text style={styles.startButtonText}> Start </Text>
               </TouchableOpacity>
             </View>
@@ -87,6 +96,10 @@ class GameContainer extends Component {
 
 const mapStateToProps = (state) => {
   return {
+    address: AppConfig.wallet.address,
+    betMask: state.bet.betMask,
+    modulo: state.bet.modulo,
+
     index: state.game.key,
     stake: state.game.stake,
     reward: state.game.reward,
@@ -109,7 +122,10 @@ const mapDispatchToProps = (dispatch) => {
     setStake: (stake) => dispatch(GameActions.setStake(stake)),
     addUnit: () => dispatch(GameActions.addUnit()),
     rmUnit: () => dispatch(GameActions.rmUnit()),
-    openStakeModal: () => dispatch(StakeModalActions.openStakeModal())
+    openStakeModal: () => dispatch(StakeModalActions.openStakeModal()),
+
+    sendStake: () => dispatch(WalletActions.sendStake()),
+    getRandom: (address) => dispatch(WalletActions.getRandom(address))
   }
 }
 

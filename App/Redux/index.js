@@ -15,6 +15,8 @@ export const reducers = combineReducers({
   game: require('./GameRedux').reducer,
   bet: require('./BetRedux').reducer,
   stakeModal: require('./StakeModalRedux').reducer,
+  newPwdModal: require('./NewPwdModalRedux').reducer,
+  pwdModal: require('./PwdModalRedux').reducer,
   config: require('./ConfigRedux').reducer,
   setting: require('./SettingRedux').reducer,
   notification: require('./NotificationRedux').reducer,
