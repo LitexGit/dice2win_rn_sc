@@ -6,14 +6,14 @@ import { connect } from 'react-redux'
 import WalletActions from '../Redux/WalletRedux'
 
 // Styles
-import styles from './Styles/NewWalletStyle'
+import styles from './Styles/NewWalletScreenStyle'
 import NewPwdModal from '../Components/NewPwdModal'
 import Colors from '../Themes/Colors'
 import NavigationActions from 'react-navigation/src/NavigationActions'
 
 // var ethers = require('../Lib/ethers')
 
-class NewWallet extends Component {
+class NewWalletScreen extends Component {
   // constructor (props) {
   //   super(props)
   //   this.state = {}
@@ -29,7 +29,7 @@ class NewWallet extends Component {
           marginTop: 20,
           fontSize: 16,
           color: Colors.text}}>NewWallet Container</Text>
-        <TouchableOpacity onPress={_ => this.props.navigate('PreBackup')}>
+        <TouchableOpacity onPress={_ => this.props.navigate('PreBackupScreen')}>
           <Text style={{
             marginTop: 20,
             fontSize: 16,
@@ -52,4 +52,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(NewWallet)
+export default connect(mapStateToProps, mapDispatchToProps)(NewWalletScreen)

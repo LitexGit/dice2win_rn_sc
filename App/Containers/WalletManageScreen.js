@@ -16,24 +16,13 @@ class WalletManageScreen extends Component {
       <ScrollView style={styles.container}>
         <View style={{marginTop: 22, flex: 3}}>
 
-          <TouchableOpacity onPress={_ => {
-            this.props.openNewPwdModal()
-            this.props.navigate('NewWallet')
-          }}>
-            <Text style={{
-              marginTop: 20,
-              fontSize: 16,
-              color: Colors.text,
-            }}> 新建钱包 </Text>
+          <TouchableOpacity style={styles.buttonWrapper} onPress={_ => this.props.navigate('NewWalletScreen')}>
+            <Text style={styles.buttonText}> New Wallet </Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={_ => this.props.navigate('ImportWallet')}>
-            <Text style={{
-              marginTop: 20,
-              fontSize: 16,
-              color: Colors.text,
-            }}> 导入钱包 </Text>
+          <TouchableOpacity style={styles.buttonWrapper} onPress={_ => this.props.navigate('ImportWalletScreen')}>
+            <Text style={styles.buttonText}> Import Wallet </Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={_ => this.props.navigate('Transfer')}>
+          <TouchableOpacity onPress={_ => this.props.navigate('TransferScreen')}>
             <Text style={{
               marginTop: 20,
               fontSize: 16,

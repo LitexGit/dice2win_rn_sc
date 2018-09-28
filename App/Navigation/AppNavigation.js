@@ -1,10 +1,10 @@
 import { StackNavigator, TabNavigator } from 'react-navigation'
-import Transfer from '../Containers/Transfer'
-import Backup from '../Containers/Backup'
-import PreBackup from '../Containers/PreBackup'
-import NewWallet from '../Containers/NewWallet'
-import ImportWallet from '../Containers/ImportWallet'
-import GameContainer from '../Containers/GameContainer'
+import TransferScreen from '../Containers/TransferScreen'
+import BackupScreen from '../Containers/BackupScreen'
+import PreBackupScreen  from '../Containers/PreBackupScreen'
+import NewWalletScreen  from '../Containers/NewWalletScreen'
+import ImportWalletScreen  from '../Containers/ImportWalletScreen'
+import GameContainerScreen  from '../Containers/GameContainerScreen'
 import WebviewScreen from '../Containers/WebviewScreen'
 import PromotionScreen from '../Containers/PromotionScreen'
 import WalletManageScreen from '../Containers/WalletManageScreen'
@@ -25,7 +25,6 @@ const BottomTabNav = TabNavigator({
   tabBarPosition: 'bottom',
   animationEnabled: true,
   tabBarOptions: {
-    // activeTintColor: '#e91e63'
     activeTintColor: Colors.activeTint,
     inactiveTintColor: Colors.inActiveTint,
     tabStyle: styles.tab,
@@ -38,12 +37,12 @@ const BottomTabNav = TabNavigator({
 
 // Manifest of possible screens
 const PrimaryNav = StackNavigator({
-  Transfer: { screen: Transfer },
-  Backup: { screen: Backup },
-  PreBackup: { screen: PreBackup },
-  NewWallet: { screen: NewWallet },
-  ImportWallet: { screen: ImportWallet },
-  GameContainer: {screen: GameContainer},
+  TransferScreen: { screen: TransferScreen },
+  BackupScreen: { screen: BackupScreen },
+  PreBackupScreen: { screen: PreBackupScreen },
+  NewWalletScreen: { screen: NewWalletScreen },
+  ImportWalletScreen: { screen: ImportWalletScreen },
+  GameContainerScreen: {screen: GameContainerScreen},
   WebviewScreen: {screen: WebviewScreen},
   PromotionScreen: {screen: PromotionScreen},
   WalletManageScreen: {screen: WalletManageScreen},

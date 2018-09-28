@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 // import YourActions from '../Redux/YourRedux'
 
 // Styles
-import styles from './Styles/BackupStyle'
+import styles from './Styles/BackupScreenStyle'
 import NavigationActions from 'react-navigation/src/NavigationActions'
 import Colors from '../Themes/Colors'
 import AppConfig from '../Config/AppConfig'
@@ -17,7 +17,7 @@ Array.prototype.remove = function (val) {
   }
 }
 
-class Backup extends Component {
+class BackupScreen extends Component {
   constructor (props) {
     super(props)
     this.state = {
@@ -143,4 +143,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Backup)
+export default connect(mapStateToProps, mapDispatchToProps)(BackupScreen)

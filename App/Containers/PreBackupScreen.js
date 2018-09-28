@@ -5,12 +5,12 @@ import { connect } from 'react-redux'
 // import YourActions from '../Redux/YourRedux'
 
 // Styles
-import styles from './Styles/PreBackupStyle'
+import styles from './Styles/PreBackupScreenStyle'
 import NavigationActions from 'react-navigation/src/NavigationActions'
 import Colors from '../Themes/Colors'
 import AppConfig from '../Config/AppConfig'
 
-class PreBackup extends Component {
+class PreBackupScreen extends Component {
   // constructor (props) {
   //   super(props)
   //   this.state = {}
@@ -39,7 +39,7 @@ class PreBackup extends Component {
           color: Colors.text,
         }}>{this.state.mnemonic}</Text>
         <TouchableOpacity style={{marginTop: 20}}
-                          onPress={() => this.props.navigate('Backup')}>
+                          onPress={() => this.props.navigate('BackupScreen')}>
           <Text style={{
             marginTop: 20,
             fontSize: 16,
@@ -61,4 +61,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(PreBackup)
+export default connect(mapStateToProps, mapDispatchToProps)(PreBackupScreen)

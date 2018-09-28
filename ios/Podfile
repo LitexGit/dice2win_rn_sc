@@ -23,7 +23,6 @@ target 'Dice2Win' do
 
 
 
-  pod 'react-native-aes', :path => '../node_modules/react-native-aes-crypto'
 
   target 'Dice2WinTests' do
     inherit! :search_paths

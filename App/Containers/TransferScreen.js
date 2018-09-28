@@ -5,11 +5,11 @@ import { connect } from 'react-redux'
 // import YourActions from '../Redux/YourRedux'
 
 // Styles
-import styles from './Styles/TransferStyle'
+import styles from './Styles/TransferScreenStyle'
 import WalletActions from '../Redux/WalletRedux'
 import AppConfig from '../Config/AppConfig'
 
-class Transfer extends Component {
+class TransferScreen extends Component {
   state = {
     to: '0x486c14c72bd37ead125c37d9d624118946d18a36',
     value: '0.0001'
@@ -59,4 +59,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Transfer)
+export default connect(mapStateToProps, mapDispatchToProps)(TransferScreen)

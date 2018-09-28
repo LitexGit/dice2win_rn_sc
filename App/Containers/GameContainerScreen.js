@@ -17,7 +17,7 @@ import Etheroll from '../Components/Etheroll'
 
 import StakeModal from '../Components/StakeModal'
 
-import styles from './Styles/GameContainerStyle'
+import styles from './Styles/GameContainerScreenStyle'
 
 const GAME_COMS = [<Coin />, <OneDice />, <TwoDice />, <Etheroll />]
 const GAME_TAGS = ['coin', 'dice1', 'dice2', 'roll']
@@ -40,7 +40,7 @@ const Result = ({game, result}) => <View style={styles.betContentWrapper}>
 import WalletActions from '../Redux/WalletRedux'
 import AppConfig from '../Config/AppConfig'
 
-class GameContainer extends Component {
+class GameContainerScreen extends Component {
 
   _renderAvatar = (canvas, {user}) => {
     // Blockies.render({ seed: user, size: 8, scale: 3, }, canvas)
@@ -83,7 +83,7 @@ class GameContainer extends Component {
   render () {
     return (
       <ScrollView style={styles.container}>
-        <View style={styles.gameContainer}>
+        <View style={styles.GameContainerScreen}>
           <View style={styles.gameConetent}>
 
             {GAME_COMS[this.props.index]}
@@ -136,10 +136,10 @@ class GameContainer extends Component {
           <StakeModal />
         </View>
 
-        <FlatList 
+        {/* <FlatList 
           style={styles.recordList}
           data={this.props.records.filter(r=>r.game===GAME_TAGS[this.props.index])}
-          renderItem={this._renderItem.bind(this)} />
+          renderItem={this._renderItem.bind(this)} /> */}
       </ScrollView>
     )
   }
@@ -181,4 +181,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(GameContainer)
+export default connect(mapStateToProps, mapDispatchToProps)(GameContainerScreen)

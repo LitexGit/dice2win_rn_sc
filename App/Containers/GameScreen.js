@@ -66,7 +66,7 @@ class GameScreen extends Component {
             this.props.loadEtheroll()
             break
         }
-        this.props.navigate('GameContainer')
+        this.props.navigate('GameContainerScreen')
       }}>
         <View style={styles.entryLeft}>
           <Image source={item.img} resizeMode={'contain'} style={styles.entryImage}/>

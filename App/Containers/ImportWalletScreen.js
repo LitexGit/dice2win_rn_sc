@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 // import YourActions from '../Redux/YourRedux'
 
 // Styles
-import styles from './Styles/ImportWalletStyle'
+import styles from './Styles/ImportWalletScreenStyle'
 import WalletActions from '../Redux/WalletRedux'
 import NavigationActions from 'react-navigation/src/NavigationActions'
 import Colors from '../Themes/Colors'
@@ -17,7 +17,7 @@ import PwdModalActions from '../Redux/PwdModalRedux'
 
 let ethers = require('ethers')
 
-class ImportWallet extends Component {
+class ImportWalletScreen extends Component {
   constructor (props) {
     super(props)
     this.state = {
@@ -137,4 +137,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ImportWallet)
+export default connect(mapStateToProps, mapDispatchToProps)(ImportWalletScreen)
