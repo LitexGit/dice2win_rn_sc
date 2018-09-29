@@ -5,7 +5,7 @@
 //const CryptoJS = require('crypto-js')
 const ethers = require('ethers')
 import RNFS from 'react-native-fs';
-import {Wallet} from 'ethers'
+import {Wallet, providers} from 'ethers'
 
 module.exports = {
   // 初始化 余额
@@ -78,13 +78,12 @@ module.exports = {
    *
    * @param wallet [ETH 钱包对象]
    */
-  getBalance (wallet) {
-    var balancePromise = wallet.getBalance()
-
-    balancePromise.then((balanceRaw) => {
-      var balance = parseInt(balanceRaw) / 1e18
-      return balance
-    }).catch(arg => alert('获取余额失败！原因是' + arg))
+  getBalance: async (wallet) => {
+    var balance = 0
+    wallet.provider = providers.getDefaultProvider(W.network)
+    var balanceRaw = await wallet.getBalance()
+    var balance = parseInt(balanceRaw) / 1e18
+    return balance
   },
 
   /**

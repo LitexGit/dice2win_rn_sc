@@ -119,22 +119,14 @@ export function * sendStake (api, action) {
   // let res = yield contract.placeBet(action.data.betMask, action.data.modulo, action.data.commitLastBlock, action.data.commit, this.state.r, this.state.s, overrideOptions)
 }
 
-export function * getWallet (api, action) {
-  const {data} = action
-  // get current data from Store
-  // const currentData = yield select(WalletSelectors.getData)
-  // make the call to the api
-  const response = yield call(api.getWallet, data)
+export function* getWallet(api, action) {
+  const { data } = action
+  try {
+    const balance = yield call(walletLib.getBalance, W.wallet)
+    console.tron.log('getWallet', balance)
+    yield put(WalletActions.walletSuccess({ address: W.wallet.address, balance: balance }))
 
-  // success?
-  if (response.ok) {
-    // You might need to change the response here - do this with a 'transform',
-    // located in ../Transforms/. Otherwise, just pass the data back from the api.
-    console.tron.log('getWallet', response.data)
-    response.data.address = W.wallet.address
-
-    yield put(WalletActions.walletSuccess(response.data))
-  } else {
+  } catch (err) {
     yield put(WalletActions.walletFailure())
   }
 }

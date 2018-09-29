@@ -95,6 +95,7 @@ class WalletScreen extends Component {
 
   render () {
     let {wallet} = this.props
+    console.tron.log('walletScreen', this.props)
     return (
       <ScrollView style={styles.container} refreshControl={<RefreshControl
         refreshing={this.props.fetching}

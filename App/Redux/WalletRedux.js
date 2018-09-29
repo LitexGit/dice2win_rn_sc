@@ -35,7 +35,7 @@ export const INITIAL_STATE = Immutable({
   },
   data: null,
   fetching: null,
-  payload: {address: ''},
+  payload: {address: '', balance: ''},
   error: null
 })
 
@@ -61,7 +61,7 @@ export const setKeystore = (state, {keystore}) =>
 
 // request the data from an api
 export const request = (state, {data}) =>
-  state.merge({fetching: true, data, payload: null})
+  state.merge({fetching: true, data })
 
 // successful api lookup
 export const success = (state, action) => {
