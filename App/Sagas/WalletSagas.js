@@ -37,26 +37,23 @@ export function * initWallet (api, action) {
   yield socket.emit('lottery', W.wallet.address)
   //yield call(delay, 1000)
   // yield delay(5000)
-
-
-
-
 }
 // 从助记词导入钱包
 export function * importWallet (api, action) {
-
-  const wallet = yield call(ethers.Wallet.fromMnemonic, action.mnemonic.mnemonic)
-  AppConfig.wallet = wallet
+    yield call(walletLib.importMnemonic, action.data.pwd)
 }
 
 // 从keystore导入钱包
 export function * importEncryptWallet (api, action) {
   console.log('wallet importEncryptWallet', action)
-  var json = JSON.stringify(action.data.keystore)
+  var keystore = action.data.keystore
   var pwd = action.data.pwd
-  let wallet = yield call(ethers.Wallet.RNfromEncryptedWallet, json, pwd)
-  AppConfig.wallet = wallet
+  yield call(walletLib.importKeyStore, keystore, pwd)
 }
+
+
+
+
 
 export function * encryptWallet (api, action) {
   const wallet = AppConfig.wallet
@@ -64,15 +61,20 @@ export function * encryptWallet (api, action) {
   yield put(WalletActions.setKeystore(keystore))
 }
 
+
+
+
+
 export function * transfer (api, action) {
-  const wallet = AppConfig.wallet
-  let amount = ethers.utils.parseEther(action.data.value)
-  var provider = ethers.providers.getDefaultProvider(AppConfig.network)
-  wallet.provider = provider
-  let txHash = yield wallet.send(action.data.to, amount)
+
+  let txHash = yield call(walletLib.sendTx, W.wallet, action.data.to, action.data.value, action.data.options);
+
   console.tron.log('setTx', txHash)
   yield put(WalletActions.setTx(txHash))
 }
+
+
+
 
 export function * getBlance (api, action) {
   const balance = yield call(walletLib.getBalance, W.wallet)
