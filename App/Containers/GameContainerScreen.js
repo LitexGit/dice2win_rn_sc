@@ -23,29 +23,28 @@ import styles from './Styles/GameContainerScreenStyle'
 const GAME_COMS = [<Coin />, <OneDice />, <TwoDice />, <Etheroll />]
 const GAME_TAGS = ['coin', 'dice1', 'dice2', 'roll']
 
-const Bet = ({game, bet}) => <View style={styles.betContentWrapper}>  
+const Bet = ({game, bet}) => <View style={styles.betContentWrapper}>
   { game === 'coin' && <Image style={styles.betIcon} source={bet?Images.coinPosLight:Images.coinNegLight} />}
   { game === 'dice1' && <Text style={styles.betText}>{bet}</Text> }
   { game === 'dice2' && <Text style={styles.betText}>{bet.map(b=>b+',')}</Text> }
   { game === 'roll' && <Text style={styles.betText}>{'≤' + bet}</Text>}
-</View> 
+</View>
 
 const Result = ({game, result}) => <View style={styles.betContentWrapper}>
   { game === 'coin' && <Image style={styles.resultIcon} source={result?Images.coinPosLight:Images.coinNegLight} /> }
   { game === 'dice1' && <Text style={styles.resultText}>{result}</Text> }
   { game === 'dice2' && <Text style={styles.resultText}>{result.map(r=>r+',')}</Text> }
   { game === 'roll' && <Text style={styles.resultText}>{result}</Text> }
-</View> 
+</View>
 
 
 import WalletActions from '../Redux/WalletRedux'
-import AppConfig from '../Config/AppConfig'
 
 class GameContainerScreen extends Component {
 
   _renderAvatar = (canvas, {user}) => {
     // Blockies.render({ seed: user, size: 8, scale: 3, }, canvas)
-    if(canvas != null) 
+    if(canvas != null)
     {
       console.log('canvas: ', canvas)
       Blockies.render(canvas)
@@ -54,7 +53,7 @@ class GameContainerScreen extends Component {
 
   _renderItem = ({item}) => {
     console.tron.log("Record Item", item)
-    if(!item) 
+    if(!item)
       return null
     return <TouchableOpacity style={styles.recordItem} onPress={_ => this._itemPressed(item)}>
     <View style={styles.recordItemTop}>
@@ -84,6 +83,7 @@ class GameContainerScreen extends Component {
 
   componentDidMount(){
     this.props.loadRecords('global')
+    this.props.loadWallet()
   }
 
   render () {
@@ -138,7 +138,7 @@ class GameContainerScreen extends Component {
           <ResultModal />
         </View>
 
-        {/* <FlatList 
+        {/* <FlatList
           style={styles.recordList}
           data={this.props.records.filter(r=>r.game===GAME_TAGS[this.props.index])}
           renderItem={this._renderItem.bind(this)} /> */}
@@ -181,6 +181,7 @@ const mapDispatchToProps = (dispatch) => {
     updateStatus: (status) => dispatch(GameActions.updateStatus(status)),
 
     sendStake: () => dispatch(WalletActions.sendStake()),
+    loadWallet: () => dispatch(WalletActions.walletRequest()),
     getRandom: (address) => dispatch(WalletActions.getRandom(address)),
     loadRecords: (type) => dispatch(RecordActions.recordRequest({type}))
   }

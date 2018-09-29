@@ -58,14 +58,12 @@ export function * importEncryptWallet (api, action) {
   AppConfig.wallet = wallet
 }
 
-// 输入密码加密钱包出keystore存下
 export function * encryptWallet (api, action) {
   const wallet = AppConfig.wallet
   const keystore = yield wallet.RNencrypt(action.data.pwd)
   yield put(WalletActions.setKeystore(keystore))
 }
 
-// 输入密码加密钱包出keystore存下
 export function * transfer (api, action) {
   const wallet = AppConfig.wallet
   let amount = ethers.utils.parseEther(action.data.value)
@@ -77,10 +75,7 @@ export function * transfer (api, action) {
 }
 
 export function * getBlance (api, action) {
-  const wallet = AppConfig.wallet
-  wallet.provider = ethers.providers.getDefaultProvider(AppConfig.network)
-  var balanceRaw = yield wallet.getBalance()
-  let balance = parseInt(balanceRaw) / 1e18
+  const balance = yield call(walletLib.getBalance, W.wallet)
   yield put(WalletActions.setBalance(balance))
 }
 
@@ -105,18 +100,6 @@ export function * getRandom (api, action) {
   let ans = yield contract.placeBet(action.data.betMask, action.data.modulo, res.data.secret.commitLastBlock, res.data.secret.commit,
     res.data.secret.signature.r, res.data.secret.signature.s, overrideOptions)
   console.tron.log('ans', ans)
-}
-
-export function * sendStake (api, action) {
-  // const wallet = AppConfig.wallet
-  // wallet.provider = ethers.providers.getDefaultProvider(AppConfig.network)
-  //
-  // var contractAddress = '0xAe985667078744A8EFb0C6c0300D7861EF427148'
-  // var contract = new ethers.Contract(contractAddress, abi, wallet)
-  // var overrideOptions = {
-  //   value: ethers.utils.parseEther(action.data.value)
-  // }
-  // let res = yield contract.placeBet(action.data.betMask, action.data.modulo, action.data.commitLastBlock, action.data.commit, this.state.r, this.state.s, overrideOptions)
 }
 
 export function* getWallet(api, action) {
