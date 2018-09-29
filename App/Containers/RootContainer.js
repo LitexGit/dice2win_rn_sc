@@ -12,6 +12,8 @@ import SocketIOClient from 'socket.io-client'
 import styles from './Styles/RootContainerStyles'
 
 global.socket = null
+global.W = null
+
 class RootContainer extends Component {
   componentDidMount () {
     // if redux persist is not active fire startup action
@@ -41,13 +43,7 @@ class RootContainer extends Component {
     } else {
       JPushModule.setupPush()
     }
-    if(!socket){
-      socket = SocketIOClient(this.props.config.ws)
-        .on('connect', socketConnected)
-        .on('settle', socketMessage)
-        .on('error', socketError)
-        .on('disconnect', socketClosed)
-    }
+    initSocket(this.props.config.ws)
   }
 
   render () {
@@ -57,6 +53,22 @@ class RootContainer extends Component {
           <ReduxNavigation />
       </View>
     )
+  }
+}
+
+const initWallet = () => {
+  if(!W){
+    
+  }
+}
+
+const initSocket = (address) => {
+  if(!socket){
+    socket = SocketIOClient(address)
+      .on('connect', socketConnected)
+      .on('settle', socketMessage)
+      .on('error', socketError)
+      .on('disconnect', socketClosed)
   }
 }
 

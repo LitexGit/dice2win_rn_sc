@@ -23,7 +23,7 @@ const BottomTabNav = TabNavigator({
   Wallet: {screen: WalletScreen}
 }, {
   tabBarPosition: 'bottom',
-  animationEnabled: true,
+  animationEnabled: false,
   tabBarOptions: {
     activeTintColor: Colors.activeTint,
     inactiveTintColor: Colors.inActiveTint,

@@ -25,11 +25,8 @@ class NewWalletScreen extends Component {
   render () {
     return (
       <ScrollView style={styles.container}>
-        <Text style={{
-          marginTop: 20,
-          fontSize: 16,
-          color: Colors.text}}>NewWallet Container</Text>
-        <TouchableOpacity onPress={_ => this.props.navigate('PreBackupScreen')}>
+        <Text style={{ marginTop: 20, fontSize: 16,
+          color: Colors.text}}>NewWallet Container</Text> <TouchableOpacity onPress={_ => this.props.navigate('PreBackupScreen')}>
           <Text style={{
             marginTop: 20,
             fontSize: 16,

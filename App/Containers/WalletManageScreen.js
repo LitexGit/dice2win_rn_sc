@@ -13,24 +13,20 @@ import NewPwdModalActions from '../Redux/NewPwdModalRedux'
 class WalletManageScreen extends Component {
   render () {
     return (
-      <ScrollView style={styles.container}>
-        <View style={{marginTop: 22, flex: 3}}>
-
-          <TouchableOpacity style={styles.buttonWrapper} onPress={_ => this.props.navigate('NewWalletScreen')}>
-            <Text style={styles.buttonText}> New Wallet </Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.buttonWrapper} onPress={_ => this.props.navigate('ImportWalletScreen')}>
-            <Text style={styles.buttonText}> Import Wallet </Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={_ => this.props.navigate('TransferScreen')}>
-            <Text style={{
-              marginTop: 20,
-              fontSize: 16,
-              color: Colors.text,
-            }}> 转账 </Text>
-          </TouchableOpacity>
-        </View>
-      </ScrollView>
+      <View style={styles.container}>
+        <TouchableOpacity style={styles.buttonWrapper} onPress={_ => this.props.navigate('NewWalletScreen')}>
+          <Text style={styles.buttonText}> New Wallet </Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.buttonWrapper} onPress={_ => this.props.navigate('ImportWalletScreen')}>
+          <Text style={styles.buttonText}> Import Wallet </Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.buttonWrapper} onPress={_ => this.props.navigate('PreBackupScreen')}>
+          <Text style={styles.buttonText}> Backup Wallet </Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.buttonWrapper} onPress={_ => this.props.navigate('TransferScreen')}>
+          <Text style={styles.buttonText}> Transfer </Text>
+        </TouchableOpacity>
+      </View>
     )
   }
 }
