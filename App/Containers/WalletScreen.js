@@ -129,7 +129,7 @@ class WalletScreen extends Component {
               <Text style={styles.bonusDetailText}><Entypo name={'chevron-thin-right'} size={28} color={Colors.cloud}/></Text>
             </View>
           </TouchableOpacity>
-          <View style={styles.shareDown}>>
+          <View style={styles.shareDown}>
             <View style={styles.codeWrapper}>
               <Text style={styles.label}>promotion code: </Text>
               <Text style={styles.code}>{wallet.code}</Text>

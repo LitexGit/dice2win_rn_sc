@@ -2,8 +2,10 @@
 
 // import React, { Component } from 'react'
 
-const CryptoJS = require('crypto-js')
+//const CryptoJS = require('crypto-js')
 const ethers = require('ethers')
+import RNFS from 'react-native-fs';
+import {Wallet} from 'ethers'
 
 module.exports = {
   // 初始化 余额
@@ -52,14 +54,14 @@ module.exports = {
    * @returns {boolean}
    */
   checkMnemonic (walletData, pin) {
-    var bytes = CryptoJS.AES.decrypt(walletData.mnemonicRaw, pin)
-    var mnemonic = bytes.toString(CryptoJS.enc.Utf8)
-    var wallet = ethers.Wallet.fromMnemonic(mnemonic)
-    if (wallet.address == walletData.address) {
-      return wallet
-    }
+    // var bytes = CryptoJS.AES.decrypt(walletData.mnemonicRaw, pin)
+    // var mnemonic = bytes.toString(CryptoJS.enc.Utf8)
+    // var wallet = ethers.Wallet.fromMnemonic(mnemonic)
+    // if (wallet.address == walletData.address) {
+    //   return wallet
+    // }
 
-    return false
+    // return false
   },
 
   /**
@@ -140,6 +142,52 @@ module.exports = {
     })
 
     return false
-  }
+  },
+
+  initWallet: async () => {
+    const keystorePath = RNFS.DocumentDirectoryPath+ '/keystore.json'
+
+    // if keystore file not exist, create a fake file
+    try{
+      let exist = await RNFS.exists(keystorePath);
+      if (!exist) {
+        let json = '{"address":"fc379f1fe62a88e047c50a36f8c1e4fa3e93092f","id":"633246eb-18f3-4492-a6a4-bcac6d416306","version":3,"Crypto":{"cipher":"aes-128-ctr","cipherparams":{"iv":"167c8308417951a0cc5fd3fa53ce3c07"},"ciphertext":"b714decc1fab39ddca1748ce34f6c823006bbdfa1de3ddc64912e26db98ce49d","kdf":"scrypt","kdfparams":{"salt":"844142f3e9618d62f59b253766edf55f29e96b088f18f35767a8ee4b50e8d2c3","n":131072,"dklen":32,"p":1,"r":8},"mac":"004001adba97970b56c678bc579f47526b2c2b9a6a2127b4a23dfc79d1f97cf7"},"x-ethers":{"client":"ethers.js","gethFilename":"UTC--2018-09-29T03-09-28.0Z--fc379f1fe62a88e047c50a36f8c1e4fa3e93092f","mnemonicCounter":"ae63b34eb14407f942541d511a9dfccb","mnemonicCiphertext":"4b6fdef7b4ae9ba363144a61ebe1070b","version":"0.1"}}';
+        let result = await RNFS.writeFile(keystorePath, json, 'utf8');
+        // console.tron.log(result);
+      }
+    } catch (err) {
+      console.tron.log('write file err', err)
+      console.log('write file err', err)
+    }
+
+
+    if (!W) {
+      W = { network: 'ropsten', keystorePath: keystorePath };
+      // load keystore from keystorePath
+      try {
+        let keystore = await RNFS.readFile(keystorePath);
+        console.tron.log('initWallet', keystore);
+        W.keystore = keystore;
+        let keystoreObj = JSON.parse(keystore);
+        W.address = keystoreObj.address;
+        W.keystoreInitialized = true;
+      } catch (err) {
+        console.tron.log('initWallet', err);
+        W.keystoreInitialized = false;
+      }
+
+
+
+      //Decrypt keystore to wallet instance
+      try {
+        let wallet = await Wallet.RNfromEncryptedWallet(W.keystore, '123');
+        W.wallet = wallet;
+        console.tron.log('wallet decrypted', W);
+      } catch (err) {
+        console.tron.log('wallet decrypted err', err);
+      }
+    }
+  },
+
 
 }

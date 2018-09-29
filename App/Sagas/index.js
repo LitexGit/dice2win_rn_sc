@@ -20,8 +20,8 @@ import { startup } from './StartupSagas'
 import { getUserAvatar } from './GithubSagas'
 import { getActivity } from './ActivitySagas'
 import { getRecord } from './RecordSagas'
-import { getWallet, newWallet, importWallet, encryptWallet, importEncryptWallet, transfer, getRandom } from './WalletSagas'
 import { getConfig, socketInit, watchSocketStatusChannel } from './ConfigSagas'
+import { initWallet, getWallet, newWallet, importWallet, encryptWallet, importEncryptWallet, transfer, getRandom } from './WalletSagas'
 import { getSetting } from './SettingSagas'
 import { getNotification } from './NotificationSagas'
 
@@ -71,7 +71,9 @@ export default function * root () {
 
     takeLatest(WalletTypes.TRANSFER, transfer, api),
 
-    takeLatest(WalletTypes.GET_RANDOM, getRandom, api)
+    takeLatest(WalletTypes.GET_RANDOM, getRandom, api),
+
+    takeLatest(WalletTypes.INIT_WALLET, initWallet, api)
 
   ])
 }

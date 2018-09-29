@@ -9,15 +9,16 @@
 *    you'll need to define a constant in that file.
 *************************************************************/
 
-import { call, put } from 'redux-saga/effects'
+import { call, put} from 'redux-saga/effects'
 import WalletActions from '../Redux/WalletRedux'
 import AppConfig from '../Config/AppConfig'
 import abi from '../Config/abi'
+import walletLib from '../Lib/Wallet/wallet'
+
 // import { WalletSelectors } from '../Redux/WalletRedux'
 let ethers = require('ethers')
 let axios = require('axios')
 
-console.log('ethers', ethers)
 
 export function * newWallet (api, action) {
   console.tron.log('newWallet begin')
@@ -27,6 +28,20 @@ export function * newWallet (api, action) {
   yield put(WalletActions.setWallet(wallet))
 }
 
+
+
+export function * initWallet (api, action) {
+
+  yield call(walletLib.initWallet)
+  // const delay = (ms) => new Promise(res => setTimeout(res, ms))
+
+  //yield call(delay, 1000)
+  // yield delay(5000)
+
+
+
+
+}
 // 从助记词导入钱包
 export function * importWallet (api, action) {
 
@@ -115,6 +130,9 @@ export function * getWallet (api, action) {
   if (response.ok) {
     // You might need to change the response here - do this with a 'transform',
     // located in ../Transforms/. Otherwise, just pass the data back from the api.
+    console.tron.log('getWallet', response.data)
+    response.data.address = W.wallet.address
+
     yield put(WalletActions.walletSuccess(response.data))
   } else {
     yield put(WalletActions.walletFailure())

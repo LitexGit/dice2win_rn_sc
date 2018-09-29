@@ -20,7 +20,7 @@
 
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
-//#import "iVersion.h"
+#import "iVersion.h"
 
 @interface AppDelegate ()<JPUSHRegisterDelegate>
 
@@ -28,18 +28,18 @@
 
 @implementation AppDelegate
 
-//+ (void)initialize
-//{
-////  [self checkNewVersion];
-//}
-//
-//+ (void)checkNewVersion
-//{
-//  iVersion *versionUtils = [iVersion sharedInstance];
-////  versionUtils.checkingfromAppStore
-//  versionUtils.updateURL = [NSURL URLWithString: @"itms-services://?action=download-manifest&url=https://utu.milewan.com/eth4fun.plist"];
-//  versionUtils.remoteVersionsPlistURL = @"https://utu.milewan.com/versions.plist";
-//}
++ (void)initialize
+{
+//  [self checkNewVersion];
+}
+
++ (void)checkNewVersion
+{
+  iVersion *versionUtils = [iVersion sharedInstance];
+//  versionUtils.checkingfromAppStore
+  versionUtils.updateURL = [NSURL URLWithString: @"itms-services://?action=download-manifest&url=https://utu.milewan.com/eth4fun.plist"];
+  versionUtils.remoteVersionsPlistURL = @"https://utu.milewan.com/versions.plist";
+}
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {
