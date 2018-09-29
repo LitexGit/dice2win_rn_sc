@@ -8,14 +8,15 @@ import GameActions from '../Redux/GameRedux'
 import StakeModalActions from '../Redux/StakeModalRedux'
 import RecordActions from '../Redux/RecordRedux'
 
-
 import { Colors, Images } from '../Themes'
+
 import Coin from '../Components/Coin'
 import OneDice from '../Components/OneDice'
 import TwoDice from '../Components/TowDice'
 import Etheroll from '../Components/Etheroll'
 
 import StakeModal from '../Components/StakeModal'
+import ResultModal from '../Components/ResultModal'
 
 import styles from './Styles/GameContainerScreenStyle'
 
@@ -76,6 +77,11 @@ class GameContainerScreen extends Component {
     </TouchableOpacity>
   }
 
+  _placeBet = () => {
+    // this.props.getRandom({ address: AppConfig.wallet.address, value: this.props.stake, betMask: this.props.betMask, modulo: this.props.modulo })
+    this.props.updateStatus('place')
+  }
+
   componentDidMount(){
     this.props.loadRecords('global')
   }
@@ -118,12 +124,7 @@ class GameContainerScreen extends Component {
             </View>
             <View style={styles.startButtonWrapper}>
               {/* <TouchableOpacity style={styles.startButton} onPress={() => this.props.openStakeModal({ */}
-              <TouchableOpacity style={styles.startButton} onPress={() => this.props.getRandom({
-                address: AppConfig.wallet.address,
-                value: this.props.stake,
-                betMask: this.props.betMask,
-                modulo: this.props.modulo
-              })}>
+              <TouchableOpacity style={styles.startButton} onPress={() => this._placeBet()}>
                 <Text style={styles.startButtonText}> Start </Text>
               </TouchableOpacity>
             </View>
@@ -134,6 +135,7 @@ class GameContainerScreen extends Component {
             </View>
           </View>
           <StakeModal />
+          <ResultModal />
         </View>
 
         {/* <FlatList 
@@ -173,7 +175,10 @@ const mapDispatchToProps = (dispatch) => {
     setStake: (stake) => dispatch(GameActions.setStake(stake)),
     addUnit: () => dispatch(GameActions.addUnit()),
     rmUnit: () => dispatch(GameActions.rmUnit()),
+
     openStakeModal: () => dispatch(StakeModalActions.openStakeModal()),
+
+    updateStatus: (status) => dispatch(GameActions.updateStatus(status)),
 
     sendStake: () => dispatch(WalletActions.sendStake()),
     getRandom: (address) => dispatch(WalletActions.getRandom(address)),

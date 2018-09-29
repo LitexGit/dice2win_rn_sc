@@ -1,4 +1,4 @@
-import { takeLatest, all, take } from 'redux-saga/effects'
+import { takeLatest, all, take, call } from 'redux-saga/effects'
 import API from '../Services/Api'
 import FixtureAPI from '../Services/FixtureApi'
 import DebugConfig from '../Config/DebugConfig'
@@ -21,7 +21,7 @@ import { getUserAvatar } from './GithubSagas'
 import { getActivity } from './ActivitySagas'
 import { getRecord } from './RecordSagas'
 import { getWallet, newWallet, importWallet, encryptWallet, importEncryptWallet, transfer, getRandom } from './WalletSagas'
-import { getConfig } from './ConfigSagas'
+import { getConfig, socketInit, watchSocketStatusChannel } from './ConfigSagas'
 import { getSetting } from './SettingSagas'
 import { getNotification } from './NotificationSagas'
 
@@ -35,6 +35,7 @@ const api = DebugConfig.useFixtures ? FixtureAPI : API.create()
 
 export default function * root () {
   yield all([
+    call(watchSocketStatusChannel),
     // some sagas only receive an action
     // takeLatest(StartupTypes.STARTUP, startup),
 
@@ -43,6 +44,9 @@ export default function * root () {
 
     // get data for activities
     takeLatest(ActivityTypes.ACTIVITY_REQUEST, getActivity, api),
+
+    // socket operations
+    takeLatest(ConfigTypes.SOCKET_INIT, socketInit, api),
 
     // get records
     takeLatest(RecordTypes.RECORD_REQUEST, getRecord, api),

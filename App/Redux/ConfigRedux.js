@@ -6,6 +6,8 @@ import Immutable from 'seamless-immutable'
 const { Types, Creators } = createActions({
   configRequest: ['data'],
   configSuccess: ['payload'],
+  socketInit: ['address'],
+  socketStatus: ['socket'],
   configFailure: null
 })
 
@@ -43,8 +45,10 @@ export const INITIAL_STATE = Immutable({
       title: 'share to friends and get bonus'
     },
     ws: 'http://eth4.fun:7001',
-    // ws: 'ws://echo.websocket.org',
   },
+
+  socket: 'off',
+
   error: null
 })
 
@@ -55,6 +59,10 @@ export const ConfigSelectors = {
 }
 
 /* ------------- Reducers ------------- */
+
+// update socket status
+export const socketStatus = (state, { socket }) =>
+  state.merge({socket})
 
 // request the data from an api
 export const request = (state, { data }) =>
@@ -73,6 +81,7 @@ export const failure = state =>
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
+  [Types.SOCKET_STATUS]: socketStatus,
   [Types.CONFIG_REQUEST]: request,
   [Types.CONFIG_SUCCESS]: success,
   [Types.CONFIG_FAILURE]: failure

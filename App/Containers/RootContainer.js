@@ -4,9 +4,9 @@ import ReduxNavigation from '../Navigation/ReduxNavigation'
 import { connect } from 'react-redux'
 import StartupActions from '../Redux/StartupRedux'
 import NotificationActions from '../Redux/NotificationRedux'
+import ConfigActions from '../Redux/ConfigRedux'
 import ReduxPersist from '../Config/ReduxPersist'
 import JPushModule from 'jpush-react-native'
-import SocketIOClient from 'socket.io-client'
 import RNFS from 'react-native-fs';
 import {Wallet} from 'ethers'
 
@@ -46,8 +46,8 @@ class RootContainer extends Component {
     } else {
       JPushModule.setupPush()
     }
-    initSocket(this.props.config.ws)
-    initWallet()
+    this.props.initSocket(this.props.config.ws)
+    // initWallet()
   }
 
   render () {
@@ -105,32 +105,6 @@ const initWallet = async () => {
   }
 }
 
-const initSocket = (address) => {
-  if(!socket){
-    socket = SocketIOClient(address)
-      .on('connect', socketConnected)
-      .on('settle', socketMessage)
-      .on('error', socketError)
-      .on('disconnect', socketClosed)
-  }
-}
-
-const socketConnected = () => {
-  console.tron.log('Socket OPEN')
-}
-
-const socketMessage = (msg) => {
-  console.tron.log('Socket MSG:', msg)
-}
-
-const socketError = (err) => {
-  console.tron.log('Socket ERROR:', err.message)
-}
-
-const socketClosed = (e) => {
-  console.tron.log('Socket CLOSE', e)
-}
-
 // wraps dispatch to create nicer functions to call within our component
 const mapStateToProps = (state) => ({
   config: state.config.payload
@@ -138,6 +112,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   startup: () => dispatch(StartupActions.startup()),
+  initSocket: (address) => dispatch(ConfigActions.socketInit(address)),
   setNotification: (message) => dispatch(NotificationActions.notificationSuccess({message: message}))
 })
 
