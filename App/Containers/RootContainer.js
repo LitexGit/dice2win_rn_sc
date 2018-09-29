@@ -8,12 +8,7 @@ import NotificationActions from '../Redux/NotificationRedux'
 import ConfigActions from '../Redux/ConfigRedux'
 import ReduxPersist from '../Config/ReduxPersist'
 import JPushModule from 'jpush-react-native'
-<<<<<<< Updated upstream
-import RNFS from 'react-native-fs';
-import {Wallet} from 'ethers'
-=======
 import SocketIOClient from 'socket.io-client'
->>>>>>> Stashed changes
 
 
 // Styles
