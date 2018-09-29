@@ -34,7 +34,7 @@ export function * initWallet (api, action) {
 
   yield call(walletLib.initWallet)
   // const delay = (ms) => new Promise(res => setTimeout(res, ms))
-
+  yield socket.emit('lottery', W.wallet.address)
   //yield call(delay, 1000)
   // yield delay(5000)
 
@@ -87,16 +87,21 @@ export function * getRandom (api, action) {
     'network_id': '1'
   })
   console.tron.log('res', res)
-  const wallet = AppConfig.wallet
-  wallet.provider = ethers.providers.getDefaultProvider(AppConfig.network)
+  const wallet = W.wallet
+  wallet.provider = ethers.providers.getDefaultProvider(W.network)
+
+
+  console.tron.log('res2', wallet)
 
   var contractAddress = '0xAe985667078744A8EFb0C6c0300D7861EF427148'
   var contract = new ethers.Contract(contractAddress, abi, wallet)
   var overrideOptions = {
     value: ethers.utils.parseEther(action.data.value),
-    gasPrice: 3e9
+    gasPrice: parseInt(res.data.gasPrice)
   }
 
+
+  console.tron.log('res3', action.data, overrideOptions)
   let ans = yield contract.placeBet(action.data.betMask, action.data.modulo, res.data.secret.commitLastBlock, res.data.secret.commit,
     res.data.secret.signature.r, res.data.secret.signature.s, overrideOptions)
   console.tron.log('ans', ans)

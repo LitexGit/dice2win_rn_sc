@@ -13,7 +13,8 @@ const {Types, Creators} = createActions({
   gameRequest: ['data'],
   gameSuccess: ['payload'],
   gameFailure: null,
-  updateStatus: ['status']
+  updateStatus: ['status'],
+  updateResult: ['result'],
 })
 
 export const GameTypes = Types
@@ -29,7 +30,7 @@ export const INITIAL_STATE = Immutable({
   payload: null,
   error: null,
   result: {},
-  status: 'close',
+  status: null,
 })
 
 /* ------------- Selectors ------------- */
@@ -43,6 +44,11 @@ export const GameSelectors = {
 export const updateStatus = (state, action) => {
   let {status} = action
   return state.merge({status})
+}
+
+export const updateResult = (state, action) => {
+  let {result} = action
+  return state.merge({result})
 }
 
 export const addUnit = state => {
@@ -87,6 +93,7 @@ export const failure = state =>
 
 export const reducer = createReducer(INITIAL_STATE, {
   [Types.UPDATE_STATUS]: updateStatus,
+  [Types.UPDATE_RESULT]: updateResult,
   [Types.SET_GAME_KEY]: setGameKey,
   [Types.SET_STAKE]: setStake,
   [Types.ADD_UNIT]: addUnit,

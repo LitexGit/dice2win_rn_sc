@@ -7,7 +7,15 @@ export default StyleSheet.create({
     margin: 30,
     padding: 30,
     backgroundColor: Colors.neetGray,
+    alignItems: 'stretch'
   },
+  container_win: {
+    backgroundColor: Colors.facebook,
+  },
+  container_lose: {
+    backgroundColor: Colors.charcoal,
+  },
+
   content:{
     flex:1,
     alignItems: 'center',
@@ -18,12 +26,19 @@ export default StyleSheet.create({
     color: Colors.text,
   },
   amountText:{
+    marginTop: 5,
     ...Fonts.style.h4,
     color: Colors.bloodOrange,
   },
 
-  buttonPanel: {
+  buttonPanel:{
     height: 30,
+    alignItems: 'stretch',
+    justifyContent: 'center'
+  },
+
+  buttonWrapper: {
+    flex:1,
     backgroundColor: Colors.casinoBlue,
     alignItems: 'center',
     justifyContent: 'center'

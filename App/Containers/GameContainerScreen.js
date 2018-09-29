@@ -77,13 +77,14 @@ class GameContainerScreen extends Component {
   }
 
   _placeBet = () => {
-    // this.props.getRandom({ address: AppConfig.wallet.address, value: this.props.stake, betMask: this.props.betMask, modulo: this.props.modulo })
+    this.props.getRandom({ address: W.wallet.address, value: this.props.stake, betMask: this.props.betMask, modulo: this.props.modulo })
     this.props.updateStatus('place')
   }
 
   componentDidMount(){
     this.props.loadRecords('global')
     this.props.loadWallet()
+    this.props.updateStatus()
   }
 
   render () {

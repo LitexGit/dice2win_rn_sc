@@ -13,6 +13,7 @@
 import { channel } from 'redux-saga'
 import { call, put, take } from 'redux-saga/effects'
 import ConfigActions from '../Redux/ConfigRedux'
+import GameActions from '../Redux/GameRedux'
 import SocketIOClient from 'socket.io-client'
 // import { ConfigSelectors } from '../Redux/ConfigRedux'
 
@@ -42,6 +43,7 @@ export function * socketInit(api, action) {
     yield socket = SocketIOClient(address)
     socket.on('connect', socketConnected)
       .on('settle', socketMessage)
+      .on('history', socketMessage)
       .on('error', socketError)
       .on('disconnect', socketClosed)
   }
@@ -61,6 +63,12 @@ const socketConnected = () => {
 }
 
 const socketMessage = (msg) => {
+  let status = msg.bet_res
+  socketStatusChannel.put(GameActions.updateStatus(status))
+  if(status === 'win'){
+    let result = {amount: msg.dice_payment}
+    socketStatusChannel.put(GameActions.updateResult(result))
+  }
   console.tron.log('Socket MSG:', msg)
 }
 

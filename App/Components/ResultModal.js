@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types';
 import { View, Text, Modal, TouchableOpacity } from 'react-native'
 import styles from './Styles/ResultModalStyle'
-import GameActions, { updateStatus } from '../Redux/GameRedux'
+import GameActions from '../Redux/GameRedux'
 import { connect } from 'react-redux'
 
 // i18n
@@ -32,12 +32,12 @@ class ResultModal extends Component {
       <Modal
         animationType='fade'
         transparent={true}
-        visible={status!='close'}
+        visible={!!status}
         onRequestClose={() => {}}>
-        <View style={styles.container}>
+        <View style={[styles.container, styles['container_'+status]]}>
           <View style={styles.content}>
             <Text style={styles.statusText}>{STATUS_TEXT[status]}</Text>
-            {status==='win' && result && <Text style={styles.resultText}>{result.amount}</Text>}
+            {status==='win' && result.amount && <Text style={styles.amountText}>{result.amount} ETH!</Text>}
           </View>
           <View style={styles.buttonPanel}>
             <TouchableOpacity style={styles.buttonWrapper} onPress={_=>this.props.close()}>
@@ -59,7 +59,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    close: () => dispatch(GameActions.updateStatus('close'))
+    close: () => dispatch(GameActions.updateStatus())
   }
 }
 
