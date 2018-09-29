@@ -20,7 +20,7 @@ export const INITIAL_STATE = Immutable({
   data: null,
   fetching: null,
   api: {
-    contract_address: "0xAe985667078744A8EFb0C6c0300D7861EF427148",
+    contract_address: "0x3d392560290a746542Cb14429E9ED2898aa74464",
     base_domain: "http://api.eth4.fun",
     api_list: {
       get_abi: "http://api.eth4.fun/api/v1/games/dev/abi",

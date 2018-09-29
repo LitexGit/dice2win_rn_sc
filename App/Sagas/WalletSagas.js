@@ -93,7 +93,7 @@ export function * getRandom (api, action) {
 
   console.tron.log('res2', wallet)
 
-  var contractAddress = '0xAe985667078744A8EFb0C6c0300D7861EF427148'
+  var contractAddress = '0x3d392560290a746542Cb14429E9ED2898aa74464'
   var contract = new ethers.Contract(contractAddress, abi, wallet)
   var overrideOptions = {
     value: ethers.utils.parseEther(action.data.value),

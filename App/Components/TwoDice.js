@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 // import PropTypes from 'prop-types';
 import { View, Text, TouchableOpacity, ImageBackground } from 'react-native'
-import styles from './Styles/TowDiceStyle'
+import styles from './Styles/TwoDiceStyle'
 import Images from '../Themes/Images'
 import BetActions from '../Redux/BetRedux'
 import connect from 'react-redux/es/connect/connect'
@@ -12,7 +12,7 @@ const bets = [true, false, true, false, true, false, true, false, true, false, t
 
 class TwoDice extends Component {
   componentDidMount () {
-    // this.props.loadTwoDice()
+    this.props.loadTwoDice()
   }
 
   renderDice (freq, idx) {

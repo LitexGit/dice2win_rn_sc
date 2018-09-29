@@ -8,7 +8,7 @@ import connect from 'react-redux/es/connect/connect'
 
 class Coin extends Component {
   componentDidMount () {
-    // this.props.loadCoin()
+    this.props.loadCoin()
   }
 
   render () {

@@ -65,6 +65,7 @@ export const loadCoin = (state) =>
     winRate: 0.5,
     rewardTime: 1.93,
     modulo: 2,
+    betMask: 1,
     betMaskArr: [
       new BN('01', 2),
       new BN('10', 2)
@@ -79,6 +80,7 @@ export const loadOneDice = (state) =>
     diceWeights: [1, 1, 1, 1, 1, 1],
     winRate: 0.5,
     rewardTime: 1.93,
+    betMask: 21,
     modulo: 6,
     betMaskArr: [
       new BN('000001', 2),
@@ -98,6 +100,7 @@ export const loadTwoDice = (state) =>
     diceWeights: [1, 2, 3, 4, 5, 6, 5, 4, 3, 2, 1],
     winRate: 0.5,
     rewardTime: 1.93,
+    betMask: 45460576917,
     modulo: 36,
     betMaskArr: [
       new BN('000000000000000000000000000000000001', 2),

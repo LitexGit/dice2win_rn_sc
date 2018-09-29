@@ -35,7 +35,7 @@ const diceImage = [
 
 class OneDice extends Component {
   componentDidMount () {
-    // this.props.loadOneDice()
+    this.props.loadOneDice()
   }
 
   renderDice (value, idx) {

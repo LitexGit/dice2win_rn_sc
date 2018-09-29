@@ -12,7 +12,7 @@ import { Colors, Images } from '../Themes'
 
 import Coin from '../Components/Coin'
 import OneDice from '../Components/OneDice'
-import TwoDice from '../Components/TowDice'
+import TwoDice from '../Components/TwoDice'
 import Etheroll from '../Components/Etheroll'
 
 import StakeModal from '../Components/StakeModal'
