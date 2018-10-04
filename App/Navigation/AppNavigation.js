@@ -1,4 +1,5 @@
 import { StackNavigator, TabNavigator } from 'react-navigation'
+import GameRecordScreen from '../Containers/GameRecordScreen'
 import TransferScreen from '../Containers/TransferScreen'
 import BackupScreen from '../Containers/BackupScreen'
 import PreBackupScreen  from '../Containers/PreBackupScreen'
@@ -37,6 +38,7 @@ const BottomTabNav = TabNavigator({
 
 // Manifest of possible screens
 const PrimaryNav = StackNavigator({
+  GameRecordScreen: { screen: GameRecordScreen },
   TransferScreen: { screen: TransferScreen },
   BackupScreen: { screen: BackupScreen },
   PreBackupScreen: { screen: PreBackupScreen },

@@ -8,7 +8,6 @@ import NotificationActions from '../Redux/NotificationRedux'
 import ConfigActions from '../Redux/ConfigRedux'
 import ReduxPersist from '../Config/ReduxPersist'
 import JPushModule from 'jpush-react-native'
-import SocketIOClient from 'socket.io-client'
 
 
 // Styles
@@ -46,7 +45,11 @@ class RootContainer extends Component {
     } else {
       JPushModule.setupPush()
     }
-    this.props.initSocket(this.props.config.ws)
+
+
+
+    /* AFTER API Setup */
+    this.props.initSocket(this.props.ws)
     this.props.initWallet()
   }
 
@@ -63,7 +66,8 @@ class RootContainer extends Component {
 
 // wraps dispatch to create nicer functions to call within our component
 const mapStateToProps = (state) => ({
-  config: state.config.payload
+  uid: state.user.uid,
+  ws: state.config.ws
 })
 
 const mapDispatchToProps = (dispatch) => ({

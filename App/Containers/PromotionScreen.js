@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
-import { ScrollView, Text, View, TouchableOpacity, SectionList } from 'react-native'
+import { Text, View, TouchableOpacity, SectionList } from 'react-native'
 import Toast from 'react-native-root-toast'
 import Feather from 'react-native-vector-icons/Feather'
 
 import { connect } from 'react-redux'
 import RecordActions from '../Redux/RecordRedux'
 
+import ListEmptyComponent from '../Components/ListEmptyComponent'
 import styles from './Styles/PromotionScreenStyle'
 
 class PromotionScreen extends Component {
@@ -14,7 +15,7 @@ class PromotionScreen extends Component {
   }
 
   componentDidMount () {
-    this.props.loadRecords('bonus')
+    // this.props.loadRecords('bonus')
   }
 
   _goto = (where) => {
@@ -65,7 +66,9 @@ class PromotionScreen extends Component {
           <SectionList
             sections={this.props.sectionData}
             renderSectionHeader={this._renderSectionHeader}
-            renderItem={this._renderItem} />
+            renderItem={this._renderItem}
+            ListEmptyComponent = {ListEmptyComponent}
+             />
         </View>
       </View>
     )
@@ -74,8 +77,8 @@ class PromotionScreen extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    sectionData: state.record.payload.bonus.sections,
-    wallet: state.wallet.payload,
+    sectionData: state.record.bonus.sections,
+    wallet: state.wallet,
   }
 }
 

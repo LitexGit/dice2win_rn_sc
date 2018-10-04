@@ -34,7 +34,7 @@ class GameScreen extends Component {
   }
 
   componentDidMount () {
-    this.props.loadBanners('game')
+    this.props.loadBanners()
   }
 
   Slide = (item) => {
@@ -84,7 +84,7 @@ class GameScreen extends Component {
       <View style={styles.container}>
         <View style={styles.swiper}>
           <Swiper autoplay={true} showsPagination={false}>
-            { this.props.banners && this.props.banners.items.map((item, i) => this.Slide(item)) }
+            { this.props.banners && this.props.banners.map((item, i) => this.Slide(item)) }
           </Swiper>
         </View>
         <FlatList
@@ -100,13 +100,13 @@ class GameScreen extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    banners: state.activity.payload.banners
+    banners: state.activity.banners
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    loadBanners: (type) => dispatch(ActivityActions.activityRequest({type: type})),
+    loadBanners: () => dispatch(ActivityActions.activityRequest()),
     setGameKey: (key) => dispatch(GameActions.setGameKey(key)),
     navigate: (target, params) => dispatch(NavigationActions.navigate({routeName: target, params: params})),
     loadCoin: () => dispatch(BetActions.loadCoin()),

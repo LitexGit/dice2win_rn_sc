@@ -1,12 +1,10 @@
 import React, { Component } from 'react'
-import { ScrollView, Text, View, TouchableOpacity, TextInput, FlatList, Image} from 'react-native'
-import Canvas from 'react-native-canvas'
-import Blockies from 'ethereum-blockies'
+import { ScrollView, Text, View, Button, TouchableOpacity, TextInput, Image} from 'react-native'
 import { connect } from 'react-redux'
 
+import NavigationActions from 'react-navigation/src/NavigationActions'
 import GameActions from '../Redux/GameRedux'
 import StakeModalActions from '../Redux/StakeModalRedux'
-import RecordActions from '../Redux/RecordRedux'
 
 import { Colors, Images } from '../Themes'
 
@@ -42,38 +40,16 @@ import WalletActions from '../Redux/WalletRedux'
 
 class GameContainerScreen extends Component {
 
-  _renderAvatar = (canvas, {user}) => {
-    // Blockies.render({ seed: user, size: 8, scale: 3, }, canvas)
-    if(canvas != null)
-    {
-      console.log('canvas: ', canvas)
-      Blockies.render(canvas)
+  static navigationOptions = ({navigation}) => {
+    return{
+      headerRight: (
+        <Button
+          onPress={navigation.getParam('gotoRecords')}
+          title="Records"
+          color="#fff"
+        />
+      )
     }
-  }
-
-  _renderItem = ({item}) => {
-    console.tron.log("Record Item", item)
-    if(!item)
-      return null
-    return <TouchableOpacity style={styles.recordItem} onPress={_ => this._itemPressed(item)}>
-    <View style={styles.recordItemTop}>
-      {/* <Canvas style={styles.recordAvatar} ref={canvas => this._renderAvatar(canvas, item)} /> */}
-      <View style={styles.valueWrapper}>
-        <Text style={styles.label}>in: </Text>
-        <Text style={styles.inValue}>{item.inValue.toFixed(5)}</Text>
-      </View>
-      <View style={styles.valueWrapper}>
-        <Text style={styles.label}>out: </Text>
-        <Text style={styles.outValue}>{item.outValue.toFixed(5)}</Text>
-      </View>
-    </View>
-    <View style={styles.recordItemBottom}>
-      <View style={styles.userColWrapper}><Text numberOfLines={1} ellipsizeMode='middle' style={styles.userColText}>{item.user}</Text></View>
-      <View style={styles.betColWrapper}><Bet game={item.game} bet={item.bet} /></View>
-      <View style={styles.resultColWrapper}><Result game={item.game} result={item.result} /></View>
-    </View>
-
-    </TouchableOpacity>
   }
 
   _placeBet = () => {
@@ -82,7 +58,7 @@ class GameContainerScreen extends Component {
   }
 
   componentDidMount(){
-    this.props.loadRecords('global')
+    this.props.navigation.setParams({ gotoRecords: _=>this.props.navigate('GameRecordScreen')})
     this.props.loadWallet()
     this.props.updateStatus()
   }
@@ -138,11 +114,6 @@ class GameContainerScreen extends Component {
           <StakeModal />
           <ResultModal />
         </View>
-
-        {/* <FlatList
-          style={styles.recordList}
-          data={this.props.records.filter(r=>r.game===GAME_TAGS[this.props.index])}
-          renderItem={this._renderItem.bind(this)} /> */}
       </ScrollView>
     )
   }
@@ -163,13 +134,14 @@ const mapStateToProps = (state) => {
     winRate: state.bet.winRate,
     rewardTime: state.bet.rewardTime,
 
-    balance: state.wallet.payload.balance,
-    records: state.record.payload.global.records,
+    balance: state.wallet.balance,
+    records: state.record.global.records,
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
+
     initGame: () => dispatch(GameActions.initGame()),
     request: () => dispatch(GameActions.gameRequest()),
 
@@ -184,7 +156,8 @@ const mapDispatchToProps = (dispatch) => {
     sendStake: () => dispatch(WalletActions.sendStake()),
     loadWallet: () => dispatch(WalletActions.walletRequest()),
     getRandom: (address) => dispatch(WalletActions.getRandom(address)),
-    loadRecords: (type) => dispatch(RecordActions.recordRequest({type}))
+
+    navigate: (target) => dispatch(NavigationActions.navigate({routeName:target}))
   }
 }
 

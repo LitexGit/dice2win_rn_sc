@@ -11,6 +11,7 @@ import { connect } from 'react-redux'
 
 // Styles
 import { Colors, Images, Metrics } from '../Themes'
+import ListEmptyComponent from '../Components/ListEmptyComponent'
 import styles from './Styles/RecordScreenStyle'
 
 
@@ -24,7 +25,7 @@ class RecordScreen extends Component {
   }
 
   componentDidMount () {
-    this.props.loadRecords('game')
+    // this.props.loadRecords('myGame')
   }
 
   _renderSectionHeader = ({section}) => {
@@ -74,21 +75,25 @@ class RecordScreen extends Component {
           tabBarUnderlineStyle={styles.tabBarUnderlineStyle}
           renderTabBar={() => <ScrollableTabBar style={{borderBottomWidth: 0}}/>}
           onChangeTab={({i, ref}) => {
-            this.props.loadRecords(RecordTags[i])
+            // this.props.loadRecords(RecordTags[i])
           }}>
           <View tabLabel='Game History' style={styles.container}>
             {/* Game Section */}
             <SectionList
               sections={this.props.gameSections}
               renderSectionHeader={this._renderSectionHeader}
-              renderItem={this._renderGameItem}/>
+              renderItem={this._renderGameItem}
+              ListEmptyComponent={ListEmptyComponent}
+              />
           </View>
           <View tabLabel='Transactions' style={styles.container}>
             {/* Tx Section */}
             <SectionList
-              sections={this.props.txSections.sections}
+              sections={this.props.txSections}
               renderSectionHeader={this._renderSectionHeader}
-              renderItem={this._renderTxItem}/>
+              renderItem={this._renderTxItem}
+              ListEmptyComponent={ListEmptyComponent}
+              />
           </View>
         </ScrollableTabView>
       </View>
@@ -98,8 +103,8 @@ class RecordScreen extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    gameSections: state.record.payload.game.sections,
-    txSections: state.record.payload.tx,
+    gameSections: state.record.game.sections,
+    txSections: state.record.tx.sections,
   }
 }
 

@@ -4,14 +4,13 @@ import Immutable from 'seamless-immutable'
 /* ------------- Types and Action Creators ------------- */
 
 const { Types, Creators } = createActions({
-  getGameRecords: ['data'],
-  recordRequest: ['data'],
-  recordSuccess: ['payload'],
-  recordFailure: null
+  register: ['data'],
+  userRequest: ['data'],
+  userSuccess: ['payload'],
+  userFailure: null
 })
 
-export const RecordTypes = Types
-export const RecordTags = ['game', 'tx', 'bonus', 'global']
+export const UserTypes = Types
 export default Creators
 
 /* ------------- Initial State ------------- */
@@ -19,22 +18,21 @@ export default Creators
 export const INITIAL_STATE = Immutable({
   data: null,
   fetching: null,
-  game:{sections:[]},
-  tx: {sections:[]},
-  bonus: {sections:[]},
-  global: {items:[]},
-  payload:{
-    game: {sections:[]},
-    tx: {sections:[]},
-    bonus: {sections:[]},
-    global: {items:[]},
-  },
+  payload: null,
+  
+  uid: 0,
+  nickname: '',
+  address: '',
+  inviter: 0,
+  code: '',
+  bonus: 0,
+
   error: null
 })
 
 /* ------------- Selectors ------------- */
 
-export const RecordSelectors = {
+export const UserSelectors = {
   getData: state => state.data
 }
 
@@ -42,11 +40,11 @@ export const RecordSelectors = {
 
 // request the data from an api
 export const request = (state, { data }) =>
-  state.merge({ fetching: true, data, payload:state.payload })
+  state.merge({ fetching: true, data, payload: null })
 
 // successful api lookup
 export const success = (state, action) => {
-  let { payload } = action
+  const { payload } = action
   return state.merge({ fetching: false, error: null, ...payload })
 }
 
@@ -57,7 +55,8 @@ export const failure = state =>
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
-  [Types.RECORD_REQUEST]: request,
-  [Types.RECORD_SUCCESS]: success,
-  [Types.RECORD_FAILURE]: failure
+  [Types.REGISTER]: request,
+  [Types.USER_REQUEST]: request,
+  [Types.USER_SUCCESS]: success,
+  [Types.USER_FAILURE]: failure
 })

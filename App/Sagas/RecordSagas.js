@@ -14,12 +14,18 @@ import { call, put } from 'redux-saga/effects'
 import RecordActions from '../Redux/RecordRedux'
 // import { RecordSelectors } from '../Redux/RecordRedux'
 
+export function * getGameRecords (api, action) {
+  const { data: {gameId, page, size} } = action
+  const response = yield call(api.getRecord, {gameId, page, size})
+  if (response.ok) {
+    yield put(RecordActions.recordSuccess(response.data))
+  } else {
+    yield put(RecordActions.recordFailure())
+  }
+}
 export function * getRecord (api, action) {
-  const { data } = action
-  // get current data from Store
-  // const currentData = yield select(RecordSelectors.getData)
-  // make the call to the api
-  const response = yield call(api.getRecord, data)
+  const { data: { type, page, size } } = action
+  const response = yield call(api.getRecord, {address:W.wallet.address, page, size})
 
   // success?
   if (response.ok) {

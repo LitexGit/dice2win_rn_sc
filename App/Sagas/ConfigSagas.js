@@ -22,7 +22,7 @@ export function * getConfig (api, action) {
   // get current data from Store
   // const currentData = yield select(ConfigSelectors.getData)
   // make the call to the api
-  const response = yield call(api.getconfig, data)
+  const response = yield call(api.getConfig, data)
 
   // success?
   if (response.ok) {

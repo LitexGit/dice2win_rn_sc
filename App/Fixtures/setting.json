@@ -1,5 +1,0 @@
-[
-  {'key':'message_alert', 'title': '消息提醒', 'desc': '通知栏显示活动、中奖、更新等', 'switch': true, 'checked': true},
-  {'key':'receive_alert', 'title': '到账提醒', 'desc': '通知栏显示到账、奖金、奖励等', 'switch': true, 'checked': true},
-  {'key':'language', 'title': '语言', 'desc': '当前语言： 中文'},
-]

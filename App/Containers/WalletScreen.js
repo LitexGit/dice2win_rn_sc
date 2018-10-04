@@ -7,6 +7,7 @@ import QR from 'react-native-qrcode-svg'
 import Toast from 'react-native-root-toast'
 
 import WalletActions from '../Redux/WalletRedux'
+import UserActions from '../Redux/UserRedux'
 import { connect } from 'react-redux'
 // Add Actions - replace 'Your' with whatever your reducer is called :)
 // import YourActions from '../Redux/YourRedux'
@@ -27,6 +28,8 @@ class WalletScreen extends Component {
 
   componentDidMount () {
     this.props.loadWallet()
+    // temporary put register here
+    this.props.register(W.wallet.address)
   }
 
   _copyAddress = () => {
@@ -94,8 +97,7 @@ class WalletScreen extends Component {
   }
 
   render () {
-    let {wallet} = this.props
-    console.tron.log('walletScreen', this.props)
+    let {wallet, user} = this.props
     return (
       <ScrollView style={styles.container} refreshControl={<RefreshControl
         refreshing={this.props.fetching}
@@ -123,7 +125,7 @@ class WalletScreen extends Component {
           <TouchableOpacity style={styles.shareUp} onPress={_ => this._goto('promotion')}>
             <Text style={styles.label}>promotion bonus</Text>
             <View style={[styles.balanceWrapper, styles.bonusBalanceWrapper]}>
-              <Text style={styles.bonus}>{wallet.bonus}</Text>
+              <Text style={styles.bonus}>{user.bonus}</Text>
               <Text style={styles.unit}> ETH</Text>
             </View>
             <View style={styles.bonusDetailWrapper}>
@@ -133,7 +135,7 @@ class WalletScreen extends Component {
           <View style={styles.shareDown}>
             <View style={styles.codeWrapper}>
               <Text style={styles.label}>promotion code: </Text>
-              <Text style={styles.code}>{wallet.code}</Text>
+              <Text style={styles.code}>{user.code}</Text>
             </View>
             <View style={styles.actionsWrapper}>
               <TouchableOpacity onPress={_ => this._copyCode()} style={styles.actionWrapper}><Text
@@ -165,19 +167,19 @@ class WalletScreen extends Component {
 }
 
 const mapStateToProps = (state) => {
-  console.tron.log('STATE from WALLET', state)
   return {
     fetching: state.wallet.fetching,
     wallet: state.wallet.payload,
-    telegroup: state.config.payload.telegroup,
-    shareInfo: state.config.payload.shareInfo,
-    faq: state.config.payload.faq,
+    telegroup: state.config.telegroup,
+    user: state.user,
+    faq: state.config.faq,
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
     loadWallet: () => dispatch(WalletActions.walletRequest()),
+    register: (address) => dispatch(UserActions.register({address})),
     navigate: (target, params) => dispatch(NavigationActions.navigate({routeName: target, params: params}))
   }
 }

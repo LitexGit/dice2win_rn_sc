@@ -2,7 +2,7 @@
 import apisauce from 'apisauce'
 
 // our "constructor"
-const create = (baseURL = 'https://api.github.com/') => {
+const create = (baseURL = 'http://api.eth4.fun/') => {
   // ------
   // STEP 1
   // ------
@@ -35,8 +35,15 @@ const create = (baseURL = 'https://api.github.com/') => {
   // way at this level.
   //
   const getRoot = () => api.get('')
-  const getRate = () => api.get('rate_limit')
-  const getUser = (username) => api.get('search/users', {q: username})
+  const getConfig = () => api.get('api/v1/games/dev/configs')
+  const getABI = () => api.get('api/v1/games/dev/abi')
+  const getActivity = () => api.get('api/v1/games/dev/banners')
+  const getRecord = ({game, address, page, size}) => api.get('api/v1/games/dev/bet/history', {gameId: game, addr: address, page, size})
+  const getUser = (uid) => api.get('api/v1/games/dev/userinfo', {uid})
+  const getPromotion = (uid) => api.get('api/v1/games/dev/shareinfo', {uid})
+  const getRandom = (address) => api.get('api/v1/games/dev/random', {eth_address:address})
+
+  const register = ({inviter, nickname, address}) => api.put('api/v1/games/dev/register', {aff_code: inviter, nickname, eth_address: address})
 
   // ------
   // STEP 3
@@ -53,8 +60,15 @@ const create = (baseURL = 'https://api.github.com/') => {
   return {
     // a list of the API functions from step 2
     getRoot,
-    getRate,
-    getUser
+    getConfig,
+    getABI,
+    getActivity,
+    getRecord,
+    getUser,
+    getPromotion,
+    getRandom,
+
+    register,
   }
 }
 
