@@ -12,7 +12,6 @@
 import { call, put} from 'redux-saga/effects'
 import WalletActions from '../Redux/WalletRedux'
 import PwdModalActions from '../Redux/PwdModalRedux'
-import AppConfig from '../Config/AppConfig'
 import abi from '../Config/abi'
 import walletLib from '../Lib/Wallet/wallet'
 
@@ -66,7 +65,7 @@ export function * importEncryptWallet (api, action) {
 export function * unlockWallet(api, action){
   let result = yield call(walletLib.unlockWallet, action.data.password)
   console.tron.log('unlock wallet', result)
-  yield put(WalletActions.setUnlock({unlockSuccess: result}))
+  yield put(PwdModalActions.setUnlock({unlockSuccess: result}))
 
 }
 
@@ -80,10 +79,8 @@ export function * encryptWallet (api, action) {
 
 export function * transfer (api, action) {
 
-  if(!W.wallet){
-    let result = yield call(walletLib.unlockWallet, action.data.password)
-    yield put(WalletActions.setUnlock({ unlockSuccess: result }))
-  }
+  let result = yield call(walletLib.unlockWallet, action.data.password)
+  yield put(PwdModalActions.setUnlock({ unlockSuccess: result }))
 
   if(W.wallet){
     let txHash = yield call(walletLib.sendTx, W.wallet, action.data.to, action.data.value, action.data.options);
@@ -106,7 +103,7 @@ export function * getRandom (api, action) {
 
   if(!W.wallet){
     let result = yield call(walletLib.unlockWallet, action.data.password)
-    yield put(WalletActions.setUnlock({ unlockSuccess: result }))
+    yield put(PwdModalActions.setUnlock({ unlockSuccess: result }))
     if(!result){
       return
     }

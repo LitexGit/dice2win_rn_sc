@@ -30,7 +30,6 @@ class PwdModal extends Component {
     if(this.props.onSubmit){
       this.props.onSubmit(this.state.pwd)
     }
-    this.props.closePwdModal()
   }
 
 
@@ -48,7 +47,7 @@ class PwdModal extends Component {
         <Modal
           animationType='slide'
           transparent={false}
-          visible={this.props.modalIsOpen || !this.props.unlockSuccess}
+          visible={this.props.modalIsOpen}
           onRequestClose={() => {
             alert('Modal has been closed.')
           }}
@@ -76,7 +75,7 @@ const mapStateToProps = (state) => {
   return {
     modalIsOpen: state.pwdModal.modalIsOpen,
     keystore: state.wallet.keystore,
-    unlockSuccess: state.wallet.unlockSuccess
+    unlockSuccess: state.pwdModal.unlockSuccess
 
   }
 }
@@ -87,7 +86,7 @@ const mapDispatchToProps = (dispatch) => {
     setPwd: (password) => dispatch(PwdModalActions.setPwd(password)),
     importEncryptWallet: (data) => dispatch(WalletActions.importEncryptWallet(data)),
     unlockWallet: (password) => dispatch(WalletActions.unlockWallet({password})),
-    resetUnlock: () => dispatch(WalletActions.setUnlock({unlockSuccess: true})),
+    resetUnlock: () => dispatch(PwdModalActions.setUnlock({unlockSuccess: false})),
     navigate: (target) => dispatch(NavigationActions.navigate({routeName: target})),
     closePwdModal: () => dispatch(PwdModalActions.closePwdModal())
   }

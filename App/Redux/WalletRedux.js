@@ -12,7 +12,6 @@ const {Types, Creators} = createActions({
   setKeystore: ['keystore'],
   setBalance: ['data'],
   setTx: ['data'],
-  setUnlock: ['data'],
   transfer: ['data'],
   getRandom: ['data'],
   importFromMnemonic: ['data'],
@@ -34,7 +33,6 @@ export const INITIAL_STATE = Immutable({
   wallet: {wallet: {mnemonic: null}},
   data: null,
   fetching: null,
-  unlockSuccess: false,
   payload: {address: '', balance: ''},
   error: null
 })
@@ -76,10 +74,6 @@ export const failure = state =>
   state.merge({fetching: false, error: true, payload: null})
 
 
-export const setUnlock = (state, action) =>{
-  console.tron.log('setUnlock', action)
-  return state.merge({unlockSuccess: action.data.unlockSuccess})
-}
 
 /* ------------- Hookup Reducers To Types ------------- */
 
@@ -87,7 +81,6 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.SET_WALLET]: setWallet,
   [Types.SET_KEYSTORE]: setKeystore,
   [Types.SET_TX]: setTx,
-  [Types.SET_UNLOCK]: setUnlock,
   [Types.SET_BALANCE]: setBalance,
   [Types.WALLET_REQUEST]: request,
   [Types.WALLET_SUCCESS]: success,

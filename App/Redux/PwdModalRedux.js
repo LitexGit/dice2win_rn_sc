@@ -7,6 +7,7 @@ const { Types, Creators } = createActions({
   openPwdModal: null,
   closePwdModal: null,
   setPwd: ['pwd'],
+  setUnlock: ['data'],
 
   pwdModalRequest: ['data'],
   pwdModalSuccess: ['payload'],
@@ -59,6 +60,10 @@ export const failure = state =>
   state.merge({ fetching: false, error: true, payload: null })
 
 
+export const setUnlock = (state, action) =>{
+  console.tron.log('setUnlock', action)
+  return state.merge({unlockSuccess: action.data.unlockSuccess, modalIsOpen: !action.data.unlockSuccess})
+}
 
 
 /* ------------- Hookup Reducers To Types ------------- */
@@ -66,6 +71,7 @@ export const failure = state =>
 export const reducer = createReducer(INITIAL_STATE, {
   [Types.OPEN_PWD_MODAL]: openPwdModal,
   [Types.CLOSE_PWD_MODAL]: closePwdModal,
+  [Types.SET_UNLOCK]: setUnlock,
 
   [Types.PWD_MODAL_REQUEST]: request,
   [Types.PWD_MODAL_SUCCESS]: success,

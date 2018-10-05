@@ -33,7 +33,6 @@ class TransferScreen extends Component {
         <TouchableOpacity full dark style={{marginTop: 20}}
                           onPress={() => {
                             this.props.openPwdModal()
-                            this.props.resetUnlock()
                             }} >
           <Text>转账</Text>
         </TouchableOpacity>
@@ -48,6 +47,7 @@ class TransferScreen extends Component {
         </Text>
 
         <PwdModal onSubmit = {(password) => this.props.transfer({to: this.state.to, value: this.state.value, password: password})}
+        onCancel = {_=> {console.tron.log('hello')}}
         />
 
       </ScrollView>
@@ -67,7 +67,6 @@ const mapDispatchToProps = (dispatch) => {
   return {
     transfer: (data) => dispatch(WalletActions.transfer(data)),
     openPwdModal: () => dispatch(PwdModalActions.openPwdModal()),
-    resetUnlock: () => dispatch(WalletActions.setUnlock({unlockSuccess: false})),
   }
 }
 

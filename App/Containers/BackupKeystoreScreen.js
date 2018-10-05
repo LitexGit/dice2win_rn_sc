@@ -16,13 +16,7 @@ import WalletActions from '../Redux/WalletRedux'
 class BackupKeystoreScreen extends Component {
 
   componentDidMount(){
-
-    this.props.resetUnlock()
-
-    if(!W.wallet){
-
-      this.props.openPwdModal()
-    }
+    this.props.openPwdModal()
   }
 
 
@@ -71,7 +65,6 @@ const mapDispatchToProps = (dispatch) => {
     navigate: (target) => dispatch(NavigationActions.navigate({ routeName: target })),
     openPwdModal: () => dispatch(PwdModalActions.openPwdModal()),
     unlockWallet: (password) => dispatch(WalletActions.unlockWallet({password})),
-    resetUnlock: () => dispatch(WalletActions.setUnlock({unlockSuccess: false})),
   }
 }
 
