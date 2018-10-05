@@ -21,7 +21,7 @@ export default Creators
 export const INITIAL_STATE = Immutable({
   modalIsOpen: false,
   pwd: '',
-
+  unlockSuccess: false,
   data: null,
   fetching: null,
   payload: null,
@@ -57,6 +57,9 @@ export const success = (state, action) => {
 // Something went wrong somewhere.
 export const failure = state =>
   state.merge({ fetching: false, error: true, payload: null })
+
+
+
 
 /* ------------- Hookup Reducers To Types ------------- */
 

@@ -54,7 +54,7 @@ class RootContainer extends Component {
 
     that = this
     setTimeout(()=>{
-      that.props.unlockWallet('123')
+      // that.props.unlockWallet('123')
     }, 1000)
 
 

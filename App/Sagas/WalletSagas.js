@@ -11,6 +11,7 @@
 
 import { call, put} from 'redux-saga/effects'
 import WalletActions from '../Redux/WalletRedux'
+import PwdModalActions from '../Redux/PwdModalRedux'
 import AppConfig from '../Config/AppConfig'
 import abi from '../Config/abi'
 import walletLib from '../Lib/Wallet/wallet'
@@ -63,7 +64,10 @@ export function * importEncryptWallet (api, action) {
 
 // 输入密码解锁当前钱包
 export function * unlockWallet(api, action){
-  yield call(walletLib.unlockWallet, action.data.password)
+  let result = yield call(walletLib.unlockWallet, action.data.password)
+  console.tron.log('unlock wallet', result)
+  yield put(WalletActions.setUnlock({unlockSuccess: result}))
+
 }
 
 
@@ -76,10 +80,16 @@ export function * encryptWallet (api, action) {
 
 export function * transfer (api, action) {
 
-  let txHash = yield call(walletLib.sendTx, W.wallet, action.data.to, action.data.value, action.data.options);
+  if(!W.wallet){
+    let result = yield call(walletLib.unlockWallet, action.data.password)
+    yield put(WalletActions.setUnlock({ unlockSuccess: result }))
+  }
 
-  console.tron.log('setTx', txHash)
-  yield put(WalletActions.setTx(txHash))
+  if(W.wallet){
+    let txHash = yield call(walletLib.sendTx, W.wallet, action.data.to, action.data.value, action.data.options);
+    console.tron.log('setTx', txHash)
+    yield put(WalletActions.setTx(txHash))
+  }
 }
 
 
@@ -92,6 +102,18 @@ export function * getBlance (api, action) {
 
 //下注
 export function * getRandom (api, action) {
+
+
+  if(!W.wallet){
+    let result = yield call(walletLib.unlockWallet, action.data.password)
+    yield put(WalletActions.setUnlock({ unlockSuccess: result }))
+    if(!result){
+      return
+    }
+  }
+
+
+
   console.tron.log('action', action)
   var url = 'http://api.eth4.fun:7001/api/v1/games/dev/random'
   const res = yield axios.put(url, {

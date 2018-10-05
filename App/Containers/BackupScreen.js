@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 // Add Actions - replace 'Your' with whatever your reducer is called :)
 // import YourActions from '../Redux/YourRedux'
 import WalletActions from '../Redux/WalletRedux'
+import NewPwdModalActions from '../Redux/NewPwdModalRedux'
 
 // Styles
 import styles from './Styles/BackupScreenStyle'
@@ -79,7 +80,7 @@ class BackupScreen extends Component {
     console.log('textarea:' + this.state.textarea)
     console.log('mnemonic:' + this.props.mnemonic)
     if (this.state.textarea === this.props.mnemonic) {
-      this.props.saveWallet(this.props.mnemonic, '123')
+      this.props.saveWallet(this.props.mnemonic, this.props.password)
       // this.props.navigate('BottomTab')
     }
     else {
@@ -132,7 +133,8 @@ class BackupScreen extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    mnemonic: state.wallet.wallet.mnemonic
+    mnemonic: state.wallet.wallet.mnemonic,
+    password: state.newPwdModal.pwd
   }
 }
 

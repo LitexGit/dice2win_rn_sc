@@ -36,17 +36,28 @@ class ImportWalletScreen extends Component {
         }}>助记词</Text>
         <TextInput
           multiline
-          numberOfLines={5}
           placeholder='输入助记词'
           style={{
             marginTop: 20,
             fontSize: 16,
-            height: 150,
+            height: 50,
             border: 2,
             color: Colors.text
           }}
           value={this.state.mnemonic}
           onChangeText={(mnemonic) => this.setState({mnemonic})} />
+        <TextInput placeholder='密码'
+          placeholderTextColor={Colors.cloud}
+        style={{
+          border: 2,
+        }}
+        />
+        <TextInput placeholder='重复密码'
+          placeholderTextColor={Colors.cloud}
+        style={{
+          border: 2,
+        }}
+        />
         <TouchableOpacity full dark style={{marginTop: 20}} onPress={() => {
           // this.props.openNewPwdModal()
           var mnemonic = this.state.mnemonic
@@ -58,6 +69,16 @@ class ImportWalletScreen extends Component {
             color: Colors.text
           }}>助记词导入</Text>
         </TouchableOpacity>
+
+          <Text style={{
+            marginTop: 20,
+            fontSize: 16,
+            color: Colors.text
+          }}>----------------------------------------------------------------</Text>
+
+
+
+
         <Text style={{
           marginTop: 20,
           fontSize: 16,
@@ -66,16 +87,27 @@ class ImportWalletScreen extends Component {
         <TextInput
           multiline
           numberOfLines={5}
-          placeholder='输入keystore'
+          placeholder='keystore文本内容'
+          placeholderTextColor={Colors.cloud}
           style={{
             marginTop: 20,
             fontSize: 16,
             height: 150,
             border: 2,
+            borderColor: Colors.steel,
             color: Colors.text
           }}
           value={this.state.keystore}
           onChangeText={(keystore) => this.setState({keystore})} />
+          <TextInput
+          placeholder='Keystore密码'
+          placeholderTextColor={Colors.cloud}
+          style={{
+            fontSize: 16,
+            border: 2,
+            color: Colors.text
+          }}
+          />
         <TouchableOpacity full dark style={{marginTop: 20}} onPress={() => {
           // this.props.openPwdModal()
           var keystore = this.state.keystore

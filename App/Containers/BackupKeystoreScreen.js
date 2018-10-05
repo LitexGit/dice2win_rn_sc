@@ -9,8 +9,23 @@ import QR from 'react-native-qrcode-svg'
 import styles from './Styles/BackupKeystoreScreenStyle'
 import NavigationActions from 'react-navigation/src/NavigationActions'
 import Colors from '../Themes/Colors'
+import PwdModal from '../Components/PwdModal';
+import PwdModalActions from '../Redux/PwdModalRedux'
+import WalletActions from '../Redux/WalletRedux'
 
 class BackupKeystoreScreen extends Component {
+
+  componentDidMount(){
+
+    this.props.resetUnlock()
+
+    if(!W.wallet){
+
+      this.props.openPwdModal()
+    }
+  }
+
+
   render() {
 
     let { keystore } = this.props
@@ -35,9 +50,14 @@ class BackupKeystoreScreen extends Component {
           color: Colors.text,
         }}>Qrcode</Text>
 
-          <View style={styles.qr}>{!!keystore &&
-          <QR value={keystore} size={120} color={Colors.silver} backgroundColor={Colors.casinoBlue}/>}</View>
+        <View style={styles.qr}>{!!keystore &&
+          <QR value={keystore} size={120} color={Colors.silver} backgroundColor={Colors.casinoBlue} />}</View>
+
+        <PwdModal onCancel={_ => this.props.navigate('WalletManageScreen')}
+          onSubmit={(password) => {this.props.unlockWallet(password)}}
+        />
       </ScrollView>
+
     )
   }
 }
@@ -49,6 +69,9 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     navigate: (target) => dispatch(NavigationActions.navigate({ routeName: target })),
+    openPwdModal: () => dispatch(PwdModalActions.openPwdModal()),
+    unlockWallet: (password) => dispatch(WalletActions.unlockWallet({password})),
+    resetUnlock: () => dispatch(WalletActions.setUnlock({unlockSuccess: false})),
   }
 }
 

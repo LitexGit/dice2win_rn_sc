@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import NavigationActions from 'react-navigation/src/NavigationActions'
 import GameActions from '../Redux/GameRedux'
 import StakeModalActions from '../Redux/StakeModalRedux'
+import PwdModalActions from '../Redux/PwdModalRedux'
 
 import { Colors, Images } from '../Themes'
 
@@ -15,6 +16,7 @@ import Etheroll from '../Components/Etheroll'
 
 import StakeModal from '../Components/StakeModal'
 import ResultModal from '../Components/ResultModal'
+import PwdModal from '../Components/PwdModal'
 
 import styles from './Styles/GameContainerScreenStyle'
 
@@ -52,8 +54,17 @@ class GameContainerScreen extends Component {
     }
   }
 
-  _placeBet = () => {
-    this.props.getRandom({ address: W.wallet.address, value: this.props.stake, betMask: this.props.betMask, modulo: this.props.modulo })
+
+  _placeBet = ()=>{
+    if(!W.wallet){
+      this.props.openPwdModal()
+    }else{
+      this._placeBetWithPassword('')
+    }
+  }
+
+  _placeBetWithPassword = (password) => {
+    this.props.getRandom({ address: W.address, value: this.props.stake, betMask: this.props.betMask, modulo: this.props.modulo, password: password})
     this.props.updateStatus('place')
   }
 
@@ -113,6 +124,7 @@ class GameContainerScreen extends Component {
           </View>
           <StakeModal />
           <ResultModal />
+          <PwdModal onSubmit={(password)=>this._placeBetWithPassword(password)}/>
         </View>
       </ScrollView>
     )
@@ -149,6 +161,7 @@ const mapDispatchToProps = (dispatch) => {
     rmUnit: () => dispatch(GameActions.rmUnit()),
 
     openStakeModal: () => dispatch(StakeModalActions.openStakeModal()),
+    openPwdModal: () => dispatch(PwdModalActions.openPwdModal()),
 
     updateStatus: (status) => dispatch(GameActions.updateStatus(status)),
 

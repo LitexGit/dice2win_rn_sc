@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 // Add Actions - replace 'Your' with whatever your reducer is called :)
 // import YourActions from '../Redux/YourRedux'
 import WalletActions from '../Redux/WalletRedux'
+import NewPwdModalActions from '../Redux/NewPwdModalRedux'
 
 // Styles
 import styles from './Styles/NewWalletScreenStyle'
@@ -20,6 +21,7 @@ class NewWalletScreen extends Component {
   // }
   componentDidMount () {
     console.tron.log('NewWalletScreen componentDidMount')
+    this.props.openNewPwdModal()
     this.props.newWallet()
   }
 
@@ -37,15 +39,9 @@ class NewWalletScreen extends Component {
           <Text style={{
             marginTop: 20,
             fontSize: 16,
-            color: Colors.text}}> 创建钱包下一步</Text>
+            color: Colors.text}}> 下一步</Text>
         </TouchableOpacity>
-          <TouchableOpacity onPress={_ => this.props.navigate('PreBackupScreen')}>
-          <Text style={{
-            marginTop: 20,
-            fontSize: 16,
-            color: Colors.text}}> 备份钱包 </Text>
-        </TouchableOpacity>
-        <NewPwdModal />
+        <NewPwdModal onCancel={_ => this.props.navigate('WalletManageScreen')} />
       </ScrollView>
     )
   }
@@ -61,6 +57,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     newWallet: () => dispatch(WalletActions.newWallet()),
+    openNewPwdModal: () => dispatch(NewPwdModalActions.openNewPwdModal()),
     navigate: (target) => dispatch(NavigationActions.navigate({routeName: target})),
   }
 }

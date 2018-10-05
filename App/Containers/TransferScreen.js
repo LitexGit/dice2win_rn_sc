@@ -6,14 +6,18 @@ import { connect } from 'react-redux'
 
 // Styles
 import styles from './Styles/TransferScreenStyle'
+import PwdModal from '../Components/PwdModal'
 import WalletActions from '../Redux/WalletRedux'
-import AppConfig from '../Config/AppConfig'
+import PwdModalActions, { openPwdModal } from '../Redux/PwdModalRedux'
 
 class TransferScreen extends Component {
   state = {
     to: '0x486c14c72bd37ead125c37d9d624118946d18a36',
     value: '0.0001'
   }
+
+
+
 
   render () {
     return (
@@ -27,7 +31,10 @@ class TransferScreen extends Component {
                      onChangeText={(value) => this.setState({value})}/>
         </View>
         <TouchableOpacity full dark style={{marginTop: 20}}
-                          onPress={() => this.props.transfer({to: this.state.to, value: this.state.value})}>
+                          onPress={() => {
+                            this.props.openPwdModal()
+                            this.props.resetUnlock()
+                            }} >
           <Text>转账</Text>
         </TouchableOpacity>
         <Text style={{padding: 10, fontSize: 11}}>
@@ -39,6 +46,9 @@ class TransferScreen extends Component {
         <Text style={{padding: 10, fontSize: 11}}>
           {/*当前交易哈希: {this.props.txHash}*/}
         </Text>
+
+        <PwdModal onSubmit = {(password) => this.props.transfer({to: this.state.to, value: this.state.value, password: password})}
+        />
 
       </ScrollView>
     )
@@ -55,7 +65,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    transfer: (data) => dispatch(WalletActions.transfer(data))
+    transfer: (data) => dispatch(WalletActions.transfer(data)),
+    openPwdModal: () => dispatch(PwdModalActions.openPwdModal()),
+    resetUnlock: () => dispatch(WalletActions.setUnlock({unlockSuccess: false})),
   }
 }
 

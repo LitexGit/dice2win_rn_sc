@@ -25,17 +25,19 @@ class NewPwdModal extends Component {
 
   _checkPwd () {
     if (this.state.pwd1 === this.state.pwd2) {
-
-      // this.props.encryptWallet({this.props.wallet ,this.state.pwd2})
-      // this.props.encryptWallet({wallet: this.props.wallet, pwd: this.state.pwd2})
-      this.props.newWallet({wallet: this.props.wallet, pwd: this.state.pwd2})
-      // if (this.props.navigateName) {
-      //   this.props.navigate(this.props.navigateName)
-      // }
+      this.props.setPwd(this.state.pwd2)
       this.props.closeNewPwdModal()
     } else {
       alert('密码不一致！')
     }
+  }
+
+  _closeModal (){
+    this.props.closeNewPwdModal()
+    if (this.props.onCancel) {
+      this.props.onCancel()
+    }
+
   }
 
   render () {
@@ -59,7 +61,7 @@ class NewPwdModal extends Component {
             <TouchableOpacity full dark style={{marginTop: 20}} onPress={this._checkPwd.bind(this)}>
               <Text> 确 定 </Text>
             </TouchableOpacity>
-            <TouchableOpacity full dark style={{marginTop: 20}} onPress={this.props.closeNewPwdModal}>
+            <TouchableOpacity full dark style={{marginTop: 20}} onPress={this._closeModal.bind(this)}>
               <Text> 取 消 </Text>
             </TouchableOpacity>
           </View>

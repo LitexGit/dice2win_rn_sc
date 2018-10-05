@@ -23,10 +23,22 @@ class PwdModal extends Component {
   }
 
   _checkPwd () {
-    this.props.importEncryptWallet({keystore: this.props.keystore, pwd: this.state.pwd})
-    // if (this.props.navigateName) {
-    //   this.props.navigate(this.props.navigateName)
-    // }
+
+    this.props.setPwd(this.state.pwd)
+    // this.props.unlockWallet();
+
+    if(this.props.onSubmit){
+      this.props.onSubmit(this.state.pwd)
+    }
+    this.props.closePwdModal()
+  }
+
+
+  _closeModal(){
+    if(this.props.onCancel){
+      this.props.onCancel()
+    }
+    this.props.resetUnlock()
     this.props.closePwdModal()
   }
 
@@ -36,7 +48,7 @@ class PwdModal extends Component {
         <Modal
           animationType='slide'
           transparent={false}
-          visible={this.props.modalIsOpen}
+          visible={this.props.modalIsOpen || !this.props.unlockSuccess}
           onRequestClose={() => {
             alert('Modal has been closed.')
           }}
@@ -50,7 +62,7 @@ class PwdModal extends Component {
             <TouchableOpacity full dark style={{marginTop: 20}} onPress={this._checkPwd.bind(this)}>
               <Text> 确 定 </Text>
             </TouchableOpacity>
-            <TouchableOpacity full dark style={{marginTop: 20}} onPress={this.props.closePwdModal}>
+            <TouchableOpacity full dark style={{marginTop: 20}} onPress={this._closeModal.bind(this)}>
               <Text> 取 消 </Text>
             </TouchableOpacity>
           </View>
@@ -63,14 +75,19 @@ class PwdModal extends Component {
 const mapStateToProps = (state) => {
   return {
     modalIsOpen: state.pwdModal.modalIsOpen,
-    keystore: state.wallet.keystore
+    keystore: state.wallet.keystore,
+    unlockSuccess: state.wallet.unlockSuccess
+
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
     openPwdModal: () => dispatch(PwdModalActions.openPwdModal()),
+    setPwd: (password) => dispatch(PwdModalActions.setPwd(password)),
     importEncryptWallet: (data) => dispatch(WalletActions.importEncryptWallet(data)),
+    unlockWallet: (password) => dispatch(WalletActions.unlockWallet({password})),
+    resetUnlock: () => dispatch(WalletActions.setUnlock({unlockSuccess: true})),
     navigate: (target) => dispatch(NavigationActions.navigate({routeName: target})),
     closePwdModal: () => dispatch(PwdModalActions.closePwdModal())
   }
