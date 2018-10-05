@@ -8,7 +8,6 @@ import { connect } from 'react-redux'
 import styles from './Styles/PreBackupScreenStyle'
 import NavigationActions from 'react-navigation/src/NavigationActions'
 import Colors from '../Themes/Colors'
-import AppConfig from '../Config/AppConfig'
 
 class PreBackupScreen extends Component {
   // constructor (props) {
@@ -16,11 +15,11 @@ class PreBackupScreen extends Component {
   //   this.state = {}
   // }
 
-  state = {
-    mnemonic: AppConfig.wallet.mnemonic
-  }
 
-  render () {
+
+  render() {
+
+    let { mnemonic } = this.props
     return (
       <ScrollView style={styles.container}>
         <Text style={{
@@ -37,9 +36,9 @@ class PreBackupScreen extends Component {
           marginTop: 20,
           fontSize: 16,
           color: Colors.text,
-        }}>{this.state.mnemonic}</Text>
-        <TouchableOpacity style={{marginTop: 20}}
-                          onPress={() => this.props.navigate('BackupScreen')}>
+        }}>{mnemonic}</Text>
+        <TouchableOpacity style={{ marginTop: 20 }}
+          onPress={() => this.props.navigate('BackupScreen')}>
           <Text style={{
             marginTop: 20,
             fontSize: 16,
@@ -52,12 +51,12 @@ class PreBackupScreen extends Component {
 }
 
 const mapStateToProps = (state) => {
-  return {}
+  return { mnemonic: W.wallet.mnemonic }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    navigate: (target) => dispatch(NavigationActions.navigate({routeName: target})),
+    navigate: (target) => dispatch(NavigationActions.navigate({ routeName: target })),
   }
 }
 

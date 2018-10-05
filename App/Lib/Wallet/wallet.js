@@ -31,23 +31,29 @@ function initGlobalWFull(wallet){
  * @return {boolean}
  */
 async function saveKeyStore(wallet, password, filepath) {
-  let json = await wallet.RNencrypt(password)
+  let json = await wallet.RNencrypt(password, {scrypt:{N:4096}})
+  // let json = await wallet.RNencrypt(password)
+  console.tron.log('walletLib saveKeyStore', json)
   let result = await RNFS.writeFile(filepath, json, 'utf8')
-  return result
+  console.tron.log('walletLib saveKeyStore writeFile', result)
+  return json
 
 }
 
+
 /**
- * @param keystorePath [keystore文件路径]
+ * 导出钱包到keystore
  *
- * @return 文件内容
+ * @param  wallet 钱包对象
+ * @param  password 钱包密码
+ *
+ * @returns {string} keystore对应的json
  */
-async function exportKeyStore(keystorePath){
-  const fileExist = await RNFS.exists(keystorePath)
-  if(fileExist){
-    return await RNFS.readFile(keystorePath)
-  }
-  return false
+async function encryptWallet(wallet, password){
+
+  let json = await wallet.RNencrypt(password, {scrypt: {N: 1 << 15}})
+  console.tron.log('walletLib encrypt wallet', json)
+  return json
 }
 
 
@@ -76,13 +82,23 @@ async function importPrivateKey(privatekey, password) {
  */
 async function importKeyStore(keystore, password) {
   var json = JSON.stringify(keystore)
+  let wallet = null
+  console.tron.log('walletLib importKeystore params', keystore, password)
+  try {
+    wallet = await Wallet.RNfromEncryptedWallet(json, password)
 
-  let wallet = await Wallet.RNfromEncryptedWallet(json, password)
+    console.tron.log('walletLib importKeystore', wallet)
 
-  initGlobalW(keystore)
-  initGlobalWFull(wallet)
+    let keystore1 = saveKeyStore(wallet, password, W.keystorePath)
 
-  saveKeyStore(wallet, password, W.keystorePath)
+    console.tron.log('walletLib importKeystore keystore', keystore1)
+    initGlobalW(keystore1)
+    initGlobalWFull(wallet)
+
+    console.tron.log('walletLib importKeystore W', W)
+  } catch (err) {
+    console.tron.log('walletLib importKeystore err', err)
+  }
 
   return wallet;
 
@@ -98,12 +114,24 @@ async function importKeyStore(keystore, password) {
  */
 async function importMnemonic(mnemonic, password) {
 
-  let wallet = await wallet.RNFromMnemonic(mnemonic)
+  let wallet = null
+  try {
+    let wallet = await Wallet.RNFromMnemonic(mnemonic)
 
-  initGlobalW(keystore)
-  initGlobalWFull(wallet)
+    console.tron.log('walletLib importMnemonic', wallet)
 
-  saveKeyStore(wallet, password, W.keystorePath)
+    let keystore = await saveKeyStore(wallet, password, W.keystorePath)
+
+    console.tron.log('walletLib importMnemonic keystore', keystore)
+
+    initGlobalW(JSON.parse(keystore))
+    initGlobalWFull(wallet)
+
+    console.tron.log('walletLib importMnemonic W', W)
+  } catch (err) {
+
+    console.tron.log('walletLib importKeystore err', err)
+  }
 
   return wallet
 
@@ -123,10 +151,10 @@ async function createWallet() {
  *
  * @param wallet [ETH 钱包对象]
  */
-async function getBalance(wallet) {
+async function getBalance(address) {
   var balance = 0
-  wallet.provider = providers.getDefaultProvider(W.network)
-  var balanceRaw = await wallet.getBalance()
+  let provider = providers.getDefaultProvider(W.network)
+  var balanceRaw = await provider.getBalance(address)
   var balance = parseInt(balanceRaw) / 1e18
   return balance
 }
@@ -166,8 +194,10 @@ async function initWallet() {
   // if keystore file not exist, create a fake file
   try {
     let exist = await RNFS.exists(keystorePath);
+    // let exist = false;
     if (!exist) {
-      let json = '{"address":"fc379f1fe62a88e047c50a36f8c1e4fa3e93092f","id":"633246eb-18f3-4492-a6a4-bcac6d416306","version":3,"Crypto":{"cipher":"aes-128-ctr","cipherparams":{"iv":"167c8308417951a0cc5fd3fa53ce3c07"},"ciphertext":"b714decc1fab39ddca1748ce34f6c823006bbdfa1de3ddc64912e26db98ce49d","kdf":"scrypt","kdfparams":{"salt":"844142f3e9618d62f59b253766edf55f29e96b088f18f35767a8ee4b50e8d2c3","n":131072,"dklen":32,"p":1,"r":8},"mac":"004001adba97970b56c678bc579f47526b2c2b9a6a2127b4a23dfc79d1f97cf7"},"x-ethers":{"client":"ethers.js","gethFilename":"UTC--2018-09-29T03-09-28.0Z--fc379f1fe62a88e047c50a36f8c1e4fa3e93092f","mnemonicCounter":"ae63b34eb14407f942541d511a9dfccb","mnemonicCiphertext":"4b6fdef7b4ae9ba363144a61ebe1070b","version":"0.1"}}';
+      let json = '{"address":"fc379f1fe62a88e047c50a36f8c1e4fa3e93092f","id":"d64a43b1-06de-468d-bc06-e6b39d515428","version":3,"Crypto":{"cipher":"aes-128-ctr","cipherparams":{"iv":"cdb19e71fcf868c842bf6c2a4006e0bb"},"ciphertext":"05cfe364bfb847ec9f27fd99f7dc4e30a4d58a2560ede52aef70d5c149b4635c","kdf":"scrypt","kdfparams":{"salt":"c9197a9b3ef9447e2c9b178cb8c0e9932ba7822002f08a06d85ecb8fc0c6c903","n":4096,"dklen":32,"p":1,"r":8},"mac":"a500e9ffd2b49794633dc5e846d6ef9856aea30de2095599b1db526cb964f028"},"x-ethers":{"client":"ethers.js","gethFilename":"UTC--2018-10-01T09-31-29.0Z--fc379f1fe62a88e047c50a36f8c1e4fa3e93092f","mnemonicCounter":"7fec53a97319ebff9a671eeef9e25c3b","mnemonicCiphertext":"8f88352567bbb001cb64936f84d5721b","version":"0.1"}}';
+      // let json = '{"address":"fc379f1fe62a88e047c50a36f8c1e4fa3e93092f","id":"633246eb-18f3-4492-a6a4-bcac6d416306","version":3,"Crypto":{"cipher":"aes-128-ctr","cipherparams":{"iv":"167c8308417951a0cc5fd3fa53ce3c07"},"ciphertext":"b714decc1fab39ddca1748ce34f6c823006bbdfa1de3ddc64912e26db98ce49d","kdf":"scrypt","kdfparams":{"salt":"844142f3e9618d62f59b253766edf55f29e96b088f18f35767a8ee4b50e8d2c3","n":131072,"dklen":32,"p":1,"r":8},"mac":"004001adba97970b56c678bc579f47526b2c2b9a6a2127b4a23dfc79d1f97cf7"},"x-ethers":{"client":"ethers.js","gethFilename":"UTC--2018-09-29T03-09-28.0Z--fc379f1fe62a88e047c50a36f8c1e4fa3e93092f","mnemonicCounter":"ae63b34eb14407f942541d511a9dfccb","mnemonicCiphertext":"4b6fdef7b4ae9ba363144a61ebe1070b","version":"0.1"}}';
       let result = await RNFS.writeFile(keystorePath, json, 'utf8');
       // console.tron.log(result);
     }
@@ -189,19 +219,23 @@ async function initWallet() {
       console.tron.log('initWallet', err);
       W.keystoreInitialized = false;
     }
+  }
+  // await unlockWallet('123')
+
+}
 
 
-
-
-    //Decrypt keystore to wallet instance
+async function unlockWallet(password){
     try {
-      let wallet = await Wallet.RNfromEncryptedWallet(JSON.stringify(W.keystore), '123');
+      let wallet = await Wallet.RNfromEncryptedWallet(JSON.stringify(W.keystore), password);
+
       initGlobalWFull(wallet);
       console.tron.log('wallet decrypted', W);
+      return true
     } catch (err) {
       console.tron.log('wallet decrypted err', err);
+      return false
     }
-  }
 }
 
 
@@ -214,6 +248,6 @@ module.exports = {
   getBalance,
   sendTx,
   saveKeyStore,
-  exportKeyStore,
-  initWallet
+  initWallet,
+  unlockWallet
 }

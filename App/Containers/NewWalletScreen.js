@@ -19,14 +19,27 @@ class NewWalletScreen extends Component {
   //   this.state = {}
   // }
   componentDidMount () {
+    console.tron.log('NewWalletScreen componentDidMount')
     this.props.newWallet()
   }
 
   render () {
+
+    let {mnemonic} = this.props
+
+    console.tron.log('New Wallet props',this.props)
+
     return (
       <ScrollView style={styles.container}>
         <Text style={{ marginTop: 20, fontSize: 16,
-          color: Colors.text}}>NewWallet Container</Text> <TouchableOpacity onPress={_ => this.props.navigate('PreBackupScreen')}>
+          color: Colors.text}}>{mnemonic}</Text>
+          <TouchableOpacity onPress={_ => this.props.navigate('BackupScreen')}>
+          <Text style={{
+            marginTop: 20,
+            fontSize: 16,
+            color: Colors.text}}> 创建钱包下一步</Text>
+        </TouchableOpacity>
+          <TouchableOpacity onPress={_ => this.props.navigate('PreBackupScreen')}>
           <Text style={{
             marginTop: 20,
             fontSize: 16,
@@ -39,7 +52,10 @@ class NewWalletScreen extends Component {
 }
 
 const mapStateToProps = (state) => {
-  return {}
+  return {
+    mnemonic: state.wallet.wallet.mnemonic
+    // mnemonic: 'hello'
+  }
 }
 
 const mapDispatchToProps = (dispatch) => {

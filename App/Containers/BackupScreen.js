@@ -3,12 +3,12 @@ import { ScrollView, Text, TextInput, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
 // Add Actions - replace 'Your' with whatever your reducer is called :)
 // import YourActions from '../Redux/YourRedux'
+import WalletActions from '../Redux/WalletRedux'
 
 // Styles
 import styles from './Styles/BackupScreenStyle'
 import NavigationActions from 'react-navigation/src/NavigationActions'
 import Colors from '../Themes/Colors'
-import AppConfig from '../Config/AppConfig'
 
 Array.prototype.remove = function (val) {
   var index = this.indexOf(val)
@@ -21,7 +21,6 @@ class BackupScreen extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      mnemonic: AppConfig.wallet.mnemonic,
       textareaArray: [],
       textarea: '',
       stateWord: [],
@@ -36,7 +35,7 @@ class BackupScreen extends Component {
 
   _displayWord () {
     console.log(this.state)
-    var mnemonic = this.state.mnemonic
+    var mnemonic = this.props.mnemonic
     // var words = mnemonic.split(' ').sort(()=> .5 - Math.random());
     var words = mnemonic.split(' ')
     var wordState = new Array()
@@ -78,10 +77,10 @@ class BackupScreen extends Component {
 
   _checkMnemonic () {
     console.log('textarea:' + this.state.textarea)
-    console.log('mnemonic:' + this.state.mnemonic)
-    if (this.state.textarea === this.state.mnemonic) {
-
-      this.props.navigate('BottomTab')
+    console.log('mnemonic:' + this.props.mnemonic)
+    if (this.state.textarea === this.props.mnemonic) {
+      this.props.saveWallet(this.props.mnemonic, '123')
+      // this.props.navigate('BottomTab')
     }
     else {
       alert('输入错误哦！')
@@ -139,6 +138,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    saveWallet: (mnemonic, password) => dispatch(WalletActions.saveWallet({mnemonic, password})),
     navigate: (target) => dispatch(NavigationActions.navigate({routeName: target})),
   }
 }

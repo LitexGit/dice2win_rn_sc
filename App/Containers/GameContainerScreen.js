@@ -129,7 +129,6 @@ const mapStateToProps = (state) => {
     reward: state.game.reward,
     modalIsOpen: state.game.modalIsOpen,
     loading: state.game.loading,
-    walletData: state.wallet.walletData,
 
     winRate: state.bet.winRate,
     rewardTime: state.bet.rewardTime,

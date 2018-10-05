@@ -20,7 +20,7 @@ import { startup } from './StartupSagas'
 import { getActivity } from './ActivitySagas'
 import { getRecord, getGameRecords } from './RecordSagas'
 import { getConfig, socketInit, watchSocketStatusChannel } from './ConfigSagas'
-import { initWallet, getWallet, newWallet, importWallet, encryptWallet, importEncryptWallet, transfer, getRandom } from './WalletSagas'
+import { initWallet, getWallet, newWallet, saveWallet, importFromMnemonic, unlockWallet, encryptWallet, importEncryptWallet, transfer, getRandom } from './WalletSagas'
 import { getSetting } from './SettingSagas'
 import { getNotification } from './NotificationSagas'
 import { register, getUser} from './UserSagas'
@@ -52,7 +52,7 @@ export default function * root () {
 
     // get records
     takeLatest(RecordTypes.RECORD_REQUEST, getRecord, api),
-    takeLatest(RecordTypes.GET_GAME_RECORDS, getGameRecords, api), 
+    takeLatest(RecordTypes.GET_GAME_RECORDS, getGameRecords, api),
 
     // get config
     takeLatest(ConfigTypes.CONFIG_REQUEST, getConfig, api),
@@ -63,7 +63,9 @@ export default function * root () {
     // Wallet Sagas
     takeLatest(WalletTypes.WALLET_REQUEST, getWallet, api),
     takeLatest(WalletTypes.NEW_WALLET, newWallet, api),
-    takeLatest(WalletTypes.IMPORT_WALLET, importWallet, api),
+    takeLatest(WalletTypes.SAVE_WALLET, saveWallet, api),
+    takeLatest(WalletTypes.IMPORT_FROM_MNEMONIC, importFromMnemonic, api),
+    takeLatest(WalletTypes.UNLOCK_WALLET, unlockWallet, api),
     takeLatest(WalletTypes.ENCRYPT_WALLET, encryptWallet, api),
     takeLatest(WalletTypes.IMPORT_ENCRYPT_WALLET, importEncryptWallet, api),
     takeLatest(WalletTypes.TRANSFER, transfer, api),

@@ -20,7 +20,7 @@ class WalletManageScreen extends Component {
         <TouchableOpacity style={styles.buttonWrapper} onPress={_ => this.props.navigate('ImportWalletScreen')}>
           <Text style={styles.buttonText}> Import Wallet </Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.buttonWrapper} onPress={_ => this.props.navigate('PreBackupScreen')}>
+        <TouchableOpacity style={styles.buttonWrapper} onPress={_ => this.props.navigate('BackupKeystoreScreen')}>
           <Text style={styles.buttonText}> Backup Wallet </Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.buttonWrapper} onPress={_ => this.props.navigate('TransferScreen')}>

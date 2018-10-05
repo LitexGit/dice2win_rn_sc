@@ -19,50 +19,59 @@ import walletLib from '../Lib/Wallet/wallet'
 let ethers = require('ethers')
 let axios = require('axios')
 
-
+//随机生成一个wallet，将wallet对象返回
 export function * newWallet (api, action) {
   console.tron.log('newWallet begin')
   const wallet = yield call(ethers.Wallet.RNCreateRandom)
   console.tron.log('newWallet', wallet)
-  AppConfig.wallet = wallet
   yield put(WalletActions.setWallet(wallet))
 }
 
+//新建wallet后，将wallet存入本地存储中
+export function * saveWallet (api, action) {
+  console.tron.log('saveWallet begin', action)
+  yield call(walletLib.importMnemonic, action.data.mnemonic, action.data.password)
+  console.tron.log('saveWallet success')
+  // yield put(WalletActions.setWallet(wallet))
+}
 
 
+//从本地存储中读入wallet数据，将其存入到全局变量W中
 export function * initWallet (api, action) {
 
   yield call(walletLib.initWallet)
   // const delay = (ms) => new Promise(res => setTimeout(res, ms))
-  yield socket.emit('lottery', W.wallet.address)
+  yield socket.emit('lottery', W.address)
   //yield call(delay, 1000)
   // yield delay(5000)
 }
-// 从助记词导入钱包
-export function * importWallet (api, action) {
-    yield call(walletLib.importMnemonic, action.data.pwd)
+
+// 从助记词导入钱包，并将其存入本地存储中
+export function * importFromMnemonic(api, action) {
+    yield call(walletLib.importMnemonic, action.data.mnemonic, action.data.password)
 }
 
-// 从keystore导入钱包
+// 从keystore导入钱包，并将其存入本地存储中
 export function * importEncryptWallet (api, action) {
   console.log('wallet importEncryptWallet', action)
   var keystore = action.data.keystore
-  var pwd = action.data.pwd
+  var pwd = action.data.password
+
   yield call(walletLib.importKeyStore, keystore, pwd)
+
+}
+
+// 输入密码解锁当前钱包
+export function * unlockWallet(api, action){
+  yield call(walletLib.unlockWallet, action.data.password)
 }
 
 
-
-
-
+// 当前钱包, 并将其keystore返回给前端
 export function * encryptWallet (api, action) {
-  const wallet = AppConfig.wallet
-  const keystore = yield wallet.RNencrypt(action.data.pwd)
+  const keystore = yield call(walletLib.encryptWallet, W.wallet)
   yield put(WalletActions.setKeystore(keystore))
 }
-
-
-
 
 
 export function * transfer (api, action) {
@@ -75,12 +84,13 @@ export function * transfer (api, action) {
 
 
 
-
+//获取当前账户的以太坊余额
 export function * getBlance (api, action) {
-  const balance = yield call(walletLib.getBalance, W.wallet)
+  let balance = yield call(walletLib.getBalance, W.address)
   yield put(WalletActions.setBalance(balance))
 }
 
+//下注
 export function * getRandom (api, action) {
   console.tron.log('action', action)
   var url = 'http://api.eth4.fun:7001/api/v1/games/dev/random'
@@ -109,12 +119,13 @@ export function * getRandom (api, action) {
   console.tron.log('ans', ans)
 }
 
+//获取当前钱包信息
 export function* getWallet(api, action) {
   const { data } = action
   try {
-    const balance = yield call(walletLib.getBalance, W.wallet)
+    let balance = yield call(walletLib.getBalance, W.address)
     console.tron.log('getWallet', balance)
-    yield put(WalletActions.walletSuccess({ address: W.wallet.address, balance: balance }))
+    yield put(WalletActions.walletSuccess({ address: W.address, balance: balance }))
 
   } catch (err) {
     yield put(WalletActions.walletFailure())

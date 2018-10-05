@@ -29,7 +29,7 @@ class WalletScreen extends Component {
   componentDidMount () {
     this.props.loadWallet()
     // temporary put register here
-    this.props.register(W.wallet.address)
+    this.props.register(W.address)
   }
 
   _copyAddress = () => {

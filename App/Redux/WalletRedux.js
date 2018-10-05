@@ -4,18 +4,19 @@ import Immutable from 'seamless-immutable'
 /* ------------- Types and Action Creators ------------- */
 
 const {Types, Creators} = createActions({
+  initWallet: null,
   newWallet: null,
+  saveWallet: ['data'],
   encryptWallet: ['data'],
+  unlockWallet: ['data'],
   setKeystore: ['keystore'],
   setBalance: ['data'],
   setTx: ['data'],
   transfer: ['data'],
   getRandom: ['data'],
-
-  importWallet: ['mnemonic'],
+  importFromMnemonic: ['data'],
   importEncryptWallet: ['data'],
   setWallet: ['wallet'],
-  initWallet: null,
   walletRequest: ['data'],
   walletSuccess: ['payload'],
   walletFailure: null
@@ -29,10 +30,7 @@ export default Creators
 export const INITIAL_STATE = Immutable({
   keystore: {},
   tx: {hash: ''},
-  walletData: {
-    address: '',
-    balance: ''
-  },
+  wallet: {wallet: {mnemonic: null}},
   data: null,
   fetching: null,
   payload: {address: '', balance: ''},
@@ -48,7 +46,9 @@ export const WalletSelectors = {
 /* ------------- Reducers ------------- */
 
 export const setWallet = (state, {wallet}) =>
+  // console.tron.log('setWallet', wallet)
   state.merge({wallet})
+  // console.log(state.wallet)
 
 export const setTx = (state, {tx}) =>
   state.merge({tx})

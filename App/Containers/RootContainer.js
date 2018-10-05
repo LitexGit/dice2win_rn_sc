@@ -51,6 +51,13 @@ class RootContainer extends Component {
     /* AFTER API Setup */
     this.props.initSocket(this.props.ws)
     this.props.initWallet()
+
+    that = this
+    setTimeout(()=>{
+      that.props.unlockWallet('123')
+    }, 1000)
+
+
   }
 
   render () {
@@ -74,6 +81,7 @@ const mapDispatchToProps = (dispatch) => ({
   startup: () => dispatch(StartupActions.startup()),
   initSocket: (address) => dispatch(ConfigActions.socketInit(address)),
   initWallet: () => dispatch(WalletActions.initWallet()),
+  unlockWallet: (password) => dispatch(WalletActions.unlockWallet({password})),
   setNotification: (message) => dispatch(NotificationActions.notificationSuccess({message: message}))
 })
 
