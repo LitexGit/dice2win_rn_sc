@@ -1,67 +1,67 @@
 import React, { Component } from 'react'
 // import PropTypes from 'prop-types';
-import { View, Text, TouchableOpacity, Image, Modal } from 'react-native'
-import styles from './Styles/CoinStyle'
-import Images from '../Themes/Images'
+import { View, Text, TouchableOpacity, Modal } from 'react-native'
 import StakeModalActions from '../Redux/StakeModalRedux'
+import WalletActions from '../Redux/WalletRedux'
+import GameActions from '../Redux/GameRedux'
+
 import connect from 'react-redux/es/connect/connect'
 
-class StakeModal extends Component {
+import Overlay from 'react-native-modal-overlay'
 
+import styles from './Styles/StakeModalStyle'
+
+class StakeModal extends Component {
   render () {
     return (
-      <View style={{marginTop: 22}}>
-        <Modal
-          animationType='slide'
-          transparent={false}
-          visible={this.props.modalIsOpen}
-          onRequestClose={() => {
-            alert('Modal has been closed.')
-          }}
-        >
-          <View style={{padding: 30}}>
-            <View style={{marginTop: 50, flex: 1}}>
-
-              <Text style={{color: '#000', alignSelf: 'center'}}>{this.props.stake}Eth</Text>
-            </View>
-            <View style={{marginTop: 0, flex: 1}}>
-              <Text>From</Text>
-
-              <Text style={{color: '#000', alignSelf: 'center'}}/>
-            </View>
-            <View style={{marginTop: 0, flex: 1}}>
-              <Text>To</Text>
-              <Text style={{color: '#000', alignSelf: 'center'}}>0xAe985667078744A8EFb0C6c0300D7861EF427148</Text>
-
-            </View>
-            <View style={styles.listBox}>
-              <Text>Gas费用</Text>
-              <Text style={{color: '#000'}}>6G Wei</Text>
-            </View>
-            <View style={styles.listBox}>
-              <Text>最大总计</Text>
-              <Text style={{color: '#000'}}>{this.props.stake}</Text>
-            </View>
-
-            <View style={{marginTop: 22, flex: 3}} style={styles.stakeBox}>
-
-              <TouchableOpacity full dark style={{marginTop: 20}} onPress={this.props.closeStakeModal}>
-                <Text> 批 准 </Text>
-              </TouchableOpacity>
-              <TouchableOpacity full dark style={{marginTop: 20}} onPress={this.props.closeStakeModal}>
-                <Text> 取 消 </Text>
-              </TouchableOpacity>
-            </View>
-            <Text
-              style={{
-                color: '#000',
-                alignSelf: 'center',
-                marginTop: 50
-              }}>{this.props.loading ? '正在提交……' : ''}</Text>
+      <Overlay 
+        containerStyle={styles.modal}
+        childrenWrapperStyle={styles.content}
+        visible={this.props.modalIsOpen}
+        animationType='zoomIn'
+        animationDuration={300}>
+          <View style={styles.header}>
+            <Text style={styles.headerText}>Confirm</Text>
           </View>
-        </Modal>
-      </View>
+          <View style={styles.ethWrapper}>
+            <Text style={styles.ethText}>{this.props.stake} ETH</Text>
+          </View>
+          <View style={styles.fromToWrapper}>
+            <Text style={styles.label}>From: </Text>
+            <Text style={styles.fromToText}>{this.props.address}</Text>
+          </View>
+          <View style={styles.fromToWrapper}>
+            <Text style={styles.label}>To: </Text>
+            <Text style={styles.fromToText}>{this.props.contract}</Text>
+          </View>
+          <View style={styles.gasWrapper}>
+            <Text style={styles.label}>Gas</Text>
+            <Text style={styles.gasText}>6G Wei</Text>
+          </View>
+
+          <View style={styles.actionWrapper}>
+            <TouchableOpacity style={styles.cancelButton} onPress={this.props.closeStakeModal}>
+              <Text style={styles.label}> Cancel </Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.confirmButton} onPress={_=>this._confirm()}>
+              <Text style={styles.label}> Confirm </Text>
+            </TouchableOpacity>
+          </View>
+      </Overlay>
     )
+  }
+
+  _confirm = () => {
+    let {getRandom, updateStatus, closeStakeModal, 
+      address, stake, betMask, modulo, password} = this.props
+
+    getRandom({ address, value: stake, betMask, modulo, password })
+    
+    if(password && password!='')  {
+      updateStatus({[modulo]:'place'})
+    }
+
+    closeStakeModal()
   }
 }
 
@@ -69,14 +69,21 @@ const mapStateToProps = (state) => {
   return {
     modalIsOpen: state.stakeModal.modalIsOpen,
     stake: state.game.stake,
-    loading: state.stakeModal.loading
+    contract: state.config.contract_address,
+    address: state.wallet.address, // Need to be state.user.address ?
+    betMask: state.bet.betMask,
+    modulo: state.bet.modulo,
+    password: state.pwdModal.pwd,
+    loading: state.stakeModal.loading,
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
     openStakeModal: () => dispatch(StakeModalActions.openStakeModal()),
-    closeStakeModal: () => dispatch(StakeModalActions.closeStakeModal())
+    closeStakeModal: () => dispatch(StakeModalActions.closeStakeModal()),
+    updateStatus: (status) => dispatch(GameActions.updateStatus(status)),
+    getRandom: (address) => dispatch(WalletActions.getRandom(address)),
   }
 }
 

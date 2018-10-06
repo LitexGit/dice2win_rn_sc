@@ -29,7 +29,7 @@ class WalletScreen extends Component {
   componentDidMount () {
     this.props.loadWallet()
     // temporary put register here
-    this.props.register(W.address)
+    !this.props.user.uid && this.props.register(W.address)
   }
 
   _copyAddress = () => {
@@ -169,7 +169,7 @@ class WalletScreen extends Component {
 const mapStateToProps = (state) => {
   return {
     fetching: state.wallet.fetching,
-    wallet: state.wallet.payload,
+    wallet: state.wallet,
     telegroup: state.config.telegroup,
     user: state.user,
     faq: state.config.faq,

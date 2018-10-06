@@ -33,7 +33,9 @@ export const INITIAL_STATE = Immutable({
   wallet: {wallet: {mnemonic: null}},
   data: null,
   fetching: null,
-  payload: {address: '', balance: ''},
+  address: '',
+  balance: '',
+  payload: null,
   error: null
 })
 
@@ -61,12 +63,11 @@ export const setKeystore = (state, {keystore}) =>
 
 // request the data from an api
 export const request = (state, {data}) =>
-  state.merge({fetching: true, data })
+  state.merge({fetching: true, data, payload:null })
 
 // successful api lookup
 export const success = (state, action) => {
-  const {payload} = action
-  return state.merge({fetching: false, error: null, payload})
+  return state.merge({fetching: false, error: null, ...action.payload})
 }
 
 // Something went wrong somewhere.

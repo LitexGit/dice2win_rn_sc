@@ -52,6 +52,7 @@
     "react-native-fs": "^2.11.17",
     "react-native-i18n": "^1.0.0",
     "react-native-iphone-x-helper": "^1.1.0",
+    "react-native-modal-overlay": "^1.2.3",
     "react-native-qrcode-svg": "^5.1.1",
     "react-native-root-toast": "^3.0.1",
     "react-native-scrollable-tab-view": "^0.8.0",

@@ -18,7 +18,7 @@ export function * getGameRecords (api, action) {
   const { data: {gameId, page, size} } = action
   const response = yield call(api.getRecord, {gameId, page, size})
   if (response.ok) {
-    yield put(RecordActions.recordSuccess(response.data))
+    yield put(RecordActions.recordSuccess({global: response.data}))
   } else {
     yield put(RecordActions.recordFailure())
   }

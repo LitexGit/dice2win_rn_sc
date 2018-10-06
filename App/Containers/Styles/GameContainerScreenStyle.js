@@ -59,7 +59,7 @@ export default StyleSheet.create({
   startButton: {
     height: START_BUTTON_SIZE,
     borderRadius: 5,
-    borderColor: Colors.activeTint,
+    borderColor: Colors.bloodOrange,
     borderWidth: 1,
     backgroundColor: Colors.facebook,
     alignItems: 'center', 
@@ -80,55 +80,39 @@ export default StyleSheet.create({
   },
 
   balanceText: {
-    color: Colors.text, 
-    fontSize: 20
+    alignSelf: 'center',
+    color: Colors.casinoGreen, 
+    fontSize: 14
   },
 
   rewardWrapper:{
-    marginTop: 20,
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center'
   },
 
   keyText: {
-    color: Colors.bloodOrange,
-    fontSize: 16,
+    color: Colors.activeTint,
+    fontSize: 20,
   },
 
   rewardText: {
     color: Colors.snow, 
-    fontSize: 16,
+    fontSize: 14,
     padding: 3,
   },
 
-  recordList: {
-    height: 200,
-  },
-
-  recordItem: {
-    flex:1,
+  infoWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent:'space-between',
+    justifyContent: 'space-between',
   },
-  userColWrapper: {
-    width: 70,
-  },
-  userColText: {
-    color: Colors.facebook,
-  },
-  valueWrapper: {
-    flexDirection: 'row'
-  },
-  inValue:{
-    fontSize: 24,
-    color: Colors.casinoGreen
-  },
-  outValue:{
-    fontSize: 24,
-    color: Colors.activeTint
-  },
-
-
+  info: {
+    flex: 1,
+    margin: 8,
+    padding: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: Colors.neetGray,
+  }
 })

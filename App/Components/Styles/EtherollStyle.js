@@ -6,6 +6,16 @@ export default StyleSheet.create({
   container: {
     flex: 1
   },
+  sliderWrapper: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between'
+  },
+  slider:{
+    flex:1,
+    margin: 5,
+  },
   rateWrapper:{
     flex: 1,
     flexDirection: 'row',

@@ -11,7 +11,6 @@ const { Types, Creators } = createActions({
 })
 
 export const RecordTypes = Types
-export const RecordTags = ['game', 'tx', 'bonus', 'global']
 export default Creators
 
 /* ------------- Initial State ------------- */

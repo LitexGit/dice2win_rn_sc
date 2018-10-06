@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types';
-import { View, Text, Modal, TouchableOpacity } from 'react-native'
-import styles from './Styles/ResultModalStyle'
+import { View, Text, TouchableOpacity } from 'react-native'
+import NavigationActions from 'react-navigation/src/NavigationActions'
 import GameActions from '../Redux/GameRedux'
+import styles from './Styles/ResultModalStyle'
 import { connect } from 'react-redux'
 
 // i18n
@@ -14,52 +15,36 @@ const STATUS_TEXT = {
 }
 
 class ResultModal extends Component {
-  // Prop type warnings
-  // static propTypes = {
-  //   show: PropTypes.bool.isRequired,
-  //   status: PropTypes.string.isRequired,
-  //   result: PropTypes.object,
-  // }
-  //
-  // // Defaults for props
-  // static defaultProps = {
-  //   someSetting: false
-  // }
 
   render () {
-    let {status, result} = this.props 
+    let {modulo, status, result} = this.props 
     return (
-      <Modal
-        animationType='fade'
-        transparent={true}
-        visible={!!status}
-        onRequestClose={() => {}}>
-        <View style={[styles.container, styles['container_'+status]]}>
-          <View style={styles.content}>
-            <Text style={styles.statusText}>{STATUS_TEXT[status]}</Text>
-            {status==='win' && result.amount && <Text style={styles.amountText}>{result.amount} ETH!</Text>}
-          </View>
-          <View style={styles.buttonPanel}>
-            <TouchableOpacity style={styles.buttonWrapper} onPress={_=>this.props.close()}>
-              <Text style={styles.buttonText}>Close</Text>
-            </TouchableOpacity>
-          </View>
+      <View style={[styles.container, styles['container_'+status]]}>
+        <View style={styles.content}>
+          <Text style={styles.statusText}>{STATUS_TEXT[status]}</Text>
+          {status==='win' && result.amount && <Text style={styles.amountText}>{result.amount} ETH!</Text>}
         </View>
-      </Modal>
+        <View style={styles.buttonPanel}>
+          <TouchableOpacity style={styles.buttonWrapper} onPress={_=>this.props.close(modulo)}>
+            <Text style={styles.buttonText}>Close</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
     )
   }
 }
 
 const mapStateToProps = (state) => {
   return {
-    status: state.game.status,
-    result: state.game.result,
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    close: () => dispatch(GameActions.updateStatus())
+    close: (modulo)=>{
+      dispatch(NavigationActions.back())
+      dispatch(GameActions.updateStatus({[modulo]:'idle'}))
+    }
   }
 }
 

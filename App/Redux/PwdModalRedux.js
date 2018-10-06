@@ -43,8 +43,9 @@ export const openPwdModal = (state) =>
 export const closePwdModal = (state) =>
   state.merge({modalIsOpen: false})
 
-export const setPwd = (state, acton) =>
-  state.merge({pwd: acton.pwd})
+export const setPwd = (state, action) => 
+  state.merge({pwd: action.pwd})
+  
 // request the data from an api
 export const request = (state, { data }) =>
   state.merge({ fetching: true, data, payload: null })
@@ -72,6 +73,7 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.OPEN_PWD_MODAL]: openPwdModal,
   [Types.CLOSE_PWD_MODAL]: closePwdModal,
   [Types.SET_UNLOCK]: setUnlock,
+  [Types.SET_PWD]: setPwd,
 
   [Types.PWD_MODAL_REQUEST]: request,
   [Types.PWD_MODAL_SUCCESS]: success,

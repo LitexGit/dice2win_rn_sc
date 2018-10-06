@@ -1,11 +1,13 @@
 import React, { Component } from 'react'
 // import PropTypes from 'prop-types';
-import { View, Text, Modal, TouchableOpacity, TextInput } from 'react-native'
+import { View, Text, TouchableOpacity, TextInput } from 'react-native'
+import Overlay from 'react-native-modal-overlay'
 import styles from './Styles/PwdModalStyle'
 import PwdModalActions from '../Redux/PwdModalRedux'
 import WalletActions from '../Redux/WalletRedux'
 import connect from 'react-redux/es/connect/connect'
 import NavigationActions from 'react-navigation/src/NavigationActions'
+import { Colors } from '../Themes';
 
 class PwdModal extends Component {
   // // Prop type warnings
@@ -30,6 +32,8 @@ class PwdModal extends Component {
     if(this.props.onSubmit){
       this.props.onSubmit(this.state.pwd)
     }
+
+    this.props.closePwdModal()
   }
 
 
@@ -43,30 +47,30 @@ class PwdModal extends Component {
 
   render () {
     return (
-      <View style={{marginTop: 22}}>
-        <Modal
-          animationType='slide'
-          transparent={false}
-          visible={this.props.modalIsOpen}
-          onRequestClose={() => {
-            alert('Modal has been closed.')
-          }}
-        >
-          <View style={{marginTop: 50, flex: 1}}>
-            <TextInput multiline={false} placeholder='请输入密码' onChangeText={val => this.setState({pwd: val})}/>
-          </View>
+      <Overlay 
+        containerStyle={styles.modal}
+        childrenWrapperStyle={styles.content}
+        visible={this.props.modalIsOpen}
+        animationType='zoomIn'
+        animationDuration={300}>
+        <View style={styles.header}>
+          <TextInput style={styles.headerText} 
+            multiline={false}
+            placeholder='Input your password'
+            placeholderTextColor={'gray'}
+            secureTextEntry={true}
+            onChangeText={val => this.setState({pwd: val})}/>
+        </View>
 
-          <View style={{marginTop: 22, flex: 3}}>
-
-            <TouchableOpacity full dark style={{marginTop: 20}} onPress={this._checkPwd.bind(this)}>
-              <Text> 确 定 </Text>
-            </TouchableOpacity>
-            <TouchableOpacity full dark style={{marginTop: 20}} onPress={this._closeModal.bind(this)}>
-              <Text> 取 消 </Text>
-            </TouchableOpacity>
-          </View>
-        </Modal>
-      </View>
+        <View style={styles.actionWrapper}>
+          <TouchableOpacity style={styles.cancelButton} onPress={this._closeModal.bind(this)}>
+            <Text style={styles.label}> 取 消 </Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.confirmButton} onPress={this._checkPwd.bind(this)}>
+            <Text style={styles.label}> 确 定 </Text>
+          </TouchableOpacity>
+        </View>
+      </Overlay>
     )
   }
 }

@@ -18,10 +18,10 @@ import NavigationActions from 'react-navigation/src/NavigationActions'
 
 
 const entryData = [
-  {img: Images.coin, title: 'Coin Flip', desc: 'Fifty-fifty Winning bet pays 1.98×', key: 0},
-  {img: Images.dice1, title: 'Roll a Dice', desc: '1 to 6 Winning bet pays up to 5.94×', key: 1},
-  {img: Images.dice2, title: 'Two Dice', desc: '2 to 12 Winning bet pays up to 35.64×', key: 2},
-  {img: Images.roll, title: 'Etheroll', desc: '1% to 97% Winning bet pays up to 99×', key: 3}
+  {img: Images.coin, title: 'Coin Flip', desc: 'Fifty-fifty Winning bet pays 1.98×', key: 2},
+  {img: Images.dice1, title: 'Roll a Dice', desc: '1 to 6 Winning bet pays up to 5.94×', key: 6},
+  {img: Images.dice2, title: 'Two Dices', desc: '2 to 12 Winning bet pays up to 35.64×', key: 36},
+  {img: Images.roll, title: 'Etheroll', desc: '1% to 97% Winning bet pays up to 99×', key: 100}
 ]
 
 class GameScreen extends Component {
@@ -48,21 +48,20 @@ class GameScreen extends Component {
   }
 
   Entry = ({item}) => {
-    // console.log('Entry this:', this)
     return (
       <TouchableOpacity style={styles.entry} onPress={() => {
         this.props.setGameKey(item.key)
         switch (item.key) {
-          case 0:
+          case 2:
             this.props.loadCoin()
             break
-          case 1:
+          case 6:
             this.props.loadOneDice()
             break
-          case 2:
+          case 36:
             this.props.loadTwoDice()
             break
-          case 3:
+          case 100:
             this.props.loadEtheroll()
             break
         }

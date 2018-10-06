@@ -20,6 +20,13 @@ const {Types, Creators} = createActions({
 export const GameTypes = Types
 export default Creators
 
+export const GAME_IDS = {
+  'coin': 2,
+  'dice1': 6,
+  'dice2': 36,
+  'roll': 100
+}
+
 /* ------------- Initial State ------------- */
 
 export const INITIAL_STATE = Immutable({
@@ -29,8 +36,9 @@ export const INITIAL_STATE = Immutable({
   fetching: null,
   payload: null,
   error: null,
-  result: {},
-  status: null,
+
+  result: {2:{}, 6:{}, 36:{}, 100:{}},
+  status: {2:'idle', 6:'idle', 36:'idle', 100:'idle'},
 })
 
 /* ------------- Selectors ------------- */
@@ -42,12 +50,12 @@ export const GameSelectors = {
 /* ------------- Reducers ------------- */
 
 export const updateStatus = (state, action) => {
-  let {status} = action
+  let status = {...state.status, ...action.status}
   return state.merge({status})
 }
 
 export const updateResult = (state, action) => {
-  let {result} = action
+  let result = {...state.result, ...action.result}
   return state.merge({result})
 }
 

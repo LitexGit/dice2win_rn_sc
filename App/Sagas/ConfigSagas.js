@@ -64,9 +64,9 @@ const socketConnected = () => {
 
 const socketMessage = (msg) => {
   let status = msg.bet_res
-  socketStatusChannel.put(GameActions.updateStatus(status))
+  !!status && socketStatusChannel.put(GameActions.updateStatus({[msg.modulo]:status}))
   if(status === 'win'){
-    let result = {amount: msg.dice_payment}
+    let result = {[msg.modulo]:{amount: msg.dice_payment}}
     socketStatusChannel.put(GameActions.updateResult(result))
   }
   console.tron.log('Socket MSG:', msg)
