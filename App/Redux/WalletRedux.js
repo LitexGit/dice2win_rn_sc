@@ -72,7 +72,7 @@ export const success = (state, action) => {
 
 // Something went wrong somewhere.
 export const failure = state =>
-  state.merge({fetching: false, error: true, payload: null})
+  state.merge({fetching: false, error: true, payload: {address: '', balance: ''}})
 
 
 

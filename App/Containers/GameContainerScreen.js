@@ -45,8 +45,11 @@ class GameContainerScreen extends Component {
   }
 /*
   _placeBet = ()=>{
-    if(!W.wallet){
-      this.props.openPwdModal() // and then ?
+    if(!W.address){
+      this.props.navigate('WalletManageScreen')
+
+    }else if(!W.wallet){
+      this.props.openPwdModal()
     }else{
       this._placeBetWithPassword('')
     }
@@ -139,8 +142,8 @@ const mapStateToProps = (state) => {
 
   return {
     index:key, stake, status, result,
-    modalIsOpen, loading, 
-    winRate, rewardTime, 
+    modalIsOpen, loading,
+    winRate, rewardTime,
     balance,
   }
 }

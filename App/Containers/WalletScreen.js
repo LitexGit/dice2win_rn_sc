@@ -26,7 +26,18 @@ class WalletScreen extends Component {
     )
   }
 
+
+
   componentDidMount () {
+
+    console.tron.log('WalletScreen componentDidMount', W)
+
+    if(!W.address){
+      this.props.navigate('WalletManageScreen')
+      return
+    }
+
+
     this.props.loadWallet()
     // temporary put register here
     !this.props.user.uid && this.props.register(W.address)
