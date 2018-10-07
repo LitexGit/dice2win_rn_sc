@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 
 import NavigationActions from 'react-navigation/src/NavigationActions'
 import GameActions from '../Redux/GameRedux'
-import StakeModalActions from '../Redux/StakeModalRedux'
+import ConfirmModalActions from '../Redux/ConfirmModalRedux'
 import PwdModalActions from '../Redux/PwdModalRedux'
 
 import { Colors } from '../Themes'
@@ -14,7 +14,7 @@ import OneDice from '../Components/OneDice'
 import TwoDice from '../Components/TwoDice'
 import Etheroll from '../Components/Etheroll'
 
-import StakeModal from '../Components/StakeModal'
+import ConfirmModal from '../Components/ConfirmModal'
 import ResultModal from '../Components/ResultModal'
 import PwdModal from '../Components/PwdModal'
 
@@ -41,7 +41,20 @@ class GameContainerScreen extends Component {
   }
 
   _placeBet = ()=>{
-    this.props.openStakeModal() // we can get password inside the modal
+    let gas = 6
+    let {index, stake, contract_address, address, betMask, openConfirmModal} = this.props
+
+    if(!W.address)
+      this.props.navigate('WalletManageScreen')
+    else 
+      openConfirmModal({
+        amount: stake,
+        from: address,
+        to: contract_address,
+        gas,
+        confirmedActions: [{action: WalletActions.getRandom, data: {address, value:stake, betMask, modulo:index, password:''}},
+          {action: GameActions.updateStatus, data: {status: 'place'}}],
+      })
   }
 /*
   _placeBet = ()=>{
@@ -56,7 +69,7 @@ class GameContainerScreen extends Component {
   }
 
   _placeBetWithPassword = (password) => {
-    this.props.openStakeModal() // we can get password inside the modal
+    this.props.openConfirmModal() // we can get password inside the modal
   }
 */
 
@@ -124,8 +137,8 @@ class GameContainerScreen extends Component {
               </TouchableOpacity>
             </View>
           </View>}
-          <StakeModal />
-          <PwdModal onSubmit={()=>this._placeBet()}/>
+          <ConfirmModal />
+          <PwdModal />
         </View>
       </ScrollView>
     )
@@ -135,16 +148,18 @@ class GameContainerScreen extends Component {
 const mapStateToProps = (state) => {
   let {
     game: {key, stake, status, result },
-    stakeModal: { modalIsOpen, loading },
-    bet: { winRate, rewardTime },
-    wallet: { balance }
+    confirmModal: { modalIsOpen, loading },
+    bet: { winRate, rewardTime, betMask, },
+    config: {contract_address},
+    wallet: { balance, address }
   } = state
 
   return {
     index:key, stake, status, result,
     modalIsOpen, loading,
-    winRate, rewardTime,
-    balance,
+    winRate, rewardTime, betMask,
+    contract_address,
+    balance, address
   }
 }
 
@@ -158,14 +173,14 @@ const mapDispatchToProps = (dispatch) => {
     addUnit: () => dispatch(GameActions.addUnit()),
     rmUnit: () => dispatch(GameActions.rmUnit()),
 
-    openStakeModal: () => dispatch(StakeModalActions.openStakeModal()),
+    openConfirmModal: (data) => dispatch(ConfirmModalActions.openConfirmModal(data)),
     openPwdModal: () => dispatch(PwdModalActions.openPwdModal()),
 
     updateStatus: (status) => dispatch(GameActions.updateStatus(status)),
 
     sendStake: () => dispatch(WalletActions.sendStake()),
     loadWallet: () => dispatch(WalletActions.walletRequest()),
-    getRandom: (address) => dispatch(WalletActions.getRandom(address)),
+    getRandom: (data) => dispatch(WalletActions.getRandom(data)),
 
     navigate: (target) => dispatch(NavigationActions.navigate({routeName:target}))
   }

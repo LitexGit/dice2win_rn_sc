@@ -13,7 +13,7 @@ export const reducers = combineReducers({
   wallet: require('./WalletRedux').reducer,
   game: require('./GameRedux').reducer,
   bet: require('./BetRedux').reducer,
-  stakeModal: require('./StakeModalRedux').reducer,
+  confirmModal: require('./ConfirmModalRedux').reducer,
   newPwdModal: require('./NewPwdModalRedux').reducer,
   pwdModal: require('./PwdModalRedux').reducer,
   config: require('./ConfigRedux').reducer,

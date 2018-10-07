@@ -4,22 +4,31 @@ import Immutable from 'seamless-immutable'
 /* ------------- Types and Action Creators ------------- */
 
 const {Types, Creators} = createActions({
-  openStakeModal: null,
-  closeStakeModal: null,
+  openConfirmModal: ['data'],
+  closeConfirmModal: null,
 
-  stakeModalRequest: ['data'],
-  stakeModalSuccess: ['payload'],
-  stakeModalFailure: null
+  confirmModalRequest: ['data'],
+  confirmModalSuccess: ['payload'],
+  confirmModalFailure: null
 })
 
-export const StakeModalTypes = Types
+export const confirmModalTypes = Types
 export default Creators
 
 /* ------------- Initial State ------------- */
 
 export const INITIAL_STATE = Immutable({
+
   modalIsOpen: false,
-  loading: false,
+
+  amount: 0,
+  from: null,
+  to: null,
+  gas: 0,
+
+  // format: {action, data}
+  confirmedActions: null,
+  canceledActions: null,
 
   data: null,
   fetching: null,
@@ -29,17 +38,17 @@ export const INITIAL_STATE = Immutable({
 
 /* ------------- Selectors ------------- */
 
-export const StakeModalSelectors = {
+export const ConfirmModalSelectors = {
   getData: state => state.data
 }
 
 /* ------------- Reducers ------------- */
 
-export const openStakeModal = (state) =>
-  state.merge({modalIsOpen: true})
+export const openConfirmModal = (state, action) =>
+  state.merge({modalIsOpen: true, ...action.data})
 
-export const closeStakeModal = (state) =>
-  state.merge({modalIsOpen: false})
+export const closeConfirmModal = (state) =>
+  state.merge({modalIsOpen: false, amount: 0, from: null, to: null, gas: 0, confirmedActions: null, canceledActions: null})
 
 // request the data from an api
 export const request = (state, {data}) =>
@@ -48,7 +57,7 @@ export const request = (state, {data}) =>
 // successful api lookup
 export const success = (state, action) => {
   const {payload} = action
-  return state.merge({fetching: false, error: null, payload})
+  return state.merge({fetching: false, error: null, ...payload})
 }
 
 // Something went wrong somewhere.
@@ -58,10 +67,10 @@ export const failure = state =>
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
-  [Types.OPEN_STAKE_MODAL]: openStakeModal,
-  [Types.CLOSE_STAKE_MODAL]: closeStakeModal,
+  [Types.OPEN_CONFIRM_MODAL]: openConfirmModal,
+  [Types.CLOSE_CONFIRM_MODAL]: closeConfirmModal,
 
-  [Types.STAKE_MODAL_REQUEST]: request,
-  [Types.STAKE_MODAL_SUCCESS]: success,
-  [Types.STAKE_MODAL_FAILURE]: failure
+  [Types.CONFIRM_MODAL_REQUEST]: request,
+  [Types.CONFIRM_MODAL_SUCCESS]: success,
+  [Types.CONFIRM_MODAL_FAILURE]: failure
 })

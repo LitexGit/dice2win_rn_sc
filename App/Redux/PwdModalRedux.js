@@ -23,6 +23,10 @@ export const INITIAL_STATE = Immutable({
   modalIsOpen: false,
   pwd: '',
   unlockSuccess: false,
+  // callback actions, format: [{action, data}, ...]
+  submitedActions: null,
+  canceledActions: null,
+
   data: null,
   fetching: null,
   payload: null,
