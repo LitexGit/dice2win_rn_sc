@@ -10,14 +10,14 @@ import { Wallet, providers, utils } from 'ethers'
 
 
 function initGlobalW(keystore){
-  W.address = keystore.address;
+  W.address = ethers.utils.getAddress(keystore.address);
   W.keystore = keystore;
   W.keystoreInitialized = true;
 }
 
 function initGlobalWFull(wallet){
   W.wallet = wallet;
-  W.address = wallet.address;
+  W.address = ethers.utils.getAddress(wallet.address);
 }
 
 
@@ -192,7 +192,7 @@ async function initWallet() {
   const keystorePath = RNFS.DocumentDirectoryPath + '/keystore.json'
 
   // if keystore file not exist, create a fake file
-  // await createFakeWallet(keystorePath)
+  await createFakeWallet(keystorePath)
 
   if (!W) {
     W = { network: 'ropsten', keystorePath: keystorePath };
