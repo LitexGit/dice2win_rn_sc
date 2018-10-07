@@ -42,19 +42,29 @@ class GameContainerScreen extends Component {
 
   _placeBet = ()=>{
     let gas = 6
-    let {index, stake, contract_address, address, betMask, openConfirmModal} = this.props
+    let {index, stake, contract_address, address, betMask, openConfirmModal, navigate} = this.props
 
-    if(!W.address)
-      this.props.navigate('WalletManageScreen')
-    else 
+    if(!W.address) {
+      navigate('WalletManageScreen')
+    } else {
+
+      // callback actions
+      let confirmedActions = [{
+        action: WalletActions.getRandom,
+        data: {address, value:stake, betMask, modulo:index, password:''}
+      }, {
+        action: GameActions.updateStatus,
+        data: {status: 'place'}
+      }]
+
       openConfirmModal({
         amount: stake,
         from: address,
         to: contract_address,
         gas,
-        confirmedActions: [{action: WalletActions.getRandom, data: {address, value:stake, betMask, modulo:index, password:''}},
-          {action: GameActions.updateStatus, data: {status: 'place'}}],
+        confirmedActions
       })
+    } 
   }
 /*
   _placeBet = ()=>{

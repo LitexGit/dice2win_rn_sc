@@ -26,17 +26,21 @@ class WalletScreen extends Component {
     )
   }
 
-
-
-  componentDidMount () {
-
+  componentWillMount () {
     console.tron.log('WalletScreen componentDidMount', W)
 
     if(!W.address){
-      this.props.navigate('WalletManageScreen')
-      return
+      this.props.navigation.dispatch(NavigationActions.reset({
+        index: 1,
+        actions:[ 
+          NavigationActions.navigate({routeName:'BottomTab'}),
+          NavigationActions.navigate({routeName:'WalletManageScreen'}),
+        ]
+      }))
     }
+  }
 
+  componentDidMount () {
 
     this.props.loadWallet()
     // temporary put register here
@@ -191,7 +195,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     loadWallet: () => dispatch(WalletActions.walletRequest()),
     register: (address) => dispatch(UserActions.register({address})),
-    navigate: (target, params) => dispatch(NavigationActions.navigate({routeName: target, params: params}))
+    navigate: (target, params) => dispatch(NavigationActions.navigate({routeName: target, params: params})),
   }
 }
 
