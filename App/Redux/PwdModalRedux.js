@@ -7,7 +7,7 @@ const { Types, Creators } = createActions({
   openPwdModal: ['data'],
   closePwdModal: null,
   setPwd: ['pwd'],
-  setUnlock: ['data'],
+  setErrInfo: ['data'],
 
   pwdModalRequest: ['data'],
   pwdModalSuccess: ['payload'],
@@ -22,6 +22,7 @@ export default Creators
 export const INITIAL_STATE = Immutable({
   modalIsOpen: false,
   pwd: '',
+
   // callback actions, format: [{action, data}, ...]
   submitedActions: null,
   canceledActions: null,
@@ -29,7 +30,8 @@ export const INITIAL_STATE = Immutable({
   data: null,
   fetching: null,
   payload: null,
-  error: null
+  error: null,
+  errInfo: null
 })
 
 /* ------------- Selectors ------------- */
@@ -42,13 +44,16 @@ export const PwdModalSelectors = {
 /* ------------- Reducers ------------- */
 
 export const openPwdModal = (state, action) =>
-  state.merge({ modalIsOpen: true, ...action.data })
+  state.merge({ modalIsOpen: true, errInfo: null, ...action.data })
 
 export const closePwdModal = (state) =>
   state.merge({modalIsOpen: false})
 
 export const setPwd = (state, action) =>
   state.merge({pwd: action.pwd})
+
+export const setErrInfo = (state, action) =>
+  state.merge({errInfo: action.data.errInfo})
 
 // request the data from an api
 export const request = (state, { data }) =>
@@ -65,10 +70,6 @@ export const failure = state =>
   state.merge({ fetching: false, error: true, payload: null })
 
 
-// export const setUnlock = (state, action) =>{
-//   console.tron.log('setUnlock', action)
-//   return state.merge({unlockSuccess: action.data.unlockSuccess, modalIsOpen: !action.data.unlockSuccess})
-// }
 
 
 /* ------------- Hookup Reducers To Types ------------- */
@@ -76,8 +77,8 @@ export const failure = state =>
 export const reducer = createReducer(INITIAL_STATE, {
   [Types.OPEN_PWD_MODAL]: openPwdModal,
   [Types.CLOSE_PWD_MODAL]: closePwdModal,
-  // [Types.SET_UNLOCK]: setUnlock,
   [Types.SET_PWD]: setPwd,
+  [Types.SET_ERR_INFO]: setErrInfo,
 
   [Types.PWD_MODAL_REQUEST]: request,
   [Types.PWD_MODAL_SUCCESS]: success,

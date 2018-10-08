@@ -119,7 +119,6 @@ class ImportWalletScreen extends Component {
             color: Colors.text
           }}>keystore导入</Text>
         </TouchableOpacity>
-        <PwdModal />
         <NewPwdModal navigateName={'BottomTab'} />
       </ScrollView>
     )

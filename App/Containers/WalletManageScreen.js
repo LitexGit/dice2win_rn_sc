@@ -9,8 +9,32 @@ import styles from './Styles/WalletManageScreenStyle'
 import NavigationActions from 'react-navigation/src/NavigationActions'
 import Colors from '../Themes/Colors'
 import NewPwdModalActions from '../Redux/NewPwdModalRedux'
+import PwdModalActions from '../Redux/PwdModalRedux'
+import WalletActions from '../Redux/WalletRedux'
 
 class WalletManageScreen extends Component {
+
+
+  _backup() {
+    let { openPwdModal } = this.props
+    let submitedActions = [{
+        action: WalletActions.encryptWallet,
+        data: {
+          successActions: [{
+              action: NavigationActions.navigate,
+              data: { routeName: 'BackupKeystoreScreen' }
+            }]
+        }
+      }]
+
+    openPwdModal({
+      submitedActions
+    })
+
+  }
+
+
+
   render () {
     return (
       <View style={styles.container}>
@@ -20,7 +44,7 @@ class WalletManageScreen extends Component {
         <TouchableOpacity style={styles.buttonWrapper} onPress={_ => this.props.navigate('ImportWalletScreen')}>
           <Text style={styles.buttonText}> Import Wallet </Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.buttonWrapper} onPress={_ => this.props.navigate('BackupKeystoreScreen')}>
+        <TouchableOpacity style={styles.buttonWrapper} onPress={this._backup.bind(this)}>
           <Text style={styles.buttonText}> Backup Wallet </Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.buttonWrapper} onPress={_ => this.props.navigate('TransferScreen')}>
@@ -38,7 +62,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     navigate: (target) => dispatch(NavigationActions.navigate({routeName: target})),
-    openNewPwdModal: () => dispatch(NewPwdModalActions.openNewPwdModal())
+    openPwdModal: (data) => dispatch(PwdModalActions.openPwdModal(data)),
   }
 }
 

@@ -41,7 +41,7 @@ class NewWalletScreen extends Component {
             fontSize: 16,
             color: Colors.text}}> 下一步</Text>
         </TouchableOpacity>
-        <NewPwdModal onCancel={_ => this.props.navigate('WalletManageScreen')} />
+        <NewPwdModal onCancel={_ => this.props.back()} />
       </ScrollView>
     )
   }
@@ -59,6 +59,7 @@ const mapDispatchToProps = (dispatch) => {
     newWallet: () => dispatch(WalletActions.newWallet()),
     openNewPwdModal: () => dispatch(NewPwdModalActions.openNewPwdModal()),
     navigate: (target) => dispatch(NavigationActions.navigate({routeName: target})),
+    back: () => dispatch(NavigationActions.back()),
   }
 }
 

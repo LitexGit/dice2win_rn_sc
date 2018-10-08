@@ -8,6 +8,8 @@ import NotificationActions from '../Redux/NotificationRedux'
 import ConfigActions from '../Redux/ConfigRedux'
 import ReduxPersist from '../Config/ReduxPersist'
 import JPushModule from 'jpush-react-native'
+import ConfirmModal from '../Components/ConfirmModal'
+import PwdModal from '../Components/PwdModal'
 
 
 // Styles
@@ -65,6 +67,8 @@ class RootContainer extends Component {
       <View style={styles.applicationView}>
         <StatusBar barStyle='light-content' />
           <ReduxNavigation />
+          <ConfirmModal />
+          <PwdModal />
       </View>
     )
   }

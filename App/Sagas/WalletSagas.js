@@ -69,25 +69,51 @@ export function* unlockWallet(api, action) {
   let { password } = action.data
   let result = yield call(walletLib.unlockWallet, password)
   console.tron.log('unlock wallet', result)
-  yield put(PwdModalActions.setUnlock({ unlockSuccess: result }))
 
 }
 
 
 // 当前钱包, 并将其keystore返回给前端
 export function* encryptWallet(api, action) {
-  const keystore = yield call(walletLib.encryptWallet, W.wallet)
+
+
+  let { successActions } = action.data
+  let password = yield select(PwdModalSelectors.getPassword)
+
+  let result = yield call(walletLib.unlockWallet, password)
+  if (!result) {
+    yield put(PwdModalActions.setErrInfo({ errInfo: 'wrong password' }))
+    return
+
+  } else {
+    yield put(PwdModalActions.closePwdModal())
+
+    if(successActions){
+      for(var successAction of successActions){
+        console.tron.log('successActions', successAction)
+        yield put(successAction.action(successAction.data))
+      }
+    }
+  }
+
+  const keystore = yield call(walletLib.encryptWallet, W.wallet, password)
   yield put(WalletActions.setKeystore(keystore))
 }
 
 
 export function* transfer(api, action) {
 
-  let { password, to, value, options } = action.data
+  let { to, value, options } = action.data
+  let password = yield select(PwdModalSelectors.getPassword)
 
 
   let result = yield call(walletLib.unlockWallet, password)
-  yield put(PwdModalActions.setUnlock({ unlockSuccess: result }))
+  if (!result) {
+    yield put(PwdModalActions.setErrInfo({ errInfo: 'wrong password' }))
+    return
+  } else {
+    yield put(PwdModalActions.closePwdModal())
+  }
 
   if (W.wallet) {
     let txHash = yield call(walletLib.sendTx, W.wallet, to, value, options);
@@ -142,12 +168,11 @@ export function* placeBet(api, action) {
           {
             action: WalletActions.placeBet,
             data: { betMask, modulo, value }
-          }, {
-            action: GameActions.updateStatus,
-            data: { [modulo]: 'place' }
           }
         ]
       }))
+
+      yield put(PwdModalActions.setErrInfo({ errInfo: 'wrong password' }))
       return
     }
     yield put(PwdModalActions.closePwdModal())
@@ -172,6 +197,7 @@ export function* placeBet(api, action) {
   console.tron.log('ans', ans)
 
 
+  yield put(GameActions.updateStatus({[modulo]: 'place'}))
 
 
 }
