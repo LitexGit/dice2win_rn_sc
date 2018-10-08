@@ -4,7 +4,7 @@ import Immutable from 'seamless-immutable'
 /* ------------- Types and Action Creators ------------- */
 
 const { Types, Creators } = createActions({
-  openPwdModal: null,
+  openPwdModal: ['data'],
   closePwdModal: null,
   setPwd: ['pwd'],
   setUnlock: ['data'],
@@ -22,7 +22,6 @@ export default Creators
 export const INITIAL_STATE = Immutable({
   modalIsOpen: false,
   pwd: '',
-  unlockSuccess: false,
   // callback actions, format: [{action, data}, ...]
   submitedActions: null,
   canceledActions: null,
@@ -36,20 +35,21 @@ export const INITIAL_STATE = Immutable({
 /* ------------- Selectors ------------- */
 
 export const PwdModalSelectors = {
-  getData: state => state.data
+  getData: state => state.data,
+  getPassword: state => state.pwdModal.pwd
 }
 
 /* ------------- Reducers ------------- */
 
-export const openPwdModal = (state) =>
-  state.merge({modalIsOpen: true})
+export const openPwdModal = (state, action) =>
+  state.merge({ modalIsOpen: true, ...action.data })
 
 export const closePwdModal = (state) =>
   state.merge({modalIsOpen: false})
 
-export const setPwd = (state, action) => 
+export const setPwd = (state, action) =>
   state.merge({pwd: action.pwd})
-  
+
 // request the data from an api
 export const request = (state, { data }) =>
   state.merge({ fetching: true, data, payload: null })
@@ -65,10 +65,10 @@ export const failure = state =>
   state.merge({ fetching: false, error: true, payload: null })
 
 
-export const setUnlock = (state, action) =>{
-  console.tron.log('setUnlock', action)
-  return state.merge({unlockSuccess: action.data.unlockSuccess, modalIsOpen: !action.data.unlockSuccess})
-}
+// export const setUnlock = (state, action) =>{
+//   console.tron.log('setUnlock', action)
+//   return state.merge({unlockSuccess: action.data.unlockSuccess, modalIsOpen: !action.data.unlockSuccess})
+// }
 
 
 /* ------------- Hookup Reducers To Types ------------- */
@@ -76,7 +76,7 @@ export const setUnlock = (state, action) =>{
 export const reducer = createReducer(INITIAL_STATE, {
   [Types.OPEN_PWD_MODAL]: openPwdModal,
   [Types.CLOSE_PWD_MODAL]: closePwdModal,
-  [Types.SET_UNLOCK]: setUnlock,
+  // [Types.SET_UNLOCK]: setUnlock,
   [Types.SET_PWD]: setPwd,
 
   [Types.PWD_MODAL_REQUEST]: request,

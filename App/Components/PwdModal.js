@@ -15,7 +15,7 @@ class PwdModal extends Component {
 
   _checkPwd () {
     let {setPwd, closePwdModal, dispatch, submitedActions } = this.props
-    
+
     // TODO check password validation
     setPwd(this.state.pwd)
 
@@ -34,14 +34,14 @@ class PwdModal extends Component {
 
   render () {
     return (
-      <Overlay 
+      <Overlay
         containerStyle={styles.modal}
         childrenWrapperStyle={styles.content}
         visible={this.props.modalIsOpen}
         animationType='zoomIn'
         animationDuration={300}>
         <View style={styles.header}>
-          <TextInput style={styles.headerText} 
+          <TextInput style={styles.headerText}
             autoFocus={true}
             multiline={false}
             placeholder='Input your password'

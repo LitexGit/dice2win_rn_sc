@@ -41,30 +41,33 @@ class GameContainerScreen extends Component {
   }
 
   _placeBet = ()=>{
-    let gas = 6
-    let {index, stake, contract_address, address, betMask, openConfirmModal, navigate} = this.props
+    let { index, stake, contract_address, address, betMask, openConfirmModal, navigate, getRandom } = this.props
+
 
     if(!W.address) {
       navigate('WalletManageScreen')
     } else {
 
+
+
+      getRandom({address: W.address})
+
       // callback actions
       let confirmedActions = [{
-        action: WalletActions.getRandom,
-        data: {address, value:stake, betMask, modulo:index, password:''}
+        action: WalletActions.placeBet,
+        data: { address, value: stake, betMask, modulo: index, password: '' }
       }, {
-        action: GameActions.updateStatus,
-        data: {status: 'place'}
+          action: GameActions.updateStatus,
+          data: { [index]: 'place' }
       }]
 
       openConfirmModal({
         amount: stake,
         from: address,
         to: contract_address,
-        gas,
         confirmedActions
       })
-    } 
+    }
   }
 /*
   _placeBet = ()=>{
@@ -158,18 +161,18 @@ class GameContainerScreen extends Component {
 const mapStateToProps = (state) => {
   let {
     game: {key, stake, status, result },
-    confirmModal: { modalIsOpen, loading },
+    confirmModal: { modalIsOpen, loading, gas },
     bet: { winRate, rewardTime, betMask, },
     config: {contract_address},
-    wallet: { balance, address }
+    wallet: { balance, address, gasPrice, secret }
   } = state
 
   return {
     index:key, stake, status, result,
-    modalIsOpen, loading,
+    modalIsOpen, loading, gas,
     winRate, rewardTime, betMask,
     contract_address,
-    balance, address
+    balance, address, gasPrice, secret
   }
 }
 
@@ -191,6 +194,7 @@ const mapDispatchToProps = (dispatch) => {
     sendStake: () => dispatch(WalletActions.sendStake()),
     loadWallet: () => dispatch(WalletActions.walletRequest()),
     getRandom: (data) => dispatch(WalletActions.getRandom(data)),
+    placeBet: (data) => dispatch(WalletActions.placeBet(data)),
 
     navigate: (target) => dispatch(NavigationActions.navigate({routeName:target}))
   }

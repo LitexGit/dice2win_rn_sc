@@ -14,12 +14,13 @@ const {Types, Creators} = createActions({
   setTx: ['data'],
   transfer: ['data'],
   getRandom: ['data'],
+  placeBet: ['data'],
   importFromMnemonic: ['data'],
   importEncryptWallet: ['data'],
   setWallet: ['wallet'],
   walletRequest: ['data'],
   walletSuccess: ['payload'],
-  walletFailure: null
+  walletFailure: ['payload']
 })
 
 export const WalletTypes = Types
@@ -36,13 +37,17 @@ export const INITIAL_STATE = Immutable({
   address: '',
   balance: '',
   payload: null,
-  error: null
+  error: null,
+  gasPrice: 3e9,
+  secret: {}
+
 })
 
 /* ------------- Selectors ------------- */
 
 export const WalletSelectors = {
-  getData: state => state.data
+  getData: state => state.data,
+  getSecret: state => state.wallet.secret
 }
 
 /* ------------- Reducers ------------- */
@@ -71,8 +76,9 @@ export const success = (state, action) => {
 }
 
 // Something went wrong somewhere.
-export const failure = state =>
-  state.merge({fetching: false, error: true, payload: {address: '', balance: ''}})
+export const failure = (state, action) => {
+  return state.merge({ fetching: false, error: true, payload: { address: '', balance: '' }, ...action.payload })
+}
 
 
 

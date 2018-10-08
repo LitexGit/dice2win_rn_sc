@@ -39,7 +39,8 @@ export const INITIAL_STATE = Immutable({
 /* ------------- Selectors ------------- */
 
 export const ConfirmModalSelectors = {
-  getData: state => state.data
+  getData: state => state.data,
+  getGas: state => state.confirmModal.gas
 }
 
 /* ------------- Reducers ------------- */
