@@ -56,9 +56,6 @@ class GameContainerScreen extends Component {
       let confirmedActions = [{
         action: WalletActions.placeBet,
         data: { address, value: stake, betMask, modulo: index, password: '' }
-      }, {
-          action: GameActions.updateStatus,
-          data: { [index]: 'place' }
       }]
 
       openConfirmModal({
@@ -150,8 +147,6 @@ class GameContainerScreen extends Component {
               </TouchableOpacity>
             </View>
           </View>}
-          <ConfirmModal />
-          <PwdModal />
         </View>
       </ScrollView>
     )

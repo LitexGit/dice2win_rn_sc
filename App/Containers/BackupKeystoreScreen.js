@@ -16,7 +16,7 @@ import WalletActions from '../Redux/WalletRedux'
 class BackupKeystoreScreen extends Component {
 
   componentDidMount(){
-    this.props.openPwdModal()
+    // this.props.openPwdModal()
   }
 
 
@@ -47,9 +47,6 @@ class BackupKeystoreScreen extends Component {
         <View style={styles.qr}>{!!keystore &&
           <QR value={keystore} size={120} color={Colors.silver} backgroundColor={Colors.casinoBlue} />}</View>
 
-        <PwdModal onCancel={_ => this.props.navigate('WalletManageScreen')}
-          onSubmit={(password) => {this.props.unlockWallet(password)}}
-        />
       </ScrollView>
 
     )

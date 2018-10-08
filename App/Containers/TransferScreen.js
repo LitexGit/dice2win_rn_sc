@@ -8,7 +8,9 @@ import { connect } from 'react-redux'
 import styles from './Styles/TransferScreenStyle'
 import PwdModal from '../Components/PwdModal'
 import WalletActions from '../Redux/WalletRedux'
+import ConfirmModalActions from '../Redux/ConfirmModalRedux'
 import PwdModalActions, { openPwdModal } from '../Redux/PwdModalRedux'
+import ConfirmModal from '../Components/ConfirmModal';
 
 class TransferScreen extends Component {
   state = {
@@ -17,6 +19,30 @@ class TransferScreen extends Component {
   }
 
 
+  _transfer(){
+    let { openConfirmModal, address } = this.props
+
+
+    let confirmedActions = [{
+      action: PwdModalActions.openPwdModal,
+      data: {
+        submitedActions: [
+          {
+            action: WalletActions.transfer,
+            data: { ...{ to, value } = this.state }
+          }
+        ]
+      }
+    }]
+
+    openConfirmModal({
+      amount: this.state.value,
+      from: address,
+      to: this.state.to,
+      confirmedActions
+    })
+
+  }
 
 
   render () {
@@ -31,9 +57,7 @@ class TransferScreen extends Component {
                      onChangeText={(value) => this.setState({value})}/>
         </View>
         <TouchableOpacity full dark style={{marginTop: 20}}
-                          onPress={() => {
-                            this.props.openPwdModal()
-                            }} >
+                          onPress={this._transfer.bind(this)} >
           <Text>转账</Text>
         </TouchableOpacity>
         <Text style={{padding: 10, fontSize: 11}}>
@@ -46,9 +70,6 @@ class TransferScreen extends Component {
           {/*当前交易哈希: {this.props.txHash}*/}
         </Text>
 
-        <PwdModal onSubmit = {(password) => this.props.transfer({to: this.state.to, value: this.state.value, password: password})}
-        onCancel = {_=> {console.tron.log('hello')}}
-        />
 
       </ScrollView>
     )
@@ -66,7 +87,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     transfer: (data) => dispatch(WalletActions.transfer(data)),
-    openPwdModal: () => dispatch(PwdModalActions.openPwdModal()),
+    openPwdModal: (data) => dispatch(PwdModalActions.openPwdModal(data)),
+    openConfirmModal: (data) => dispatch(ConfirmModalActions.openConfirmModal(data)),
   }
 }
 

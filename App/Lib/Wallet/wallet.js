@@ -251,5 +251,6 @@ module.exports = {
   sendTx,
   saveKeyStore,
   initWallet,
-  unlockWallet
+  unlockWallet,
+  encryptWallet
 }

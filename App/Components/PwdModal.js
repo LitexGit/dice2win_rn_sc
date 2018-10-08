@@ -15,20 +15,18 @@ class PwdModal extends Component {
 
   _checkPwd () {
     let {setPwd, closePwdModal, dispatch, submitedActions } = this.props
-
     // TODO check password validation
     setPwd(this.state.pwd)
-
     submitedActions && submitedActions.forEach(a => dispatch(a));
-    closePwdModal()
+
+    // closePwdModal()
   }
 
 
   _closeModal(){
-    let {resetUnlock, dispatch, closePwdModal, canceledActions } = this.props
+    let { dispatch, closePwdModal, canceledActions } = this.props
 
     canceledActions  && canceledActions.forEach(a => dispatch(a));
-    resetUnlock()
     closePwdModal()
   }
 
@@ -77,7 +75,6 @@ const mapDispatchToProps = (dispatch) => {
   return {
     closePwdModal: () => dispatch(PwdModalActions.closePwdModal()),
     setPwd: (password) => dispatch(PwdModalActions.setPwd(password)),
-    resetUnlock: () => dispatch(PwdModalActions.setUnlock({unlockSuccess: false})),
     dispatch: ({action, data}) => dispatch(action(data)),
     navigate: (target) => dispatch(NavigationActions.navigate({routeName: target})),
   }
