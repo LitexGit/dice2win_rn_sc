@@ -26,7 +26,9 @@ class WalletScreen extends Component {
     )
   }
 
-  componentWillMount () {
+  constructor (props) {
+    super(props)
+    
     console.tron.log('WalletScreen componentDidMount', W)
 
     if(!W.address){
@@ -37,33 +39,37 @@ class WalletScreen extends Component {
           NavigationActions.navigate({routeName:'WalletManageScreen'}),
         ]
       }))
+    } else {
+      // TODO temporary put register here
+      !uid && props.register(W.address)
     }
   }
 
   componentDidMount () {
-
-    this.props.loadWallet()
-    // temporary put register here
-    !this.props.user.uid && this.props.register(W.address)
+    let {loadWallet, loadUser, uid} = this.props
+    loadWallet()
+    uid && loadUser(uid)
   }
 
   _copyAddress = () => {
-    Clipboard.setString(this.props.wallet.address)
+    let {address} = this.props
+    Clipboard.setString(address)
     Toast.show('address copied', {
       position: Toast.positions.CENTER,
     })
   }
 
   _copyCode = () => {
-    Clipboard.setString(this.props.wallet.code)
+    let {code} = this.props
+    Clipboard.setString(code)
     Toast.show('code copied', {
       position: Toast.positions.CENTER,
     })
   }
 
   _shareLink = () => {
-    let {message, title, url} = this.props.shareInfo
-    Share.share({message: message, title: title, url: url})
+    let {shareInfo:{message, title, url}} = this.props
+    Share.share({message, title, url})
       .then(result => {console.tron.log('share result: ', result)})
       .catch(err => console.tron.log('error open telegram', err))
   }
@@ -73,22 +79,13 @@ class WalletScreen extends Component {
   }
 
   _goto = (where) => {
+    let {navigate} = this.props
     switch (where) {
-      case 'settings':
-        this.props.navigate('SettingScreen')
-        break
-      case 'wallet':
-        this.props.navigate('WalletManageScreen')
-        break
-      case 'promotion':
-        this.props.navigate('PromotionScreen')
-        break
-      case 'telegram':
-        this._openTelegram()
-        break
-      case 'faq':
-        this._openFAQ()
-        break
+      case 'settings': navigate('SettingScreen'); break
+      case 'wallet': navigate('WalletManageScreen'); break
+      case 'promotion': navigate('PromotionScreen'); break
+      case 'telegram': this._openTelegram(); break
+      case 'faq': this._openFAQ(); break
     }
   }
 
@@ -104,7 +101,8 @@ class WalletScreen extends Component {
   }
 
   _openFAQ = () => {
-    this.props.navigate('WebviewScreen', {title: 'FAQ', url: this.props.faq})
+    let {faq, navigate} = this.props
+    navigate('WebviewScreen', {title: 'FAQ', url: faq})
   }
 
   _checkUpdate = () => {
@@ -112,10 +110,10 @@ class WalletScreen extends Component {
   }
 
   render () {
-    let {wallet, user} = this.props
+    let {fetching, balance, address, bonus, code} = this.props
     return (
       <ScrollView style={styles.container} refreshControl={<RefreshControl
-        refreshing={this.props.fetching}
+        refreshing={fetching}
         onRefresh={this._onRefresh}
         tintColor={Colors.tintColor}
         title="Refreshing..."
@@ -126,21 +124,19 @@ class WalletScreen extends Component {
                                                                            size={24}/></TouchableOpacity>
           </View>
           <View style={styles.balanceWrapper}>
-            <Text style={styles.balance}>{wallet.balance}</Text>
+            <Text style={styles.balance}>{balance}</Text>
             <Text style={styles.unit}> ETH</Text>
           </View>
-          <View style={styles.qr}>{wallet.address &&
-          <QR value={wallet.address} size={120} color={Colors.silver} backgroundColor={Colors.casinoBlue}/>}</View>
+          <View style={styles.qr}>{address && <QR value={address} size={120} color={Colors.silver} backgroundColor={Colors.casinoBlue}/>}</View>
           <TouchableOpacity style={styles.addressWrapper} onPress={_ => this._copyAddress()}>
-
-            <Text style={styles.addressText}>{wallet.address}</Text>
+            <Text style={styles.addressText}>{address}</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.shareWrapper}>
           <TouchableOpacity style={styles.shareUp} onPress={_ => this._goto('promotion')}>
             <Text style={styles.label}>promotion bonus</Text>
             <View style={[styles.balanceWrapper, styles.bonusBalanceWrapper]}>
-              <Text style={styles.bonus}>{user.bonus}</Text>
+              <Text style={styles.bonus}>{bonus}</Text>
               <Text style={styles.unit}> ETH</Text>
             </View>
             <View style={styles.bonusDetailWrapper}>
@@ -150,7 +146,7 @@ class WalletScreen extends Component {
           <View style={styles.shareDown}>
             <View style={styles.codeWrapper}>
               <Text style={styles.label}>promotion code: </Text>
-              <Text style={styles.code}>{user.code}</Text>
+              <Text style={styles.code}>{code}</Text>
             </View>
             <View style={styles.actionsWrapper}>
               <TouchableOpacity onPress={_ => this._copyCode()} style={styles.actionWrapper}><Text
@@ -183,17 +179,16 @@ class WalletScreen extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    fetching: state.wallet.fetching,
-    wallet: state.wallet,
-    telegroup: state.config.telegroup,
-    user: state.user,
-    faq: state.config.faq,
+    ...{fetching, adddress, balance} = state.wallet,
+    ...{uid, bonus, code} = state.user,
+    ...{telegroup, shareInfo, faq} = state.config
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
     loadWallet: () => dispatch(WalletActions.walletRequest()),
+    loadUser: (uid) => dispatch(UserActions.userRequest(uid)),
     register: (address) => dispatch(UserActions.register({address})),
     navigate: (target, params) => dispatch(NavigationActions.navigate({routeName: target, params: params})),
   }

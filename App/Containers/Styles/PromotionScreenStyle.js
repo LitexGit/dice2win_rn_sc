@@ -54,6 +54,13 @@ export default StyleSheet.create({
     color: Colors.text,
   },
 
+  shareText: {
+    fontSize: 16,
+    textDecorationLine: 'underline',
+    color: Colors.activeTint,
+    marginTop: 10,
+  },
+
   downWrapper: {
     flex: 1,
   },

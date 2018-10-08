@@ -18,16 +18,12 @@ export function * register (api, action) {
   const { data } = action
   const response = yield call(api.register, data)
   if(response.ok){
-
     let {
-        id, nickname, eth_address, inviter, aff_code, balance
+        id: uid, nickname, eth_address:address, inviter, aff_code:code, balance:bonus
     } = response.data
-
-    let userInfo = {
-        uid:id, inviter, nickname, address: eth_address, code: aff_code, bonus: balance
-    }
-
-    yield put(UserActions.userSuccess(userInfo))
+    let userInfo = {uid, nickname, address, inviter, code, bonus}
+    // yield put(UserActions.userSuccess(userInfo))
+    yield put(UserActions.userRequest(uid))
 
   } else {
     yield put(UserActions.userFailure())
@@ -35,17 +31,15 @@ export function * register (api, action) {
 }
 
 export function * getUser (api, action) {
-  const { data } = action
-  // get current data from Store
-  // const currentData = yield select(UserSelectors.getData)
-  // make the call to the api
-  const response = yield call(api.getUser, data)
+  const { data:uid } = action
+  const userRes = yield call(api.getUser, uid)
+  const promotionRes = yield call(api.getPromotion, uid)
 
-  // success?
-  if (response.ok) {
-    // You might need to change the response here - do this with a 'transform',
-    // located in ../Transforms/. Otherwise, just pass the data back from the api.
-    yield put(UserActions.userSuccess(response.data))
+  if (userRes.ok && promotionRes.ok) {
+    let {nickname, eth_address:address, inviter, aff_code:code, balance:bonus } = userRes.data
+    let {total_aff_amount:totalBonus } = promotionRes.data
+    let userInfo = {nickname, address, inviter, code, bonus, totalBonus}
+    yield put(UserActions.userSuccess(userInfo))
   } else {
     yield put(UserActions.userFailure())
   }

@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
-import { Text, View, TouchableOpacity, SectionList } from 'react-native'
+import { Text, View, TouchableOpacity, SectionList, Share } from 'react-native'
 import Toast from 'react-native-root-toast'
-import Feather from 'react-native-vector-icons/Feather'
 
 import { connect } from 'react-redux'
 import RecordActions from '../Redux/RecordRedux'
@@ -47,24 +46,32 @@ class PromotionScreen extends Component {
   </TouchableOpacity>
   }
 
+  _shareLink = () => {
+    let {shareInfo:{message, title, url}} = this.props
+    Share.share({message, title, url})
+      .then(result => {console.tron.log('share result: ', result)})
+      .catch(err => console.tron.log('error open telegram', err))
+  }
   render () {
+    let {bonus, totalBonus, sections} = this.props
     return (
       <View style={styles.container}>
         <View style={styles.upWrapper}>
-          <View style={styles.shareWrapper}>
+          {/* <View style={styles.shareWrapper}>
             <TouchableOpacity onPress={_=>this._goto('share')}><Feather style={styles.share} name={'share'} size={24} /></TouchableOpacity>
-          </View>
-          <Text style={styles.label}>bonus you can withdraw</Text>
+          </View> */}
+          <Text style={styles.label}>Bonus you can withdraw</Text>
           <View style={styles.balanceWrapper}>
-            <Text style={styles.balance}>{this.props.wallet.bonus}</Text>
+            <Text style={styles.balance}>{bonus}</Text>
             <Text style={styles.unit}> ETH</Text>
           </View>
           <TouchableOpacity style={styles.withdrawButton} onPress={_=>this._withdraw()}><Text style={styles.withdrawButtonText}>withdraw to wallet</Text></TouchableOpacity>
-          <Text style={styles.label}>you have earned {this.props.wallet.bonus} ETH so far</Text>
+          <Text style={styles.label}>You have earned {totalBonus} ETH so far</Text>
+          <TouchableOpacity onPress={this._shareLink.bind(this)}><Text style={styles.shareText}>SHARE to earn MORE</Text></TouchableOpacity>
         </View>
         <View style={styles.downWrapper}>
           <SectionList
-            sections={this.props.sectionData}
+            sections={sections}
             renderSectionHeader={this._renderSectionHeader}
             renderItem={this._renderItem}
             ListEmptyComponent = {ListEmptyComponent}
@@ -77,8 +84,9 @@ class PromotionScreen extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    sectionData: state.record.bonus.sections,
-    wallet: state.wallet,
+    ...{sections} = state.record.bonus,
+    ...{bonus, totalBonus} = state.user,
+    ...{shareInfo} = state.config,
   }
 }
 

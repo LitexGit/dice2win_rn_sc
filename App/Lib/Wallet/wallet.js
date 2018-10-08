@@ -192,7 +192,7 @@ async function initWallet() {
   const keystorePath = RNFS.DocumentDirectoryPath + '/keystore.json'
 
   // if keystore file not exist, create a fake file
-  await createFakeWallet(keystorePath)
+  // await createFakeWallet(keystorePath)
 
   if (!W) {
     W = { network: 'ropsten', keystorePath: keystorePath };

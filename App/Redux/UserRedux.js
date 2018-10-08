@@ -25,7 +25,9 @@ export const INITIAL_STATE = Immutable({
   address: '',
   inviter: 0,
   code: '',
+
   bonus: 0,
+  totalBonus: 0,
 
   error: null
 })
