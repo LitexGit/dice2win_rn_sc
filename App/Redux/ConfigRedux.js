@@ -1,5 +1,6 @@
 import { createReducer, createActions } from 'reduxsauce'
 import Immutable from 'seamless-immutable'
+import abi from '../Config/abi'
 
 /* ------------- Types and Action Creators ------------- */
 
@@ -23,7 +24,11 @@ export const INITIAL_STATE = Immutable({
 
   base_domain: "http://api.eth4.fun",
   ws: 'http://eth4.fun:7001',
+  // ws: 'http://192.168.51.137:7001',
+  // base_domain: "http://192.168.51.137:7001",
   contract_address: "0x3d392560290a746542Cb14429E9ED2898aa74464",
+  network: 'ropsten',
+  abi: abi,
   api_list: {
     get_abi: "http://api.eth4.fun/api/v1/games/dev/abi",
     put_deviceinfo: "http://api.eth4.fun/api/v1/games/dev/deviceinfo",
@@ -51,7 +56,7 @@ export const INITIAL_STATE = Immutable({
 /* ------------- Selectors ------------- */
 
 export const ConfigSelectors = {
-  getData: state => state.data
+  getConfig: state => state.config
 }
 
 /* ------------- Reducers ------------- */

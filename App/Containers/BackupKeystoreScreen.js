@@ -54,14 +54,13 @@ class BackupKeystoreScreen extends Component {
 }
 
 const mapStateToProps = (state) => {
-  return { keystore: JSON.stringify(W.keystore)}
+  return { keystore: state.wallet.keystore}
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
     navigate: (target) => dispatch(NavigationActions.navigate({ routeName: target })),
     openPwdModal: () => dispatch(PwdModalActions.openPwdModal()),
-    unlockWallet: (password) => dispatch(WalletActions.unlockWallet({password})),
   }
 }
 

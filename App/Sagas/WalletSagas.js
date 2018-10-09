@@ -13,13 +13,34 @@ import { call, put, select } from 'redux-saga/effects'
 import WalletActions, { WalletSelectors } from '../Redux/WalletRedux'
 import GameActions from '../Redux/GameRedux'
 import PwdModalActions, { PwdModalSelectors } from '../Redux/PwdModalRedux'
-import abi from '../Config/abi'
 import walletLib from '../Lib/Wallet/wallet'
 import ConfirmModalActions, { ConfirmModalSelectors } from '../Redux/ConfirmModalRedux';
+import { ConfigSelectors } from '../Redux/ConfigRedux';
+import NavigationActions from 'react-navigation/src/NavigationActions';
 
 // import { WalletSelectors } from '../Redux/WalletRedux'
 let ethers = require('ethers')
 let axios = require('axios')
+
+
+function * postNewWallet(){
+
+  yield socket.emit('lottery', W.address)
+  // yield put(NavigationActions.navigate({routeName: 'BottomTab', index: 2}))
+  yield put(NavigationActions.reset({
+    index: 1,
+    actions: [
+      NavigationActions.navigate({
+        routeName: 'BottomTab',
+        index: 2
+      }),
+      NavigationActions.navigate({ routeName: 'WalletScreen' })
+    ]
+  }))
+  // yield put(NavigationActions.navigate({ routeName: 'WalletScreen' }))
+}
+
+
 
 //随机生成一个wallet，将wallet对象返回
 export function* newWallet(api, action) {
@@ -35,7 +56,8 @@ export function* saveWallet(api, action) {
   console.tron.log('saveWallet begin', action)
   yield call(walletLib.importMnemonic, mnemonic, password)
   console.tron.log('saveWallet success')
-  // yield put(WalletActions.setWallet(wallet))
+
+  yield postNewWallet()
 }
 
 
@@ -43,24 +65,36 @@ export function* saveWallet(api, action) {
 export function* initWallet(api, action) {
 
   yield call(walletLib.initWallet)
-  // const delay = (ms) => new Promise(res => setTimeout(res, ms))
+  let config = yield select(ConfigSelectors.getConfig)
+
+  W.network = config.network
+
   yield socket.emit('lottery', W.address)
-  //yield call(delay, 1000)
-  // yield delay(5000)
 }
 
 // 从助记词导入钱包，并将其存入本地存储中
 export function* importFromMnemonic(api, action) {
   let { mnemonic, password } = action.data
-  yield call(walletLib.importMnemonic, mnemonic, password)
+  let wallet = yield call(walletLib.importMnemonic, mnemonic, password)
+  if(!!wallet){
+    yield postNewWallet()
+  }else{
+    alert('wrong password')
+  }
+
 }
 
 // 从keystore导入钱包，并将其存入本地存储中
 export function* importEncryptWallet(api, action) {
   console.log('wallet importEncryptWallet', action)
-  var { keystore, password } = action.data
+  let  { keystore, password } = action.data
 
-  yield call(walletLib.importKeyStore, keystore, password)
+  let wallet = yield call(walletLib.importKeyStore, keystore, password)
+  if(!!wallet){
+    yield postNewWallet()
+  }else{
+    alert('wrong password')
+  }
 
 }
 
@@ -89,7 +123,7 @@ export function* encryptWallet(api, action) {
     yield put(PwdModalActions.closePwdModal())
 
     if(successActions){
-      for(var successAction of successActions){
+      for(let  successAction of successActions){
         console.tron.log('successActions', successAction)
         yield put(successAction.action(successAction.data))
       }
@@ -100,11 +134,13 @@ export function* encryptWallet(api, action) {
   yield put(WalletActions.setKeystore(keystore))
 }
 
-
+//转账
 export function* transfer(api, action) {
 
-  let { to, value, options } = action.data
+  let { to, value } = action.data
   let password = yield select(PwdModalSelectors.getPassword)
+  let gasPrice = (yield select(ConfirmModalSelectors.getGas)) * 1e9
+  let options = { gasPrice }
 
 
   let result = yield call(walletLib.unlockWallet, password)
@@ -152,10 +188,13 @@ export function* getRandom(api, action) {
 //下注--提交区块链
 export function* placeBet(api, action) {
 
-  var { betMask, modulo, value} = action.data
+  let  { betMask, modulo, value} = action.data
   let secret = yield select(WalletSelectors.getSecret)
   let gasPrice = (yield select(ConfirmModalSelectors.getGas)) * 1e9
   let password = yield select(PwdModalSelectors.getPassword)
+  let config = yield select(ConfigSelectors.getConfig)
+
+  let { contract_address, abi } = config
 
   console.tron.log('placeBet secret', secret, gasPrice)
 
@@ -172,20 +211,21 @@ export function* placeBet(api, action) {
         ]
       }))
 
-      yield put(PwdModalActions.setErrInfo({ errInfo: 'wrong password' }))
+      password = yield select(PwdModalSelectors.getPassword)
+      if (!!password) {
+        yield put(PwdModalActions.setErrInfo({ errInfo: 'wrong password' }))
+      }
       return
     }
     yield put(PwdModalActions.closePwdModal())
   }
 
   const wallet = W.wallet
-  wallet.provider = ethers.providers.getDefaultProvider(W.network)
 
   console.tron.log('res2', wallet)
 
-  var contractAddress = '0x3d392560290a746542Cb14429E9ED2898aa74464'
-  var contract = new ethers.Contract(contractAddress, abi, wallet)
-  var overrideOptions = {
+  let  contract = new ethers.Contract(contract_address, abi, wallet)
+  let  overrideOptions = {
     value: ethers.utils.parseEther(value),
     gasPrice: parseInt(gasPrice)
   }

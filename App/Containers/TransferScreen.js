@@ -6,72 +6,91 @@ import { connect } from 'react-redux'
 
 // Styles
 import styles from './Styles/TransferScreenStyle'
-import PwdModal from '../Components/PwdModal'
 import WalletActions from '../Redux/WalletRedux'
 import ConfirmModalActions from '../Redux/ConfirmModalRedux'
 import PwdModalActions, { openPwdModal } from '../Redux/PwdModalRedux'
-import ConfirmModal from '../Components/ConfirmModal';
+import { Colors } from '../Themes';
 
 class TransferScreen extends Component {
   state = {
-    to: '0x486c14c72bd37ead125c37d9d624118946d18a36',
-    value: '0.0001'
+    to: '0xfc379f1fe62a88e047c50a36f8c1e4fa3e93092f',
+    value: '0.001'
+  }
+
+  static navigationOptions = {
+    title: 'Transfer'
   }
 
 
-  _transfer(){
-    let { openConfirmModal, address } = this.props
 
+  _transfer() {
+    let { openConfirmModal, address, balance } = this.props
 
-    let confirmedActions = [{
-      action: PwdModalActions.openPwdModal,
-      data: {
-        submitedActions: [
-          {
-            action: WalletActions.transfer,
-            data: { ...{ to, value } = this.state }
-          }
-        ]
-      }
-    }]
+    if (!W.address) {
+      navigate('WalletManageScreen')
+    } else if (this.state.value >= balance) {
+      alert('You don\'t have enough balance to place Bet')
+    } else {
 
-    openConfirmModal({
-      amount: this.state.value,
-      from: address,
-      to: this.state.to,
-      confirmedActions
-    })
+      let confirmedActions = [{
+        action: PwdModalActions.openPwdModal,
+        data: {
+          submitedActions: [
+            {
+              action: WalletActions.transfer,
+              data: { ...{ to, value } = this.state }
+            }
+          ]
+        }
+      }]
+
+      openConfirmModal({
+        amount: this.state.value,
+        from: address,
+        to: this.state.to,
+        confirmedActions
+      })
+    }
 
   }
 
 
-  render () {
+  render() {
     return (
-      <ScrollView style={styles.container}>
-        <Text>Transfer Container</Text>
+      <View style={styles.container}>
 
-        <Text style={{color: '#000', alignSelf: 'center'}}>转账</Text>
-        <View>
-          <TextInput placeholder='请输入对方地址' value={this.state.to} onChangeText={(to) => this.setState({to})}/>
-          <TextInput placeholder='请输入转账金额ETH' value={this.state.value.toString()}
-                     onChangeText={(value) => this.setState({value})}/>
+        <View style={{
+          flex: 10,
+          justifyContent: 'flex-start',
+          alignItems: 'flex-start'
+        }}>
+          <Text style={{ padding: 10, alignSelf: 'center' }}>
+            Current Balance: {this.props.balance} ETH
+        </Text>
+          <TextInput placeholder='Receiver ETH address'
+            placeholderTextColor={Colors.cloud}
+            style={{
+              flex: 2,
+              borderBottomWidth: 1,
+              borderBottomColor: Colors.facebook,
+            }}
+            value={this.state.to} onChangeText={(to) => this.setState({ to })} />
+          <TextInput placeholder='Transfer Amount'
+            placeholderTextColor={Colors.cloud}
+            style={{
+              borderBottomWidth: 1,
+              borderBottomColor: Colors.facebook,
+            }}
+            value={this.state.value.toString()}
+            onChangeText={(value) => this.setState({ value })} />
+
         </View>
-        <TouchableOpacity full dark style={{marginTop: 20}}
-                          onPress={this._transfer.bind(this)} >
-          <Text>转账</Text>
+        <TouchableOpacity style={styles.buttonWrapper}
+          onPress={this._transfer.bind(this)} >
+          <Text style={styles.buttonText}>Next</Text>
         </TouchableOpacity>
-        <Text style={{padding: 10, fontSize: 11}}>
-          {/*我的钱包地址:{this.props.address}*/}
-        </Text>
-        <Text style={{padding: 10, fontSize: 22, alignSelf: 'center'}}>
-          {this.props.balance}
-        </Text>
-        <Text style={{padding: 10, fontSize: 11}}>
-          {/*当前交易哈希: {this.props.txHash}*/}
-        </Text>
 
-
-      </ScrollView>
+      </View>
     )
   }
 }

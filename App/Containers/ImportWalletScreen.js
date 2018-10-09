@@ -22,7 +22,11 @@ class ImportWalletScreen extends Component {
     this.state = {
       mnemonic: 'taxi reward file cattle canoe orbit uniform civil tourist sun donkey need',
 
-      keystore: '{"address":"fc379f1fe62a88e047c50a36f8c1e4fa3e93092f","id":"d64a43b1-06de-468d-bc06-e6b39d515428","version":3,"Crypto":{"cipher":"aes-128-ctr","cipherparams":{"iv":"cdb19e71fcf868c842bf6c2a4006e0bb"},"ciphertext":"05cfe364bfb847ec9f27fd99f7dc4e30a4d58a2560ede52aef70d5c149b4635c","kdf":"scrypt","kdfparams":{"salt":"c9197a9b3ef9447e2c9b178cb8c0e9932ba7822002f08a06d85ecb8fc0c6c903","n":4096,"dklen":32,"p":1,"r":8},"mac":"a500e9ffd2b49794633dc5e846d6ef9856aea30de2095599b1db526cb964f028"},"x-ethers":{"client":"ethers.js","gethFilename":"UTC--2018-10-01T09-31-29.0Z--fc379f1fe62a88e047c50a36f8c1e4fa3e93092f","mnemonicCounter":"7fec53a97319ebff9a671eeef9e25c3b","mnemonicCiphertext":"8f88352567bbb001cb64936f84d5721b","version":"0.1"}}'
+      keystore: '{"address":"fc379f1fe62a88e047c50a36f8c1e4fa3e93092f","id":"d64a43b1-06de-468d-bc06-e6b39d515428","version":3,"Crypto":{"cipher":"aes-128-ctr","cipherparams":{"iv":"cdb19e71fcf868c842bf6c2a4006e0bb"},"ciphertext":"05cfe364bfb847ec9f27fd99f7dc4e30a4d58a2560ede52aef70d5c149b4635c","kdf":"scrypt","kdfparams":{"salt":"c9197a9b3ef9447e2c9b178cb8c0e9932ba7822002f08a06d85ecb8fc0c6c903","n":4096,"dklen":32,"p":1,"r":8},"mac":"a500e9ffd2b49794633dc5e846d6ef9856aea30de2095599b1db526cb964f028"},"x-ethers":{"client":"ethers.js","gethFilename":"UTC--2018-10-01T09-31-29.0Z--fc379f1fe62a88e047c50a36f8c1e4fa3e93092f","mnemonicCounter":"7fec53a97319ebff9a671eeef9e25c3b","mnemonicCiphertext":"8f88352567bbb001cb64936f84d5721b","version":"0.1"}}',
+      password1: '',
+      password2: '',
+      keystore_password: '',
+
     }
   }
 
@@ -51,17 +55,28 @@ class ImportWalletScreen extends Component {
         style={{
           border: 2,
         }}
+        value={this.state.password1}
+        onChangeText={val => this.setState({password1: val})}
+
+
         />
         <TextInput placeholder='重复密码'
           placeholderTextColor={Colors.cloud}
         style={{
           border: 2,
         }}
+        value={this.state.password2}
+        onChangeText={val => this.setState({password2: val})}
         />
         <TouchableOpacity full dark style={{marginTop: 20}} onPress={() => {
           // this.props.openNewPwdModal()
-          var mnemonic = this.state.mnemonic
-          this.props.importFromMnemonic(mnemonic, '123')
+          if(!!this.state.password1 && this.state.password1 == this.state.password2){
+            var mnemonic = this.state.mnemonic
+            var password = this.state.password2
+            this.props.importFromMnemonic(mnemonic, this.state.password2)
+          }else{
+            alert('different password')
+          }
         }}>
           <Text style={{
             marginTop: 20,
@@ -107,11 +122,19 @@ class ImportWalletScreen extends Component {
             border: 2,
             color: Colors.text
           }}
+        value={this.state.keystore_password}
+        onChangeText={val => this.setState({keystore_password: val})}
           />
         <TouchableOpacity full dark style={{marginTop: 20}} onPress={() => {
           // this.props.openPwdModal()
+
           var keystore = this.state.keystore
-          this.props.importEncryptWallet(JSON.parse(keystore), '123')
+          var password = this.state.keystore_password
+          if(!!password){
+            this.props.importEncryptWallet(JSON.parse(keystore), password)
+          }else{
+            alert('empty password')
+          }
         }}>
           <Text style={{
             marginTop: 20,

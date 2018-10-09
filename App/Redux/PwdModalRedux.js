@@ -47,10 +47,10 @@ export const openPwdModal = (state, action) =>
   state.merge({ modalIsOpen: true, errInfo: null, ...action.data })
 
 export const closePwdModal = (state) =>
-  state.merge({modalIsOpen: false})
+  state.merge({ modalIsOpen: false, errInfo: null, pwd: '', submitedActions: null, canceledActions: null })
 
 export const setPwd = (state, action) =>
-  state.merge({pwd: action.pwd})
+  state.merge({ pwd: action.pwd, errInfo: null })
 
 export const setErrInfo = (state, action) =>
   state.merge({errInfo: action.data.errInfo})
