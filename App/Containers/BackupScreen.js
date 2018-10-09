@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { ScrollView, Text, TextInput, TouchableOpacity } from 'react-native'
+import { ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import { connect } from 'react-redux'
 // Add Actions - replace 'Your' with whatever your reducer is called :)
 // import YourActions from '../Redux/YourRedux'
@@ -19,9 +19,16 @@ Array.prototype.remove = function (val) {
 }
 
 class BackupScreen extends Component {
+  static navigationOptions = ({navigation}) => {
+    return {
+      title: 'Back up your mnemonic',
+    }
+  }
+
   constructor (props) {
     super(props)
     this.state = {
+      // mnemonic: 'a s d f g a',
       textareaArray: [],
       textarea: '',
       stateWord: [],
@@ -40,21 +47,22 @@ class BackupScreen extends Component {
     // var words = mnemonic.split(' ').sort(()=> .5 - Math.random());
     var words = mnemonic.split(' ')
     var wordState = new Array()
-    words.map((item, i) => wordState[item] = true)
+    words.map((item, i) => wordState[i] = true)
     this.setState({stateWord: words, wordState: wordState}, () => {
-      console.log(this.state)
+      console.tron.log(this.state)
     })
   }
 
-  _addWord (item) {
+  _addWord (i) {
     var wordState = this.state.wordState
+    var stateWord = this.state.stateWord
     var textarea = this.state.textarea
     var textareaArray = this.state.textareaArray
-    textareaArray.push(item)
-    console.log(textareaArray)
-    textarea === '' ? textarea = item : textarea = textarea + ' ' + item
-    textarea = textareaArray.join(' ')
-    wordState[item] = !wordState[item]
+    textareaArray.push(i)
+    console.tron.log('add',textareaArray)
+    textarea === '' ? textarea = stateWord[i] : textarea = textarea + ' ' + stateWord[i]
+    // textareaArray = textarea.join(' ')
+    wordState[i] = !wordState[i]
     this.setState({
       wordState: wordState,
       textarea: textarea,
@@ -62,13 +70,17 @@ class BackupScreen extends Component {
     })
   }
 
-  _rmWord (idx) {
+  _rmWord (i) {
+    var stateWord = this.state.stateWord
     var wordState = this.state.wordState
     var textareaArray = this.state.textareaArray
-    textareaArray.remove(idx)
-    console.log(textareaArray)
-    var textarea = textareaArray.join(' ')
-    wordState[idx] = !wordState[idx]
+    textareaArray.remove(i)
+    console.tron.log('rm',textareaArray)
+    var textarea = ''
+    var tmpArray = new Array()
+    textareaArray.map(i => tmpArray.push(stateWord[i]))
+    textarea = tmpArray.join(' ')
+    wordState[i] = !wordState[i]
     this.setState({
       wordState: wordState,
       textarea: textarea,
@@ -81,7 +93,7 @@ class BackupScreen extends Component {
     console.log('mnemonic:' + this.props.mnemonic)
     if (this.state.textarea === this.props.mnemonic) {
       this.props.saveWallet(this.props.mnemonic, this.props.password)
-      // this.props.navigate('BottomTab')
+      this.props.navigate('BottomTab')
     }
     else {
       alert('输入错误哦！')
@@ -90,43 +102,43 @@ class BackupScreen extends Component {
 
   renderItem (item, i) {
     return (
-      <TouchableOpacity dark={this.state.wordState[item]} light={!this.state.wordState[item]} style={styles.button}
-                        onPress={() => {
-                          this.state.wordState[item] ? this._addWord(item) : this._rmWord(item)
-                        }} key={i}><Text style={{color: Colors.text}}>{item}</Text></TouchableOpacity>
+      <TouchableOpacity
+        style={ this.state.wordState[i] ? styles.darkButton : styles.lightButton}
+        onPress={() => {this.state.wordState[i] ? this._addWord(i) : this._rmWord(i)}}
+        key={i}>
+        <Text
+          style={styles.label}
+          style={this.state.wordState[i] ? styles.darkText : styles.lightText}>
+          {item}
+        </Text>
+      </TouchableOpacity>
     )
 
   }
 
   render () {
     return (
-      <ScrollView style={styles.container}>
-        <Text style={{
-          marginTop: 20,
-          fontSize: 16,
-          color: Colors.text,
-        }}>Backup Container</Text>
+      <View style={styles.container}>
+        <View style={styles.titleBox}>
+          <Text style={styles.titleText}>Back up your mnemonic</Text>
+        </View>
         <TextInput placeholder="输入助记词，按空格分隔；或者直接点击助记词按钮输入"
-                   style={{
-                     marginTop: 20,
-                     fontSize: 16,
-                     height: 150,
-                     border: 2,
-                     color: Colors.text,
-                   }}
+                   style={styles.textArea}
+                   placeholderTextColor={Colors.inActiveTint}
                    multiline={true}
                    numberOfLines={5}
                    value={this.state.textarea}
+                   editable={false}
                    onChangeText={(textarea) => this.setState({textarea})}/>
-        {this.state.stateWord.map((item, i) => this.renderItem(item, i))}
-        <TouchableOpacity full dark style={{marginTop: 20}} onPress={() => this._checkMnemonic()}>
-          <Text style={{
-            marginTop: 20,
-            fontSize: 16,
-            color: Colors.text,
-          }}>确定</Text>
-        </TouchableOpacity>
-      </ScrollView>
+        <View style={styles.buttonArea}>
+          {this.state.stateWord.map((item, i) => this.renderItem(item, i))}
+        </View>
+        <View style={styles.actionWrapper}>
+          <TouchableOpacity style={styles.confirmButton} onPress={() => this._checkMnemonic()}>>
+            <Text style={styles.label}> Next </Text>
+          </TouchableOpacity>
+        </View>
+      </View>
     )
   }
 }

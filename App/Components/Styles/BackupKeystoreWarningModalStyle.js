@@ -1,30 +1,35 @@
 import { StyleSheet } from 'react-native'
-import { Colors, Metrics } from '../../Themes'
+import Colors from '../../Themes/Colors'
 import ApplicationStyles from '../../Themes/ApplicationStyles'
 import Fonts from '../../Themes/Fonts'
 
 export default StyleSheet.create({
+
   ...ApplicationStyles.screen,
-  container: {
-    flex: 1,
-    backgroundColor: Colors.background,
+
+  modal: {
+    justifyContent: 'center',
     alignItems: 'stretch',
-    padding: 20,
+    backgroundColor: 'rgba(0,0,0,0.7)',
   },
   content: {
     alignItems: 'stretch',
-    backgroundColor: Colors.neetGray,
+    backgroundColor: Colors.border,
   },
+
   header: {
     height: 50,
     borderBottomWidth: 1,
     borderBottomColor: Colors.steel,
+    alignItems: 'center',
     justifyContent: 'center',
   },
   headerText: {
     ...Fonts.style.h5,
     color: Colors.text
   },
+
+
   actionWrapper: {
     height: 50,
     marginTop: 10,
@@ -33,24 +38,10 @@ export default StyleSheet.create({
   },
 
   confirmButton: {
-    flex: 1,
+    flex: 3,
     padding: 10,
-    marginLeft: 10,
+    marginLeft:10,
     alignItems: 'center',
     backgroundColor: Colors.casinoGreen,
-  },
-  cancelButton: {
-    flex: 1,
-    padding: 10,
-    alignItems: 'center',
-    backgroundColor: Colors.ember,
-  },
-  titleBox: {
-    margin: 10,
-    alignItems: 'center',
-  },
-  titleText: {
-    color: Colors.ricePaper,
-    fontSize: 18
   },
 })

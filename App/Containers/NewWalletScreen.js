@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { ScrollView, Text, TouchableOpacity } from 'react-native'
+import { Button, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import { connect } from 'react-redux'
 // Add Actions - replace 'Your' with whatever your reducer is called :)
 // import YourActions from '../Redux/YourRedux'
@@ -8,41 +8,64 @@ import NewPwdModalActions from '../Redux/NewPwdModalRedux'
 
 // Styles
 import styles from './Styles/NewWalletScreenStyle'
-import NewPwdModal from '../Components/NewPwdModal'
+import NewPwdInput from '../Components/NewPwdInput'
 import Colors from '../Themes/Colors'
 import NavigationActions from 'react-navigation/src/NavigationActions'
+import DoublePwdInput from '../Components/DoublePwdInput'
 
 // var ethers = require('../Lib/ethers')
 
 class NewWalletScreen extends Component {
-  // constructor (props) {
-  //   super(props)
-  //   this.state = {}
-  // }
+  static navigationOptions = ({navigation}) => {
+    return {
+      title: 'Create a Wallet',
+    }
+  }
+
+  constructor (props) {
+    super(props)
+    this.state = {
+      pwd1: '12',
+      pwd2: '12'
+    }
+  }
+
   componentDidMount () {
-    console.tron.log('NewWalletScreen componentDidMount')
     this.props.openNewPwdModal()
     this.props.newWallet()
+  }
+
+  _checkPwd () {
+    if (this.state.pwd1 === this.state.pwd2) {
+      // this.props.setPwd(this.state.pwd2)
+      this.props.navigate('PreBackupScreen')
+    } else {
+      alert('密码不一致！')
+    }
   }
 
   render () {
 
     let {mnemonic} = this.props
 
-    console.tron.log('New Wallet props',this.props)
+    console.tron.log('New Wallet props', this.props)
 
     return (
-      <ScrollView style={styles.container}>
-        <Text style={{ marginTop: 20, fontSize: 16,
-          color: Colors.text}}>{mnemonic}</Text>
-          <TouchableOpacity onPress={_ => this.props.navigate('BackupScreen')}>
-          <Text style={{
-            marginTop: 20,
-            fontSize: 16,
-            color: Colors.text}}> 下一步</Text>
-        </TouchableOpacity>
-        <NewPwdModal onCancel={_ => this.props.back()} />
-      </ScrollView>
+
+      <View style={styles.container}>
+        <View style={styles.titleBox}>
+          <Text style={styles.titleText}>Create you password </Text>
+        </View>
+        <DoublePwdInput/>
+        <View style={styles.actionWrapper}>
+          <TouchableOpacity style={styles.cancelButton} onPress={this.props.navigate.back}>
+            <Text style={styles.label}> Cancel </Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.confirmButton} onPress={this._checkPwd.bind(this)}>
+            <Text style={styles.label}> Confirm </Text>
+          </TouchableOpacity>
+        </View>
+      </View>
     )
   }
 }
@@ -50,12 +73,13 @@ class NewWalletScreen extends Component {
 const mapStateToProps = (state) => {
   return {
     mnemonic: state.wallet.wallet.mnemonic
-    // mnemonic: 'hello'
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
+
+    setPwd: (pwd) => dispatch(NewPwdModalActions.setPwd(pwd)),
     newWallet: () => dispatch(WalletActions.newWallet()),
     openNewPwdModal: () => dispatch(NewPwdModalActions.openNewPwdModal()),
     navigate: (target) => dispatch(NavigationActions.navigate({routeName: target})),

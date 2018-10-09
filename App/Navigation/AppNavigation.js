@@ -58,6 +58,7 @@ const PrimaryNav = StackNavigator({
   // Default config for all screens
   headerMode: 'float',
   cardStyle: {shadowColor: 'transparent'},
+  // initialRouteName: 'BackupScreen',
   initialRouteName: 'BottomTab',
   // initialRouteName: 'TransferScreen',
   navigationOptions: {
