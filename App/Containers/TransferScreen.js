@@ -9,22 +9,21 @@ import styles from './Styles/TransferScreenStyle'
 import WalletActions from '../Redux/WalletRedux'
 import ConfirmModalActions from '../Redux/ConfirmModalRedux'
 import PwdModalActions, { openPwdModal } from '../Redux/PwdModalRedux'
-import { Colors } from '../Themes';
+import { Colors } from '../Themes'
 
 class TransferScreen extends Component {
-  state = {
-    to: '0xfc379f1fe62a88e047c50a36f8c1e4fa3e93092f',
-    value: '0.001'
-  }
 
   static navigationOptions = {
     title: 'Transfer'
   }
 
+  state = {
+    to: '',
+    value: ''
+  }
 
-
-  _transfer() {
-    let { openConfirmModal, address, balance } = this.props
+  _transfer () {
+    let {openConfirmModal, address, balance} = this.props
 
     if (!W.address) {
       navigate('WalletManageScreen')
@@ -38,7 +37,7 @@ class TransferScreen extends Component {
           submitedActions: [
             {
               action: WalletActions.transfer,
-              data: { ...{ to, value } = this.state }
+              data: {...{to, value} = this.state}
             }
           ]
         }
@@ -54,42 +53,42 @@ class TransferScreen extends Component {
 
   }
 
-
-  render() {
+  render () {
     return (
       <View style={styles.container}>
-
-        <View style={{
-          flex: 10,
-          justifyContent: 'flex-start',
-          alignItems: 'flex-start'
-        }}>
-          <Text style={{ padding: 10, alignSelf: 'center' }}>
-            Current Balance: {this.props.balance} ETH
-        </Text>
-          <TextInput placeholder='Receiver ETH address'
-            placeholderTextColor={Colors.cloud}
-            style={{
-              flex: 2,
-              borderBottomWidth: 1,
-              borderBottomColor: Colors.facebook,
-            }}
-            value={this.state.to} onChangeText={(to) => this.setState({ to })} />
-          <TextInput placeholder='Transfer Amount'
-            placeholderTextColor={Colors.cloud}
-            style={{
-              borderBottomWidth: 1,
-              borderBottomColor: Colors.facebook,
-            }}
-            value={this.state.value.toString()}
-            onChangeText={(value) => this.setState({ value })} />
-
+        <View style={styles.titleBox}>
+          <Text style={styles.titleText}>
+            Wallet balance: {this.props.balance.toFixed(9)} ETH
+          </Text>
         </View>
-        <TouchableOpacity style={styles.buttonWrapper}
-          onPress={this._transfer.bind(this)} >
-          <Text style={styles.buttonText}>Next</Text>
-        </TouchableOpacity>
-
+        <View style={styles.header}>
+          <TextInput style={styles.headerText}
+                     autoFocus={true}
+                     multiline={false}
+                     placeholder='请输入对方地址'
+                     placeholderTextColor={'gray'}
+                     clearButtonMode='always'
+                     value={this.state.to}
+                     onChangeText={(to) => this.setState({to})}/>
+        </View>
+        <View style={styles.header}>
+          <TextInput style={styles.valueText}
+                     autoFocus={false}
+                     multiline={false}
+                     placeholder='请输入转账金额ETH'
+                     placeholderTextColor={'gray'}
+                     clearButtonMode='always'
+                     keyboard={'numeric'}
+                     value={this.state.value.toString()}
+                     onChangeText={(value) => this.setState({value})}/>
+          <Text style={styles.ETH}>ETH</Text>
+        </View>
+        <View style={styles.actionWrapper}>
+          <TouchableOpacity style={styles.confirmButton}
+                            onPress={this._transfer.bind(this)}>
+            <Text style={styles.label}> Transfer </Text>
+          </TouchableOpacity>
+        </View>
       </View>
     )
   }

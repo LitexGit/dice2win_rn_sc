@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
-import { ScrollView, Text, TextInput, TouchableOpacity } from 'react-native'
+import { ScrollView, SectionList, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import { connect } from 'react-redux'
+
 // Add Actions - replace 'Your' with whatever your reducer is called :)
 // import YourActions from '../Redux/YourRedux'
 
@@ -9,14 +10,22 @@ import styles from './Styles/ImportWalletScreenStyle'
 import WalletActions from '../Redux/WalletRedux'
 import NavigationActions from 'react-navigation/src/NavigationActions'
 import Colors from '../Themes/Colors'
-import NewPwdModal from '../Components/NewPwdModal'
+import NewPwdModal from '../Components/NewPwdInput'
 import NewPwdModalActions from '../Redux/NewPwdModalRedux'
 
 import PwdModal from '../Components/PwdModal'
 import PwdModalActions from '../Redux/PwdModalRedux'
-
+import ScrollableTabView, { ScrollableTabBar } from 'react-native-scrollable-tab-view'
+import ListEmptyComponent from '../Components/ListEmptyComponent'
+import DoublePwdInput from '../Components/DoublePwdInput'
+import SinglePwdInput from '../Components/SinglePwdInput'
 
 class ImportWalletScreen extends Component {
+  static navigationOptions = ({navigation}) => {
+    return {
+      title: 'Import a Wallet',
+    }
+  }
   constructor (props) {
     super(props)
     this.state = {
@@ -32,118 +41,68 @@ class ImportWalletScreen extends Component {
 
   render () {
     return (
-      <ScrollView style={styles.container}>
-        <Text style={{
-          marginTop: 20,
-          fontSize: 16,
-          color: Colors.text
-        }}>助记词</Text>
-        <TextInput
-          multiline
-          placeholder='输入助记词'
-          style={{
-            marginTop: 20,
-            fontSize: 16,
-            height: 50,
-            border: 2,
-            color: Colors.text
-          }}
-          value={this.state.mnemonic}
-          onChangeText={(mnemonic) => this.setState({mnemonic})} />
-        <TextInput placeholder='密码'
-          placeholderTextColor={Colors.cloud}
-        style={{
-          border: 2,
-        }}
-        value={this.state.password1}
-        onChangeText={val => this.setState({password1: val})}
 
+      <View style={styles.container}>
+        <ScrollableTabView
+          initialPage={0}
+          style={styles.tabBarStyle}
+          tabBarActiveTextColor={Colors.activeTint}
+          tabBarInactiveTextColor={Colors.inActiveTint}
+          tabBarUnderlineStyle={styles.tabBarUnderlineStyle}
+          renderTabBar={() => <ScrollableTabBar style={{borderBottomWidth: 0}}/>}
+          onChangeTab={({i, ref}) => {
+            // this.props.loadRecords(RecordTags[i])
+          }}>
+          <View tabLabel='Mnemonic' style={styles.content}>
+            {/*<View style={styles.titleBox}>*/}
+              {/*<Text style={styles.titleText}>Import mnemonic</Text>*/}
+            {/*</View>*/}
+            <TextInput
+              multiline
+              placeholder='输入助记词'
+              style={styles.mnemonicInput}
+              value={this.state.mnemonic}
+              onChangeText={(mnemonic) => this.setState({mnemonic})}/>
+            <DoublePwdInput/>
 
-        />
-        <TextInput placeholder='重复密码'
-          placeholderTextColor={Colors.cloud}
-        style={{
-          border: 2,
-        }}
-        value={this.state.password2}
-        onChangeText={val => this.setState({password2: val})}
-        />
-        <TouchableOpacity full dark style={{marginTop: 20}} onPress={() => {
-          // this.props.openNewPwdModal()
-          if(!!this.state.password1 && this.state.password1 == this.state.password2){
-            var mnemonic = this.state.mnemonic
-            var password = this.state.password2
-            this.props.importFromMnemonic(mnemonic, this.state.password2)
-          }else{
-            alert('different password')
-          }
-        }}>
-          <Text style={{
-            marginTop: 20,
-            fontSize: 16,
-            color: Colors.text
-          }}>助记词导入</Text>
-        </TouchableOpacity>
+            <View style={styles.actionWrapper}>
+              <TouchableOpacity style={styles.cancelButton} onPress={this.props.navigate.back}>
+                <Text style={styles.label}> Cancel </Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.confirmButton}
+                                onPress={() => {this.props.importFromMnemonic(this.state.mnemonic, '123')}}>
+                <Text style={styles.label}> Confirm </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+          <View tabLabel='Keystore' style={styles.content}>
+            <TextInput
+              multiline
+              numberOfLines={5}
+              placeholder='keystore文本内容'
+              placeholderTextColor={Colors.cloud}
+              style={styles.keystoreInput}
+              value={this.state.keystore}
+              onChangeText={(keystore) => this.setState({keystore})}/>
+            <SinglePwdInput/>
 
-          <Text style={{
-            marginTop: 20,
-            fontSize: 16,
-            color: Colors.text
-          }}>----------------------------------------------------------------</Text>
+            <View style={styles.actionWrapper}>
+              <TouchableOpacity style={styles.cancelButton} onPress={this.props.navigate.back}>
+                <Text style={styles.label}> Cancel </Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.confirmButton} onPress={() => {
+                // this.props.openPwdModal()
+                var keystore = this.state.keystore
+                this.props.importEncryptWallet(JSON.parse(keystore), '123')
+              }}>
+                <Text style={styles.label}> Confirm </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </ScrollableTabView>
 
+      </View>
 
-
-
-        <Text style={{
-          marginTop: 20,
-          fontSize: 16,
-          color: Colors.text
-        }}>keystore</Text>
-        <TextInput
-          multiline
-          numberOfLines={5}
-          placeholder='keystore文本内容'
-          placeholderTextColor={Colors.cloud}
-          style={{
-            marginTop: 20,
-            fontSize: 16,
-            height: 150,
-            border: 2,
-            borderColor: Colors.steel,
-            color: Colors.text
-          }}
-          value={this.state.keystore}
-          onChangeText={(keystore) => this.setState({keystore})} />
-          <TextInput
-          placeholder='Keystore密码'
-          placeholderTextColor={Colors.cloud}
-          style={{
-            fontSize: 16,
-            border: 2,
-            color: Colors.text
-          }}
-        value={this.state.keystore_password}
-        onChangeText={val => this.setState({keystore_password: val})}
-          />
-        <TouchableOpacity full dark style={{marginTop: 20}} onPress={() => {
-          // this.props.openPwdModal()
-
-          var keystore = this.state.keystore
-          var password = this.state.keystore_password
-          if(!!password){
-            this.props.importEncryptWallet(JSON.parse(keystore), password)
-          }else{
-            alert('empty password')
-          }
-        }}>
-          <Text style={{
-            marginTop: 20,
-            fontSize: 16,
-            color: Colors.text
-          }}>keystore导入</Text>
-        </TouchableOpacity>
-        <NewPwdModal navigateName={'BottomTab'} />
-      </ScrollView>
     )
   }
 }

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { ScrollView, Text, TouchableOpacity } from 'react-native'
+import { ScrollView, Text, TouchableOpacity, View } from 'react-native'
 import { connect } from 'react-redux'
 // Add Actions - replace 'Your' with whatever your reducer is called :)
 // import YourActions from '../Redux/YourRedux'
@@ -15,48 +15,48 @@ class PreBackupScreen extends Component {
   //   this.state = {}
   // }
 
+  static navigationOptions = ({navigation}) => {
+    return {
+      title: 'Back up your mnemonic',
+    }
+  }
 
+  render () {
 
-  render() {
-
-    let { mnemonic } = this.props
+    let {mnemonic} = this.props
     return (
-      <ScrollView style={styles.container}>
-        <Text style={{
-          marginTop: 20,
-          fontSize: 16,
-          color: Colors.text,
-        }}>请记录您的钱包的助记词并保存到安全的地方</Text>
-        <Text style={{
-          marginTop: 20,
-          fontSize: 16,
-          color: Colors.text,
-        }}>钱包助记词用于恢复您的账户。任何时候都不要泄露您的助记词，建议不要使用截屏保存或通过互联网工具传输</Text>
-        <Text style={{
-          marginTop: 20,
-          fontSize: 16,
-          color: Colors.text,
-        }}>{mnemonic}</Text>
-        <TouchableOpacity style={{ marginTop: 20 }}
-          onPress={() => this.props.navigate('BackupScreen')}>
-          <Text style={{
-            marginTop: 20,
-            fontSize: 16,
-            color: Colors.text,
-          }}>下一步</Text>
-        </TouchableOpacity>
-      </ScrollView>
+      <View style={styles.container}>
+        <View style={styles.titleBox}>
+          <Text style={styles.titleText}>Back up your mnemonic</Text>
+        </View>
+        <Text style={styles.infoText}>
+          Please record the mnemonic of your wallet and save it to a safe place</Text>
+        <Text style={styles.infoText}>
+          Wallet mnemonics are used to recover your account. Do not reveal your mnemonics at any time. It is
+          recommended not to use screen captures to save it or transfer it via internet tools.
+        </Text>
+        <Text style={styles.mnemonicText}>
+          {mnemonic}</Text>
+        <View style={styles.actionWrapper}>
+          <TouchableOpacity style={styles.confirmButton} onPress={() => this.props.navigate('BackupScreen')}>>
+            <Text style={styles.label}> Next </Text>
+          </TouchableOpacity>
+        </View>
+      </View>
     )
   }
 }
 
 const mapStateToProps = (state) => {
-  return { mnemonic: W.wallet.mnemonic }
+  return {
+    // mnemonic: W.wallet.mnemonic
+    mnemonic: state.wallet.wallet.mnemonic
+  }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    navigate: (target) => dispatch(NavigationActions.navigate({ routeName: target })),
+    navigate: (target) => dispatch(NavigationActions.navigate({routeName: target})),
   }
 }
 
