@@ -69,7 +69,10 @@ export function* initWallet(api, action) {
 
   W.network = config.network
 
-  yield socket.emit('lottery', W.address)
+  // const delay = (ms) => new Promise(res => setTimeout(res, ms))
+  !!W.keystoreInitialized && (yield socket.emit('lottery', W.address))
+  //yield call(delay, 1000)
+  // yield delay(5000)
 }
 
 // 从助记词导入钱包，并将其存入本地存储中

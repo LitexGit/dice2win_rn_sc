@@ -52,7 +52,6 @@ export default function * root () {
 
     // get records
     takeLatest(RecordTypes.RECORD_REQUEST, getRecord, api),
-    takeLatest(RecordTypes.GET_GAME_RECORDS, getGameRecords, api),
 
     // get config
     takeLatest(ConfigTypes.CONFIG_REQUEST, getConfig, api),

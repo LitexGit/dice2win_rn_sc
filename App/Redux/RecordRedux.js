@@ -4,7 +4,6 @@ import Immutable from 'seamless-immutable'
 /* ------------- Types and Action Creators ------------- */
 
 const { Types, Creators } = createActions({
-  getGameRecords: ['data'],
   recordRequest: ['data'],
   recordSuccess: ['payload'],
   recordFailure: null
@@ -34,14 +33,15 @@ export const INITIAL_STATE = Immutable({
 /* ------------- Selectors ------------- */
 
 export const RecordSelectors = {
-  getData: state => state.data
+  getData: state => state.data,
+  getRecords: state => state.record
 }
 
 /* ------------- Reducers ------------- */
 
 // request the data from an api
 export const request = (state, { data }) =>
-  state.merge({ fetching: true, data, payload:state.payload })
+  state.merge({ fetching: true, data})
 
 // successful api lookup
 export const success = (state, action) => {

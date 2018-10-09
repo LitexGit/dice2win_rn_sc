@@ -35,7 +35,8 @@ export const INITIAL_STATE = Immutable({
 /* ------------- Selectors ------------- */
 
 export const UserSelectors = {
-  getData: state => state.data
+  getData: state => state.data,
+  getUid: state => state.user.uid,
 }
 
 /* ------------- Reducers ------------- */

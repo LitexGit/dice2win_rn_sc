@@ -39,11 +39,12 @@ const create = (baseURL = 'http://api.eth4.fun:7001/') => {
   const getConfig = () => api.get('api/v1/games/dev/configs')
   const getABI = () => api.get('api/v1/games/dev/abi')
   const getActivity = () => api.get('api/v1/games/dev/banners')
-  const getRecord = ({game, address, page, size}) => api.get('api/v1/games/dev/bet/history', {gameId: game, addr: address, page, size})
+  const getRecord = ({gameId, address, page, size}) => api.get('api/v1/games/dev/bet/history', {gameId, addr: address, page, size})
   const getUser = (uid) => api.get('api/v1/games/dev/userinfo', {uid})
   const getPromotion = (uid) => api.get('api/v1/games/dev/shareinfo', {uid})
   const getPromotionRecords = (uid) => api.get('api/v1/games/dev/shares', {uid})
   const getRandom = ({address, network_id}) => api.put('api/v1/games/dev/random', {address, network_id})
+  const getTx = ({address}) => api.get(' api/v1/games/dev/transactions', {address})
 
   const register = ({inviter, nickname, address}) => api.put('api/v1/games/dev/register', {aff_code: inviter, nickname, eth_address: address})
 
@@ -70,6 +71,7 @@ const create = (baseURL = 'http://api.eth4.fun:7001/') => {
     getPromotion,
     getPromotionRecords,
     getRandom,
+    getTx,
 
     register,
   }

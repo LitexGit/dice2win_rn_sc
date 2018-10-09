@@ -36,7 +36,9 @@ export default StyleSheet.create({
   },
   
   qr:{
-    margin: 10
+    margin:10,
+    padding: 1,
+    backgroundColor: Colors.steel,
   },
 
   addressWrapper:{
@@ -44,12 +46,15 @@ export default StyleSheet.create({
     paddingLeft: 10,
     paddingRight: 10,
 
+    alignItems: 'center',
+
     margin: 10,
     borderRadius: 5,
     backgroundColor: Colors.cloud
   },
   addressText:{
-    fontSize: 12,
+    fontSize: 13,
+    padding: 3,
     color: Colors.text
   },
 

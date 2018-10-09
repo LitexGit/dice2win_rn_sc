@@ -10,9 +10,12 @@
 *    you'll need to define a constant in that file.
 *************************************************************/
 
-import { call, put } from 'redux-saga/effects'
+import { call, put, select, all } from 'redux-saga/effects'
 import RecordActions from '../Redux/RecordRedux'
-// import { RecordSelectors } from '../Redux/RecordRedux'
+import { RecordSelectors } from '../Redux/RecordRedux'
+import { GameSelectors } from '../Redux/GameRedux'
+import { WalletSelectors } from '../Redux/WalletRedux'
+import { UserSelectors } from '../Redux/UserRedux'
 
 export function * getGameRecords (api, action) {
   const { data: {gameId, page, size} } = action
@@ -23,15 +26,31 @@ export function * getGameRecords (api, action) {
     yield put(RecordActions.recordFailure())
   }
 }
-export function * getRecord (api, action) {
-  const { data: { type, page, size } } = action
-  const response = yield call(api.getRecord, {address:W.wallet.address, page, size})
 
-  // success?
+export function * getRecord (api, action) {
+  console.tron.log('getRecord', action.data)
+  const { type, data:{page,size} } = action.data
+  const [ gameId, uid, address ] = yield all([
+    select(GameSelectors.getGameId),
+    select(UserSelectors.getUid),
+    select(WalletSelectors.getAddress),
+  ])
+  let response = null
+  switch(type) {
+    case 'bonus': response = yield call(api.getPromotionRecords, {uid, page, size});break 
+    case 'game': response = yield call(api.getRecord, {address, page, size});break 
+    case 'global': response = yield call(api.getRecord, {gameId, page, size});break 
+    case 'tx': response = yield call(api.getTx, {address, page, size});break 
+    default: response = {}
+  }
+
   if (response.ok) {
-    // You might need to change the response here - do this with a 'transform',
-    // located in ../Transforms/. Otherwise, just pass the data back from the api.
-    yield put(RecordActions.recordSuccess(response.data))
+    if(page) { // load more, use append mode
+      let data = yield select(RecordSelectors)[type]
+      yield put(RecordActions.recordSuccess({[type]:[...data, ...response.data]}))
+    } else {
+      yield put(RecordActions.recordSuccess({[type]:response.data}))
+    }
   } else {
     yield put(RecordActions.recordFailure())
   }

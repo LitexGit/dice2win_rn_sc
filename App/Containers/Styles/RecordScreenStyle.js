@@ -44,7 +44,7 @@ export default StyleSheet.create({
     justifyContent: 'center'
   },
   iconWrapper:{
-    flex:1,
+    width: 70,
     flexDirection: 'row',
     alignItems: 'flex-start',
     justifyContent: 'center'
@@ -52,7 +52,7 @@ export default StyleSheet.create({
   valueWrapper:{
     flex:1,
     flexDirection: 'row',
-    alignItems: 'flex-start',
+    alignItems: 'center',
     justifyContent: 'center'
   },
   icon:{
@@ -63,11 +63,11 @@ export default StyleSheet.create({
     color: Colors.silver
   },
   inValue:{
-    fontSize: 24,
+    fontSize: 20,
     color: Colors.casinoGreen
   },
   outValue:{
-    fontSize: 24,
+    fontSize: 20,
     color: Colors.activeTint
   },
 

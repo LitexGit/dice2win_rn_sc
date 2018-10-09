@@ -37,6 +37,7 @@ export function * getConfig (api, action) {
 const socketStatusChannel = channel()
 
 export function * socketInit(api, action) {
+  console.tron.log('socket init', socket)
   if(!socket) {
     let {address} = action
     console.tron.log('socket address', address)

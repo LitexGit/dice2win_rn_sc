@@ -20,11 +20,11 @@ const {Types, Creators} = createActions({
 export const GameTypes = Types
 export default Creators
 
-export const GAME_IDS = {
-  'coin': 2,
-  'dice1': 6,
-  'dice2': 36,
-  'roll': 100
+export const GAME_NAMES = {
+  2:'coin',
+  6: 'dice1',
+  36: 'dice2',
+  100: 'roll'
 }
 
 /* ------------- Initial State ------------- */
@@ -44,7 +44,8 @@ export const INITIAL_STATE = Immutable({
 /* ------------- Selectors ------------- */
 
 export const GameSelectors = {
-  getData: state => state.data
+  getData: state => state.data,
+  getGameId: state => state.game.key,
 }
 
 /* ------------- Reducers ------------- */

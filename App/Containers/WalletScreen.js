@@ -41,7 +41,7 @@ class WalletScreen extends Component {
       }))
     } else {
       // TODO temporary put register here
-      !uid && props.register(W.address)
+      !props.uid && props.register(W.address)
     }
   }
 
@@ -127,9 +127,11 @@ class WalletScreen extends Component {
             <Text style={styles.balance}>{balance}</Text>
             <Text style={styles.unit}> ETH</Text>
           </View>
-          <View style={styles.qr}>{address && <QR value={address} size={120} color={Colors.silver} backgroundColor={Colors.casinoBlue}/>}</View>
+          <View style={styles.qr}>{address && <QR value={address} size={100} color={Colors.neetGray} backgroundColor={Colors.steel} />}</View>
+          {/* <View style={styles.qr}>{address && <QR value={address} size={120} color='white' backgroundColor='black' />}</View> */}
+          <Text style={styles.addressText}>{address}</Text>
           <TouchableOpacity style={styles.addressWrapper} onPress={_ => this._copyAddress()}>
-            <Text style={styles.addressText}>{address}</Text>
+            <Text style={styles.addressText}>copy address</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.shareWrapper}>
@@ -158,19 +160,27 @@ class WalletScreen extends Component {
         </View>
 
         <View style={styles.buttons}>
-          <TouchableOpacity style={styles.button} onPress={_ => this._checkUpdate()}>
-            <Text style={styles.buttonText}>Version</Text>
-            <Text style={styles.buttonText}>1.0.0</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={_ => this._goto('faq')}>
-            <Text style={styles.buttonText}>FAQ</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={_ => this._goto('telegram')}>
-            <Text style={styles.buttonText}>Telegram</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={_ => this._goto('settings')}>
-            <Text style={styles.buttonText}>Settings</Text>
-          </TouchableOpacity>
+          <View style={styles.button}>
+            <TouchableOpacity style={[styles.button, {borderWidth:0}]} onPress={_ => this._checkUpdate()}>
+              <Text style={styles.buttonText}>Version</Text>
+              <Text style={styles.buttonText}>1.0.0</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.button}>
+            <TouchableOpacity style={[styles.button, {borderWidth:0}]} onPress={_ => this._goto('faq')}>
+              <Text style={styles.buttonText}>FAQ</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.button}>
+            <TouchableOpacity style={[styles.button, {borderWidth:0}]} onPress={_ => this._goto('telegram')}>
+              <Text style={styles.buttonText}>Telegram</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.button}>
+            <TouchableOpacity style={[styles.button, {borderWidth:0}]} onPress={_ => this._goto('settings')}>
+              <Text style={styles.buttonText}>Settings</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </ScrollView>
     )
@@ -178,10 +188,17 @@ class WalletScreen extends Component {
 }
 
 const mapStateToProps = (state) => {
+  let {
+    wallet: {fetching, address, balance},
+    user: {uid, bonus, code},
+    config: {telegroup, shareInfo, faq},
+  } = state
+  balance && (balance = balance.toFixed(6))
+  bonus && (bonus = parseFloat(parseFloat(bonus).toFixed(6))) // TODO maybe backend can pass bonus as a number
   return {
-    ...{fetching, adddress, balance} = state.wallet,
-    ...{uid, bonus, code} = state.user,
-    ...{telegroup, shareInfo, faq} = state.config
+    fetching, address, balance,
+    uid, bonus, code,
+    telegroup, shareInfo, faq,
   }
 }
 

@@ -35,10 +35,17 @@ export function * getUser (api, action) {
   const userRes = yield call(api.getUser, uid)
   const promotionRes = yield call(api.getPromotion, uid)
 
-  if (userRes.ok && promotionRes.ok) {
+  let userInfo = {}
+  if (userRes.ok) {
     let {nickname, eth_address:address, inviter, aff_code:code, balance:bonus } = userRes.data
+    userInfo = {...userInfo, nickname, address, inviter, code, bonus}
+  }
+  if(promotionRes.ok) {
     let {total_aff_amount:totalBonus } = promotionRes.data
-    let userInfo = {nickname, address, inviter, code, bonus, totalBonus}
+    userInfo = {...userInfo, nickname, address, inviter, code, bonus, totalBonus}
+  }
+
+  if(Object.keys(userInfo).length){
     yield put(UserActions.userSuccess(userInfo))
   } else {
     yield put(UserActions.userFailure())

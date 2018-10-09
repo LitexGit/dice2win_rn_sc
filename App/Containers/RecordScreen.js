@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
-import { View, Text, Image, SectionList, TouchableOpacity } from 'react-native'
+import { View, Text, Image, SectionList, TouchableOpacity, RefreshControl } from 'react-native'
 import FA5 from 'react-native-vector-icons/FontAwesome5'
 import ScrollableTabView, { ScrollableTabBar, } from 'react-native-scrollable-tab-view'
 import Toast from 'react-native-root-toast'
 
-import RecordActions, {RecordTags} from '../Redux/RecordRedux'
+import RecordActions from '../Redux/RecordRedux'
+import {GAME_NAMES} from '../Redux/GameRedux'
 import { connect } from 'react-redux'
 // Add Actions - replace 'Your' with whatever your reducer is called :)
 // import YourActions from '../Redux/YourRedux'
@@ -12,6 +13,7 @@ import { connect } from 'react-redux'
 // Styles
 import { Colors, Images, Metrics } from '../Themes'
 import ListEmptyComponent from '../Components/ListEmptyComponent'
+import ethers from 'ethers'
 import styles from './Styles/RecordScreenStyle'
 
 
@@ -24,8 +26,34 @@ class RecordScreen extends Component {
     )
   }
 
+  constructor(props) {
+    super(props)
+    this.state = {
+      game: {
+        page: 0,
+        size: 1,
+      },
+      tx: {
+        page: 0,
+        size: 1,
+      },
+    }
+  }
+
+  _refresh = (type='game') => {
+    this.setState({[type]:{page:0, size:1}})
+    let {page, size} = this.state[type]
+    this.props.loadRecords(type, {page, size})
+  }
+
+  _loadMore = (type) => {
+    let data = {page:this.state[type].page + 1, size:this.state[type].size}
+    this.setState({[type]:data})
+    this._refresh(type)
+  }
+
   componentDidMount () {
-    // this.props.loadRecords('myGame')
+    this._refresh()
   }
 
   _renderSectionHeader = ({section}) => {
@@ -37,11 +65,11 @@ class RecordScreen extends Component {
   }
 
   _renderGameItem = ({item}) => {
-    let icon = Images[item.type]
-    let inValue = item.in && item.in.toFixed(2)
-    let outValue = item.out && item.out.toFixed(2)
-    let time = item.time
-
+    let {modulo, amount:inValue, dice_payment:outValue, updated_at:time} = item
+    let icon = Images[GAME_NAMES[modulo]]
+    inValue && (inValue = parseFloat(ethers.utils.formatEther(inValue)))
+    outValue && (outValue = parseFloat(ethers.utils.formatEther(outValue)))
+    time = time.substring(time.indexOf('T'), time.indexOf('.'))
     return <TouchableOpacity style={styles.gameItem} onPress={_ => this._itemPressed(item)}>
       <View style={styles.timeWrapper}><Text style={styles.timeText}>{time}</Text></View>
       <View style={styles.iconWrapper}><Image style={styles.icon} resizeMode='contain' source={icon}/></View>
@@ -54,7 +82,7 @@ class RecordScreen extends Component {
 
   _renderTxItem = ({item}) => {
     let {type, remark, time, amount} = item
-    amount = amount && amount.toFixed(2)
+    amount && (amount = parseFloat(ethers.utils.parseEther(amount).toFixed(6)))
 
     return <TouchableOpacity style={styles.gameItem} onPress={_ => this._itemPressed(item)}>
       <View style={styles.timeWrapper}><Text style={styles.timeText}>{time}</Text></View>
@@ -64,7 +92,14 @@ class RecordScreen extends Component {
     </TouchableOpacity>
   }
 
+  _tabChanged = ({i,ref}) => {
+    let type = ['game', 'tx'][i]
+    console.tron.log('NewTab: ', type)
+    this._refresh(type)
+  }
+  
   render () {
+    let {gameSections, txSections, fetching} = this.props
     return (
       <View style={styles.container}>
         <ScrollableTabView
@@ -74,13 +109,17 @@ class RecordScreen extends Component {
           tabBarInactiveTextColor={Colors.inActiveTint}
           tabBarUnderlineStyle={styles.tabBarUnderlineStyle}
           renderTabBar={() => <ScrollableTabBar style={{borderBottomWidth: 0}}/>}
-          onChangeTab={({i, ref}) => {
-            // this.props.loadRecords(RecordTags[i])
-          }}>
+          onChangeTab={this._tabChanged.bind(this)}>
           <View tabLabel='Game History' style={styles.container}>
             {/* Game Section */}
             <SectionList
-              sections={this.props.gameSections}
+              refreshControl={<RefreshControl
+                refreshing={fetching}
+                onRefresh={_=>this._refresh()}
+                tintColor={Colors.tintColor}
+                title="Refreshing..."
+                titleColor={Colors.text}/>}
+              sections={gameSections}
               renderSectionHeader={this._renderSectionHeader}
               renderItem={this._renderGameItem}
               ListEmptyComponent={ListEmptyComponent}
@@ -89,7 +128,13 @@ class RecordScreen extends Component {
           <View tabLabel='Transactions' style={styles.container}>
             {/* Tx Section */}
             <SectionList
-              sections={this.props.txSections}
+              refreshControl={<RefreshControl
+                refreshing={fetching}
+                onRefresh={_=>this._refresh()}
+                tintColor={Colors.tintColor}
+                title="Refreshing..."
+                titleColor={Colors.text}/>}
+              sections={txSections}
               renderSectionHeader={this._renderSectionHeader}
               renderItem={this._renderTxItem}
               ListEmptyComponent={ListEmptyComponent}
@@ -103,6 +148,7 @@ class RecordScreen extends Component {
 
 const mapStateToProps = (state) => {
   return {
+    fetching: state.record.fetching,
     gameSections: state.record.game.sections,
     txSections: state.record.tx.sections,
   }
@@ -110,7 +156,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    loadRecords: (type) => dispatch(RecordActions.recordRequest({type}))
+    loadRecords: (type, data) => dispatch(RecordActions.recordRequest({type, data}))
   }
 }
 

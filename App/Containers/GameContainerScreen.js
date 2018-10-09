@@ -125,7 +125,7 @@ class GameContainerScreen extends Component {
                 <Text style={[styles.stakeButtonText, {fontSize: 28}]}>-</Text>
               </TouchableOpacity>
               <TextInput value={this.props.stake} style={styles.stakeInput}
-                         onChangeText={(val) => this.props.setStake(val)}/>
+                        autoFocus={true} onChangeText={(val) => this.props.setStake(val)}/>
               <TouchableOpacity style={styles.stakeButton} onPress={this.props.addUnit}>
                 <Text style={[styles.stakeButtonText, {fontSize: 28}]}>+</Text>
               </TouchableOpacity>
@@ -138,7 +138,7 @@ class GameContainerScreen extends Component {
                   <Text style={styles.keyText}>{(this.props.rewardTime).toFixed(2)}x</Text>️
                 </View>
                 <View style={styles.info}>
-                  <Text style={styles.rewardText}>winning chance:</Text>
+                  <Text style={styles.rewardText}>winning chance</Text>
                   <Text style={styles.keyText}>{(this.props.winRate * 100).toFixed(2)}%</Text>
                 </View>
               </View>

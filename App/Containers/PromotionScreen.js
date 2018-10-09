@@ -14,7 +14,7 @@ class PromotionScreen extends Component {
   }
 
   componentDidMount () {
-    // this.props.loadRecords('bonus')
+    this.props.loadRecords('bonus')
   }
 
   _goto = (where) => {
