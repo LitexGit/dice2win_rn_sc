@@ -40,8 +40,9 @@ export function * socketInit(api, action) {
   if(!socket) {
     let {address} = action
     console.tron.log('socket address', address)
-    yield socket = SocketIOClient(address)
+    yield socket = SocketIOClient(address, { forceNew: true })
     socket.on('connect', socketConnected)
+      .on('reconnect', socketReconnect)
       .on('settle', socketMessage)
       .on('history', socketMessage)
       .on('error', socketError)
@@ -57,9 +58,13 @@ export function * watchSocketStatusChannel(){
   }
 }
 
-const socketConnected = () => {
-  socketStatusChannel.put(ConfigActions.socketStatus('on'))
-  console.tron.log('Socket Connected')
+function * socketConnected() {
+  yield socketStatusChannel.put(ConfigActions.socketStatus('on'))
+  console.tron.log('Socket Connected', socket.id)
+
+  if(!!W.address){
+    yield socket.emit('lottery', W.address)
+  }
 }
 
 const socketMessage = (msg) => {
@@ -79,4 +84,13 @@ function * socketError (err) {
 function * socketClosed (e) {
   socketStatusChannel.put(ConfigActions.socketStatus('off'))
   console.tron.log('Socket CLOSE', e)
+}
+
+function * socketReconnect(e) {
+  socketStatusChannel.put(ConfigActions.socketStatus('on'))
+  console.tron.log('Socket Reconnect', e)
+
+  if(!!W.address){
+    yield socket.emit('lottery', W.address)
+  }
 }

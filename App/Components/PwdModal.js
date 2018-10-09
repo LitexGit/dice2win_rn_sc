@@ -31,6 +31,8 @@ class PwdModal extends Component {
   }
 
   render () {
+
+    let { errInfo, setErrInfo } = this.props
     return (
       <Overlay
         containerStyle={styles.modal}
@@ -45,7 +47,16 @@ class PwdModal extends Component {
             placeholder='Input your password'
             placeholderTextColor={'gray'}
             secureTextEntry={true}
-            onChangeText={val => this.setState({pwd: val})}/>
+            onChangeText={val => {
+              this.setState({pwd: val})
+              setErrInfo(null)
+
+            }
+          }/>
+
+            { !!errInfo && <Text>
+              {errInfo}
+            </Text>}
         </View>
 
         <View style={styles.actionWrapper}>
@@ -66,8 +77,7 @@ const mapStateToProps = (state) => {
     submitedActions: state.pwdModal.submitedActions,
     canceledActions: state.pwdModal.canceledActions,
     modalIsOpen: state.pwdModal.modalIsOpen,
-    keystore: state.wallet.keystore,
-    unlockSuccess: state.pwdModal.unlockSuccess
+    errInfo: state.pwdModal.errInfo,
   }
 }
 
@@ -75,6 +85,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     closePwdModal: () => dispatch(PwdModalActions.closePwdModal()),
     setPwd: (password) => dispatch(PwdModalActions.setPwd(password)),
+    setErrInfo: (errInfo) => dispatch(PwdModalActions.setErrInfo({errInfo})),
     dispatch: ({action, data}) => dispatch(action(data)),
     navigate: (target) => dispatch(NavigationActions.navigate({routeName: target})),
   }

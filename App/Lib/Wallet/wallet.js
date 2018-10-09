@@ -18,6 +18,17 @@ function initGlobalW(keystore){
 function initGlobalWFull(wallet){
   W.wallet = wallet;
   W.address = ethers.utils.getAddress(wallet.address);
+
+
+  var infuraProvider = new providers.InfuraProvider(W.network);
+  var etherscanProvider = new providers.EtherscanProvider(W.network);
+  var fallbackProvider = new providers.FallbackProvider([
+    infuraProvider,
+    etherscanProvider
+  ]);
+
+  W.wallet.provider = fallbackProvider
+
 }
 
 
@@ -36,6 +47,14 @@ async function saveKeyStore(wallet, password, filepath) {
   console.tron.log('walletLib saveKeyStore', json)
   let result = await RNFS.writeFile(filepath, json, 'utf8')
   console.tron.log('walletLib saveKeyStore writeFile', result)
+
+  initGlobalW(JSON.parse(json))
+  initGlobalWFull(wallet)
+  console.tron.log('walletLib importKeystore W', W)
+
+
+
+
   return json
 
 }
@@ -69,7 +88,7 @@ async function encryptWallet(wallet, password){
 async function importPrivateKey(privatekey, password) {
   let wallet = new Wallet(privatekey)
   initGlobalWFull(wallet)
-  saveKeyStore(wallet, password, W.keystorePath)
+  await saveKeyStore(wallet, password, W.keystorePath)
 }
 
 /**
@@ -81,26 +100,22 @@ async function importPrivateKey(privatekey, password) {
  * @returns {boolean}
  */
 async function importKeyStore(keystore, password) {
-  var json = JSON.stringify(keystore)
-  let wallet = null
-  console.tron.log('walletLib importKeystore params', keystore, password)
+  let json = JSON.stringify(keystore)
+  console.tron.log('walletLib importKeystore params', json, password)
   try {
-    wallet = await Wallet.RNfromEncryptedWallet(json, password)
+    let wallet = await Wallet.RNfromEncryptedWallet(json, password)
 
     console.tron.log('walletLib importKeystore', wallet)
 
-    let keystore1 = saveKeyStore(wallet, password, W.keystorePath)
+    let keystore1 = await saveKeyStore(wallet, password, W.keystorePath)
 
-    console.tron.log('walletLib importKeystore keystore', keystore1)
-    initGlobalW(keystore1)
-    initGlobalWFull(wallet)
 
-    console.tron.log('walletLib importKeystore W', W)
+    return wallet
   } catch (err) {
     console.tron.log('walletLib importKeystore err', err)
+    return null
   }
 
-  return wallet;
 
 }
 
@@ -114,7 +129,6 @@ async function importKeyStore(keystore, password) {
  */
 async function importMnemonic(mnemonic, password) {
 
-  let wallet = null
   try {
     let wallet = await Wallet.RNFromMnemonic(mnemonic)
 
@@ -122,18 +136,14 @@ async function importMnemonic(mnemonic, password) {
 
     let keystore = await saveKeyStore(wallet, password, W.keystorePath)
 
-    console.tron.log('walletLib importMnemonic keystore', keystore)
+    return wallet
 
-    initGlobalW(JSON.parse(keystore))
-    initGlobalWFull(wallet)
-
-    console.tron.log('walletLib importMnemonic W', W)
   } catch (err) {
 
     console.tron.log('walletLib importKeystore err', err)
+    return null
   }
 
-  return wallet
 
 }
 
@@ -152,10 +162,22 @@ async function createWallet() {
  * @param wallet [ETH 钱包对象]
  */
 async function getBalance(address) {
-  var balance = 0
-  let provider = providers.getDefaultProvider(W.network)
-  var balanceRaw = await provider.getBalance(address)
-  var balance = parseInt(balanceRaw) / 1e18
+  let balance = 0
+  // let provider = providers.getDefaultProvider(W.network)
+
+
+  var infuraProvider = new providers.InfuraProvider(W.network);
+  var etherscanProvider = new providers.EtherscanProvider(W.network);
+  var fallbackProvider = new providers.FallbackProvider([
+    infuraProvider,
+    etherscanProvider
+  ]);
+
+  let provider = fallbackProvider
+
+
+  let balanceRaw = await provider.getBalance(address)
+  balance = parseInt(balanceRaw) / 1e18
   return balance
 }
 
@@ -170,13 +192,13 @@ async function getBalance(address) {
  */
 async function sendTx(wallet, toAddress, value, options) {
 
-  wallet.provider = providers.getDefaultProvider(W.network)
   let defaultOptions = {
     gasLimit: 21000,
     gasPrice: 3e9
   }
   let amount = utils.parseEther(value)
   defaultOptions  = Object.assign(defaultOptions, options)
+  console.tron.log('sendTx defaultOptions', defaultOptions)
   let txHash = await wallet.send(toAddress, amount, defaultOptions)
   return txHash
 
@@ -195,7 +217,7 @@ async function initWallet() {
   // await createFakeWallet(keystorePath)
 
   if (!W) {
-    W = { network: 'ropsten', keystorePath: keystorePath };
+    W = { keystorePath: keystorePath };
     // load keystore from keystorePath
     try {
       let keystore = await RNFS.readFile(keystorePath);

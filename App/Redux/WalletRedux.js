@@ -29,7 +29,7 @@ export default Creators
 /* ------------- Initial State ------------- */
 
 export const INITIAL_STATE = Immutable({
-  keystore: {},
+  keystore: '',
   tx: {hash: ''},
   wallet: {wallet: {mnemonic: null}},
   data: null,

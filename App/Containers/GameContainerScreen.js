@@ -41,11 +41,15 @@ class GameContainerScreen extends Component {
   }
 
   _placeBet = ()=>{
-    let { index, stake, contract_address, address, betMask, openConfirmModal, navigate, getRandom } = this.props
+    let { index, stake, contract_address, address, betMask, openConfirmModal, navigate, getRandom, balance } = this.props
 
 
     if(!W.address) {
       navigate('WalletManageScreen')
+    } else if (stake >= balance) {
+
+      alert('You don\'t have enough balance to place Bet')
+
     } else {
 
 

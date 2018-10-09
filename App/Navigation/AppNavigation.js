@@ -59,6 +59,7 @@ const PrimaryNav = StackNavigator({
   headerMode: 'float',
   cardStyle: {shadowColor: 'transparent'},
   initialRouteName: 'BottomTab',
+  // initialRouteName: 'TransferScreen',
   navigationOptions: {
     headerStyle: styles.header,
     headerTintColor: Colors.snow,
