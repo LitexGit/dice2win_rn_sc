@@ -13,7 +13,7 @@ const timeStyle = () => {
   }
   return {
     timeWrapper: {
-      width: 70,
+      width: 80,
       alignItems: 'center',
       justifyContent: 'space-between'
     },

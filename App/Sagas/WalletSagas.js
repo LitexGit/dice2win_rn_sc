@@ -180,7 +180,7 @@ export function* getRandom(api, action) {
 
     console.tron.log('getRandom Res', response.data)
     yield put(WalletActions.walletSuccess(response.data))
-    yield put(ConfirmModalActions.confirmModalSuccess({ gas: response.data.gasPrice/ 1e9 }))
+    yield put(ConfirmModalActions.confirmModalSuccess({ gasAuto: response.data.gasPrice / 1e9 }))
 
   } else {
     yield put(WalletActions.walletFailure({gasPrice: 4e9, secret: {}}))

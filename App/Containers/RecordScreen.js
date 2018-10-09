@@ -13,7 +13,7 @@ import { connect } from 'react-redux'
 // Styles
 import { Colors, Images, Metrics } from '../Themes'
 import ListEmptyComponent from '../Components/ListEmptyComponent'
-import ethers from 'ethers'
+import { displayETH } from '../Lib/Utils/format'
 import styles from './Styles/RecordScreenStyle'
 
 
@@ -65,34 +65,35 @@ class RecordScreen extends Component {
   }
 
   _renderGameItem = ({item}) => {
-    let {modulo, amount:inValue, dice_payment:outValue, updated_at:time} = item
+    let {modulo, amount:inValue, dice_payment:outValue, updated_at:time, status} = item
+
     let icon = Images[GAME_NAMES[modulo]]
-    inValue && (inValue = parseFloat(ethers.utils.formatEther(inValue)))
-    outValue && (outValue = parseFloat(ethers.utils.formatEther(outValue)))
     time = time.substring(time.indexOf('T')+1, time.indexOf('.'))
     return <TouchableOpacity style={styles.gameItem} onPress={_ => this._itemPressed(item)}>
-      <View style={styles.timeWrapper}><Text style={styles.timeText}>{time}</Text></View>
+      <View style={styles.timeWrapper}>
+        <Text style={styles.timeText}>{time}</Text>
+        <Text style={styles.statusText}>{status}</Text>
+      </View>
       <View style={styles.iconWrapper}><Image style={styles.icon} resizeMode='contain' source={icon}/></View>
       <View style={styles.inWrapper}>
         <Text style={styles.label}>in: </Text>
-        <Text style={styles.inValue}>{inValue}</Text>
+        <Text style={styles.inValue}>{displayETH(inValue)}</Text>
       </View>
       <View style={styles.outWrapper}>
         <Text style={styles.label}>out: </Text>
-        <Text style={styles.outValue}>{outValue}</Text>
+        <Text style={styles.outValue}>{displayETH(outValue)}</Text>
       </View>
     </TouchableOpacity>
   }
 
   _renderTxItem = ({item}) => {
     let {type, remark, time, amount} = item
-    amount && (amount = parseFloat(ethers.utils.parseEther(amount).toFixed(6)))
 
     return <TouchableOpacity style={styles.gameItem} onPress={_ => this._itemPressed(item)}>
       <View style={styles.timeWrapper}><Text style={styles.timeText}>{time}</Text></View>
       <View style={styles.valueWrapper}><Text style={styles.remarkText}>{remark}</Text></View>
       <View style={styles.valueWrapper}><Text
-        style={styles[type + 'comeValue']}>{(type === 'in' ? '+' : '-') + amount}</Text></View>
+        style={styles[type + 'comeValue']}>{(type === 'in' ? '+' : '-') + displayETH(amount)}</Text></View>
     </TouchableOpacity>
   }
 

@@ -15,6 +15,7 @@ export default StyleSheet.create({
   },
   header: {
     height: 50,
+    width: '100%',
     borderBottomWidth: 1,
     borderBottomColor: Colors.steel,
     alignItems: 'center',

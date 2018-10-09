@@ -24,7 +24,8 @@ export const INITIAL_STATE = Immutable({
   amount: 0,
   from: null,
   to: null,
-  gas: 1,
+  gas: 4,
+  gasAuto: 4,
 
   // format: {action, data}
   confirmedActions: null,
@@ -48,8 +49,9 @@ export const ConfirmModalSelectors = {
 export const openConfirmModal = (state, action) =>
   state.merge({modalIsOpen: true, ...action.data})
 
-export const closeConfirmModal = (state) =>
-  state.merge({modalIsOpen: false, amount: 0, from: null, to: null, gas: 1, confirmedActions: null, canceledActions: null})
+export const closeConfirmModal = (state) => 
+  state.merge({...INITIAL_STATE, gas: state.gas})
+  // state.merge({modalIsOpen: false, amount: 0, from: null, to: null, gas: 4, confirmedActions: null, canceledActions: null})
 
 // request the data from an api
 export const request = (state, {data}) =>

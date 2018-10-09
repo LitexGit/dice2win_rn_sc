@@ -7,20 +7,17 @@ import GameActions from '../Redux/GameRedux'
 import ConfirmModalActions from '../Redux/ConfirmModalRedux'
 import PwdModalActions from '../Redux/PwdModalRedux'
 
-import { Colors } from '../Themes'
-
 import Coin from '../Components/Coin'
 import OneDice from '../Components/OneDice'
 import TwoDice from '../Components/TwoDice'
 import Etheroll from '../Components/Etheroll'
 
-import ConfirmModal from '../Components/ConfirmModal'
 import ResultModal from '../Components/ResultModal'
-import PwdModal from '../Components/PwdModal'
 
 import styles from './Styles/GameContainerScreenStyle'
 
 import WalletActions from '../Redux/WalletRedux'
+import { displayETH, DECIMAL } from '../Lib/Utils/format'
 
 const GAME_COMS = {2:<Coin />, 6:<OneDice />, 36:<TwoDice />, 100:<Etheroll />}
 const GAME_TITLES = {2: 'Coin Flip', 6: 'Roll a Dice', 36: 'Two Dices', 100: 'Etheroll'}
@@ -78,7 +75,9 @@ class GameContainerScreen extends Component {
   }
 
   render () {
-    let { index, status, result } = this.props
+    let { index, stake, balance, status, result, rewardTime, winRate,
+      setStake, addUnit, rmUnit, 
+    } = this.props
     return (
       <ScrollView style={styles.container}>
         <View style={styles.GameContainerScreen}>
@@ -91,13 +90,13 @@ class GameContainerScreen extends Component {
             {GAME_COMS[index]}
 
             <View style={styles.stakeBox}>
-              <TouchableOpacity style={styles.stakeButton} onPress={() => this.props.setStake('0.05')}>
+              <TouchableOpacity style={styles.stakeButton} onPress={() => setStake('0.05')}>
                 <Text style={styles.stakeButtonText}>0.05</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.stakeButton} onPress={() => this.props.setStake('0.10')}>
+              <TouchableOpacity style={styles.stakeButton} onPress={() => setStake('0.10')}>
                 <Text style={styles.stakeButtonText}>0.10</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.stakeButton} onPress={() => this.props.setStake('0.15')}>
+              <TouchableOpacity style={styles.stakeButton} onPress={() => setStake('0.15')}>
                 <Text style={styles.stakeButtonText}>0.15</Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.stakeButton}>
@@ -105,32 +104,32 @@ class GameContainerScreen extends Component {
               </TouchableOpacity>
             </View>
             <View style={styles.stakeBox} >
-              <TouchableOpacity style={styles.stakeButton} onPress={this.props.rmUnit}>
+              <TouchableOpacity style={styles.stakeButton} onPress={rmUnit}>
                 <Text style={[styles.stakeButtonText, {fontSize: 28}]}>-</Text>
               </TouchableOpacity>
-              <TextInput value={this.props.stake} style={styles.stakeInput}
-                        autoFocus={true} onChangeText={(val) => this.props.setStake(val)}/>
-              <TouchableOpacity style={styles.stakeButton} onPress={this.props.addUnit}>
+              <TextInput value={stake} style={styles.stakeInput}
+                        autoFocus={true} onChangeText={(val) => setStake(val)}/>
+              <TouchableOpacity style={styles.stakeButton} onPress={addUnit}>
                 <Text style={[styles.stakeButtonText, {fontSize: 28}]}>+</Text>
               </TouchableOpacity>
             </View>
-            <Text style={styles.balanceText}>balance: <Text>{this.props.balance} ETH</Text></Text>
+            <Text style={styles.balanceText}>balance: <Text>{displayETH(balance)} ETH</Text></Text>
             <View style={styles.rewardWrapper}>
               <View style={styles.infoWrapper}>
                 <View style={styles.info}>
                   <Text style={styles.rewardText}>winning pays</Text>
-                  <Text style={styles.keyText}>{(this.props.rewardTime).toFixed(2)}x</Text>️
+                  <Text style={styles.keyText}>{(rewardTime).toFixed(2)}x</Text>️
                 </View>
                 <View style={styles.info}>
                   <Text style={styles.rewardText}>winning chance</Text>
-                  <Text style={styles.keyText}>{(this.props.winRate * 100).toFixed(2)}%</Text>
+                  <Text style={styles.keyText}>{(winRate * 100).toFixed(2)}%</Text>
                 </View>
               </View>
-              <Text style={styles.rewardText}>you will win <Text style={styles.keyText}>{(this.props.rewardTime * this.props.stake).toFixed(5)} ETH</Text></Text>
+              <Text style={styles.rewardText}>you will win <Text style={styles.keyText}>{(rewardTime * stake).toFixed(DECIMAL)} ETH</Text></Text>
               <Text style={[styles.label, {fontSize: 11}]}>1% fee, 5% of bonus to your inviter</Text>
             </View>
             <View style={styles.startButtonWrapper}>
-              <TouchableOpacity style={styles.startButton} onPress={() => this._placeBet()}>
+              <TouchableOpacity style={styles.startButton} onPress={this._placeBet}>
                 <Text style={styles.startButtonText}> Bet! </Text>
               </TouchableOpacity>
             </View>
@@ -149,7 +148,6 @@ const mapStateToProps = (state) => {
     config: {contract_address},
     wallet: { balance, address, gasPrice, secret }
   } = state
-  balance && (balance = parseFloat(balance.toFixed(6)))
   return {
     index:key, stake, status, result,
     modalIsOpen, loading, gas,

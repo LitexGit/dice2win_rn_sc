@@ -48,16 +48,43 @@ export default StyleSheet.create({
     fontSize: 11,
   },
 
-  gasWrapper: {
-    height: 50,
-    flexDirection:'row',
+  sliderWrapper: {
+    width: '90%',
+    flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'space-between'
+  },
+  slider:{
+    flex:1,
+  },
+
+  gasWrapper: {
+    padding: 5,
+    alignItems: 'center',
+    justifyContent: 'space-evenly',
     borderBottomWidth: 1,
     borderBottomColor: Colors.cloud,
   },
+  gasStatus:{
+    padding: 3,
+    flexDirection:'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
   gasText:{
-    color: Colors.steel,
+    color: Colors.bloodOrange,
+  },
+  autoGasButton:{
+    alignItems: 'center',
+    backgroundColor: Colors.cloud,
+    borderRadius: 5,
+    padding: 7,
+    paddingBottom: 5,
+    paddingTop: 5,
+  },
+  autoGasText:{
+    fontSize: 12,
+    color: Colors.silver,
   },
 
   actionWrapper: {

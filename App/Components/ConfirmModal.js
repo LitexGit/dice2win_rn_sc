@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 // import PropTypes from 'prop-types';
-import { View, Text, TouchableOpacity, Modal } from 'react-native'
+import { View, Text, TouchableOpacity, Button, Slider } from 'react-native'
 import ConfirmModalActions from '../Redux/ConfirmModalRedux'
 
 import connect from 'react-redux/es/connect/connect'
@@ -8,8 +8,27 @@ import Overlay from 'react-native-modal-overlay'
 import styles from './Styles/ConfirmModalStyle'
 
 class ConfirmModal extends Component {
+  constructor(props){
+    super(props)
+    this.state = {
+      displayGas: props.gas,
+      minGas: 4,
+      maxGas: 100,
+    }
+  }
+
+  _autoGas() {
+    let {gasAuto, updateGas} = this.props
+    updateGas(gasAuto)
+    this.setState({displayGas: gasAuto})
+  }
+
   render () {
-    let { modalIsOpen, amount, from, to, gas } = this.props
+    let { modalIsOpen, amount, from, to, gasAuto,
+      updateGas,
+    } = this.props
+    let { displayGas, minGas, maxGas, } = this.state
+
     return (
       <Overlay 
         containerStyle={styles.modal}
@@ -21,7 +40,7 @@ class ConfirmModal extends Component {
           <Text style={styles.headerText}>Confirm</Text>
         </View>
         <View style={styles.ethWrapper}>
-          <Text style={styles.ethText}>{amount} ETH</Text>
+          <Text style={styles.ethText}><Text style={{fontWeight:'900'}}>{amount}</Text> ETH</Text>
         </View>
         <View style={styles.fromToWrapper}>
           <Text style={styles.label}>From: </Text>
@@ -32,9 +51,28 @@ class ConfirmModal extends Component {
           <Text style={styles.fromToText}>{to}</Text>
         </View>
         <View style={styles.gasWrapper}>
-          <Text style={styles.label}>Gas: </Text>
-          {/* TODO need to be passed in */}
-          <Text style={styles.gasText}>{gas} GWei</Text>
+          <View style={styles.gasStatus}>
+            <Text style={styles.label}>Gas: </Text>
+            <Text style={styles.gasText}><Text style={{fontWeight:'900'}}>{displayGas}</Text> GWEI     </Text>
+            <TouchableOpacity style={styles.autoGasButton} onPress={this._autoGas.bind(this)}>
+              <Text style={styles.autoGasText}>recommend: </Text>
+              <Text style={styles.autoGasText}>{gasAuto}</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.sliderWrapper}>
+            <Text style={styles.label}>  {minGas} </Text>
+            <Slider style={styles.slider} 
+              step={1}
+              value={displayGas}
+              minimumValue={minGas}
+              maximumValue={maxGas}
+              onSlidingComplete={val => updateGas(val)}
+              onValueChange={(val) => {
+                this.setState({displayGas: val})
+              }
+            }/>
+            <Text style={styles.label}> {maxGas}</Text>
+          </View>
         </View>
 
         <View style={styles.actionWrapper}>
@@ -63,13 +101,14 @@ class ConfirmModal extends Component {
 }
 
 const mapStateToProps = (state) => {
-  return { modalIsOpen, amount, from, to, gas, fetching, confirmedActions, canceledActions } = state.confirmModal
+  return { modalIsOpen, amount, from, to, gas, gasAuto, fetching, confirmedActions, canceledActions } = state.confirmModal
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
     closeConfirmModal: () => dispatch(ConfirmModalActions.closeConfirmModal()),
     dispatch: ({action, data}) => dispatch(action(data)), 
+    updateGas: (gas) => dispatch(ConfirmModalActions.confirmModalSuccess({gas})),
     onCancel: (canceledActions) => {
       canceledActions.map(({action, data}) => dispatch(action(data)))
     },
