@@ -70,22 +70,6 @@ class GameContainerScreen extends Component {
       })
     }
   }
-/*
-  _placeBet = ()=>{
-    if(!W.address){
-      this.props.navigate('WalletManageScreen')
-
-    }else if(!W.wallet){
-      this.props.openPwdModal()
-    }else{
-      this._placeBetWithPassword('')
-    }
-  }
-
-  _placeBetWithPassword = (password) => {
-    this.props.openConfirmModal() // we can get password inside the modal
-  }
-*/
 
   componentDidMount(){
     this.props.navigation.setParams({ gotoRecords: _=>this.props.navigate('GameRecordScreen')})
@@ -165,7 +149,7 @@ const mapStateToProps = (state) => {
     config: {contract_address},
     wallet: { balance, address, gasPrice, secret }
   } = state
-
+  balance && (balance = parseFloat(balance.toFixed(6)))
   return {
     index:key, stake, status, result,
     modalIsOpen, loading, gas,

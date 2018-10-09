@@ -17,9 +17,16 @@ export default StyleSheet.create({
     alignItems: 'flex-end',
     justifyContent: 'flex-start'
   },
-  walletEdit:{
-    color: Colors.facebook,
+  walletButton: {
     margin: 15,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  walletIcon:{
+    color: 'gray',
+  },
+  walletText: {
+    color: 'gray',
   },
   balanceWrapper:{
     flexDirection: 'row',

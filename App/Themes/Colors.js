@@ -6,7 +6,7 @@ const colors = {
 
   neetGray: 'rgb(59, 66, 80)',
   casinoBlue: 'rgb(41,53,87)',
-  casinoGreen: 'rgb(51,104,51)',
+  casinoGreen: 'rgb(51,144,51)',
 
   clear: 'rgba(0,0,0,0)',
   facebook: '#3b5998',

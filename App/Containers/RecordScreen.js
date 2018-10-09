@@ -31,17 +31,17 @@ class RecordScreen extends Component {
     this.state = {
       game: {
         page: 0,
-        size: 1,
+        size: 10,
       },
       tx: {
         page: 0,
-        size: 1,
+        size: 10,
       },
     }
   }
 
   _refresh = (type='game') => {
-    this.setState({[type]:{page:0, size:1}})
+    this.setState({[type]:{page:0, size:10}})
     let {page, size} = this.state[type]
     this.props.loadRecords(type, {page, size})
   }
@@ -69,14 +69,18 @@ class RecordScreen extends Component {
     let icon = Images[GAME_NAMES[modulo]]
     inValue && (inValue = parseFloat(ethers.utils.formatEther(inValue)))
     outValue && (outValue = parseFloat(ethers.utils.formatEther(outValue)))
-    time = time.substring(time.indexOf('T'), time.indexOf('.'))
+    time = time.substring(time.indexOf('T')+1, time.indexOf('.'))
     return <TouchableOpacity style={styles.gameItem} onPress={_ => this._itemPressed(item)}>
       <View style={styles.timeWrapper}><Text style={styles.timeText}>{time}</Text></View>
       <View style={styles.iconWrapper}><Image style={styles.icon} resizeMode='contain' source={icon}/></View>
-      <View style={styles.valueWrapper}><Text style={styles.label}>in: </Text><Text
-        style={styles.inValue}>{inValue}</Text></View>
-      <View style={styles.valueWrapper}><Text style={styles.label}>out: </Text><Text
-        style={styles.outValue}>{outValue}</Text></View>
+      <View style={styles.inWrapper}>
+        <Text style={styles.label}>in: </Text>
+        <Text style={styles.inValue}>{inValue}</Text>
+      </View>
+      <View style={styles.outWrapper}>
+        <Text style={styles.label}>out: </Text>
+        <Text style={styles.outValue}>{outValue}</Text>
+      </View>
     </TouchableOpacity>
   }
 

@@ -19,10 +19,10 @@ import NavigationActions from 'react-navigation/src/NavigationActions'
 
 class WalletScreen extends Component {
   static navigationOptions = {
-    title: 'Wallet',
-    tabBarLabel: 'Wallet',
+    title: 'Account',
+    tabBarLabel: 'Account',
     tabBarIcon: ({tintColor}) => (
-      <FA5 name={'wallet'} size={Metrics.bottomTabIconSize} color={tintColor}/>
+      <FA5 name={'user'} size={Metrics.bottomTabIconSize} color={tintColor}/>
     )
   }
 
@@ -120,15 +120,17 @@ class WalletScreen extends Component {
         titleColor={Colors.text}/>}>
         <View style={styles.walletWrapper}>
           <View style={styles.walletEditWrapper}>
-            <TouchableOpacity onPress={_ => this._goto('wallet')}><Feather style={styles.walletEdit} name={'edit'}
-                                                                           size={24}/></TouchableOpacity>
+            <TouchableOpacity style={styles.walletButton} onPress={_ => this._goto('wallet')}>
+              <FA5 name={'wallet'} size={24} style={styles.walletIcon} />
+              <Text style={styles.walletText}>wallet</Text>
+              {/* <Feather style={styles.walletEdit} name={'edit'} size={24}/> */}
+            </TouchableOpacity>
           </View>
           <View style={styles.balanceWrapper}>
             <Text style={styles.balance}>{balance}</Text>
             <Text style={styles.unit}> ETH</Text>
           </View>
           <View style={styles.qr}>{address && <QR value={address} size={100} color={Colors.neetGray} backgroundColor={Colors.steel} />}</View>
-          {/* <View style={styles.qr}>{address && <QR value={address} size={120} color='white' backgroundColor='black' />}</View> */}
           <Text style={styles.addressText}>{address}</Text>
           <TouchableOpacity style={styles.addressWrapper} onPress={_ => this._copyAddress()}>
             <Text style={styles.addressText}>copy address</Text>
