@@ -19,6 +19,8 @@ export const reducers = combineReducers({
   config: require('./ConfigRedux').reducer,
   setting: require('./SettingRedux').reducer,
   notification: require('./NotificationRedux').reducer,
+  doublePwdInput: require('./DoublePwdInputRedux').reducer,
+  singlePwdInput: require('./SinglePwdInputRedux').reducer,
 })
 
 export default () => {

@@ -2,8 +2,21 @@ import { StyleSheet } from 'react-native'
 import ApplicationStyles from '../../Themes/ApplicationStyles'
 import Colors from '../../Themes/Colors'
 import Fonts from '../../Themes/Fonts'
+import Metrics from '../../Themes/Metrics'
 
 export default StyleSheet.create({
+  inputBoxValid: {
+    height: 50,
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.facebook,
+    justifyContent: 'center',
+  },
+  inputBoxUnvalid: {
+    height: 50,
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.fire,
+    justifyContent: 'center',
+  },
   inputBox: {
     height: 50,
     borderBottomWidth: 1,
@@ -16,7 +29,7 @@ export default StyleSheet.create({
   inputText: {
     ...Fonts.style.h5,
 
-    width: 300,
+    width: Metrics.screenWidth - 80,
     color: Colors.text,
     flex: 5
   },
