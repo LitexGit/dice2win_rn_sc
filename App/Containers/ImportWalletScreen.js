@@ -10,13 +10,7 @@ import styles from './Styles/ImportWalletScreenStyle'
 import WalletActions from '../Redux/WalletRedux'
 import NavigationActions from 'react-navigation/src/NavigationActions'
 import Colors from '../Themes/Colors'
-import NewPwdModal from '../Components/NewPwdInput'
-import NewPwdModalActions from '../Redux/NewPwdModalRedux'
-
-import PwdModal from '../Components/PwdModal'
-import PwdModalActions from '../Redux/PwdModalRedux'
 import ScrollableTabView, { ScrollableTabBar } from 'react-native-scrollable-tab-view'
-import ListEmptyComponent from '../Components/ListEmptyComponent'
 import DoublePwdInput from '../Components/DoublePwdInput'
 import SinglePwdInput from '../Components/SinglePwdInput'
 
@@ -55,9 +49,7 @@ class ImportWalletScreen extends Component {
           tabBarInactiveTextColor={Colors.inActiveTint}
           tabBarUnderlineStyle={styles.tabBarUnderlineStyle}
           renderTabBar={() => <ScrollableTabBar style={{borderBottomWidth: 0}}/>}
-          onChangeTab={({i, ref}) => {
-            // this.props.loadRecords(RecordTags[i])
-          }}>
+          >
           <View tabLabel='Mnemonic' style={styles.content}>
             <TextInput
               multiline

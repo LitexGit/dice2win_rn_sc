@@ -17,7 +17,7 @@ class SinglePwdInput extends Component {
       <React.Fragment>
         <View style={styles.inputBox}>
           <TextInput style={styles.inputText}
-                     autoFocus={true}
+                     autoFocus={false}
                      multiline={false}
                      placeholder='Input your password'
                      placeholderTextColor={'gray'}
