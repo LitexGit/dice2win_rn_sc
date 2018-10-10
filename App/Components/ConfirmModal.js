@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
 // import PropTypes from 'prop-types';
-import { View, Text, TouchableOpacity, Button, Slider } from 'react-native'
+import { View, Text, TouchableOpacity, Slider } from 'react-native'
 import ConfirmModalActions from '../Redux/ConfirmModalRedux'
-
+ 
 import connect from 'react-redux/es/connect/connect'
 import Overlay from 'react-native-modal-overlay'
 import styles from './Styles/ConfirmModalStyle'
+import ReactNativeHapticFeedback from 'react-native-haptic-feedback'
 
 class ConfirmModal extends Component {
   constructor(props){
@@ -64,7 +65,7 @@ class ConfirmModal extends Component {
             </TouchableOpacity>
           </View>
           <View style={styles.sliderWrapper}>
-            <Text style={styles.label}>  {minGas} </Text>
+            <Text style={styles.label}>{minGas} </Text>
             <Slider style={styles.slider} 
               step={1}
               value={displayGas}
@@ -73,6 +74,7 @@ class ConfirmModal extends Component {
               onSlidingComplete={val => updateGas(val)}
               onValueChange={(val) => {
                 this.setState({displayGas: val})
+                ReactNativeHapticFeedback.trigger()
               }
             }/>
             <Text style={styles.label}> {maxGas}</Text>

@@ -6,33 +6,39 @@ import styles from './Styles/PwdModalStyle'
 import PwdModalActions from '../Redux/PwdModalRedux'
 import NavigationActions from 'react-navigation/src/NavigationActions'
 import connect from 'react-redux/es/connect/connect'
+import Icon from 'react-native-vector-icons/MaterialIcons'
 
 class PwdModal extends Component {
 
   state = {
-    pwd: ''
+    pwd: '',
+    pwdVis: true,
+    submitted: false,
   }
 
   _checkPwd () {
-    let {setPwd, closePwdModal, dispatch, submitedActions } = this.props
+    let {setPwd, dispatch, submitedActions } = this.props
     // TODO check password validation
     setPwd(this.state.pwd)
+    this.setState({submitted: true})
     submitedActions && submitedActions.forEach(a => dispatch(a));
 
-    // closePwdModal()
   }
 
+  _closeModal () {
+    let {dispatch, closePwdModal, canceledActions} = this.props
 
-  _closeModal(){
-    let { dispatch, closePwdModal, canceledActions } = this.props
-
-    canceledActions  && canceledActions.forEach(a => dispatch(a));
+    canceledActions && canceledActions.forEach(a => dispatch(a))
     closePwdModal()
   }
+
+
 
   render () {
 
     let { errInfo, setErrInfo } = this.props
+    let { submitted } = this.state
+
     return (
       <Overlay
         containerStyle={styles.modal}
@@ -44,27 +50,27 @@ class PwdModal extends Component {
           <TextInput style={styles.headerText}
             autoFocus={true}
             multiline={false}
-            placeholder='Input your password'
+            textAlign='center'
+            placeholder='password'
             placeholderTextColor={'gray'}
             secureTextEntry={true}
             onChangeText={val => {
-              this.setState({pwd: val})
+              this.setState({pwd: val, submitted: false})
               setErrInfo(null)
+            }}/>
 
-            }
-          }/>
-
-            { !!errInfo && <Text>
-              {errInfo}
-            </Text>}
         </View>
+
+        {!!errInfo && <View style={styles.statusWrapper}>
+          <Text style={styles.errText}> {errInfo} </Text>}
+        </View> }
 
         <View style={styles.actionWrapper}>
           <TouchableOpacity style={styles.cancelButton} onPress={this._closeModal.bind(this)}>
             <Text style={styles.label}> Cancel </Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.confirmButton} onPress={this._checkPwd.bind(this)}>
-            <Text style={styles.label}> Submit </Text>
+          <TouchableOpacity style={styles.confirmButton} disabled={submitted} onPress={this._checkPwd.bind(this)}>
+            <Text style={styles.label}> {submitted ? 'Checking..' : 'Submit'} </Text>
           </TouchableOpacity>
         </View>
       </Overlay>

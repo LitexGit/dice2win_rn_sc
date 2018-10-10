@@ -3,72 +3,74 @@ import { View, TextInput } from 'react-native'
 import styles from './Styles/DoublePwdInputStyle'
 import connect from 'react-redux/es/connect/connect'
 import Icon from 'react-native-vector-icons/MaterialIcons'
+import DoublePwdInputActions from '../Redux/DoublePwdInputRedux'
 
 class DoublePwdInput extends Component {
-
-  state = {
-    pwd1: '',
-    pwd2: '',
-    pwd1vis: true,
-    pwd2vis: true,
-  }
-
-  changePwd1Vis () {
-    this.setState({pwd1vis: !this.state.pwd1vis})
-  }
-
-  changePwd2Vis () {
-    this.setState({pwd2vis: !this.state.pwd2vis})
+  componentDidMount () {
+    this.props.init()
   }
 
   render () {
+    let {pwd1, pwd2, pwd1vis, pwd2vis, pwd1valid, pwd2valid, changePwd1Vis, changePwd2Vis, changePwd1Input, changePwd2Input} = this.props
     return (
       <React.Fragment>
-        <View style={styles.inputBox}>
+        <View style={pwd1==='' ? styles.inputBox : (pwd1valid ? styles.inputBoxValid : styles.inputBoxUnvalid)}>
           <TextInput style={styles.inputText}
-                     autoFocus={true}
+                     autoFocus={this.props.focus}
                      multiline={false}
                      placeholder='Input your password'
                      placeholderTextColor={'gray'}
-                     secureTextEntry={this.state.pwd1vis}
+                     secureTextEntry={pwd1vis}
                      clearButtonMode='always'
-                     value={this.state.pwd1}
-                     onChangeText={val => this.setState({pwd1: val})}/>
+                     value={pwd1}
+                     onChangeText={changePwd1Input}/>
           <Icon style={styles.icon}
-                name={!this.state.pwd1vis ? 'visibility' : 'visibility-off'}
+                name={!pwd1vis ? 'visibility' : 'visibility-off'}
                 size={25}
                 color={this.props.iconColor}
-                onPress={this.changePwd1Vis.bind(this)}/>
+                onPress={changePwd1Vis}/>
           />
         </View>
-        <View style={styles.inputBox}>
+        <View style={pwd2==='' ? styles.inputBox : (pwd2valid ? styles.inputBoxValid : styles.inputBoxUnvalid)}>
           <TextInput style={styles.inputText}
                      autoFocus={false}
                      multiline={false}
                      placeholder='Confirm your password'
                      placeholderTextColor={'gray'}
-                     secureTextEntry={this.state.pwd2vis}
+                     secureTextEntry={pwd2vis}
                      clearButtonMode='always'
-                     value={this.state.pwd2}
-                     onChangeText={val => this.setState({pwd2: val})}/>
+                     value={pwd2}
+                     onChangeText={changePwd2Input}/>
           <Icon style={styles.icon}
-                name={!this.state.pwd2vis ? 'visibility' : 'visibility-off'}
+                name={!pwd2vis ? 'visibility' : 'visibility-off'}
                 size={25}
                 color={this.props.iconColor}
-                onPress={this.changePwd2Vis.bind(this)}/>
+                onPress={changePwd2Vis}/>
         </View>
       </React.Fragment>
     )
   }
 }
 
-
 const mapStateToProps = (state) => {
-  return {}
+  return {
+    pwd1: state.doublePwdInput.pwd1,
+    pwd2: state.doublePwdInput.pwd2,
+    pwd1vis: state.doublePwdInput.pwd1vis,
+    pwd2vis: state.doublePwdInput.pwd2vis,
+    pwd1valid: state.doublePwdInput.pwd1valid,
+    pwd2valid: state.doublePwdInput.pwd2valid,
+  }
 }
 
 const mapDispatchToProps = (dispatch) => {
-  return {}
+  return {
+    init: () => dispatch(DoublePwdInputActions.init()),
+    changePwd1Vis: () => dispatch(DoublePwdInputActions.changePwd1Vis()),
+    changePwd2Vis: () => dispatch(DoublePwdInputActions.changePwd2Vis()),
+    changePwd1Input: (val) => dispatch(DoublePwdInputActions.changePwd1Input(val)),
+    changePwd2Input: (val) => dispatch(DoublePwdInputActions.changePwd2Input(val)),
+  }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(DoublePwdInput)

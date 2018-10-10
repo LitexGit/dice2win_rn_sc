@@ -71,7 +71,6 @@ export const failure = state =>
 
 
 
-
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {

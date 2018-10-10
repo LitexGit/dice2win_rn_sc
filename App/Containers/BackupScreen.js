@@ -146,7 +146,7 @@ class BackupScreen extends Component {
 const mapStateToProps = (state) => {
   return {
     mnemonic: state.wallet.wallet.mnemonic,
-    password: state.newPwdModal.pwd
+    password: state.doublePwdInput.pwd2
   }
 }
 

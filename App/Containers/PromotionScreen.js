@@ -57,9 +57,6 @@ class PromotionScreen extends Component {
     return (
       <View style={styles.container}>
         <View style={styles.upWrapper}>
-          {/* <View style={styles.shareWrapper}>
-            <TouchableOpacity onPress={_=>this._goto('share')}><Feather style={styles.share} name={'share'} size={24} /></TouchableOpacity>
-          </View> */}
           <Text style={styles.label}>Bonus you can withdraw</Text>
           <View style={styles.balanceWrapper}>
             <Text style={styles.balance}>{bonus}</Text>
@@ -84,7 +81,7 @@ class PromotionScreen extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    ...{sections} = state.record.bonus,
+    ...{list} = state.record,
     ...{bonus, totalBonus} = state.user,
     ...{shareInfo} = state.config,
   }

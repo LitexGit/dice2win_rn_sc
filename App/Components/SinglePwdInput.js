@@ -3,36 +3,34 @@ import { View, TextInput } from 'react-native'
 import styles from './Styles/SinglePwdInputStyle'
 import connect from 'react-redux/es/connect/connect'
 import Icon from 'react-native-vector-icons/MaterialIcons'
+import SinglePwdInputActions from '../Redux/SinglePwdInputRedux'
 
 class SinglePwdInput extends Component {
 
-  state = {
-    pwd1: '',
-    pwd1vis: true,
-  }
-
-  changePwd1Vis () {
-    this.setState({pwd1vis: !this.state.pwd1vis})
+  componentDidMount () {
+    this.props.init()
   }
 
   render () {
+    const {pwd, pwdVis, changePwdVis, changePwdInput} = this.props
     return (
       <React.Fragment>
         <View style={styles.inputBox}>
           <TextInput style={styles.inputText}
-                     autoFocus={true}
+                     autoFocus={false}
                      multiline={false}
                      placeholder='Input your password'
                      placeholderTextColor={'gray'}
-                     secureTextEntry={this.state.pwd1vis}
+                     secureTextEntry={pwdVis}
                      clearButtonMode='always'
-                     value={this.state.pwd1}
-                     onChangeText={val => this.setState({pwd1: val})}/>
+                     value={pwd}
+                     keyboardType='numeric'
+                     onChangeText={changePwdInput}/>
           <Icon style={styles.icon}
-                name={!this.state.pwd1vis ? 'visibility' : 'visibility-off'}
+                name={!pwdVis ? 'visibility' : 'visibility-off'}
                 size={25}
                 color={this.props.iconColor}
-                onPress={this.changePwd1Vis.bind(this)}/>
+                onPress={changePwdVis}/>
           />
         </View>
       </React.Fragment>
@@ -42,11 +40,18 @@ class SinglePwdInput extends Component {
 
 
 const mapStateToProps = (state) => {
-  return {}
+  return {
+    pwd: state.singlePwdInput.pwd,
+    pwdVis: state.singlePwdInput.pwdVis,}
 }
 
 const mapDispatchToProps = (dispatch) => {
-  return {}
+  return {
+    init: () => dispatch(SinglePwdInputActions.init()),
+    changePwdVis: () => dispatch(SinglePwdInputActions.changePwdVis()),
+    changePwdInput: (val) => dispatch(SinglePwdInputActions.changePwdInput(val)),
+
+  }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(SinglePwdInput)

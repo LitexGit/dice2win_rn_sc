@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { View, Text, Image, SectionList, TouchableOpacity, RefreshControl } from 'react-native'
 import FA5 from 'react-native-vector-icons/FontAwesome5'
 import ScrollableTabView, { ScrollableTabBar, } from 'react-native-scrollable-tab-view'
-import Toast from 'react-native-root-toast'
 
 import RecordActions from '../Redux/RecordRedux'
 import {GAME_NAMES} from '../Redux/GameRedux'
@@ -13,8 +12,11 @@ import { connect } from 'react-redux'
 // Styles
 import { Colors, Images, Metrics } from '../Themes'
 import ListEmptyComponent from '../Components/ListEmptyComponent'
-import { displayETH } from '../Lib/Utils/format'
+import ListFooterComponent from '../Components/ListFooterComponent'
+
+import { displayETH, formatDate } from '../Lib/Utils/format'
 import styles from './Styles/RecordScreenStyle'
+import NavigationActions from 'react-navigation/src/NavigationActions';
 
 
 class RecordScreen extends Component {
@@ -29,31 +31,33 @@ class RecordScreen extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      game: {
-        page: 0,
-        size: 10,
-      },
-      tx: {
-        page: 0,
-        size: 10,
-      },
+      type: 'game',
+      game: { page: 0 },
+      tx: { page: 0 },
     }
-  }
-
-  _refresh = (type='game') => {
-    this.setState({[type]:{page:0, size:10}})
-    let {page, size} = this.state[type]
-    this.props.loadRecords(type, {page, size})
-  }
-
-  _loadMore = (type) => {
-    let data = {page:this.state[type].page + 1, size:this.state[type].size}
-    this.setState({[type]:data})
-    this._refresh(type)
   }
 
   componentDidMount () {
     this._refresh()
+  }
+
+  _refresh = () => {
+    let {type} = this.state
+    this.setState({[type]:{page:0}})
+    this.props.loadRecords(type, {page:0})
+  }
+
+  _loadMore = () => {
+    if(this.props.loading){
+      return
+    }
+    let {type} = this.state
+    let {page} = this.state[type]
+
+    page = page + 1
+    this.setState({[type]:{page}})
+    console.tron.log(`loading page ${page} of ${type}`)
+    this.props.loadRecords(type, {page})
   }
 
   _renderSectionHeader = ({section}) => {
@@ -61,7 +65,8 @@ class RecordScreen extends Component {
   }
 
   _itemPressed = (item) => {
-    Toast.show('tx hash: ' + item.txhash)
+    let {base_etherscan, navigate} = this.props
+    navigate('WebviewScreen', {title: 'Bet ID:' + item.id, url: base_etherscan + item.tx_hash})
   }
 
   _renderGameItem = ({item}) => {
@@ -104,7 +109,7 @@ class RecordScreen extends Component {
   }
   
   render () {
-    let {gameSections, txSections, fetching} = this.props
+    let {gameSections, txSections, refreshing, loading} = this.props
     return (
       <View style={styles.container}>
         <ScrollableTabView
@@ -119,7 +124,7 @@ class RecordScreen extends Component {
             {/* Game Section */}
             <SectionList
               refreshControl={<RefreshControl
-                refreshing={fetching}
+                refreshing={refreshing}
                 onRefresh={_=>this._refresh()}
                 tintColor={Colors.tintColor}
                 title="Refreshing..."
@@ -128,6 +133,9 @@ class RecordScreen extends Component {
               renderSectionHeader={this._renderSectionHeader}
               renderItem={this._renderGameItem}
               ListEmptyComponent={ListEmptyComponent}
+              ListFooterComponent={<ListFooterComponent
+                loading={loading}
+                onPress={this._loadMore.bind(this)}/>}
               />
           </View>
           <View tabLabel='Transactions' style={styles.container}>
@@ -152,9 +160,12 @@ class RecordScreen extends Component {
 }
 
 const mapStateToProps = (state) => {
-  let {fetching, game, tx} = state.record
+  let {refreshing, loading, game, tx} = state.record
+  let {base_etherscan} = state.config
   return {
-    fetching,
+    refreshing, 
+    loading,
+    base_etherscan,
     gameSections: sectionlize(game),
     txSections: sectionlize(tx),
   }
@@ -162,7 +173,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    loadRecords: (type, data) => dispatch(RecordActions.recordRequest({type, data}))
+    loadRecords: (type, data) => dispatch(RecordActions.recordRequest({type, data})),
+    navigate: (routeName, params) => dispatch(NavigationActions.navigate({routeName, params}))
   }
 }
 
@@ -171,13 +183,12 @@ const sectionlize = (items) => {
   if(Array.isArray(items) && items.length) {
     let dateGroup = groupBy(items, 'date')
     let d = new Date()
-    let today = d.toLocaleDateString('zh-CN').split('/').join('-')
+    let today = formatDate(d)
     d.setDate(d.getDate() - 1)
-    let yesterday = d.toLocaleDateString('zh-CN').split('/').join('-')
-
+    let yesterday = formatDate(d)
+    console.tron.log('YESTERDAY', yesterday)
     Object.keys(dateGroup).forEach(key=>{
       let data = dateGroup[key]
-      console.tron.log(key, today)
       key===today && (key='today')
       key===yesterday && (key='yesterday')
       sections.push({ key, data })

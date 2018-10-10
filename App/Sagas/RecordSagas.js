@@ -17,19 +17,9 @@ import { GameSelectors } from '../Redux/GameRedux'
 import { WalletSelectors } from '../Redux/WalletRedux'
 import { UserSelectors } from '../Redux/UserRedux'
 
-export function * getGameRecords (api, action) {
-  const { data: {gameId, page, size} } = action
-  const response = yield call(api.getRecord, {gameId, page, size})
-  if (response.ok) {
-    yield put(RecordActions.recordSuccess({global: response.data}))
-  } else {
-    yield put(RecordActions.recordFailure())
-  }
-}
-
 export function * getRecord (api, action) {
-  console.tron.log('getRecord', action.data)
-  const { type, data:{page,size} } = action.data
+  const { type, data:{page,size=20} } = action.data
+  console.tron.log('getRecord', page, size)
   const [ gameId, uid, address ] = yield all([
     select(GameSelectors.getGameId),
     select(UserSelectors.getUid),
@@ -46,8 +36,9 @@ export function * getRecord (api, action) {
 
   if (response.ok) {
     if(page) { // load more, use append mode
-      let data = yield select(RecordSelectors)[type]
-      yield put(RecordActions.recordSuccess({[type]:[...data, ...response.data]}))
+      let data = yield select(RecordSelectors.getRecords)
+      data = [...data, ...response.data]
+      yield put(RecordActions.recordSuccess({[type]:data}))
     } else {
       yield put(RecordActions.recordSuccess({[type]:response.data}))
     }

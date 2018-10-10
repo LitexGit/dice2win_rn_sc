@@ -11,20 +11,10 @@ import Colors from '../Themes/Colors'
 import WalletActions from '../Redux/WalletRedux'
 
 class PreBackupScreen extends Component {
-  // constructor (props) {
-  //   super(props)
-  //   this.state = {}
-  // }
-
   static navigationOptions = ({navigation}) => {
     return {
       title: 'Back up your mnemonic',
     }
-  }
-
-  componentDidMount () {
-    // this.props.openNewPwdModal()
-    this.props.newWallet()
   }
 
   render () {
@@ -36,10 +26,12 @@ class PreBackupScreen extends Component {
           <Text style={styles.titleText}>Back up your mnemonic</Text>
         </View>
         <Text style={styles.infoText}>
-          Please record the mnemonic of your wallet and save it to a safe place</Text>
+          {'      Please record the mnemonic of your wallet and save it to a safe place. '}
+          </Text>
         <Text style={styles.infoText}>
-          Wallet mnemonics are used to recover your account. Do not reveal your mnemonics at any time. It is
-          recommended not to use screen captures to save it or transfer it via internet tools.
+          {'      Wallet mnemonics are used to recover your account. Do not reveal' +
+          ' your mnemonics at any time. It is recommended not to use screen captures to' +
+          ' save it or transfer it via internet tools.'}
         </Text>
         <Text style={styles.mnemonicText}>
           {mnemonic}</Text>
@@ -63,7 +55,6 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     navigate: (target) => dispatch(NavigationActions.navigate({routeName: target})),
-    newWallet: () => dispatch(WalletActions.newWallet()),
   }
 }
 
