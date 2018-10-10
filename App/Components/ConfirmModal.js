@@ -52,11 +52,15 @@ class ConfirmModal extends Component {
         </View>
         <View style={styles.gasWrapper}>
           <View style={styles.gasStatus}>
-            <Text style={styles.label}>Gas: </Text>
-            <Text style={styles.gasText}><Text style={{fontWeight:'900'}}>{displayGas}</Text> GWEI     </Text>
-            <TouchableOpacity style={styles.autoGasButton} onPress={this._autoGas.bind(this)}>
-              <Text style={styles.autoGasText}>recommend: </Text>
-              <Text style={styles.autoGasText}>{gasAuto}</Text>
+            <View style={styles.hContainer}>
+              <Text style={styles.label}>Gas: </Text>
+              <Text style={styles.gasText}><Text style={{fontWeight:'900'}}>{displayGas}</Text> Gwei</Text>
+            </View>
+            <View style={styles.hContainer}>
+              <Text style={styles.autoGasText}>Recommend: </Text>
+              <Text style={styles.autoGasText}>{gasAuto} </Text>
+            </View>
+            <TouchableOpacity style={styles.autoGasButton} onPress={this._autoGas.bind(this)}><Text style={styles.label}> Apply </Text>
             </TouchableOpacity>
           </View>
           <View style={styles.sliderWrapper}>

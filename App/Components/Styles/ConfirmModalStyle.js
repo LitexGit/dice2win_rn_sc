@@ -59,32 +59,31 @@ export default StyleSheet.create({
   },
 
   gasWrapper: {
-    padding: 5,
+    paddingTop: 3,
+    paddingBottom: 3,
     alignItems: 'center',
-    justifyContent: 'space-evenly',
+    justifyContent: 'space-between',
     borderBottomWidth: 1,
     borderBottomColor: Colors.cloud,
   },
   gasStatus:{
-    padding: 3,
     flexDirection:'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'space-around',
   },
   gasText:{
     color: Colors.bloodOrange,
   },
   autoGasButton:{
-    alignItems: 'center',
     backgroundColor: Colors.cloud,
-    borderRadius: 5,
-    padding: 7,
-    paddingBottom: 5,
-    paddingTop: 5,
+    borderRadius: 3,
+    padding: 5,
+    paddingBottom: 3,
+    paddingTop: 3,
   },
   autoGasText:{
     fontSize: 12,
-    color: Colors.silver,
+    color: Colors.casinoGreen,
   },
 
   actionWrapper: {
