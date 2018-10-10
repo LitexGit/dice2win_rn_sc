@@ -22,6 +22,7 @@ export default StyleSheet.create({
     justifyContent: 'center',
   },
   headerText: {
+    width: '100%',
     ...Fonts.style.h5,
     color: Colors.text
   },
@@ -32,7 +33,7 @@ export default StyleSheet.create({
     justifyContent: 'center',
   },
   errText: {
-    color: Colors.error
+    color: Colors.fire
   },
   actionWrapper: {
     height: 50,

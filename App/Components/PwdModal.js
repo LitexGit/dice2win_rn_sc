@@ -35,6 +35,7 @@ class PwdModal extends Component {
   render () {
 
     let { errInfo, setErrInfo } = this.props
+    let { submitted } = this.state
     return (
       <Overlay
         containerStyle={styles.modal}
@@ -46,7 +47,8 @@ class PwdModal extends Component {
           <TextInput style={styles.headerText}
             autoFocus={true}
             multiline={false}
-            placeholder='Input your password'
+            textAlign='center'
+            placeholder='password'
             placeholderTextColor={'gray'}
             secureTextEntry={true}
             onChangeText={val => {
@@ -55,16 +57,16 @@ class PwdModal extends Component {
             }}/>
         </View>
 
-        {this.state.submitted && <View style={styles.statusWrapper}>
-          <Text style={!!errInfo?styles.errText:styles.label}> {!!errInfo?errInfo:'checking...'} </Text>}
+        {!!errInfo && <View style={styles.statusWrapper}>
+          <Text style={styles.errText}> {errInfo} </Text>}
         </View> }
 
         <View style={styles.actionWrapper}>
           <TouchableOpacity style={styles.cancelButton} onPress={this._closeModal.bind(this)}>
             <Text style={styles.label}> Cancel </Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.confirmButton} disabled={this.state.submitted} onPress={this._checkPwd.bind(this)}>
-            <Text style={styles.label}> Submit </Text>
+          <TouchableOpacity style={styles.confirmButton} disabled={submitted} onPress={this._checkPwd.bind(this)}>
+            <Text style={styles.label}> {submitted ? 'Checking..' : 'Submit'} </Text>
           </TouchableOpacity>
         </View>
       </Overlay>

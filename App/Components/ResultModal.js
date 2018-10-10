@@ -25,7 +25,7 @@ class ResultModal extends Component {
           {status==='win' && result.amount && <Text style={styles.amountText}>{result.amount} ETH!</Text>}
         </View>
         <View style={styles.buttonPanel}>
-          <TouchableOpacity style={styles.buttonWrapper} onPress={_=>this.props.close(modulo)}>
+          <TouchableOpacity style={styles.buttonWrapper} onPress={_=>this.props.close(modulo, status)}>
             <Text style={styles.buttonText}>Close</Text>
           </TouchableOpacity>
         </View>
@@ -41,8 +41,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    close: (modulo)=>{
-      dispatch(NavigationActions.back())
+    close: (modulo, status)=>{
+      // (status==='place'||status==='drawn') && dispatch(NavigationActions.back())
       dispatch(GameActions.updateStatus({[modulo]:'idle'}))
     }
   }
