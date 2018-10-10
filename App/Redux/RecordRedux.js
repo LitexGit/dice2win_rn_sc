@@ -17,16 +17,11 @@ export default Creators
 export const INITIAL_STATE = Immutable({
   data: null,
   fetching: null,
-  game:{sections:[]},
-  tx: {sections:[]},
-  bonus: {sections:[]},
-  global: {items:[]},
-  payload:{
-    game: {sections:[]},
-    tx: {sections:[]},
-    bonus: {sections:[]},
-    global: {items:[]},
-  },
+  game:{},
+  tx: {},
+  bonus: {},
+  global: {},
+  payload:null,
   error: null
 })
 

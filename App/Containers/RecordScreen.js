@@ -152,10 +152,11 @@ class RecordScreen extends Component {
 }
 
 const mapStateToProps = (state) => {
+  let {fetching, game, tx} = state.record
   return {
-    fetching: state.record.fetching,
-    gameSections: state.record.game.sections,
-    txSections: state.record.tx.sections,
+    fetching,
+    gameSections: sectionlize(game),
+    txSections: sectionlize(tx),
   }
 }
 
@@ -163,6 +164,39 @@ const mapDispatchToProps = (dispatch) => {
   return {
     loadRecords: (type, data) => dispatch(RecordActions.recordRequest({type, data}))
   }
+}
+
+const sectionlize = (items) => {
+  let sections = []
+  if(Array.isArray(items) && items.length) {
+    let dateGroup = groupBy(items, 'date')
+    let d = new Date()
+    let today = d.toLocaleDateString('zh-CN').split('/').join('-')
+    d.setDate(d.getDate() - 1)
+    let yesterday = d.toLocaleDateString('zh-CN').split('/').join('-')
+
+    Object.keys(dateGroup).forEach(key=>{
+      let data = dateGroup[key]
+      console.tron.log(key, today)
+      key===today && (key='today')
+      key===yesterday && (key='yesterday')
+      sections.push({ key, data })
+    })
+  }
+
+  return sections
+}
+
+function groupBy(objectArray, property) {
+  return objectArray.reduce(function (acc, obj) {
+    var key = obj[property];
+    if (!acc[key]) {
+      acc[key] = [];
+    }
+    acc[key].push(obj);
+    acc
+    return acc;
+  }, {});
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(RecordScreen)
