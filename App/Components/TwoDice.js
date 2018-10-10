@@ -31,9 +31,15 @@ class TwoDice extends Component {
         <View style={styles.infoBox}>
           <Text style={styles.infoText}>Choose sum of dice to bet on </Text>
         </View>
-        <View style={styles.twoDiceBox}> {this.props.diceWeights.map((value, idx) => idx < 4 && this.renderDice(value, idx))} </View>
-        <View style={styles.twoDiceBox}> {this.props.diceWeights.map((value, idx) => idx >= 4 && idx < 8 && this.renderDice(value, idx))} </View>
-        <View style={styles.twoDiceBox}> {this.props.diceWeights.map((value, idx) => idx >= 8 && this.renderDice(value, idx))} </View>
+        <View style={styles.twoDiceBox}>
+          {this.props.diceWeights.map((value, idx) => idx < 4 && this.renderDice(value, idx))}
+        </View>
+        <View style={styles.twoDiceBox}>
+          {this.props.diceWeights.map((value, idx) => idx >= 4 && idx < 8 && this.renderDice(value, idx))}
+        </View>
+        <View style={styles.twoDiceBox}>
+          {this.props.diceWeights.map((value, idx) => idx >= 8 && this.renderDice(value, idx))}
+        </View>
       </React.Fragment>
     )
   }

@@ -8,6 +8,7 @@ import { connect } from 'react-redux'
 import styles from './Styles/PreBackupScreenStyle'
 import NavigationActions from 'react-navigation/src/NavigationActions'
 import Colors from '../Themes/Colors'
+import WalletActions from '../Redux/WalletRedux'
 
 class PreBackupScreen extends Component {
   // constructor (props) {
@@ -19,6 +20,11 @@ class PreBackupScreen extends Component {
     return {
       title: 'Back up your mnemonic',
     }
+  }
+
+  componentDidMount () {
+    // this.props.openNewPwdModal()
+    this.props.newWallet()
   }
 
   render () {
@@ -57,6 +63,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     navigate: (target) => dispatch(NavigationActions.navigate({routeName: target})),
+    newWallet: () => dispatch(WalletActions.newWallet()),
   }
 }
 

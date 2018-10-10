@@ -28,13 +28,13 @@ class WalletScreen extends Component {
 
   constructor (props) {
     super(props)
-    
+
     console.tron.log('WalletScreen componentDidMount', W)
 
     if(!W.address){
       this.props.navigation.dispatch(NavigationActions.reset({
         index: 1,
-        actions:[ 
+        actions:[
           NavigationActions.navigate({routeName:'BottomTab'}),
           NavigationActions.navigate({routeName:'WalletManageScreen'}),
         ]
@@ -123,7 +123,6 @@ class WalletScreen extends Component {
             <TouchableOpacity style={styles.walletButton} onPress={_ => this._goto('wallet')}>
               <FA5 name={'wallet'} size={24} style={styles.walletIcon} />
               <Text style={styles.walletText}>wallet</Text>
-              {/* <Feather style={styles.walletEdit} name={'edit'} size={24}/> */}
             </TouchableOpacity>
           </View>
           <View style={styles.balanceWrapper}>
