@@ -2,12 +2,7 @@ import React, { Component } from 'react'
 import { View, FlatList, Text, } from 'react-native'
 import RecordActions from '../Redux/RecordRedux'
 import { connect } from 'react-redux'
-// Add Actions - replace 'Your' with whatever your reducer is called :)
-// import YourActions from '../Redux/YourRedux'
-
-// Styles
 import styles from './Styles/GameRecordScreenStyle'
-
 import ListEmptyComponent from '../Components/ListEmptyComponent'
 
 const Bet = ({game, bet}) => <View style={styles.betContentWrapper}>
@@ -34,11 +29,10 @@ class GameRecordScreen extends Component {
     }
   }
   componentDidMount () {
-    this.props.loadRecords({
-      gameId: this.props.gameId,
-      page: this.state.page,
-      size: this.state.size
-    })
+    let {page, size} = this.state
+    let {loadRecords} = this.props
+
+    loadRecords('global', {page, size})
   }
 
   _renderItem({item}) {
@@ -71,7 +65,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    loadRecords: (data) => dispatch(RecordActions.getGameRecords(data))
+    loadRecords: (type, data) => dispatch(RecordActions.recordRequest({type, data}))
   }
 }
 

@@ -23,6 +23,7 @@ export const INITIAL_STATE = Immutable({
   socket: 'off',
 
   base_domain: "http://api.eth4.fun",
+  base_etherscan: "https://ropsten.etherscan.io/tx/",
   ws: 'http://eth4.fun:7001',
   // ws: 'http://192.168.51.137:7001',
   // base_domain: "http://192.168.51.137:7001",

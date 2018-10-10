@@ -14,6 +14,14 @@ const displayETH = e => {
   return parseFloat(e)
 }
 
+const formatDate = d => {
+  let date = ''
+  if(d instanceof Date) {
+    date = d.toISOString().slice(0,10)
+  }
+  return date
+}
+
 const isString = n => typeof(n)==='string'
 const isNumber = n => Number(n)===n
 const isInt = n => Number(n) === n && n % 1 === 0
@@ -26,4 +34,5 @@ module.exports = {
   isInt,
   isFloat,
   displayETH,
+  formatDate,
 }

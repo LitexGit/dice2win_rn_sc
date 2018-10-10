@@ -16,7 +16,8 @@ export default Creators
 
 export const INITIAL_STATE = Immutable({
   data: null,
-  fetching: null,
+  refreshing: null,
+  loading: null,
   game:{},
   tx: {},
   bonus: {},
@@ -29,24 +30,31 @@ export const INITIAL_STATE = Immutable({
 
 export const RecordSelectors = {
   getData: state => state.data,
-  getRecords: state => state.record
+  getRecords: state => state.record[state.record.data.type]
 }
 
 /* ------------- Reducers ------------- */
 
 // request the data from an api
-export const request = (state, { data }) =>
-  state.merge({ fetching: true, data})
+export const request = (state, { data }) =>{
+  let {page} = data.data
+  console.tron.log('page', page)
+  if(page){
+    return state.merge({loading: true, data, payload: null})
+  } else {
+    return state.merge({refreshing: true, data, payload: null})
+  }
+}
 
 // successful api lookup
 export const success = (state, action) => {
   let { payload } = action
-  return state.merge({ fetching: false, error: null, ...payload })
+  return state.merge({ refreshing: false, loading: false, error: null, ...payload })
 }
 
 // Something went wrong somewhere.
 export const failure = state =>
-  state.merge({ fetching: false, error: true, payload: null })
+  state.merge({ refreshing: false, loading: false, error: true, payload: null })
 
 /* ------------- Hookup Reducers To Types ------------- */
 
