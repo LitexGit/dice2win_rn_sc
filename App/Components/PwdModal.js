@@ -36,12 +36,8 @@ class PwdModal extends Component {
 
   render () {
 
-<<<<<<< HEAD
     let { errInfo, setErrInfo } = this.props
     let { submitted } = this.state
-=======
-    let {errInfo, setErrInfo} = this.props
->>>>>>> c3481821003f0f2e10e4d672bc667e7ec0331e94
     return (
       <Overlay
         containerStyle={styles.modal}
@@ -49,7 +45,6 @@ class PwdModal extends Component {
         visible={this.props.modalIsOpen}
         animationType='zoomIn'
         animationDuration={300}>
-<<<<<<< HEAD
         <View style={styles.header}>
           <TextInput style={styles.headerText}
             autoFocus={true}
@@ -62,32 +57,6 @@ class PwdModal extends Component {
               this.setState({pwd: val, submitted: false})
               setErrInfo(null)
             }}/>
-=======
-
-        <View style={styles.inputBox}>
-          <TextInput style={styles.inputText}
-                     autoFocus={true}
-                     multiline={false}
-                     placeholder='Input your password'
-                     placeholderTextColor={'gray'}
-                     secureTextEntry={this.state.pwdVis}
-                     clearButtonMode='always'
-                     keyboardType='numeric'
-                     onChangeText={val => {
-                       this.setState({pwd: val})
-                       setErrInfo(null)
-                     }}/>
-
-          {!!errInfo && <Text>
-            {errInfo}
-          </Text>}
-          <Icon style={styles.icon}
-                name={!this.state.pwdVis ? 'visibility' : 'visibility-off'}
-                size={25}
-                color={this.props.iconColor}
-                onPress={_=> this.setState({pwdVis:!this.state.pwdVis})}/>
-          />
->>>>>>> c3481821003f0f2e10e4d672bc667e7ec0331e94
         </View>
 
         {!!errInfo && <View style={styles.statusWrapper}>
