@@ -6,11 +6,13 @@ import styles from './Styles/PwdModalStyle'
 import PwdModalActions from '../Redux/PwdModalRedux'
 import NavigationActions from 'react-navigation/src/NavigationActions'
 import connect from 'react-redux/es/connect/connect'
+import Icon from 'react-native-vector-icons/MaterialIcons'
 
 class PwdModal extends Component {
 
   state = {
     pwd: '',
+    pwdVis: false
     submitted: false,
   }
 
@@ -21,20 +23,20 @@ class PwdModal extends Component {
     this.setState({submitted: true})
     submitedActions && submitedActions.forEach(a => dispatch(a));
 
-    // closePwdModal()
   }
 
+  _closeModal () {
+    let {dispatch, closePwdModal, canceledActions} = this.props
 
-  _closeModal(){
-    let { dispatch, closePwdModal, canceledActions } = this.props
-
-    canceledActions  && canceledActions.forEach(a => dispatch(a));
+    canceledActions && canceledActions.forEach(a => dispatch(a))
     closePwdModal()
   }
 
+
+
   render () {
 
-    let { errInfo, setErrInfo } = this.props
+    let {errInfo, setErrInfo} = this.props
     return (
       <Overlay
         containerStyle={styles.modal}
@@ -42,17 +44,30 @@ class PwdModal extends Component {
         visible={this.props.modalIsOpen}
         animationType='zoomIn'
         animationDuration={300}>
-        <View style={styles.header}>
-          <TextInput style={styles.headerText}
-            autoFocus={true}
-            multiline={false}
-            placeholder='Input your password'
-            placeholderTextColor={'gray'}
-            secureTextEntry={true}
-            onChangeText={val => {
-              this.setState({pwd: val, submitted: false})
-              setErrInfo(null)
-            }}/>
+
+        <View style={styles.inputBox}>
+          <TextInput style={styles.inputText}
+                     autoFocus={true}
+                     multiline={false}
+                     placeholder='Input your password'
+                     placeholderTextColor={'gray'}
+                     secureTextEntry={this.state.pwdVis}
+                     clearButtonMode='always'
+                     keyboardType='numeric'
+                     onChangeText={val => {
+                       this.setState({pwd: val})
+                       setErrInfo(null)
+                     }}/>
+
+          {!!errInfo && <Text>
+            {errInfo}
+          </Text>}
+          <Icon style={styles.icon}
+                name={!this.state.pwdVis ? 'visibility' : 'visibility-off'}
+                size={25}
+                color={this.props.iconColor}
+                onPress={_=> this.setState({pwdVis:!this.state.pwdVis})}/>
+          />
         </View>
 
         {this.state.submitted && <View style={styles.statusWrapper}>

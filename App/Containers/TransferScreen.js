@@ -18,8 +18,8 @@ class TransferScreen extends Component {
   }
 
   state = {
-    to: '',
-    value: ''
+    to: '0x253917c6befa4251a26c9fd248275238eeabb663',
+    value: '0.01'
   }
 
   _transfer () {
@@ -78,7 +78,7 @@ class TransferScreen extends Component {
                      placeholder='请输入转账金额ETH'
                      placeholderTextColor={'gray'}
                      clearButtonMode='always'
-                     keyboard={'numeric'}
+                     keyboard='numeric'
                      value={this.state.value.toString()}
                      onChangeText={(value) => this.setState({value})}/>
           <Text style={styles.ETH}>ETH</Text>

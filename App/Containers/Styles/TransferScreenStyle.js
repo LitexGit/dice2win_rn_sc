@@ -29,12 +29,12 @@ export default StyleSheet.create({
     ...Fonts.style.h5,
     color: Colors.text,
 
-    width: 330,
+    width: Metrics.screenWidth - 40,
   },
   valueText: {
     ...Fonts.style.h5,
     color: Colors.text,
-    width: 330,
+    width: Metrics.screenWidth - 40,
   },
   ETH: {
     ...Fonts.style.h5,

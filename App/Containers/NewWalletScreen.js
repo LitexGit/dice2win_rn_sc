@@ -4,11 +4,9 @@ import { connect } from 'react-redux'
 // Add Actions - replace 'Your' with whatever your reducer is called :)
 // import YourActions from '../Redux/YourRedux'
 import WalletActions from '../Redux/WalletRedux'
-import NewPwdModalActions from '../Redux/NewPwdModalRedux'
 
 // Styles
 import styles from './Styles/NewWalletScreenStyle'
-import NewPwdInput from '../Components/NewPwdInput'
 import Colors from '../Themes/Colors'
 import NavigationActions from 'react-navigation/src/NavigationActions'
 import DoublePwdInput from '../Components/DoublePwdInput'
@@ -22,22 +20,12 @@ class NewWalletScreen extends Component {
     }
   }
 
-  constructor (props) {
-    super(props)
-    this.state = {
-      pwd1: '12',
-      pwd2: '12'
-    }
-  }
-
   componentDidMount () {
-    // this.props.openNewPwdModal()
-    // this.props.newWallet()
+    this.props.newWallet()
   }
 
   _checkPwd () {
-    if (this.state.pwd1 === this.state.pwd2) {
-      this.props.setPwd(this.state.pwd2)
+    if (this.props.pwd1 === this.props.pwd2) {
       this.props.navigate('PreBackupScreen')
     } else {
       alert('密码不一致！')
@@ -72,16 +60,15 @@ class NewWalletScreen extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    mnemonic: state.wallet.wallet.mnemonic
+    mnemonic: state.wallet.wallet.mnemonic,
+    pwd1: state.doublePwdInput.pwd1,
+    pwd2: state.doublePwdInput.pwd2,
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-
-    setPwd: (pwd) => dispatch(NewPwdModalActions.setPwd(pwd)),
     newWallet: () => dispatch(WalletActions.newWallet()),
-    openNewPwdModal: () => dispatch(NewPwdModalActions.openNewPwdModal()),
     navigate: (target) => dispatch(NavigationActions.navigate({routeName: target})),
     back: () => dispatch(NavigationActions.back()),
   }

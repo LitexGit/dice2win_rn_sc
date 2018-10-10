@@ -2,6 +2,7 @@ import { StyleSheet } from 'react-native'
 import ApplicationStyles from '../../Themes/ApplicationStyles'
 import Colors from '../../Themes/Colors'
 import Fonts from '../../Themes/Fonts'
+import Metrics from '../../Themes/Metrics'
 
 export default StyleSheet.create({
   inputBox: {
@@ -16,7 +17,7 @@ export default StyleSheet.create({
   inputText: {
     ...Fonts.style.h5,
 
-    width: 300,
+    width: Metrics.screenWidth - 80,
     color: Colors.text,
     flex: 5
   },
