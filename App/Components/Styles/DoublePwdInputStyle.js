@@ -5,6 +5,18 @@ import Fonts from '../../Themes/Fonts'
 import Metrics from '../../Themes/Metrics'
 
 export default StyleSheet.create({
+  inputBoxValid: {
+    height: 50,
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.facebook,
+    justifyContent: 'center',
+  },
+  inputBoxUnvalid: {
+    height: 50,
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.fire,
+    justifyContent: 'center',
+  },
   inputBox: {
     height: 50,
     borderBottomWidth: 1,

@@ -45,7 +45,14 @@ export const init = (state) =>
     pwd2: '',
     pwd1vis: true,
     pwd2vis: true,
+    pwd1valid: false,
+    pwd2valid: false
   })
+
+const isValid = (str) => {
+  return /(?=.*[a-z])(?=.*\d)(?=.*[~!@#$%^&*()/\|,.<>?"'();:_+-=\[\]{}`])[a-z\d~!@#$%^&*()/\|,.<>?"'();:_+-=\[\]{}`]{8,100}/.test(str)
+  // return /(?=.*[a-z])(?=.*\d)(?=.*[#@!~%^&*])[a-z\d#@!~%^&*]{8,100}/.test(str)
+}
 
 export const changePwd1Vis = (state) =>
   state.merge({pwd1vis: !state.pwd1vis})
@@ -54,10 +61,10 @@ export const changePwd2Vis = (state) =>
   state.merge({pwd2vis: !state.pwd2vis})
 
 export const changePwd1Input = (state, action) =>
-  state.merge({pwd1: action.input})
+  state.merge({pwd1: action.input, pwd1valid: isValid(action.input)})
 
 export const changePwd2Input = (state, action) =>
-  state.merge({pwd2: action.input})
+  state.merge({pwd2: action.input, pwd2valid: isValid(action.input)})
 
 // request the data from an api
 export const request = (state, {data}) =>

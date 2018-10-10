@@ -11,19 +11,18 @@ class DoublePwdInput extends Component {
   }
 
   render () {
-    let {pwd1, pwd2, pwd1vis, pwd2vis, changePwd1Vis, changePwd2Vis, changePwd1Input, changePwd2Input} = this.props
+    let {pwd1, pwd2, pwd1vis, pwd2vis, pwd1valid, pwd2valid, changePwd1Vis, changePwd2Vis, changePwd1Input, changePwd2Input} = this.props
     return (
       <React.Fragment>
-        <View style={styles.inputBox}>
+        <View style={pwd1==='' ? styles.inputBox : (pwd1valid ? styles.inputBoxValid : styles.inputBoxUnvalid)}>
           <TextInput style={styles.inputText}
-                     autoFocus={false}
+                     autoFocus={this.props.focus}
                      multiline={false}
                      placeholder='Input your password'
                      placeholderTextColor={'gray'}
                      secureTextEntry={pwd1vis}
                      clearButtonMode='always'
                      value={pwd1}
-                     keyboardType='numeric'
                      onChangeText={changePwd1Input}/>
           <Icon style={styles.icon}
                 name={!pwd1vis ? 'visibility' : 'visibility-off'}
@@ -32,7 +31,7 @@ class DoublePwdInput extends Component {
                 onPress={changePwd1Vis}/>
           />
         </View>
-        <View style={styles.inputBox}>
+        <View style={pwd2==='' ? styles.inputBox : (pwd2valid ? styles.inputBoxValid : styles.inputBoxUnvalid)}>
           <TextInput style={styles.inputText}
                      autoFocus={false}
                      multiline={false}
@@ -41,7 +40,6 @@ class DoublePwdInput extends Component {
                      secureTextEntry={pwd2vis}
                      clearButtonMode='always'
                      value={pwd2}
-                     keyboardType='numeric'
                      onChangeText={changePwd2Input}/>
           <Icon style={styles.icon}
                 name={!pwd2vis ? 'visibility' : 'visibility-off'}
@@ -60,6 +58,8 @@ const mapStateToProps = (state) => {
     pwd2: state.doublePwdInput.pwd2,
     pwd1vis: state.doublePwdInput.pwd1vis,
     pwd2vis: state.doublePwdInput.pwd2vis,
+    pwd1valid: state.doublePwdInput.pwd1valid,
+    pwd2valid: state.doublePwdInput.pwd2valid,
   }
 }
 

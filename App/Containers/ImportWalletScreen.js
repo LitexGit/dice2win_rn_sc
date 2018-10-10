@@ -57,7 +57,7 @@ class ImportWalletScreen extends Component {
               style={styles.mnemonicInput}
               value={this.state.mnemonic}
               onChangeText={(mnemonic) => this.setState({mnemonic})}/>
-            <DoublePwdInput/>
+            <DoublePwdInput focus={false}/>
 
             <View style={styles.actionWrapper}>
               <TouchableOpacity style={styles.cancelButton} onPress={navigate.back}>

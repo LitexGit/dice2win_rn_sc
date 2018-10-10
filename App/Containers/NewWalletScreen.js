@@ -44,7 +44,7 @@ class NewWalletScreen extends Component {
         <View style={styles.titleBox}>
           <Text style={styles.titleText}>Create you password </Text>
         </View>
-        <DoublePwdInput/>
+        <DoublePwdInput focus={true}/>
         <View style={styles.actionWrapper}>
           <TouchableOpacity style={styles.cancelButton} onPress={this.props.navigate.back}>
             <Text style={styles.label}> Cancel </Text>
