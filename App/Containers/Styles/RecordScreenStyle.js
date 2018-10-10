@@ -13,12 +13,15 @@ const timeStyle = () => {
   }
   return {
     timeWrapper: {
-      width: 80,
-      alignItems: 'center',
+      width: 75,
+      alignItems: 'flex-end',
       justifyContent: 'space-between'
     },
     timeText: text,
-    statusText: text,
+    statusText: {
+      color: 'gray',
+      fontSize: 12,
+    },
   }
 }
 
@@ -91,18 +94,18 @@ const gameListStyle = () =>{
       flex:1,
       flexDirection: 'row',
       alignItems: 'center',
-      justifyContent: 'center',
+      justifyContent: 'space-around',
       height: 60,
       padding: 5,
       color: Colors.silver,
       borderTopWidth:0,
-      borderBottomWidth:1,
+      borderBottomWidth:hairlineWidth,
       borderBottomColor:Colors.cloud,
     }
   }
 }
 
-const txItemStyle = () => {
+const txListStyle = () => {
   return {
     remarkText :{
       color: Colors.silver,
@@ -124,5 +127,5 @@ export default create({
   ...tabBarStyle(),
   ...listStyle(),
   ...gameListStyle(),
-  ...txItemStyle(),
+  ...txListStyle(),
 })

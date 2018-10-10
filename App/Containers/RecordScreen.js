@@ -18,6 +18,7 @@ import { displayETH, formatDate } from '../Lib/Utils/format'
 import styles from './Styles/RecordScreenStyle'
 import NavigationActions from 'react-navigation/src/NavigationActions';
 
+const GAME_STATUS = ['preparing', 'submitted', 'drawing', 'complete', 'submitting', 'failed']
 
 class RecordScreen extends Component {
   static navigationOptions = {
@@ -74,10 +75,10 @@ class RecordScreen extends Component {
 
     let icon = Images[GAME_NAMES[modulo]]
     time = time.substring(time.indexOf('T')+1, time.indexOf('.'))
-    return <TouchableOpacity style={styles.gameItem} onPress={_ => this._itemPressed(item)}>
+    return <TouchableOpacity style={styles.gameItem} onPress={this._itemPressed}>
       <View style={styles.timeWrapper}>
         <Text style={styles.timeText}>{time}</Text>
-        <Text style={styles.statusText}>{status}</Text>
+        <Text style={styles.statusText}>{GAME_STATUS[status]}</Text>
       </View>
       <View style={styles.iconWrapper}><Image style={styles.icon} resizeMode='contain' source={icon}/></View>
       <View style={styles.inWrapper}>
@@ -92,20 +93,25 @@ class RecordScreen extends Component {
   }
 
   _renderTxItem = ({item}) => {
-    let {type, remark, time, amount} = item
+    let { remark, time, status, from, to, amount} = item
+    let { address } = this.props
 
-    return <TouchableOpacity style={styles.gameItem} onPress={_ => this._itemPressed(item)}>
+    let direction = from.localeCompare(address, 'en', {sensitivity: 'base'})?'in':'out'
+    return <TouchableOpacity style={styles.gameItem} onPress={this._itemPressed}>
       <View style={styles.timeWrapper}><Text style={styles.timeText}>{time}</Text></View>
-      <View style={styles.valueWrapper}><Text style={styles.remarkText}>{remark}</Text></View>
-      <View style={styles.valueWrapper}><Text
-        style={styles[type + 'comeValue']}>{(type === 'in' ? '+' : '-') + displayETH(amount)}</Text></View>
+      {/* <View style={styles.valueWrapper}><Text style={styles.remarkText}>{status}</Text></View> */}
+      <View style={styles.valueWrapper}>
+        <Text style={styles[direction + 'comeValue']}>{(direction==='in'?'+':'-') + displayETH(amount)}</Text>
+      </View>
     </TouchableOpacity>
   }
 
   _tabChanged = ({i,ref}) => {
     let type = ['game', 'tx'][i]
     console.tron.log('NewTab: ', type)
-    this._refresh(type)
+    this.setState({type}, ()=>{
+      this._refresh()
+    })
   }
   
   render () {
@@ -133,16 +139,16 @@ class RecordScreen extends Component {
               renderSectionHeader={this._renderSectionHeader}
               renderItem={this._renderGameItem}
               ListEmptyComponent={ListEmptyComponent}
-              ListFooterComponent={<ListFooterComponent
+              ListFooterComponent={gameSections.length && <ListFooterComponent
                 loading={loading}
                 onPress={this._loadMore.bind(this)}/>}
-              />
+            />
           </View>
           <View tabLabel='Transactions' style={styles.container}>
             {/* Tx Section */}
             <SectionList
               refreshControl={<RefreshControl
-                refreshing={fetching}
+                refreshing={refreshing}
                 onRefresh={_=>this._refresh()}
                 tintColor={Colors.tintColor}
                 title="Refreshing..."
@@ -151,7 +157,10 @@ class RecordScreen extends Component {
               renderSectionHeader={this._renderSectionHeader}
               renderItem={this._renderTxItem}
               ListEmptyComponent={ListEmptyComponent}
-              />
+              ListFooterComponent={txSections.length && <ListFooterComponent
+                loading={loading}
+                onPress={this._loadMore.bind(this)}/>}
+            />
           </View>
         </ScrollableTabView>
       </View>
@@ -162,10 +171,12 @@ class RecordScreen extends Component {
 const mapStateToProps = (state) => {
   let {refreshing, loading, game, tx} = state.record
   let {base_etherscan} = state.config
+  let {address} = state.wallet
   return {
     refreshing, 
     loading,
     base_etherscan,
+    address,
     gameSections: sectionlize(game),
     txSections: sectionlize(tx),
   }
@@ -186,7 +197,6 @@ const sectionlize = (items) => {
     let today = formatDate(d)
     d.setDate(d.getDate() - 1)
     let yesterday = formatDate(d)
-    console.tron.log('YESTERDAY', yesterday)
     Object.keys(dateGroup).forEach(key=>{
       let data = dateGroup[key]
       key===today && (key='today')

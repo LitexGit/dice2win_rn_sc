@@ -18,11 +18,12 @@ export function * register (api, action) {
   const { data } = action
   const response = yield call(api.register, data)
   if(response.ok){
-    let {
-        id: uid, nickname, eth_address:address, inviter, aff_code:code, balance:bonus
-    } = response.data
-    let userInfo = {uid, nickname, address, inviter, code, bonus}
+    // let {
+    //     id: uid, nickname, eth_address:address, inviter, aff_code:code, balance:bonus
+    // } = response.data
+    // let userInfo = {uid, nickname, address, inviter, code, bonus}
     // yield put(UserActions.userSuccess(userInfo))
+    let {id: uid} = response.data
     yield put(UserActions.userRequest(uid))
 
   } else {
@@ -33,19 +34,10 @@ export function * register (api, action) {
 export function * getUser (api, action) {
   const { data:uid } = action
   const userRes = yield call(api.getUser, uid)
-  const promotionRes = yield call(api.getPromotion, uid)
 
-  let userInfo = {}
   if (userRes.ok) {
-    let {nickname, eth_address:address, inviter, aff_code:code, balance:bonus } = userRes.data
-    userInfo = {...userInfo, nickname, address, inviter, code, bonus}
-  }
-  if(promotionRes.ok) {
-    let {total_aff_amount:totalBonus } = promotionRes.data
-    userInfo = {...userInfo, nickname, address, inviter, code, bonus, totalBonus}
-  }
-
-  if(Object.keys(userInfo).length){
+    let {nickname, eth_address:address, inviter, aff_code:code, balance:bonus, share_info:{total_earning:totalBonus} } = userRes.data
+    let userInfo = {uid, nickname, address, inviter, code, bonus, totalBonus}
     yield put(UserActions.userSuccess(userInfo))
   } else {
     yield put(UserActions.userFailure())
