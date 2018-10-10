@@ -12,7 +12,7 @@ class PwdModal extends Component {
 
   state = {
     pwd: '',
-    pwdVis: false
+    pwdVis: true,
     submitted: false,
   }
 
