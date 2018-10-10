@@ -143,6 +143,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-haptic-feedback')
     compile project(':react-native-fs')
     compile 'com.qianwen:update-app:3.5.2'
     compile 'com.lzy.net:okgo:3.0.4'

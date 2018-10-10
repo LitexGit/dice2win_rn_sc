@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
 // import PropTypes from 'prop-types';
-import { View, Text, Slider, Vibration } from 'react-native'
+import { View, Text, Slider, } from 'react-native'
 import styles from './Styles/EtherollStyle'
 import BetActions from '../Redux/BetRedux'
 import connect from 'react-redux/es/connect/connect'
-import { Colors } from '../Themes';
+import ReactNativeHapticFeedback from 'react-native-haptic-feedback'
 
 class Etheroll extends Component {
   constructor(props) {
@@ -24,21 +24,6 @@ class Etheroll extends Component {
         <View style={styles.infoBox}>
           <Text style={styles.infoText}>adjust you winning chance</Text>
         </View>
-        <View style={styles.sliderWrapper}>
-          <Text style={styles.label}>1%</Text>
-          <Slider style={styles.slider}
-            step={1}
-            value={50}
-            minimumValue={1}
-            maximumValue={97}
-            onSlidingComplete={(val) => this.props.clickEtheroll(val)}
-            onValueChange={(val) => {
-              this.setState({ displayValue: val })
-              Vibration.vibrate(100)
-            }
-            } />
-          <Text style={styles.label}>97%</Text>
-        </View>
         <View style={{ flex: 1, flexDirection: 'row' }}>
           <View style={styles.rateWrapper}>
             <View style={{ alignItems: 'center' }}>
@@ -54,6 +39,20 @@ class Etheroll extends Component {
             </View>
             <Text style={styles.rateText}>{(95 * 0.99 / this.state.displayValue + 0.05).toFixed(2)}x</Text>
           </View>
+        </View>
+        <View style={styles.sliderWrapper}>
+          <Text style={styles.label}>1%</Text>
+          <Slider style={styles.slider}
+            step={1}
+            value={50}
+            minimumValue={1}
+            maximumValue={97}
+            onSlidingComplete={(val) => this.props.clickEtheroll(val)}
+            onValueChange={(val) => {
+              this.setState({ displayValue: val })
+              ReactNativeHapticFeedback.trigger();
+            }} />
+          <Text style={styles.label}>97%</Text>
         </View>
       </React.Fragment>
     )
