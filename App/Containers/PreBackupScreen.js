@@ -17,11 +17,6 @@ class PreBackupScreen extends Component {
     }
   }
 
-  componentDidMount () {
-    // this.props.openNewPwdModal()
-    this.props.newWallet()
-  }
-
   render () {
 
     let {mnemonic} = this.props
@@ -60,7 +55,6 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     navigate: (target) => dispatch(NavigationActions.navigate({routeName: target})),
-    newWallet: () => dispatch(WalletActions.newWallet()),
   }
 }
 
