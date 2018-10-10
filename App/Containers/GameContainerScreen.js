@@ -76,7 +76,7 @@ class GameContainerScreen extends Component {
 
   render () {
     let { index, stake, balance, status, result, rewardTime, winRate,
-      setStake, addUnit, rmUnit, 
+      setStake, addUnit, rmUnit,
     } = this.props
     return (
       <ScrollView style={styles.container}>
@@ -118,7 +118,7 @@ class GameContainerScreen extends Component {
               <View style={styles.infoWrapper}>
                 <View style={styles.info}>
                   <Text style={styles.rewardText}>winning pays</Text>
-                  <Text style={styles.keyText}>{(rewardTime).toFixed(2)}x</Text>️
+                  <Text style={styles.keyText}>{(this.props.rewardTime).toFixed(2)}x</Text>
                 </View>
                 <View style={styles.info}>
                   <Text style={styles.rewardText}>winning chance</Text>

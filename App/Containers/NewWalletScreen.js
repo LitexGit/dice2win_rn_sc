@@ -31,13 +31,13 @@ class NewWalletScreen extends Component {
   }
 
   componentDidMount () {
-    this.props.openNewPwdModal()
-    this.props.newWallet()
+    // this.props.openNewPwdModal()
+    // this.props.newWallet()
   }
 
   _checkPwd () {
     if (this.state.pwd1 === this.state.pwd2) {
-      // this.props.setPwd(this.state.pwd2)
+      this.props.setPwd(this.state.pwd2)
       this.props.navigate('PreBackupScreen')
     } else {
       alert('密码不一致！')

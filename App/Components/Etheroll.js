@@ -26,30 +26,31 @@ class Etheroll extends Component {
         </View>
         <View style={styles.sliderWrapper}>
           <Text style={styles.label}>1%</Text>
-          <Slider style={styles.slider} 
+          <Slider style={styles.slider}
             step={1}
             value={50}
             minimumValue={1}
             maximumValue={97}
             onSlidingComplete={(val) => this.props.clickEtheroll(val)}
             onValueChange={(val) => {
-              this.setState({displayValue: val})
+              this.setState({ displayValue: val })
               Vibration.vibrate(100)
             }
-          }/>
+            } />
           <Text style={styles.label}>97%</Text>
         </View>
-        <View style={{flex: 1, flexDirection: 'row'}}> <View style={styles.rateWrapper}>
-            <View style={{alignItems:'center'}}>
+        <View style={{ flex: 1, flexDirection: 'row' }}>
+          <View style={styles.rateWrapper}>
+            <View style={{ alignItems: 'center' }}>
               <Text style={styles.label}>winning</Text>
-              <Text style={styles.label}> chance:</Text> 
+              <Text style={styles.label}> chance:</Text>
             </View>
             <Text style={styles.rateText}>{this.state.displayValue}%</Text>
           </View>
           <View style={styles.rateWrapper}>
-            <View style={{alignItems:'center'}}>
+            <View style={{ alignItems: 'center' }}>
               <Text style={styles.label}>winning</Text>
-              <Text style={styles.label}> pays:</Text> 
+              <Text style={styles.label}>pays:</Text>
             </View>
             <Text style={styles.rateText}>{(95 * 0.99 / this.state.displayValue + 0.05).toFixed(2)}x</Text>
           </View>

@@ -238,6 +238,9 @@ export function* placeBet(api, action) {
   let ans = yield contract.placeBet(betMask, modulo, secret.commitLastBlock, secret.commit,
     secret.signature.r, secret.signature.s, overrideOptions)
   console.tron.log('ans', ans)
+  if(!!ans && !!ans.hash){
+    yield call(api.commitTx, {commit: secret.commit, tx_hash: ans.hash})
+  }
 
 
   yield put(GameActions.updateStatus({[modulo]: 'place'}))
