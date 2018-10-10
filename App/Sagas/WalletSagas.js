@@ -26,18 +26,15 @@ let axios = require('axios')
 function * postNewWallet(){
 
   yield socket.emit('lottery', W.address)
-  // yield put(NavigationActions.navigate({routeName: 'BottomTab', index: 2}))
   yield put(NavigationActions.reset({
-    index: 1,
+    index: 0,
     actions: [
       NavigationActions.navigate({
         routeName: 'BottomTab',
-        index: 2
+        action: NavigationActions.navigate({ routeName: 'Wallet' })
       }),
-      NavigationActions.navigate({ routeName: 'WalletScreen' })
     ]
   }))
-  // yield put(NavigationActions.navigate({ routeName: 'WalletScreen' }))
 }
 
 

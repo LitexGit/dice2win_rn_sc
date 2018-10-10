@@ -7,7 +7,6 @@ import WalletActions from '../Redux/WalletRedux'
 import NotificationActions from '../Redux/NotificationRedux'
 import ConfigActions from '../Redux/ConfigRedux'
 import ReduxPersist from '../Config/ReduxPersist'
-import JPushModule from 'jpush-react-native'
 import ConfirmModal from '../Components/ConfirmModal'
 import PwdModal from '../Components/PwdModal'
 
@@ -25,39 +24,13 @@ class RootContainer extends Component {
       this.props.startup()
     }
 
-    if (Platform.OS === 'android') {
-      JPushModule.initPush()
-      // JPushModule.getInfo(map => {
-        // this.setState({
-        //   appkey: map.myAppKey,
-        //   imei: map.myImei,
-        //   package: map.myPackageName,
-        //   deviceId: map.myDeviceId,
-        //   version: map.myVersion
-        // })
-      // })
-      JPushModule.notifyJSDidLoad(resultCode => {
-        if (resultCode === 0) {
-          JPushModule.addReceiveCustomMsgListener((message) => {
-            console.tron.log('JPushMessageReceived: ', message)
-            this.props.setNotification(message)
-          })
-        }
-      })
-    } else {
-      JPushModule.setupPush()
-    }
 
 
 
     /* AFTER API Setup */
     this.props.initSocket(this.props.ws)
+    this.props.initNotification()
     this.props.initWallet()
-
-    that = this
-    setTimeout(()=>{
-      // that.props.unlockWallet('123')
-    }, 1000)
 
 
   }
@@ -86,7 +59,8 @@ const mapDispatchToProps = (dispatch) => ({
   initSocket: (address) => dispatch(ConfigActions.socketInit(address)),
   initWallet: () => dispatch(WalletActions.initWallet()),
   unlockWallet: (password) => dispatch(WalletActions.unlockWallet({password})),
-  setNotification: (message) => dispatch(NotificationActions.notificationSuccess({message: message}))
+  // setNotification: (message) => dispatch(NotificationActions.notificationSuccess({message: message})),
+  initNotification: () => dispatch(NotificationActions.initNotification())
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(RootContainer)

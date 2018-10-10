@@ -35,6 +35,7 @@ class GameScreen extends Component {
 
   componentDidMount () {
     this.props.loadBanners()
+    console.tron.log('navigation', this.props.navigation)
   }
 
   Slide = (item) => {

@@ -10,9 +10,28 @@
 *    you'll need to define a constant in that file.
 *************************************************************/
 
-import { call, put } from 'redux-saga/effects'
+import { channel } from 'redux-saga'
+import { call, put, take } from 'redux-saga/effects'
 import NotificationActions from '../Redux/NotificationRedux'
+import BetActions from '../Redux/BetRedux'
+import GameActions from '../Redux/GameRedux'
 // import { NotificationSelectors } from '../Redux/NotificationRedux'
+
+import JPushModule from 'jpush-react-native'
+import { Platform } from 'react-native'
+import mergeProps from 'react-redux/es/connect/mergeProps';
+import NavigationActions from 'react-navigation/src/NavigationActions';
+
+const notificationStatusChannel = channel()
+
+export function * watchNotificationStatusChannel(){
+  console.tron.log('Watching Notification Status')
+  while(true){
+    const action = yield take(notificationStatusChannel)
+    console.tron.log('notification channel process', action)
+    yield put(action)
+  }
+}
 
 export function * getNotification (api, action) {
   const { data } = action
@@ -29,4 +48,98 @@ export function * getNotification (api, action) {
   } else {
     yield put(NotificationActions.notificationFailure())
   }
+}
+
+
+export function * initNotification(api, action){
+
+    if (Platform.OS === 'android') {
+      JPushModule.initPush()
+      // JPushModule.getInfo(map => {
+        // this.setState({
+        //   appkey: map.myAppKey,
+        //   imei: map.myImei,
+        //   package: map.myPackageName,
+        //   deviceId: map.myDeviceId,
+        //   version: map.myVersion
+        // })
+      // })
+      JPushModule.notifyJSDidLoad(resultCode => {
+        if (resultCode === 0) {
+          console.tron.log('notifyJSDidLoad: ', resultCode)
+          JPushModule.addReceiveCustomMsgListener((message) => {
+            console.tron.log('JPushMessageReceived: ', message)
+            // this.props.setNotification(message)
+          })
+
+          JPushModule.addReceiveOpenNotificationListener(openNotificationListener)
+          JPushModule.addReceiveNotificationListener(receiveNotificationListener)
+        }
+      })
+    } else {
+      JPushModule.setupPush()
+    }
+
+}
+
+
+openNotificationListener = map => {
+  console.tron.log('Opening notification!')
+  console.tron.log('alertContent: ' + map.alertContent)
+  console.tron.log('map.extra: ' + map.extras)
+
+  if(!!map.extras){
+    let extras  = JSON.parse(map.extras)
+
+    let { openType } = extras
+
+    console.tron.log('notification openType is', openType)
+
+    switch (openType) {
+      case 'game':
+        notificationStatusChannel.put(NavigationActions.reset({
+          index: 0,
+          actions: [
+            NavigationActions.navigate({
+              routeName: 'BottomTab',
+              action: NavigationActions.navigate({ routeName: 'Game' })
+            }),
+          ]
+        }))
+        break;
+      case 'record':
+        notificationStatusChannel.put(NavigationActions.reset({
+          index: 0,
+          actions: [
+            NavigationActions.navigate({
+              routeName: 'BottomTab',
+              action: NavigationActions.navigate({ routeName: 'Record' })
+            }),
+          ]
+        }))
+        break;
+      case 'promotion':
+        notificationStatusChannel.put(NavigationActions.navigate({routeName: 'PromotionScreen'}))
+        break;
+      case 'gameContainer':
+        notificationStatusChannel.put(GameActions.setGameKey(2))
+        notificationStatusChannel.put(BetActions.loadCoin())
+        notificationStatusChannel.put(NavigationActions.navigate({routeName: 'GameContainerScreen'}))
+        break;
+      default: break;
+    }
+
+  }
+
+
+
+
+
+
+
+}
+
+receiveNotificationListener = map => {
+  console.tron.log('alertContent: ' + map.alertContent)
+  console.tron.log('extras: ' + map.extras)
 }

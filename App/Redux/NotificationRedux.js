@@ -4,6 +4,7 @@ import Immutable from 'seamless-immutable'
 /* ------------- Types and Action Creators ------------- */
 
 const { Types, Creators } = createActions({
+  initNotification: null,
   notificationRequest: ['data'],
   notificationSuccess: ['payload'],
   notificationFailure: null

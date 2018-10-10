@@ -37,10 +37,10 @@ export function * getRecord (api, action) {
   ])
   let response = null
   switch(type) {
-    case 'bonus': response = yield call(api.getPromotionRecords, {uid, page, size});break 
-    case 'game': response = yield call(api.getRecord, {address, page, size});break 
-    case 'global': response = yield call(api.getRecord, {gameId, page, size});break 
-    case 'tx': response = yield call(api.getTx, {address, page, size});break 
+    case 'bonus': response = yield call(api.getPromotionRecords, {uid, page, size});break
+    case 'game': response = yield call(api.getRecord, {address, page, size});break
+    case 'global': response = yield call(api.getRecord, {gameId, page, size});break
+    case 'tx': response = yield call(api.getTx, {address, page, size});break
     default: response = {}
   }
 
