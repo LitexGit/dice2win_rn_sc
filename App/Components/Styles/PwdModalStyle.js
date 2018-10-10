@@ -25,6 +25,15 @@ export default StyleSheet.create({
     ...Fonts.style.h5,
     color: Colors.text
   },
+
+  statusWrapper: {
+    padding: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  errText: {
+    color: Colors.error
+  },
   actionWrapper: {
     height: 50,
     marginTop: 10,    

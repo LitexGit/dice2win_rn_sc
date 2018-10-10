@@ -49,7 +49,7 @@ export default StyleSheet.create({
   },
 
   sliderWrapper: {
-    width: '90%',
+    width: '100%',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between'

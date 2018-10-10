@@ -108,7 +108,7 @@ class GameContainerScreen extends Component {
                 <Text style={[styles.stakeButtonText, {fontSize: 28}]}>-</Text>
               </TouchableOpacity>
               <TextInput value={stake} style={styles.stakeInput}
-                        autoFocus={true} onChangeText={(val) => setStake(val)}/>
+                        onChangeText={(val) => setStake(val)}/>
               <TouchableOpacity style={styles.stakeButton} onPress={addUnit}>
                 <Text style={[styles.stakeButtonText, {fontSize: 28}]}>+</Text>
               </TouchableOpacity>

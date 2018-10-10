@@ -10,13 +10,15 @@ import connect from 'react-redux/es/connect/connect'
 class PwdModal extends Component {
 
   state = {
-    pwd: ''
+    pwd: '',
+    submitted: false,
   }
 
   _checkPwd () {
-    let {setPwd, closePwdModal, dispatch, submitedActions } = this.props
+    let {setPwd, dispatch, submitedActions } = this.props
     // TODO check password validation
     setPwd(this.state.pwd)
+    this.setState({submitted: true})
     submitedActions && submitedActions.forEach(a => dispatch(a));
 
     // closePwdModal()
@@ -48,22 +50,20 @@ class PwdModal extends Component {
             placeholderTextColor={'gray'}
             secureTextEntry={true}
             onChangeText={val => {
-              this.setState({pwd: val})
+              this.setState({pwd: val, submitted: false})
               setErrInfo(null)
-
-            }
-          }/>
-
-            { !!errInfo && <Text>
-              {errInfo}
-            </Text>}
+            }}/>
         </View>
+
+        {this.state.submitted && <View style={styles.statusWrapper}>
+          <Text style={!!errInfo?styles.errText:styles.label}> {!!errInfo?errInfo:'checking...'} </Text>}
+        </View> }
 
         <View style={styles.actionWrapper}>
           <TouchableOpacity style={styles.cancelButton} onPress={this._closeModal.bind(this)}>
             <Text style={styles.label}> Cancel </Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.confirmButton} onPress={this._checkPwd.bind(this)}>
+          <TouchableOpacity style={styles.confirmButton} disabled={this.state.submitted} onPress={this._checkPwd.bind(this)}>
             <Text style={styles.label}> Submit </Text>
           </TouchableOpacity>
         </View>

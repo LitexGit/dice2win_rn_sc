@@ -64,7 +64,7 @@ class ConfirmModal extends Component {
             </TouchableOpacity>
           </View>
           <View style={styles.sliderWrapper}>
-            <Text style={styles.label}>  {minGas} </Text>
+            <Text style={styles.label}>{minGas} </Text>
             <Slider style={styles.slider} 
               step={1}
               value={displayGas}
