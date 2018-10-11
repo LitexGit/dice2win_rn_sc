@@ -14,11 +14,18 @@ import { Colors, Images, Metrics } from '../Themes'
 import ListEmptyComponent from '../Components/ListEmptyComponent'
 import ListFooterComponent from '../Components/ListFooterComponent'
 
-import { displayETH, formatDate } from '../Lib/Utils/format'
+import { displayETH, sectionlize } from '../Lib/Utils/format'
 import styles from './Styles/RecordScreenStyle'
 import NavigationActions from 'react-navigation/src/NavigationActions';
 
-const GAME_STATUS = ['preparing', 'submitted', 'drawing', 'complete', 'submitting', 'failed']
+const GAME_STATUS = [
+  {text: 'preparing', style:{color:'gray'}},
+  {text: 'submitted', style:{color:'yellowgreen'}},
+  {text: 'drawing', style:{color: 'lightblue'}},
+  {text: 'complete', style:{color: 'darkseagreen'}},
+  {text: 'submitting', style:{color: 'darkgray'}},
+  {text: 'failed', style: {color: 'darkred'}}
+]
 
 class RecordScreen extends Component {
   static navigationOptions = {
@@ -71,14 +78,13 @@ class RecordScreen extends Component {
   }
 
   _renderGameItem = ({item}) => {
-    let {modulo, amount:inValue, dice_payment:outValue, updated_at:time, status} = item
+    let {modulo, amount:inValue, dice_payment:outValue, time, status} = item
 
     let icon = Images[GAME_NAMES[modulo]]
-    time = time.substring(time.indexOf('T')+1, time.indexOf('.'))
     return <TouchableOpacity style={styles.gameItem} onPress={this._itemPressed}>
       <View style={styles.timeWrapper}>
+        <Text style={[styles.statusText, GAME_STATUS[status].style]}>{GAME_STATUS[status].text}</Text>
         <Text style={styles.timeText}>{time}</Text>
-        <Text style={styles.statusText}>{GAME_STATUS[status]}</Text>
       </View>
       <View style={styles.iconWrapper}><Image style={styles.icon} resizeMode='contain' source={icon}/></View>
       <View style={styles.inWrapper}>
@@ -121,6 +127,7 @@ class RecordScreen extends Component {
         <ScrollableTabView
           initialPage={0}
           style={styles.tabBarStyle}
+          // tabBarActiveTextColor={Colors.activeTint}
           tabBarActiveTextColor={Colors.activeTint}
           tabBarInactiveTextColor={Colors.inActiveTint}
           tabBarUnderlineStyle={styles.tabBarUnderlineStyle}
@@ -189,35 +196,5 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-const sectionlize = (items) => {
-  let sections = []
-  if(Array.isArray(items) && items.length) {
-    let dateGroup = groupBy(items, 'date')
-    let d = new Date()
-    let today = formatDate(d)
-    d.setDate(d.getDate() - 1)
-    let yesterday = formatDate(d)
-    Object.keys(dateGroup).forEach(key=>{
-      let data = dateGroup[key]
-      key===today && (key='today')
-      key===yesterday && (key='yesterday')
-      sections.push({ key, data })
-    })
-  }
-
-  return sections
-}
-
-function groupBy(objectArray, property) {
-  return objectArray.reduce(function (acc, obj) {
-    var key = obj[property];
-    if (!acc[key]) {
-      acc[key] = [];
-    }
-    acc[key].push(obj);
-    acc
-    return acc;
-  }, {});
-}
 
 export default connect(mapStateToProps, mapDispatchToProps)(RecordScreen)

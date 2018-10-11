@@ -5,6 +5,8 @@ import Toast from 'react-native-root-toast'
 import { connect } from 'react-redux'
 import RecordActions from '../Redux/RecordRedux'
 
+import { displayETH, sectionlize } from '../Lib/Utils/format'
+
 import ListEmptyComponent from '../Components/ListEmptyComponent'
 import styles from './Styles/PromotionScreenStyle'
 
@@ -13,12 +15,17 @@ class PromotionScreen extends Component {
     title: 'Promotion'
   }
 
-  componentDidMount () {
-    this.props.loadRecords('bonus')
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      page: 0,
+    }
   }
 
-  _goto = (where) => {
-
+  componentDidMount () {
+    let {page} = this.state
+    this.props.loadRecords('bonus', {page})
   }
 
   _withdraw = () => {
@@ -54,16 +61,17 @@ class PromotionScreen extends Component {
   }
   render () {
     let {bonus, totalBonus, sections} = this.props
+    console.tron.log('bonus sections', sections)
     return (
       <View style={styles.container}>
         <View style={styles.upWrapper}>
           <Text style={styles.label}>Bonus you can withdraw</Text>
           <View style={styles.balanceWrapper}>
-            <Text style={styles.balance}>{bonus}</Text>
+            <Text style={styles.balance}>{displayETH(bonus)}</Text>
             <Text style={styles.unit}> ETH</Text>
           </View>
           <TouchableOpacity style={styles.withdrawButton} onPress={_=>this._withdraw()}><Text style={styles.withdrawButtonText}>withdraw to wallet</Text></TouchableOpacity>
-          <Text style={styles.label}>You have earned {totalBonus} ETH so far</Text>
+          <Text style={styles.label}>You have earned {displayETH(totalBonus)} ETH so far</Text>
           <TouchableOpacity onPress={this._shareLink.bind(this)}><Text style={styles.shareText}>SHARE to earn MORE</Text></TouchableOpacity>
         </View>
         <View style={styles.downWrapper}>
@@ -80,16 +88,19 @@ class PromotionScreen extends Component {
 }
 
 const mapStateToProps = (state) => {
+  let {
+    record: { bonus: list },
+    user: { bonus, totalBonus, },
+    config: {shareInfo},
+  } = state
   return {
-    ...{list} = state.record,
-    ...{bonus, totalBonus} = state.user,
-    ...{shareInfo} = state.config,
+    sections: sectionlize(list), bonus, totalBonus, shareInfo
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    loadRecords: (type) => dispatch(RecordActions.recordRequest({type}))
+    loadRecords: (type, data) => dispatch(RecordActions.recordRequest({type, data})),
   }
 }
 

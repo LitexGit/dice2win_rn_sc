@@ -42,7 +42,7 @@ const create = (baseURL = 'http://api.eth4.fun:7001/') => {
   const getRecord = ({gameId, address, page, size}) => api.get('api/v1/games/dev/bet/history', {gameId, address, page, size})
   const getUser = (uid) => api.get('api/v1/games/dev/userinfo', {uid})
   const getPromotion = (uid) => api.get('api/v1/games/dev/shareinfo', {uid})
-  const getPromotionRecords = (uid) => api.get('api/v1/games/dev/shares', {uid})
+  const getPromotionRecords = (data) => api.get('api/v1/games/dev/shares', data)
   const getRandom = ({address, network_id}) => api.put('api/v1/games/dev/random', {address, network_id})
   const getTx = (data) => api.get('api/v1/games/dev/transactions', data)
   const commitTx = ({commit, tx_hash}) => api.put('api/v1/games/dev/commit', {commit, tx_hash})

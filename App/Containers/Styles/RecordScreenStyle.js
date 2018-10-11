@@ -8,16 +8,16 @@ const {create, hairlineWidth} = StyleSheet
 
 
 const timeStyle = () => {
-  let text = {
-    color: Colors.ricePaper,
-  }
   return {
     timeWrapper: {
       width: 75,
       alignItems: 'flex-end',
       justifyContent: 'space-between'
     },
-    timeText: text,
+    timeText: {
+      color: Colors.ricePaper,
+      fontSize: 12,
+    },
     statusText: {
       color: 'gray',
       fontSize: 12,

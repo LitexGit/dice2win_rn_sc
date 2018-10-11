@@ -8,7 +8,8 @@ import { connect } from 'react-redux'
 
 // i18n
 const STATUS_TEXT = {
-  place: 'Submitted to contract, waiting for drawing..',
+  placing: 'Submitting to contract..',
+  placed: 'Submitted, waiting for drawing..',
   drawn: 'Drawing now..',
   win: 'Congrats!!! YOU WIN:',
   lose: 'Sorry you lose..'

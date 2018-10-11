@@ -212,6 +212,8 @@ export function * placeBet (api, action) {
     yield put(PwdModalActions.closePwdModal())
   }
 
+  yield put(GameActions.updateStatus({[modulo]:'placing'}))
+
   const wallet = W.wallet
 
   console.tron.log('res2', wallet)
@@ -231,7 +233,7 @@ export function * placeBet (api, action) {
     yield call(api.commitTx, {commit: secret.commit, tx_hash: ans.hash})
   }
 
-  yield put(GameActions.updateStatus({[modulo]: 'place'}))
+  yield put(GameActions.updateStatus({[modulo]: 'placed'}))
 
 }
 

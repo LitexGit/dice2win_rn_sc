@@ -170,8 +170,6 @@ const mapDispatchToProps = (dispatch) => {
     openConfirmModal: (data) => dispatch(ConfirmModalActions.openConfirmModal(data)),
     openPwdModal: () => dispatch(PwdModalActions.openPwdModal()),
 
-    updateStatus: (status) => dispatch(GameActions.updateStatus(status)),
-
     sendStake: () => dispatch(WalletActions.sendStake()),
     loadWallet: () => dispatch(WalletActions.walletRequest()),
     getRandom: (data) => dispatch(WalletActions.getRandom(data)),

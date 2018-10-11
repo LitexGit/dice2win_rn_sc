@@ -22,6 +22,38 @@ const formatDate = d => {
   return date
 }
 
+const sectionlize = (items) => {
+  let sections = []
+  if(Array.isArray(items) && items.length) {
+    let dateGroup = groupBy(items, 'date')
+    let d = new Date()
+    let today = formatDate(d)
+    d.setDate(d.getDate() - 1)
+    let yesterday = formatDate(d)
+    Object.keys(dateGroup).forEach(key=>{
+      let data = dateGroup[key]
+      key===today && (key='today')
+      key===yesterday && (key='yesterday')
+      sections.push({ key, data })
+    })
+  }
+
+  return sections
+}
+
+function groupBy(objectArray, property) {
+  return objectArray.reduce(function (acc, obj) {
+    var key = obj[property];
+    if (!acc[key]) {
+      acc[key] = [];
+    }
+    acc[key].push(obj);
+    acc
+    return acc;
+  }, {});
+}
+
+
 const isString = n => typeof(n)==='string'
 const isNumber = n => Number(n)===n
 const isInt = n => Number(n) === n && n % 1 === 0
@@ -35,4 +67,6 @@ module.exports = {
   isFloat,
   displayETH,
   formatDate,
+  sectionlize,
+  groupBy,
 }
