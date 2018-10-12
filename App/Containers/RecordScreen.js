@@ -19,12 +19,18 @@ import styles from './Styles/RecordScreenStyle'
 import NavigationActions from 'react-navigation/src/NavigationActions';
 
 const GAME_STATUS = [
-  {text: 'preparing', style:{color:'gray'}},
-  {text: 'submitted', style:{color:'yellowgreen'}},
-  {text: 'drawing', style:{color: 'lightblue'}},
-  {text: 'complete', style:{color: 'darkseagreen'}},
-  {text: 'submitting', style:{color: 'darkgray'}},
-  {text: 'failed', style: {color: 'darkred'}}
+  {text: 'wait', style:{color:'gray'}},
+  {text: 'win', style:{color:'darkorange'}},
+  {text: 'lose', style:{color: 'mediumaquamarine'}},
+]
+
+const TX_STATUS = [
+  {},
+  {text: 'stake'},
+  {text: 'transfer'},
+  {text: 'bonus'},
+  {text: 'bonus'},
+  {text: 'winning'}
 ]
 
 class RecordScreen extends Component {
@@ -40,8 +46,8 @@ class RecordScreen extends Component {
     super(props)
     this.state = {
       type: 'game',
-      game: { page: 0 },
-      tx: { page: 0 },
+      game: { page: 1 },
+      tx: { page: 1 },
     }
   }
 
@@ -51,8 +57,8 @@ class RecordScreen extends Component {
 
   _refresh = () => {
     let {type} = this.state
-    this.setState({[type]:{page:0}})
-    this.props.loadRecords(type, {page:0})
+    this.setState({[type]:{page:1}})
+    this.props.loadRecords(type, {page:1})
   }
 
   _loadMore = () => {
@@ -74,14 +80,14 @@ class RecordScreen extends Component {
 
   _itemPressed = (item) => {
     let {base_etherscan, navigate} = this.props
-    navigate('WebviewScreen', {title: 'Bet ID:' + item.id, url: base_etherscan + item.tx_hash})
+    navigate('WebviewScreen', {title: 'ID: ' + item.id, url: base_etherscan + item.tx_hash})
   }
 
   _renderGameItem = ({item}) => {
-    let {modulo, amount:inValue, dice_payment:outValue, time, status} = item
-
+    let {modulo, amount:inValue, dice_payment:outValue, time, bet_res: status} = item
     let icon = Images[GAME_NAMES[modulo]]
-    return <TouchableOpacity style={styles.gameItem} onPress={this._itemPressed}>
+
+    return <TouchableOpacity style={styles.gameItem} onPress={_=>this._itemPressed(item)}>
       <View style={styles.timeWrapper}>
         <Text style={[styles.statusText, GAME_STATUS[status].style]}>{GAME_STATUS[status].text}</Text>
         <Text style={styles.timeText}>{time}</Text>
@@ -101,20 +107,27 @@ class RecordScreen extends Component {
   _renderTxItem = ({item}) => {
     let { remark, time, status, from, to, amount} = item
     let { address } = this.props
+    if(displayETH(amount) == 0 || status == 4)
+      return ''
 
-    let direction = from.localeCompare(address, 'en', {sensitivity: 'base'})?'in':'out'
-    return <TouchableOpacity style={styles.gameItem} onPress={this._itemPressed}>
-      <View style={styles.timeWrapper}><Text style={styles.timeText}>{time}</Text></View>
-      {/* <View style={styles.valueWrapper}><Text style={styles.remarkText}>{status}</Text></View> */}
+    let type = from.localeCompare(address, 'en', {sensitivity: 'base'})?'in':'out'
+    let direction = type==='in'?'from':'to'
+    return <TouchableOpacity style={styles.txItem} onPress={_=>this._itemPressed(item)}>
+      <View style={[styles.timeWrapper, {width: 80}]}>
+        <Text style={styles.statusText}>{TX_STATUS[status].text}</Text>
+        <Text style={styles.timeText}>{time}</Text>
+      </View>
+      <View style={styles.addressWrapper}>
+        <Text numberOfLines={1} ellipsizeMode='middle' style={styles.addressText}><Text style={{width: 20, textAlign:'right', color:'gray'}}>{direction}: </Text>{eval(direction)}</Text>
+      </View>
       <View style={styles.valueWrapper}>
-        <Text style={styles[direction + 'comeValue']}>{(direction==='in'?'+':'-') + displayETH(amount)}</Text>
+        <Text style={styles[type + 'comeValue']}>{(type==='in'?'+':'-') + displayETH(amount)}</Text>
       </View>
     </TouchableOpacity>
   }
 
   _tabChanged = ({i,ref}) => {
     let type = ['game', 'tx'][i]
-    console.tron.log('NewTab: ', type)
     this.setState({type}, ()=>{
       this._refresh()
     })
@@ -127,7 +140,6 @@ class RecordScreen extends Component {
         <ScrollableTabView
           initialPage={0}
           style={styles.tabBarStyle}
-          // tabBarActiveTextColor={Colors.activeTint}
           tabBarActiveTextColor={Colors.activeTint}
           tabBarInactiveTextColor={Colors.inActiveTint}
           tabBarUnderlineStyle={styles.tabBarUnderlineStyle}
@@ -138,7 +150,7 @@ class RecordScreen extends Component {
             <SectionList
               refreshControl={<RefreshControl
                 refreshing={refreshing}
-                onRefresh={_=>this._refresh()}
+                onRefresh={this._refresh}
                 tintColor={Colors.tintColor}
                 title="Refreshing..."
                 titleColor={Colors.text}/>}
@@ -148,7 +160,7 @@ class RecordScreen extends Component {
               ListEmptyComponent={ListEmptyComponent}
               ListFooterComponent={gameSections.length && <ListFooterComponent
                 loading={loading}
-                onPress={this._loadMore.bind(this)}/>}
+                onPress={this._loadMore}/>}
             />
           </View>
           <View tabLabel='Transactions' style={styles.container}>
@@ -156,7 +168,7 @@ class RecordScreen extends Component {
             <SectionList
               refreshControl={<RefreshControl
                 refreshing={refreshing}
-                onRefresh={_=>this._refresh()}
+                onRefresh={this._refresh}
                 tintColor={Colors.tintColor}
                 title="Refreshing..."
                 titleColor={Colors.text}/>}
@@ -166,7 +178,7 @@ class RecordScreen extends Component {
               ListEmptyComponent={ListEmptyComponent}
               ListFooterComponent={txSections.length && <ListFooterComponent
                 loading={loading}
-                onPress={this._loadMore.bind(this)}/>}
+                onPress={this._loadMore}/>}
             />
           </View>
         </ScrollableTabView>

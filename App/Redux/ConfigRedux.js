@@ -45,6 +45,9 @@ export const INITIAL_STATE = Immutable({
   },
   telegroup:'tg://resolve/?domain=ftc_shades',
   faq: 'http://litex.io',
+  maxWin: 5,
+  minBet: 0.01,
+  edge: 0.01,
   shareInfo:{
     message:'ETH 4 FUN! \n shared from app',
     link: 'eth4.fun',
@@ -57,7 +60,10 @@ export const INITIAL_STATE = Immutable({
 /* ------------- Selectors ------------- */
 
 export const ConfigSelectors = {
-  getConfig: state => state.config
+  getConfig: state => state.config,
+  getMaxWin: state => state.config.maxWin,
+  getMinBet: state => state.config.minBet,
+  getEdge: state => state.config.edge,
 }
 
 /* ------------- Reducers ------------- */

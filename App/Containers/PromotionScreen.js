@@ -19,7 +19,7 @@ class PromotionScreen extends Component {
     super(props)
 
     this.state = {
-      page: 0,
+      page: 1,
     }
   }
 

@@ -52,7 +52,8 @@ export const INITIAL_STATE = Immutable({
 /* ------------- Selectors ------------- */
 
 export const BetSelectors = {
-  getData: state => state.data
+  getData: state => state.data,
+  getWinRate: state => state.bet.winRate,
 }
 
 /* ------------- Reducers ------------- */

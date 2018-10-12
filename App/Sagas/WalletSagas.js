@@ -219,7 +219,7 @@ export function * placeBet (api, action) {
 
   let contract = new ethers.Contract(contract_address, abi, wallet)
   let overrideOptions = {
-    value: ethers.utils.parseEther(value),
+    value: ethers.utils.parseEther(value+''),
     gasPrice: parseInt(gasPrice)
   }
 

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { ScrollView, Text, View, Button, TouchableOpacity, TextInput, Image} from 'react-native'
+import { ScrollView, Text, View, Button, TouchableOpacity, TextInput, KeyboardAvoidingView} from 'react-native'
 import { connect } from 'react-redux'
 
 import NavigationActions from 'react-navigation/src/NavigationActions'
@@ -18,6 +18,7 @@ import styles from './Styles/GameContainerScreenStyle'
 
 import WalletActions from '../Redux/WalletRedux'
 import { displayETH, DECIMAL } from '../Lib/Utils/format'
+import { getMaxBet } from '../Lib/Utils/calculate'
 
 const GAME_COMS = {2:<Coin />, 6:<OneDice />, 36:<TwoDice />, 100:<Etheroll />}
 const GAME_TITLES = {2: 'Coin Flip', 6: 'Roll a Dice', 36: 'Two Dices', 100: 'Etheroll'}
@@ -40,16 +41,11 @@ class GameContainerScreen extends Component {
   _placeBet = ()=>{
     let { index, stake, contract_address, address, betMask, openConfirmModal, navigate, getRandom, balance } = this.props
 
-
     if(!W.address) {
       navigate('WalletManageScreen')
     } else if (stake >= balance) {
-
       alert('You don\'t have enough balance to place Bet')
-
     } else {
-
-
 
       getRandom({address: W.address})
 
@@ -76,7 +72,7 @@ class GameContainerScreen extends Component {
 
   render () {
     let { index, stake, balance, status, result, rewardTime, winRate,
-      setStake, addUnit, rmUnit,
+      setStake,
     } = this.props
     return (
       <ScrollView style={styles.container}>
@@ -86,33 +82,34 @@ class GameContainerScreen extends Component {
           )}
 
           {status[index] === 'idle' && <View style={styles.gameConetent}>
-
+            <KeyboardAvoidingView behavior='position' keyboardVerticalOffset={100} >
             {GAME_COMS[index]}
-
             <View style={styles.stakeBox}>
-              <TouchableOpacity style={styles.stakeButton} onPress={() => setStake('0.05')}>
+              <TouchableOpacity style={styles.stakeButton} onPress={() => setStake(0.05)}>
                 <Text style={styles.stakeButtonText}>0.05</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.stakeButton} onPress={() => setStake('0.10')}>
+              <TouchableOpacity style={styles.stakeButton} onPress={() => setStake(0.10)}>
                 <Text style={styles.stakeButtonText}>0.10</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.stakeButton} onPress={() => setStake('0.15')}>
+              <TouchableOpacity style={styles.stakeButton} onPress={() => setStake(0.15)}>
                 <Text style={styles.stakeButtonText}>0.15</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.stakeButton}>
+              <TouchableOpacity style={styles.stakeButton} onPress={() => setStake(10000)}>
                 <Text style={styles.stakeButtonText}>Max</Text>
               </TouchableOpacity>
             </View>
-            <View style={styles.stakeBox} >
-              <TouchableOpacity style={styles.stakeButton} onPress={rmUnit}>
+            <View style={styles.stakeBox}>
+              <TouchableOpacity style={styles.stakeButton} onPress={_=>setStake(stake - 0.01)}>
                 <Text style={[styles.stakeButtonText, {fontSize: 28}]}>-</Text>
               </TouchableOpacity>
-              <TextInput value={stake} style={styles.stakeInput}
-                        onChangeText={(val) => setStake(val)}/>
-              <TouchableOpacity style={styles.stakeButton} onPress={addUnit}>
+              <TextInput value={parseFloat(stake).toFixed(2)} style={styles.stakeInput}
+                keyboardType='decimal-pad' maxLength={4}
+                onChangeText={(val) =>{ setStake(parseFloat(val)); this.forceUpdate() } }/>
+              <TouchableOpacity style={styles.stakeButton} onPress={_=>setStake(stake + 0.01)}>
                 <Text style={[styles.stakeButtonText, {fontSize: 28}]}>+</Text>
               </TouchableOpacity>
             </View>
+            </KeyboardAvoidingView>
             <Text style={styles.balanceText}>balance: <Text>{displayETH(balance)} ETH</Text></Text>
             <View style={styles.rewardWrapper}>
               <View style={styles.infoWrapper}>
@@ -142,7 +139,7 @@ class GameContainerScreen extends Component {
 
 const mapStateToProps = (state) => {
   let {
-    game: {key, stake, status, result },
+    game: {key, stake, status, result},
     confirmModal: { modalIsOpen, loading, gas },
     bet: { winRate, rewardTime, betMask, },
     config: {contract_address},
@@ -159,13 +156,10 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-
     initGame: () => dispatch(GameActions.initGame()),
     request: () => dispatch(GameActions.gameRequest()),
 
     setStake: (stake) => dispatch(GameActions.setStake(stake)),
-    addUnit: () => dispatch(GameActions.addUnit()),
-    rmUnit: () => dispatch(GameActions.rmUnit()),
 
     openConfirmModal: (data) => dispatch(ConfirmModalActions.openConfirmModal(data)),
     openPwdModal: () => dispatch(PwdModalActions.openPwdModal()),

@@ -9,6 +9,7 @@ import { StartupTypes } from '../Redux/StartupRedux'
 import { ActivityTypes } from '../Redux/ActivityRedux'
 import { RecordTypes } from '../Redux/RecordRedux'
 import { WalletTypes } from '../Redux/WalletRedux'
+import { GameTypes } from '../Redux/GameRedux'
 import { ConfigTypes } from '../Redux/ConfigRedux'
 import { SettingTypes } from '../Redux/SettingRedux'
 import { NotificationTypes } from '../Redux/NotificationRedux'
@@ -21,6 +22,7 @@ import { getActivity } from './ActivitySagas'
 import { getRecord, getGameRecords } from './RecordSagas'
 import { getConfig, socketInit, watchSocketStatusChannel } from './ConfigSagas'
 import { initWallet, getWallet, newWallet, saveWallet, importFromMnemonic, unlockWallet, encryptWallet, importEncryptWallet, transfer, getRandom, placeBet } from './WalletSagas'
+import { setStake } from './GameSagas'
 import { getSetting } from './SettingSagas'
 import { getNotification, initNotification, watchNotificationStatusChannel } from './NotificationSagas'
 import { register, getUser} from './UserSagas'
@@ -73,7 +75,8 @@ export default function * root () {
     takeLatest(WalletTypes.PLACE_BET, placeBet, api),
     takeLatest(WalletTypes.INIT_WALLET, initWallet, api),
 
-
+    // Game Sagas
+    takeLatest(GameTypes.SET_STAKE, setStake, api),
 
     // Notification Saga
     takeLatest(NotificationTypes.INIT_NOTIFICATION, initNotification, api)

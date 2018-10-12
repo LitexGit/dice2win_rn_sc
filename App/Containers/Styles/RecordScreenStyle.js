@@ -10,17 +10,16 @@ const {create, hairlineWidth} = StyleSheet
 const timeStyle = () => {
   return {
     timeWrapper: {
-      width: 75,
-      alignItems: 'flex-end',
-      justifyContent: 'space-between'
+      width: 60,
+      alignItems: 'center',
+      justifyContent: 'center'
     },
     timeText: {
       color: Colors.ricePaper,
-      fontSize: 12,
+      fontSize: 11,
     },
     statusText: {
-      color: 'gray',
-      fontSize: 12,
+      color: 'steelblue',
     },
   }
 }
@@ -107,16 +106,37 @@ const gameListStyle = () =>{
 
 const txListStyle = () => {
   return {
-    remarkText :{
+    addressWrapper: {
+      flex: 1,
+      alignItems: 'center',
+    },
+    addressText :{
       color: Colors.silver,
     },
+    valueWrapper: {
+      alignItems: 'flex-end',
+      minWidth: 100,
+    },
     incomeValue :{
-      fontSize: 22,
+      fontSize: 17,
       color: Colors.activeTint
     },
     outcomeValue :{
-      fontSize: 22,
+      fontSize: 17,
       color: Colors.casinoGreen
+    },
+    txItem: {
+      flex:1,
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      height: 60,
+      paddingLeft: 10,
+      paddingRight: 10,
+      color: Colors.silver,
+      borderTopWidth:0,
+      borderBottomWidth:hairlineWidth,
+      borderBottomColor:Colors.cloud,
     }
   }
 }

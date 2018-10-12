@@ -10,9 +10,26 @@
 *    you'll need to define a constant in that file.
 *************************************************************/
 
-import { call, put } from 'redux-saga/effects'
+import { call, put, select, all } from 'redux-saga/effects'
 import GameActions from '../Redux/GameRedux'
-// import { GameSelectors } from '../Redux/GameRedux'
+import { ConfigSelectors } from '../Redux/ConfigRedux'
+import { BetSelectors } from '../Redux/BetRedux'
+import { getMaxBet } from '../Lib/Utils/calculate'
+
+export function * setStake (api, action) {
+  let {stake} = action
+  let [maxWin, minBet, edge, winRate] = yield all([
+    select(ConfigSelectors.getMaxWin),
+    select(ConfigSelectors.getMinBet),
+    select(ConfigSelectors.getEdge), 
+    select(BetSelectors.getWinRate),
+  ])
+  let maxBet = getMaxBet(maxWin, winRate, edge)
+  stake > maxBet && (stake = maxBet)
+  stake < minBet && (stake = minBet)
+  stake = parseFloat(parseFloat(stake).toFixed(2))
+  yield put(GameActions.gameSuccess({stake, rand: Math.random()}))
+}
 
 export function * getGame (api, action) {
   const { data } = action

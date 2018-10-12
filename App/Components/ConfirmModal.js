@@ -6,6 +6,7 @@ import ConfirmModalActions from '../Redux/ConfirmModalRedux'
 import connect from 'react-redux/es/connect/connect'
 import Overlay from 'react-native-modal-overlay'
 import styles from './Styles/ConfirmModalStyle'
+import { displayETH } from '../Lib/Utils/format'
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback'
 
 class ConfirmModal extends Component {
@@ -41,7 +42,7 @@ class ConfirmModal extends Component {
           <Text style={styles.headerText}>Confirm</Text>
         </View>
         <View style={styles.ethWrapper}>
-          <Text style={styles.ethText}><Text style={{fontWeight:'900'}}>{amount}</Text> ETH</Text>
+          <Text style={styles.ethText}><Text style={{fontWeight:'900'}}>{displayETH(amount)}</Text> ETH</Text>
         </View>
         <View style={styles.fromToWrapper}>
           <Text style={styles.label}>From: </Text>

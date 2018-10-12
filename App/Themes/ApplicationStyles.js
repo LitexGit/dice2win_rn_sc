@@ -15,6 +15,7 @@ const ApplicationStyles = {
       flex: 1,
       flexDirection: 'row',
       alignItems: 'center',
+      justifyContent: 'center',
     },
     backgroundImage: {
       position: 'absolute',

@@ -35,7 +35,7 @@ export function * getRecord (api, action) {
   }
 
   if (response.ok) {
-    if(page) { // load more, use append mode
+    if(page > 1) { // load more, use append mode
       let data = yield select(RecordSelectors.getRecords)
       data = [...data, ...response.data]
       yield put(RecordActions.recordSuccess({[type]:data}))
