@@ -10,6 +10,12 @@ import { displayETH, sectionlize } from '../Lib/Utils/format'
 import ListEmptyComponent from '../Components/ListEmptyComponent'
 import styles from './Styles/PromotionScreenStyle'
 
+const STATUS = [
+  'pending',
+  'success',
+  'rejected',
+]
+
 class PromotionScreen extends Component {
   static navigationOptions = {
     title: 'Promotion'
@@ -40,16 +46,20 @@ class PromotionScreen extends Component {
   }
 
   _itemPressed = (item) => {
-    Toast.show('from level: ' + item.fromLevel)
+    Toast.show('type' + item.type)
   }
 
   _renderItem = ({item}) => {
-    let {time, fromUser, status, amount} = item
+    let {time, address, status, amount, type, grade:level} = item
+    status = STATUS[status]
     return <TouchableOpacity style={styles.itemWrapper} onPress={_=>this._itemPressed(item)}>
-      <View style={styles.timeWrapper}><Text style={styles.timeText}>{time}</Text></View>
-      <View style={styles.valueWrapper}><Text style={styles.fromText} numberOfLines={1} ellipsizeMode='middle'>{fromUser}</Text></View>
-      <View style={styles.valueWrapper}><Text style={styles.valueText}>{amount}</Text></View>
-      <View style={styles.statusWrapper}><Text style={styles[status+'Text']}>{status}</Text></View>
+      <View style={styles.timeWrapper}>
+        <View style={styles.statusWrapper}><Text style={styles[status+'Text']}>{status}</Text></View>
+        <Text style={styles.timeText}>{time}</Text>
+      </View>
+      <View style={styles.valueWrapper}><Text style={styles.addressText} numberOfLines={1} ellipsizeMode='middle'>{address}</Text></View>
+      <View style={styles.valueWrapper}><Text style={styles.valueText}>{displayETH(amount)} ETH</Text></View>
+      <View style={styles.statusWrapper}><Text style={styles.levelText}>{level}</Text></View>
   </TouchableOpacity>
   }
 
@@ -70,7 +80,7 @@ class PromotionScreen extends Component {
             <Text style={styles.balance}>{displayETH(bonus)}</Text>
             <Text style={styles.unit}> ETH</Text>
           </View>
-          <TouchableOpacity style={styles.withdrawButton} onPress={_=>this._withdraw()}><Text style={styles.withdrawButtonText}>withdraw to wallet</Text></TouchableOpacity>
+          <TouchableOpacity style={styles.withdrawButton} onPress={_=>this._withdraw()}><Text style={styles.withdrawButtonText}>Withdraw to wallet</Text></TouchableOpacity>
           <Text style={styles.label}>You have earned {displayETH(totalBonus)} ETH so far</Text>
           <TouchableOpacity onPress={this._shareLink.bind(this)}><Text style={styles.shareText}>SHARE to earn MORE</Text></TouchableOpacity>
         </View>

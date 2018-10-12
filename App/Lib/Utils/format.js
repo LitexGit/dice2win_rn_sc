@@ -5,12 +5,12 @@ import { utils } from 'ethers'
 const DECIMAL = 6 // how many decimal places to display
 
 
-const displayETH = e => {
+const displayETH = (e, d=DECIMAL) => {
   if(!e) { return 0 }
 
   (e > 10e5) && (e = utils.formatEther(e))
   !isFloat(e) && (e = parseFloat(e))
-  e = e.toFixed(DECIMAL)
+  e = e.toFixed(d)
   return parseFloat(e)
 }
 

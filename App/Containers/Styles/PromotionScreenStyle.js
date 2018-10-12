@@ -91,8 +91,7 @@ export default StyleSheet.create({
 
   timeWrapper:{
     width: 70,
-    flexDirection: 'row',
-    alignItems: 'flex-start',
+    alignItems: 'center',
     justifyContent: 'center'
   },
   valueWrapper:{
@@ -102,14 +101,20 @@ export default StyleSheet.create({
     justifyContent: 'center'
   },
   timeText: {
+    fontSize: 12,
     color: Colors.silver
   },
-  fromText: {
-    color: Colors.silver
+  addressText: {
+    color: 'lightgrey'
   },
   valueText:{
-    fontSize: 24,
+    fontSize: 16,
     color: Colors.activeTint
+  },
+
+  levelText: {
+    color: Colors.bloodOrange,
+    fontWeight: '500',
   },
 
   statusWrapper:{
@@ -123,7 +128,7 @@ export default StyleSheet.create({
   pendingText: {
     color: Colors.silver
   },
-  failureText: {
+  rejectText: {
     color: Colors.fire
   }
 })

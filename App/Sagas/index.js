@@ -19,7 +19,7 @@ import { UserTypes } from '../Redux/UserRedux'
 
 import { startup } from './StartupSagas'
 import { getActivity } from './ActivitySagas'
-import { getRecord, getGameRecords } from './RecordSagas'
+import { getRecord, handleGlobal } from './RecordSagas'
 import { getConfig, socketInit, watchSocketStatusChannel } from './ConfigSagas'
 import { initWallet, getWallet, newWallet, saveWallet, importFromMnemonic, unlockWallet, encryptWallet, importEncryptWallet, transfer, getRandom, placeBet } from './WalletSagas'
 import { setStake } from './GameSagas'
@@ -55,6 +55,7 @@ export default function * root () {
 
     // get records
     takeLatest(RecordTypes.RECORD_REQUEST, getRecord, api),
+    takeLatest(RecordTypes.HANDLE_GLOBAL, handleGlobal, api),
 
     // get config
     takeLatest(ConfigTypes.CONFIG_REQUEST, getConfig, api),

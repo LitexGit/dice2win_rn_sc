@@ -13,9 +13,9 @@
 import { channel } from 'redux-saga'
 import { call, put, take } from 'redux-saga/effects'
 import ConfigActions from '../Redux/ConfigRedux'
+import RecordActions, {RecordSelectors} from '../Redux/RecordRedux'
 import GameActions from '../Redux/GameRedux'
 import SocketIOClient from 'socket.io-client'
-import Toast from 'react-native-root-toast'
 // import { ConfigSelectors } from '../Redux/ConfigRedux'
 
 export function * getConfig (api, action) {
@@ -94,6 +94,9 @@ const socketReportMessage = (msg) => {
 
 const socketHistoryMessage = (msg) => {
   console.tron.log('Socket History MSG:', msg)
+  if(!!msg){
+    socketStatusChannel.put(RecordActions.handleGlobal(msg))
+  }
 }
 
 function socketError (err) {

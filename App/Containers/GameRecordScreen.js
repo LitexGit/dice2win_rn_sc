@@ -1,22 +1,30 @@
 import React, { Component } from 'react'
-import { View, FlatList, Text, } from 'react-native'
+import { View, FlatList, Image, Text, TouchableOpacity } from 'react-native'
 import RecordActions from '../Redux/RecordRedux'
 import { connect } from 'react-redux'
 import styles from './Styles/GameRecordScreenStyle'
+import Images from '../Themes/Images'
 import ListEmptyComponent from '../Components/ListEmptyComponent'
+import { displayETH } from '../Lib/Utils/format'
 
-const Bet = ({game, bet}) => <View style={styles.betContentWrapper}>
-  { game === 'coin' && <Image style={styles.betIcon} source={bet?Images.coinPosLight:Images.coinNegLight} />}
-  { game === 'dice1' && <Text style={styles.betText}>{bet}</Text> }
-  { game === 'dice2' && <Text style={styles.betText}>{bet.map(b=>b+',')}</Text> }
-  { game === 'roll' && <Text style={styles.betText}>{'≤' + bet}</Text>}
+const GAME_STATUS = [
+  {text: 'wait', style:{color:'gray'}},
+  {text: 'win', style:{color:'darkorange'}},
+  {text: 'lose', style:{color: 'mediumaquamarine'}},
+]
+
+const Bet = ({modulo, bet}) => <View style={styles.betWrapper}> 
+  { modulo==2 && <Image style={styles.icon} source={bet==1?Images.coinPosLight:Images.coinNegLight} /> }
+  { modulo==6 && <Text style={styles.betText}>[{bet.toString()}]</Text> }
+  { modulo==36 && <Text style={styles.betText}>[{bet.toString()}]</Text> }
+  { modulo==100 && <Text style={styles.betText}>{'≤' + bet}</Text> }
 </View>
 
-const Result = ({game, result}) => <View style={styles.betContentWrapper}>
-  { game === 'coin' && <Image style={styles.resultIcon} source={result?Images.coinPosLight:Images.coinNegLight} /> }
-  { game === 'dice1' && <Text style={styles.resultText}>{result}</Text> }
-  { game === 'dice2' && <Text style={styles.resultText}>{result.map(r=>r+',')}</Text> }
-  { game === 'roll' && <Text style={styles.resultText}>{result}</Text> }
+const Result = ({modulo, result}) => <View>
+  { modulo===2 && <Image style={styles.icon} source={result=='0'?Images.coinPosLight:Images.coinNegLight} /> }
+  { modulo===6 && <Text style={styles.resultText}>[{result}]</Text> }
+  { modulo===36 && <Text style={styles.resultText}>[{result}]</Text> }
+  { modulo===100 && <Text style={styles.resultText}>{result}</Text> }
 </View>
 
 class GameRecordScreen extends Component {
@@ -34,15 +42,37 @@ class GameRecordScreen extends Component {
 
     loadRecords('global', {page, size})
   }
+  _itemPressed = (item) => {
 
-  _renderItem({item}) {
-    return (
-      <View style={styles.item}>
-          <Text>out: </Text>
-          <Text style={styles.outText}>{item.dice_payment/10e18}</Text>
-      </View>
-    )
   }
+
+  _renderItem = ({item}) => {
+    let { amount:inValue, dice_payment:outValue, time, bet_res:status, bet_mask:bet, bet_detail:result} = item
+    let { modulo } = this.props
+    return <TouchableOpacity style={styles.gameItem} onPress={_=>this._itemPressed(item)}>
+      <View style={styles.timeWrapper}>
+        <Text style={[styles.statusText, GAME_STATUS[status].style]}>{GAME_STATUS[status].text}</Text>
+        <Text style={styles.timeText}>{time}</Text>
+      </View>
+
+      <Bet modulo={modulo} bet={bet} />
+
+      <View style={styles.inWrapper}>
+        <Text style={styles.label}>in: </Text>
+        <Text style={styles.inValue}>{displayETH(inValue, 2)}</Text>
+      </View>
+
+      <View style={styles.resultWrapper}>
+        <Result modulo={modulo} result={result} />
+      </View>
+
+      <View style={styles.outWrapper}>
+        <Text style={styles.label}>out: </Text>
+        <Text style={styles.outValue}>{displayETH(outValue, 2)}</Text>
+      </View>
+    </TouchableOpacity>
+  }
+
 
   render () {
     return (
@@ -57,9 +87,14 @@ class GameRecordScreen extends Component {
 }
 
 const mapStateToProps = (state) => {
+  let { 
+    game:{key:modulo},
+    record:{global},
+  } = state
+
   return {
-    gameId: state.game.key,
-    records: state.record.global
+    modulo,
+    records: global[modulo],
   }
 }
 

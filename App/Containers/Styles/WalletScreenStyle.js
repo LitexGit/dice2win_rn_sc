@@ -61,7 +61,6 @@ export default StyleSheet.create({
   },
   addressText:{
     fontSize: 13,
-    padding: 3,
     color: Colors.text
   },
 

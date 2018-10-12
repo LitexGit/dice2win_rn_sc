@@ -55,7 +55,9 @@ const gameListStyle = () =>{
 
   let valueWrapper = {
     flexDirection: 'row',
-    alignItems: 'flex-start',
+    // alignItems: 'flex-start',
+    // justifyContent: 'flex-start'
+    alignItems: 'center',
     justifyContent: 'flex-start'
   }
   let valueText = {
@@ -65,11 +67,11 @@ const gameListStyle = () =>{
   return {
     inWrapper: {
       ...valueWrapper,
-      flex: 2,
+      flex: 3,
     },
     outWrapper: {
       ...valueWrapper,
-      flex: 3,
+      flex: 5,
     },
     inValue: {
       ...valueText,
@@ -80,7 +82,7 @@ const gameListStyle = () =>{
       color: Colors.activeTint
     },
     iconWrapper: {
-      width: 60,
+      width: 70,
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'center'

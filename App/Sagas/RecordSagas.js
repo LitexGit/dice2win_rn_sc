@@ -20,10 +20,11 @@ import { UserSelectors } from '../Redux/UserRedux'
 export function * getRecord (api, action) {
   const { type, data:{page,size=20} } = action.data
   console.tron.log('getRecord', page, size)
-  const [ gameId, uid, address ] = yield all([
+  const [ gameId, uid, address, oldData ] = yield all([
     select(GameSelectors.getGameId),
     select(UserSelectors.getUid),
     select(WalletSelectors.getAddress),
+    select(RecordSelectors.getRecords)
   ])
   let response = null
   switch(type) {
@@ -36,13 +37,31 @@ export function * getRecord (api, action) {
 
   if (response.ok) {
     if(page > 1) { // load more, use append mode
-      let data = yield select(RecordSelectors.getRecords)
+      let data = oldData
+      /* currently global don't need to load more
+      if(type==='global'){
+        data = {...data, [gameId]:[...data[gameId], ...response.data]}
+      } else {
+        data = [...data, ...response.data]
+      }
+      */
       data = [...data, ...response.data]
       yield put(RecordActions.recordSuccess({[type]:data}))
     } else {
-      yield put(RecordActions.recordSuccess({[type]:response.data}))
+      let {data} = response
+      type==='global' && (data = {...oldData, [gameId]: data}) 
+      yield put(RecordActions.recordSuccess({[type]:data}))
     }
   } else {
     yield put(RecordActions.recordFailure())
   }
+}
+
+export function * handleGlobal(api, action) {
+  let {msg} = action
+  console.tron.log('getGlobalMessage', msg)
+  let {modulo} = msg
+  let global = yield select(RecordSelectors.getGlobalRecords)
+  global = {...global, [modulo]:[msg, ...global[modulo]]}
+  yield put(RecordActions.recordSuccess({global}))
 }
