@@ -30,7 +30,7 @@ class NewPwdInput extends Component {
     return (
       <View style={{marginTop: 22}}>
             <TextInput style={styles.headerText}
-                       autoFocus={true}
+                       autoFocus={false}
                        multiline={false}
                        placeholder='Input your password'
                        placeholderTextColor={'gray'}

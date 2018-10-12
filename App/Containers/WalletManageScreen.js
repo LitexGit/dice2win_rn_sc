@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { ScrollView, Text, TouchableOpacity, View } from 'react-native'
+import { ScrollView, Button, Text, TouchableOpacity, View } from 'react-native'
 import { connect } from 'react-redux'
 // Add Actions - replace 'Your' with whatever your reducer is called :)
 // import YourActions from '../Redux/YourRedux'
@@ -14,6 +14,20 @@ import PwdModalActions from '../Redux/PwdModalRedux'
 import WalletActions from '../Redux/WalletRedux'
 
 class WalletManageScreen extends Component {
+
+
+  static navigationOptions = ({navigation}) => {
+    return {
+      title: 'Wallet',
+      headerRight: (
+        <Button
+          onPress={() => {}}
+          title="Info"
+          color="#fff"
+        />)
+    }
+  }
+
 
 
   _backup() {

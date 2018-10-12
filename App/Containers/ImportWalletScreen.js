@@ -33,7 +33,7 @@ class ImportWalletScreen extends Component {
     if (this.props.pwd1 === this.props.pwd2) {
       this.props.navigate('PreBackupScreen')
     } else {
-      alert('密码不一致！')
+      alert('passwords do not match')
     }
   }
 
@@ -53,7 +53,8 @@ class ImportWalletScreen extends Component {
           <View tabLabel='Mnemonic' style={styles.content}>
             <TextInput
               multiline
-              placeholder='输入助记词'
+              placeholder='Please input mnemonic'
+              placeholderTextColor={Colors.cloud}
               style={styles.mnemonicInput}
               value={this.state.mnemonic}
               onChangeText={(mnemonic) => this.setState({mnemonic})}/>
@@ -69,7 +70,7 @@ class ImportWalletScreen extends Component {
                                   if (pwd1 === pwd2) {
                                     importFromMnemonic(this.state.mnemonic, pwd2)
                                   } else {
-                                    alert('密码不一致！')
+                                    alert('passwords do not match')
                                   }
                                 }}>
                 <Text style={styles.label}> Confirm </Text>
@@ -80,7 +81,7 @@ class ImportWalletScreen extends Component {
             <TextInput
               multiline
               numberOfLines={5}
-              placeholder='keystore文本内容'
+              placeholder='please input keystore content'
               placeholderTextColor={Colors.cloud}
               style={styles.keystoreInput}
               value={this.state.keystore}

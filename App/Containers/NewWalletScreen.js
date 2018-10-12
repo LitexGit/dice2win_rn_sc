@@ -28,7 +28,7 @@ class NewWalletScreen extends Component {
     if (this.props.pwd1 === this.props.pwd2) {
       this.props.navigate('PreBackupScreen')
     } else {
-      alert('密码不一致！')
+      alert('passwords do not match')
     }
   }
 
@@ -44,7 +44,7 @@ class NewWalletScreen extends Component {
         <View style={styles.titleBox}>
           <Text style={styles.titleText}>Create you password </Text>
         </View>
-        <DoublePwdInput focus={true}/>
+        <DoublePwdInput focus={false}/>
         <View style={styles.actionWrapper}>
           <TouchableOpacity style={styles.cancelButton} onPress={this.props.navigate.back}>
             <Text style={styles.label}> Cancel </Text>

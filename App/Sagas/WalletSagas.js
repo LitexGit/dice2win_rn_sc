@@ -34,6 +34,7 @@ function * postNewWallet () {
       }),
     ]
   }))
+  alert('Wallet create success')
 }
 
 // 随机生成一个wallet，将wallet对象返回
@@ -147,6 +148,9 @@ export function * transfer (api, action) {
     let txHash = yield call(walletLib.sendTx, W.wallet, to, value, options)
     console.tron.log('setTx', txHash)
     yield put(WalletActions.setTx(txHash))
+    alert('transfer submit success')
+  } else {
+    alert('transfer submit fail')
   }
 }
 

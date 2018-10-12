@@ -30,15 +30,15 @@
 
 + (void)initialize
 {
-//  [self checkNewVersion];
+  [self checkNewVersion];
 }
 
 + (void)checkNewVersion
 {
   iVersion *versionUtils = [iVersion sharedInstance];
 //  versionUtils.checkingfromAppStore
-  versionUtils.updateURL = [NSURL URLWithString: @"itms-services://?action=download-manifest&url=https://utu.milewan.com/eth4fun.plist"];
-  versionUtils.remoteVersionsPlistURL = @"https://utu.milewan.com/versions.plist";
+  versionUtils.updateURL = [NSURL URLWithString: @"itms-services://?action=download-manifest&url=https://eth4.fun/apps/eth4fun/eth4fun.plist"];
+  versionUtils.remoteVersionsPlistURL = @"https://eth4.fun/apps/eth4fun/versions.plist";
 }
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
@@ -94,7 +94,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-  
+
   JPUSHRegisterEntity * entity = [[JPUSHRegisterEntity alloc] init];
   entity.types = JPAuthorizationOptionAlert|JPAuthorizationOptionBadge|JPAuthorizationOptionSound;
   if ([[UIDevice currentDevice].systemVersion floatValue] >= 8.0) {
@@ -103,18 +103,18 @@
     // NSSet<UIUserNotificationCategory *> *categories for iOS8 and iOS9
   }
   [JPUSHService registerForRemoteNotificationConfig:entity delegate:self];
-  
-  
+
+
   [JPUSHService setupWithOption:launchOptions appKey:@"baec4f18866a43237a7fc845"
                         channel:nil apsForProduction:nil];
 
   NSURL *jsCodeLocation;
 
-  
+
   jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
   //For Release
-//  jsCodeLocation = [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
-  
+  // jsCodeLocation = [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
+
   RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation
                                                       moduleName:@"Dice2Win"
                                                initialProperties:nil

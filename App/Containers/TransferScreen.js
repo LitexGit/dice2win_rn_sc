@@ -18,7 +18,7 @@ class TransferScreen extends Component {
   }
 
   state = {
-    to: '0x253917c6befa4251a26c9fd248275238eeabb663',
+    to: '', //'0x253917c6befa4251a26c9fd248275238eeabb663',
     value: '0.01'
   }
 
@@ -63,9 +63,9 @@ class TransferScreen extends Component {
         </View>
         <View style={styles.header}>
           <TextInput style={styles.headerText}
-                     autoFocus={true}
+                     autoFocus={false}
                      multiline={false}
-                     placeholder='请输入对方地址'
+                     placeholder='please input receiver eth address'
                      placeholderTextColor={'gray'}
                      clearButtonMode='always'
                      value={this.state.to}
@@ -75,7 +75,7 @@ class TransferScreen extends Component {
           <TextInput style={styles.valueText}
                      autoFocus={false}
                      multiline={false}
-                     placeholder='请输入转账金额ETH'
+                     placeholder='please input send eth amount'
                      placeholderTextColor={'gray'}
                      clearButtonMode='always'
                      keyboard='numeric'
