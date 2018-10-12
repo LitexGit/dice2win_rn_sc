@@ -54,6 +54,9 @@ const ApplicationStyles = {
     label: {
       color: Colors.text,
     },
+    darkLabel: {
+      color: 'grey',
+    },
     divider: {
       height: 1,
       backgroundColor: Colors.facebook,

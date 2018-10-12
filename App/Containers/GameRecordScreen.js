@@ -15,15 +15,20 @@ const GAME_STATUS = [
 
 const Bet = ({modulo, bet}) => <View style={styles.betWrapper}> 
   { modulo==2 && <Image style={styles.icon} source={bet==1?Images.coinPosLight:Images.coinNegLight} /> }
-  { modulo==6 && <Text style={styles.betText}>[{bet.toString()}]</Text> }
-  { modulo==36 && <Text style={styles.betText}>[{bet.toString()}]</Text> }
+  { modulo==6 && <Text style={styles.betText}>{bet.toString()}</Text> }
+  { modulo==36 && bet.length<=6 && <Text style={styles.betText}>{bet.toString()}</Text> }
+  { modulo==36 && bet.length>6 && 
+    <View style={{alignItems:'center',justifyContent:'space-around'}}>
+      <Text style={styles.betText}>{bet.slice(0,6).toString()}</Text>
+      <Text style={styles.betText}>{bet.slice(6).toString()}</Text>
+    </View> }
   { modulo==100 && <Text style={styles.betText}>{'≤' + bet}</Text> }
 </View>
 
 const Result = ({modulo, result}) => <View>
   { modulo===2 && <Image style={styles.icon} source={result=='0'?Images.coinPosLight:Images.coinNegLight} /> }
-  { modulo===6 && <Text style={styles.resultText}>[{result}]</Text> }
-  { modulo===36 && <Text style={styles.resultText}>[{result}]</Text> }
+  { modulo===6 && <Text style={styles.resultText}>{result}</Text> }
+  { modulo===36 && <Text style={styles.resultText}>{result}</Text> }
   { modulo===100 && <Text style={styles.resultText}>{result}</Text> }
 </View>
 
@@ -58,7 +63,7 @@ class GameRecordScreen extends Component {
       <Bet modulo={modulo} bet={bet} />
 
       <View style={styles.inWrapper}>
-        <Text style={styles.label}>in: </Text>
+        <Text style={styles.darkLabel}>in: </Text>
         <Text style={styles.inValue}>{displayETH(inValue, 2)}</Text>
       </View>
 
@@ -67,7 +72,7 @@ class GameRecordScreen extends Component {
       </View>
 
       <View style={styles.outWrapper}>
-        <Text style={styles.label}>out: </Text>
+        <Text style={styles.darkLabel}>out: </Text>
         <Text style={styles.outValue}>{displayETH(outValue, 2)}</Text>
       </View>
     </TouchableOpacity>

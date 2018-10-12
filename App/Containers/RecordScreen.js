@@ -94,11 +94,11 @@ class RecordScreen extends Component {
       </View>
       <View style={styles.iconWrapper}><Image style={styles.icon} resizeMode='contain' source={icon}/></View>
       <View style={styles.inWrapper}>
-        <Text style={styles.label}>in: </Text>
+        <Text style={styles.darkLabel}>in: </Text>
         <Text style={styles.inValue}>{displayETH(inValue, 4)}</Text>
       </View>
       <View style={styles.outWrapper}>
-        <Text style={styles.label}>out: </Text>
+        <Text style={styles.darkLabel}>out: </Text>
         <Text style={styles.outValue}>{displayETH(outValue, 4)}</Text>
       </View>
     </TouchableOpacity>
