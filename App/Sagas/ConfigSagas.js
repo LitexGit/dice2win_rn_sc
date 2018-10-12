@@ -15,6 +15,7 @@ import { call, put, take } from 'redux-saga/effects'
 import ConfigActions from '../Redux/ConfigRedux'
 import GameActions from '../Redux/GameRedux'
 import SocketIOClient from 'socket.io-client'
+import Toast from 'react-native-root-toast'
 // import { ConfigSelectors } from '../Redux/ConfigRedux'
 
 export function * getConfig (api, action) {
@@ -45,7 +46,8 @@ export function * socketInit(api, action) {
     socket.on('connect', socketConnected)
       .on('reconnect', socketReconnect)
       .on('settle', socketMessage)
-      .on('history', socketMessage)
+      .on('history', socketHistoryMessage)
+      .on('report', socketReportMessage)
       .on('error', socketError)
       .on('disconnect', socketClosed)
   }
@@ -66,6 +68,9 @@ function * socketConnected() {
   if(!!W.address){
     yield socket.emit('lottery', W.address)
   }
+  Toast.show('socket connected' , {
+    position: Toast.positions.TOP,
+  })
 }
 
 const socketMessage = (msg) => {
@@ -78,20 +83,43 @@ const socketMessage = (msg) => {
   console.tron.log('Socket MSG:', msg)
 }
 
-function * socketError (err) {
+
+const socketReportMessage = (msg) => {
+  console.tron.log('Socket Report MSG: ', msg);
+
+  if(!!msg && msg == 'address'){
+    if (!!W.address) {
+      socket.emit('lottery', W.address)
+    }
+  }
+
+}
+
+const socketHistoryMessage = (msg) => {
+  console.tron.log('Socket History MSG:', msg)
+}
+
+function socketError (err) {
   console.tron.log('Socket ERROR:', err.message)
 }
 
-function * socketClosed (e) {
+function socketClosed (e) {
   socketStatusChannel.put(ConfigActions.socketStatus('off'))
   console.tron.log('Socket CLOSE', e)
+  Toast.show('socket close' , {
+    position: Toast.positions.BOTTOM,
+  })
 }
 
-function * socketReconnect(e) {
+function socketReconnect(e) {
   socketStatusChannel.put(ConfigActions.socketStatus('on'))
   console.tron.log('Socket Reconnect', e)
 
+  Toast.show('socket reconnect' , {
+    position: Toast.positions.CENTER,
+  })
+
   if(!!W.address){
-    yield socket.emit('lottery', W.address)
+    socket.emit('lottery', W.address)
   }
 }

@@ -245,7 +245,6 @@ async function createFakeWallet(keystorePath){
     }
   } catch (err) {
     console.tron.log('write file err', err)
-    console.log('write file err', err)
   }
 }
 

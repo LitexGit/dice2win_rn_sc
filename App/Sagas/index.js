@@ -36,7 +36,7 @@ const api = DebugConfig.useFixtures ? FixtureAPI : API.create()
 export default function * root () {
   yield all([
     call(watchSocketStatusChannel),
-    // call(watchNotificationStatusChannel),
+    call(watchNotificationStatusChannel),
     // some sagas only receive an action
     // takeLatest(StartupTypes.STARTUP, startup),
 

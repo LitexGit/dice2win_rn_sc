@@ -91,7 +91,7 @@ openNotificationListener = map => {
   if(!!map.extras){
     let extras  = JSON.parse(map.extras)
 
-    let { openType } = extras
+    let { openType, gameId } = extras
 
     console.tron.log('notification openType is', openType)
 
@@ -122,10 +122,34 @@ openNotificationListener = map => {
         notificationStatusChannel.put(NavigationActions.navigate({routeName: 'PromotionScreen'}))
         break;
       case 'gameContainer':
-        notificationStatusChannel.put(GameActions.setGameKey(2))
-        notificationStatusChannel.put(BetActions.loadCoin())
+
+        switch (gameId) {
+          case 2:
+            notificationStatusChannel.put(GameActions.setGameKey(gameId))
+            notificationStatusChannel.put(BetActions.loadCoin())
+            break;
+          case 6:
+            notificationStatusChannel.put(GameActions.setGameKey(gameId))
+            notificationStatusChannel.put(BetActions.loadOneDice())
+            break;
+          case 36:
+            notificationStatusChannel.put(GameActions.setGameKey(gameId))
+            notificationStatusChannel.put(BetActions.loadTwoDice())
+            break;
+          case 100:
+            notificationStatusChannel.put(GameActions.setGameKey(gameId))
+            notificationStatusChannel.put(BetActions.loadEtheroll())
+            break;
+          default:
+
+            notificationStatusChannel.put(GameActions.setGameKey(2))
+            notificationStatusChannel.put(BetActions.loadCoin())
+            break;
+        }
+
         notificationStatusChannel.put(NavigationActions.navigate({routeName: 'GameContainerScreen'}))
         break;
+
       default: break;
     }
 

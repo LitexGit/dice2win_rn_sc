@@ -82,7 +82,7 @@ export function * importFromMnemonic (api, action) {
 
 // 从keystore导入钱包，并将其存入本地存储中
 export function * importEncryptWallet (api, action) {
-  console.log('wallet importEncryptWallet', action)
+  console.tron.log('wallet importEncryptWallet', action)
   let {keystore, password} = action.data
 
   let wallet = yield call(walletLib.importKeyStore, keystore, password)

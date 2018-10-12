@@ -42,7 +42,7 @@ class BackupScreen extends Component {
   }
 
   _displayWord () {
-    console.log(this.state)
+    // console.log(this.state)
     var mnemonic = this.props.mnemonic
     // var words = mnemonic.split(' ').sort(()=> .5 - Math.random());
     var words = mnemonic.split(' ')
@@ -89,8 +89,8 @@ class BackupScreen extends Component {
   }
 
   _checkMnemonic () {
-    console.log('textarea:' + this.state.textarea)
-    console.log('mnemonic:' + this.props.mnemonic)
+    // console.log('textarea:' + this.state.textarea)
+    // console.log('mnemonic:' + this.props.mnemonic)
     if (this.state.textarea === this.props.mnemonic) {
       this.props.saveWallet(this.props.mnemonic, this.props.password)
       this.props.navigate('BottomTab')
