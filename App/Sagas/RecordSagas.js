@@ -60,8 +60,9 @@ export function * getRecord (api, action) {
 export function * handleGlobal(api, action) {
   let {msg} = action
   console.tron.log('getGlobalMessage', msg)
-  let {modulo} = msg
+  let {modulo, id} = msg
   let global = yield select(RecordSelectors.getGlobalRecords)
-  global = {...global, [modulo]:[msg, ...global[modulo]]}
+  let items = global[modulo].filter(m=>m.id!=id)
+  global = {...global, [modulo]:[msg, ...items]}
   yield put(RecordActions.recordSuccess({global}))
 }

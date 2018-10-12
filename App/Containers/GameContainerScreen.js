@@ -18,7 +18,6 @@ import styles from './Styles/GameContainerScreenStyle'
 
 import WalletActions from '../Redux/WalletRedux'
 import { displayETH, DECIMAL } from '../Lib/Utils/format'
-import { getMaxBet } from '../Lib/Utils/calculate'
 
 const GAME_COMS = {2:<Coin />, 6:<OneDice />, 36:<TwoDice />, 100:<Etheroll />}
 const GAME_TITLES = {2: 'Coin Flip', 6: 'Roll a Dice', 36: 'Two Dices', 100: 'Etheroll'}
@@ -71,7 +70,7 @@ class GameContainerScreen extends Component {
   }
 
   render () {
-    let { index, stake, balance, status, result, rewardTime, winRate,
+    let { index, stake, balance, status, result, rewardTime, winRate, balanceFetching,
       setStake,
     } = this.props
     return (
@@ -110,7 +109,7 @@ class GameContainerScreen extends Component {
               </TouchableOpacity>
             </View>
             </KeyboardAvoidingView>
-            <Text style={styles.balanceText}>balance: <Text>{displayETH(balance)} ETH</Text></Text>
+            <Text style={styles.balanceText}>balance: <Text>{balanceFetching?'updating..':displayETH(balance)+' ETH'}</Text></Text>
             <View style={styles.rewardWrapper}>
               <View style={styles.infoWrapper}>
                 <View style={styles.info}>
@@ -143,14 +142,14 @@ const mapStateToProps = (state) => {
     confirmModal: { modalIsOpen, loading, gas },
     bet: { winRate, rewardTime, betMask, },
     config: {contract_address},
-    wallet: { balance, address, gasPrice, secret }
+    wallet: { fetching, balance, address, gasPrice, secret }
   } = state
   return {
     index:key, stake, status, result,
     modalIsOpen, loading, gas,
     winRate, rewardTime, betMask,
     contract_address,
-    balance, address, gasPrice, secret
+    balanceFetching:fetching, balance, address, gasPrice, secret
   }
 }
 

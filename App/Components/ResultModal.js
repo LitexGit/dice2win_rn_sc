@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { View, Text, TouchableOpacity } from 'react-native'
-import NavigationActions from 'react-navigation/src/NavigationActions'
 import GameActions from '../Redux/GameRedux'
+import WalletActions from '../Redux/WalletRedux'
 import { displayETH } from '../Lib/Utils/format'
 import styles from './Styles/ResultModalStyle'
 import { connect } from 'react-redux'
@@ -44,8 +44,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     close: (modulo, status)=>{
-      // (status==='place'||status==='drawn') && dispatch(NavigationActions.back())
       dispatch(GameActions.updateStatus({[modulo]:'idle'}))
+      dispatch(WalletActions.walletRequest())
     }
   }
 }
