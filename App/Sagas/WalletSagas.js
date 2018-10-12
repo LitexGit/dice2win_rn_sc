@@ -75,9 +75,8 @@ export function * importFromMnemonic (api, action) {
   if (!!wallet) {
     yield postNewWallet()
   } else {
-    alert('wrong password')
+    alert('wrong mnemonic')
   }
-
 }
 
 // 从keystore导入钱包，并将其存入本地存储中

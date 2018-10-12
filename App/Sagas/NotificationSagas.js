@@ -78,6 +78,13 @@ export function * initNotification(api, action){
       })
     } else {
       JPushModule.setupPush()
+      JPushModule.addReceiveCustomMsgListener((message) => {
+        console.tron.log('JPushMessageReceived: ', message)
+        // this.props.setNotification(message)
+      })
+
+      JPushModule.addReceiveOpenNotificationListener(openNotificationListener)
+      JPushModule.addReceiveNotificationListener(receiveNotificationListener)
     }
 
 }
@@ -89,8 +96,7 @@ openNotificationListener = map => {
   console.tron.log('map.extra: ' + map.extras)
 
   if(!!map.extras){
-    let extras  = JSON.parse(map.extras)
-
+    let extras  = (typeof(map.extras) === 'string') ? JSON.parse(map.extras): map.extras
     let { openType, gameId } = extras
 
     console.tron.log('notification openType is', openType)

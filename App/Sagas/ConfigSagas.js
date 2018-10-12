@@ -68,9 +68,6 @@ function * socketConnected() {
   if(!!W.address){
     yield socket.emit('lottery', W.address)
   }
-  Toast.show('socket connected' , {
-    position: Toast.positions.TOP,
-  })
 }
 
 const socketMessage = (msg) => {
@@ -106,18 +103,11 @@ function socketError (err) {
 function socketClosed (e) {
   socketStatusChannel.put(ConfigActions.socketStatus('off'))
   console.tron.log('Socket CLOSE', e)
-  Toast.show('socket close' , {
-    position: Toast.positions.BOTTOM,
-  })
 }
 
 function socketReconnect(e) {
   socketStatusChannel.put(ConfigActions.socketStatus('on'))
   console.tron.log('Socket Reconnect', e)
-
-  Toast.show('socket reconnect' , {
-    position: Toast.positions.CENTER,
-  })
 
   if(!!W.address){
     socket.emit('lottery', W.address)
