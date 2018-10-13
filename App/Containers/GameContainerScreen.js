@@ -66,7 +66,14 @@ class GameContainerScreen extends Component {
   componentDidMount(){
     this.props.navigation.setParams({ gotoRecords: _=>this.props.navigate('GameRecordScreen')})
     this.props.navigation.setParams({ title: GAME_TITLES[this.props.index]})
+    this.props.setStake(this.props.stake)
     this.props.loadWallet()
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if(this.props.winRate != prevProps.winRate){
+      this.props.setStake(this.props.stake)
+    }
   }
 
   render () {
