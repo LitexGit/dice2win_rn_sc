@@ -36,22 +36,28 @@ export function * getRecord (api, action) {
   }
 
   if (response.ok) {
+
+    let { data } = response
+
+    // convert date and time to local format
+    data = data.map((item) => {
+      let { date, time} = item
+      let { timeZone } = require('../Themes/Metrics')
+      
+      time = new Date(`${date}T${time}`)
+        .toLocaleTimeString('zh-CN', {timeZone, hour12: false}) 
+      return {...item, time}
+    })
+
+
     if(page > 1) { // load more, use append mode
-      let data = oldData
-      /* currently global don't need to load more
-      if(type==='global'){
-        data = {...data, [gameId]:[...data[gameId], ...response.data]}
-      } else {
-        data = [...data, ...response.data]
-      }
-      */
-      data = [...data, ...response.data]
-      yield put(RecordActions.recordSuccess({[type]:data}))
+      data = [...oldData, ...data]
     } else {
-      let {data} = response
       type==='global' && (data = {...oldData, [gameId]: data}) 
-      yield put(RecordActions.recordSuccess({[type]:data}))
     }
+
+    yield put(RecordActions.recordSuccess({[type]:data}))
+
   } else {
     yield put(RecordActions.recordFailure())
   }

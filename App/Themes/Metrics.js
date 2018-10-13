@@ -1,5 +1,6 @@
 import {Dimensions, Platform} from 'react-native'
 import {getStatusBarHeight} from 'react-native-iphone-x-helper'
+import DeviceInfo from 'react-native-device-info'
 
 const { width, height } = Dimensions.get('window')
 
@@ -32,7 +33,8 @@ const metrics = {
     medium: 40,
     large: 60,
     logo: 200
-  }
+  },
+  timeZone: DeviceInfo.getTimezone(),
 }
 
 export default metrics
