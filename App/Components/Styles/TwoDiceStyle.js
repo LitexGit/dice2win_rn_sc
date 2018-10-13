@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native'
-import { Colors } from '../../Themes';
+import { Colors, Fonts } from '../../Themes';
 
 const DICE_SIZE = 70
 
@@ -37,7 +37,8 @@ export default StyleSheet.create({
     margin: 10
   },
   infoText: {
-    color: Colors.ricePaper,
-    fontSize: 18
+    ...Fonts.style.h5,
+    color: Colors.activeTint,
+    textAlign: 'center',
   },
 })

@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native'
-import { Colors } from '../../Themes';
+import { Colors, Fonts } from '../../Themes';
 
 const COIN_SIZE = 100
 export default StyleSheet.create({
@@ -21,7 +21,8 @@ export default StyleSheet.create({
     margin: 10,
   },
   infoText: {
-    color: Colors.ricePaper,
-    fontSize: 18
+    ...Fonts.style.h5,
+    color: Colors.activeTint,
+    textAlign: 'center',
   },
 })

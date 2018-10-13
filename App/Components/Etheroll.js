@@ -22,7 +22,7 @@ class Etheroll extends Component {
     return (
       <React.Fragment>
         <View style={styles.infoBox}>
-          <Text style={styles.infoText}>adjust you winning chance</Text>
+          <Text style={styles.infoText}>Adjust you winning chance</Text>
         </View>
         <View style={{ flex: 1, flexDirection: 'row' }}>
           <View style={styles.rateWrapper}>

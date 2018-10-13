@@ -80,9 +80,8 @@ export default StyleSheet.create({
   },
 
   balanceText: {
-    alignSelf: 'center',
-    color: Colors.casinoGreen, 
-    fontSize: 14
+    color: 'goldenrod', 
+    fontSize: 16
   },
 
   rewardWrapper:{

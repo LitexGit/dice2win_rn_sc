@@ -16,7 +16,7 @@ class Coin extends Component {
     return (
       <React.Fragment>
         <View style={styles.infoBox}>
-          <Text style={styles.infoText}>choose coin side to bet on</Text>
+          <Text style={styles.infoText}>Choose coin side to bet on</Text>
         </View>
         <View style={styles.coinBox}>
           <TouchableOpacity onPress={clickCoin}>

@@ -116,7 +116,7 @@ class GameContainerScreen extends Component {
               </TouchableOpacity>
             </View>
             </KeyboardAvoidingView>
-            <Text style={styles.balanceText}>balance: <Text>{balanceFetching?'updating..':displayETH(balance)+' ETH'}</Text></Text>
+            <Text style={[styles.darkLabel, {alignSelf:'center', margin: 10}]}>Balance:  <Text style={styles.balanceText}>{balanceFetching?'updating..':displayETH(balance)}</Text>  ETH</Text>
             <View style={styles.rewardWrapper}>
               <View style={styles.infoWrapper}>
                 <View style={styles.info}>
@@ -128,8 +128,8 @@ class GameContainerScreen extends Component {
                   <Text style={styles.keyText}>{(winRate * 100).toFixed(2)}%</Text>
                 </View>
               </View>
-              <Text style={styles.rewardText}>you will win <Text style={styles.keyText}>{(rewardTime * stake).toFixed(DECIMAL)} ETH</Text></Text>
-              <Text style={[styles.label, {fontSize: 11}]}>1% fee, 5% of bonus to your inviter</Text>
+              <Text style={styles.rewardText}>you will win  <Text style={styles.keyText}>{(rewardTime * stake).toFixed(DECIMAL)}</Text>  ETH</Text>
+              <Text style={[styles.darkLabel, {fontSize: 11}]}>1% fee, 5% of winnings to your inviter</Text>
             </View>
             <View style={styles.startButtonWrapper}>
               <TouchableOpacity style={styles.startButton} onPress={this._placeBet}>
