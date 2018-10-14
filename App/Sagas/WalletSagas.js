@@ -17,6 +17,7 @@ import walletLib from '../Lib/Wallet/wallet'
 import ConfirmModalActions, { ConfirmModalSelectors } from '../Redux/ConfirmModalRedux'
 import { ConfigSelectors } from '../Redux/ConfigRedux'
 import NavigationActions from 'react-navigation/src/NavigationActions'
+import Toast from 'react-native-root-toast'
 
 // import { WalletSelectors } from '../Redux/WalletRedux'
 let ethers = require('ethers')
@@ -167,6 +168,8 @@ export function * getRandom (api, action) {
     'address': address,
     'network_id': '1'
   }
+  yield put(WalletActions.walletRequest())
+
   const response = yield call(api.getRandom, data)
   if (response.ok) {
 
@@ -185,13 +188,24 @@ export function * placeBet (api, action) {
 
   let {betMask, modulo, value} = action.data
   let secret = yield select(WalletSelectors.getSecret)
+  let walletR = yield select(WalletSelectors.getWallet)
   let gasPrice = (yield select(ConfirmModalSelectors.getGas)) * 1e9
   let password = yield select(PwdModalSelectors.getPassword)
   let config = yield select(ConfigSelectors.getConfig)
 
   let {contract_address, abi} = config
+  let { fetching } = walletR
 
   console.tron.log('placeBet secret', secret, gasPrice)
+
+
+  if(fetching || !secret.commit){
+    Toast.show("missing required info", { position: Toast.positions.CENTER });
+    return
+  }
+
+
+
 
   if (!W.wallet) {
     let result = yield call(walletLib.unlockWallet, password)
@@ -234,9 +248,11 @@ export function * placeBet (api, action) {
   console.tron.log('ans', ans)
   if(!!ans && !!ans.hash){
     yield call(api.commitTx, {commit: secret.commit, tx_hash: ans.hash})
+    yield put(GameActions.updateStatus({ [modulo]: 'placed' }))
+  }else{
+    Toast.show("place bet fail, can not submit to blockchain", { position: Toast.positions.CENTER });
   }
 
-  yield put(GameActions.updateStatus({[modulo]: 'placed'}))
 
 }
 
