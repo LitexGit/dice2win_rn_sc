@@ -46,7 +46,7 @@ export const INITIAL_STATE = Immutable({
 /* ------------- Selectors ------------- */
 
 export const WalletSelectors = {
-  getData: state => state.data,
+  getWallet: state => state.wallet,
   getSecret: state => state.wallet.secret,
   getAddress: state => state.wallet.address,
 }

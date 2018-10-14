@@ -14,6 +14,20 @@ import ScrollableTabView, { ScrollableTabBar } from 'react-native-scrollable-tab
 import DoublePwdInput from '../Components/DoublePwdInput'
 import SinglePwdInput from '../Components/SinglePwdInput'
 
+
+
+
+function isJsonString(str) {
+  try {
+      if (typeof JSON.parse(str) == "object") {
+          return true;
+      }
+  } catch(e) {
+  }
+  return false;
+}
+
+
 class ImportWalletScreen extends Component {
   static navigationOptions = ({navigation}) => {
     return {
@@ -67,11 +81,17 @@ class ImportWalletScreen extends Component {
               <TouchableOpacity style={styles.confirmButton}
                                 onPress={() => {
                                   console.tron.log('this.props', this.props)
-                                  if (pwd1 === pwd2) {
+                                  if(!this.state.mnemonic || this.state.mnemonic.length < 40){
+                                    alert('incorrect mnemonic')
+                                    return;
+                                  }
+
+                                  if (!!pwd1 && pwd1 === pwd2) {
                                     importFromMnemonic(this.state.mnemonic, pwd2)
                                   } else {
                                     alert('passwords do not match')
                                   }
+
                                 }}>
                 <Text style={styles.label}> Confirm </Text>
               </TouchableOpacity>
@@ -94,6 +114,19 @@ class ImportWalletScreen extends Component {
               </TouchableOpacity>
               <TouchableOpacity style={styles.confirmButton} onPress={() => {
                 var keystore = this.state.keystore
+
+                if(!keystore ){
+                  alert('keystore format is invalid')
+                  return
+                }
+
+                if(!pwd){
+                  alert('password can not be empty')
+                  return
+                }
+
+
+
                 importEncryptWallet(JSON.parse(keystore), pwd)
               }}>
                 <Text style={styles.label}> Confirm </Text>

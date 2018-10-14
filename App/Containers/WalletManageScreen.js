@@ -19,12 +19,6 @@ class WalletManageScreen extends Component {
   static navigationOptions = ({navigation}) => {
     return {
       title: 'Wallet',
-      headerRight: (
-        <Button
-          onPress={() => {}}
-          title="Info"
-          color="#fff"
-        />)
     }
   }
 

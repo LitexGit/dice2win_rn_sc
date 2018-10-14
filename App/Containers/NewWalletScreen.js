@@ -25,7 +25,7 @@ class NewWalletScreen extends Component {
   }
 
   _checkPwd () {
-    if (this.props.pwd1 === this.props.pwd2) {
+    if (!!this.props.pwd1 && this.props.pwd1 === this.props.pwd2) {
       this.props.navigate('PreBackupScreen')
     } else {
       alert('passwords do not match')

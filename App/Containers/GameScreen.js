@@ -44,7 +44,7 @@ class GameScreen extends Component {
       <TouchableWithoutFeedback onPress={_=>{
         this.props.navigate('WebviewScreen', {url:item.img_href, title:item.title})
       }} style={styles.slide} >
-        <Image style={styles.image} source={item.img_url}/>
+        <Image style={styles.image} source={{ uri: item.img_url }} />
       </TouchableWithoutFeedback>)
   }
 
