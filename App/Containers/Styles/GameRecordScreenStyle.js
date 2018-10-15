@@ -57,17 +57,17 @@ const gameListStyle = () =>{
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    width: 70,
+    width: 50,
   }
 
   let iconWrapper = {
     ...ApplicationStyles.screen.hContainer,
-    paddingLeft: 10,
-    paddingRight: 10,
+    paddingLeft: 5,
+    paddingRight: 5,
   }
 
   let valueText = {
-    fontSize: 16,
+    fontSize: 12,
     fontWeight: '500',
   }
 
@@ -86,18 +86,32 @@ const gameListStyle = () =>{
       ...valueText,
       color: Colors.activeTint
     },
+
+    userWrapper: {
+      width: 55,
+      padding: 3,
+      alignItems:'center'
+    },
+    userText: {
+      fontSize: 12,
+      color: Colors.steel,
+    },
+
     betWrapper: {
       ...iconWrapper,
       flex: 3,
     },
     betText: {
+      fontSize: 12,
       color: Colors.text,
     },
     resultWrapper: {
       ...iconWrapper,
       flex: 1,
+      minWidth: 30,
     },
     resultText: {
+      fontSize: 12,
       color: Colors.text,
     },
     icon: {
@@ -110,7 +124,7 @@ const gameListStyle = () =>{
       alignItems: 'center',
       justifyContent: 'space-around',
       height: 60,
-      padding: 5,
+      padding: 15,
       color: Colors.silver,
       borderTopWidth:0,
       borderBottomWidth:hairlineWidth,

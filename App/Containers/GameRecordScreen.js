@@ -16,11 +16,11 @@ const GAME_STATUS = [
 const Bet = ({modulo, bet}) => <View style={styles.betWrapper}> 
   { modulo==2 && <Image style={styles.icon} source={bet==1?Images.coinPosLight:Images.coinNegLight} /> }
   { modulo==6 && <Text style={styles.betText}>{bet.toString()}</Text> }
-  { modulo==36 && bet.length<=6 && <Text style={styles.betText}>{bet.toString()}</Text> }
-  { modulo==36 && bet.length>6 && 
+  { modulo==36 &&
     <View style={{alignItems:'center',justifyContent:'space-around'}}>
-      <Text style={styles.betText}>{bet.slice(0,6).toString()}</Text>
-      <Text style={styles.betText}>{bet.slice(6).toString()}</Text>
+      <Text style={styles.betText}>{bet.slice(0,4).toString()}</Text>
+      { bet.length>4 && <Text style={styles.betText}>{bet.slice(4,8).toString()}</Text> }
+      { bet.length>8 && <Text style={styles.betText}>{bet.slice(8).toString()}</Text> }
     </View> }
   { modulo==100 && <Text style={styles.betText}>{'≤' + bet}</Text> }
 </View>
@@ -52,12 +52,16 @@ class GameRecordScreen extends Component {
   }
 
   _renderItem = ({item}) => {
-    let { amount:inValue, dice_payment:outValue, time, bet_res:status, bet_mask:bet, bet_detail:result} = item
+    let { amount:inValue, address_from:user, dice_payment:outValue, time, bet_res:status, bet_mask:bet, bet_detail:result} = item
     let { modulo } = this.props
     return <TouchableOpacity style={styles.gameItem} onPress={_=>this._itemPressed(item)}>
       <View style={styles.timeWrapper}>
         <Text style={[styles.statusText, GAME_STATUS[status].style]}>{GAME_STATUS[status].text}</Text>
         <Text style={styles.timeText}>{time}</Text>
+      </View>
+      
+      <View style={styles.userWrapper}>
+        <Text numberOfLines={1} ellipsizeMode='tail' style={styles.userText}>{user}</Text>
       </View>
 
       <Bet modulo={modulo} bet={bet} />

@@ -1033,7 +1033,7 @@
 					};
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = QG8NK8GEE7;
-						ProvisioningStyle = Manual;
+						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.Push = {
 								enabled = 1;
@@ -1781,8 +1781,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Dice2Win/Dice2Win.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = QG8NK8GEE7;
@@ -1806,7 +1806,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = fun.eth4.game;
 				PRODUCT_NAME = Dice2Win;
-				PROVISIONING_PROFILE_SPECIFIER = eth4fungameProd;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -1817,8 +1817,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Dice2Win/Dice2Win.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = QG8NK8GEE7;
 				HEADER_SEARCH_PATHS = (
@@ -1841,7 +1841,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = fun.eth4.game;
 				PRODUCT_NAME = Dice2Win;
-				PROVISIONING_PROFILE_SPECIFIER = eth4fungameProd;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
