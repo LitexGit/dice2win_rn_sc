@@ -18,14 +18,30 @@ import ConfirmModalActions, { ConfirmModalSelectors } from '../Redux/ConfirmModa
 import { ConfigSelectors } from '../Redux/ConfigRedux'
 import NavigationActions from 'react-navigation/src/NavigationActions'
 import Toast from 'react-native-root-toast'
+import JPushModule from 'jpush-react-native'
 
 // import { WalletSelectors } from '../Redux/WalletRedux'
 let ethers = require('ethers')
 let axios = require('axios')
 
+let setAlias = (alias) => {
+  return new Promise((resolve, reject)=>{
+    JPushModule.setAlias(alias, map => {
+      if (map.errorCode === 0) {
+        console.tron.log("jpush set alias succeed");
+        resolve(true)
+      } else {
+        console.tron.log("jpush set alias failed, errorCode: " + map.errorCode);
+        reject(map.errorCode)
+      }
+    });
+  })
+}
+
 function * postNewWallet () {
 
   yield socket.emit('lottery', W.address)
+  yield setAlias(W.address.substr(2))
   yield put(NavigationActions.reset({
     index: 0,
     actions: [
@@ -65,7 +81,13 @@ export function * initWallet (api, action) {
   W.network = config.network
 
   // const delay = (ms) => new Promise(res => setTimeout(res, ms))
-  !!W.keystoreInitialized && (yield socket.emit('lottery', W.address))
+  if(!!W.keystoreInitialized){
+    yield socket.emit('lottery', W.address)
+
+    yield setAlias(W.address.substr(2))
+
+
+  }
   // yield call(delay, 1000)
   // yield delay(5000)
 }
@@ -231,25 +253,31 @@ export function * placeBet (api, action) {
 
   yield put(GameActions.updateStatus({[modulo]:'placing'}))
 
-  const wallet = W.wallet
+  // const wallet = W.wallet
 
-  console.tron.log('res2', wallet)
+  // console.tron.log('res2', wallet)
 
-  let contract = new ethers.Contract(contract_address, abi, wallet)
-  let overrideOptions = {
-    value: ethers.utils.parseEther(value+''),
-    gasPrice: parseInt(gasPrice)
-  }
+  // let contract = new ethers.Contract(contract_address, abi, wallet)
+  // let overrideOptions = {
+  //   value: ethers.utils.parseEther(value+''),
+  //   gasPrice: parseInt(gasPrice)
+  // }
 
-  console.tron.log('res3', action.data, overrideOptions)
+  // console.tron.log('res3', action.data, overrideOptions)
 
-  let ans = yield contract.placeBet(betMask, modulo, secret.commitLastBlock, secret.commit,
-    secret.signature.r, secret.signature.s, overrideOptions)
-  console.tron.log('ans', ans)
+  // let ans = yield contract.placeBet(betMask, modulo, secret.commitLastBlock, secret.commit,
+  //   secret.signature.r, secret.signature.s, overrideOptions)
+  // console.tron.log('ans', ans)
+
+
+  let ans = yield call(walletLib.placeBet, W.wallet, {contract_address, abi}, {betMask, modulo, secret}, value, gasPrice)
+
+
   if(!!ans && !!ans.hash){
     yield call(api.commitTx, {commit: secret.commit, tx_hash: ans.hash})
     yield put(GameActions.updateStatus({ [modulo]: 'placed' }))
   }else{
+    yield put(GameActions.updateStatus({ [modulo]: 'idle' }))
     Toast.show("place bet fail, can not submit to blockchain", { position: Toast.positions.CENTER });
   }
 

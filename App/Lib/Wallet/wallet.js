@@ -7,7 +7,16 @@ const ethers = require('ethers')
 import RNFS from 'react-native-fs';
 import { Wallet, providers, utils } from 'ethers'
 
+function getFallbackProvider(network){
 
+  var infuraProvider = new providers.InfuraProvider(network);
+  var etherscanProvider = new providers.EtherscanProvider(network);
+  var fallbackProvider = new providers.FallbackProvider([
+    infuraProvider,
+    etherscanProvider
+  ]);
+  return fallbackProvider;
+}
 
 function initGlobalW(keystore){
   W.address = ethers.utils.getAddress(keystore.address);
@@ -20,14 +29,7 @@ function initGlobalWFull(wallet){
   W.address = ethers.utils.getAddress(wallet.address);
 
 
-  var infuraProvider = new providers.InfuraProvider(W.network);
-  var etherscanProvider = new providers.EtherscanProvider(W.network);
-  var fallbackProvider = new providers.FallbackProvider([
-    infuraProvider,
-    etherscanProvider
-  ]);
-
-  W.wallet.provider = fallbackProvider
+  W.wallet.provider = getFallbackProvider(W.network)
 
 }
 
@@ -165,15 +167,7 @@ async function getBalance(address) {
   let balance = 0
   // let provider = providers.getDefaultProvider(W.network)
 
-
-  var infuraProvider = new providers.InfuraProvider(W.network);
-  var etherscanProvider = new providers.EtherscanProvider(W.network);
-  var fallbackProvider = new providers.FallbackProvider([
-    infuraProvider,
-    etherscanProvider
-  ]);
-
-  let provider = fallbackProvider
+  let provider = getFallbackProvider(W.network)
 
 
   let balanceRaw = await provider.getBalance(address)
@@ -204,6 +198,38 @@ async function sendTx(wallet, toAddress, value, options) {
 
 }
 
+
+
+async function placeBet(wallet, contractInfo, params, value, gasPrice) {
+
+  let { contract_address, abi } = contractInfo
+  let { betMask, modulo, secret } = params
+
+
+  let contract = new ethers.Contract(contract_address, abi, wallet)
+  let overrideOptions = {
+    value: ethers.utils.parseEther(value + ''),
+    gasPrice: parseInt(gasPrice)
+  }
+
+  console.tron.log('res3', params, overrideOptions)
+
+  try {
+
+    let ans = await contract.placeBet(betMask, modulo, secret.commitLastBlock, secret.commit,
+      secret.signature.r, secret.signature.s, overrideOptions)
+
+    console.tron.log('ans', ans)
+
+    return ans
+  } catch (err) {
+    return null
+  }
+}
+
+
+
+
 /**
  * 从本地存储载入钱包初始化
  * 并对global.W进行初始化
@@ -216,18 +242,16 @@ async function initWallet() {
   // if keystore file not exist, create a fake file
   await createFakeWallet(keystorePath)
 
-  if (!W) {
-    W = { keystorePath: keystorePath };
-    // load keystore from keystorePath
-    try {
-      let keystore = await RNFS.readFile(keystorePath);
-      console.tron.log('initWallet', keystore);
-      initGlobalW(JSON.parse(keystore))
+  W.keystorePath = keystorePath;
+  // load keystore from keystorePath
+  try {
+    let keystore = await RNFS.readFile(keystorePath);
+    console.tron.log('initWallet', keystore);
+    initGlobalW(JSON.parse(keystore))
 
-    } catch (err) {
-      console.tron.log('initWallet', err);
-      W.keystoreInitialized = false;
-    }
+  } catch (err) {
+    console.tron.log('initWallet', err);
+    W.keystoreInitialized = false;
   }
   // await unlockWallet('123')
 
@@ -270,6 +294,7 @@ module.exports = {
   createWallet,
   getBalance,
   sendTx,
+  placeBet,
   saveKeyStore,
   initWallet,
   unlockWallet,
