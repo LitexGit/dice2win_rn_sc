@@ -253,25 +253,31 @@ export function * placeBet (api, action) {
 
   yield put(GameActions.updateStatus({[modulo]:'placing'}))
 
-  const wallet = W.wallet
+  // const wallet = W.wallet
 
-  console.tron.log('res2', wallet)
+  // console.tron.log('res2', wallet)
 
-  let contract = new ethers.Contract(contract_address, abi, wallet)
-  let overrideOptions = {
-    value: ethers.utils.parseEther(value+''),
-    gasPrice: parseInt(gasPrice)
-  }
+  // let contract = new ethers.Contract(contract_address, abi, wallet)
+  // let overrideOptions = {
+  //   value: ethers.utils.parseEther(value+''),
+  //   gasPrice: parseInt(gasPrice)
+  // }
 
-  console.tron.log('res3', action.data, overrideOptions)
+  // console.tron.log('res3', action.data, overrideOptions)
 
-  let ans = yield contract.placeBet(betMask, modulo, secret.commitLastBlock, secret.commit,
-    secret.signature.r, secret.signature.s, overrideOptions)
-  console.tron.log('ans', ans)
+  // let ans = yield contract.placeBet(betMask, modulo, secret.commitLastBlock, secret.commit,
+  //   secret.signature.r, secret.signature.s, overrideOptions)
+  // console.tron.log('ans', ans)
+
+
+  let ans = yield call(walletLib.placeBet, W.wallet, {contract_address, abi}, {betMask, modulo, secret}, value, gasPrice)
+
+
   if(!!ans && !!ans.hash){
     yield call(api.commitTx, {commit: secret.commit, tx_hash: ans.hash})
     yield put(GameActions.updateStatus({ [modulo]: 'placed' }))
   }else{
+    yield put(GameActions.updateStatus({ [modulo]: 'idle' }))
     Toast.show("place bet fail, can not submit to blockchain", { position: Toast.positions.CENTER });
   }
 
