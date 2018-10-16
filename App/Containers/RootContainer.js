@@ -16,6 +16,7 @@ import styles from './Styles/RootContainerStyles'
 
 global.socket = null
 global.W = null
+global.ApiSauceObj= null
 
 class RootContainer extends Component {
   componentDidMount () {
@@ -24,6 +25,8 @@ class RootContainer extends Component {
       this.props.startup()
     }
 
+
+    this.props.configRequest();
 
 
 
@@ -60,7 +63,8 @@ const mapDispatchToProps = (dispatch) => ({
   initWallet: () => dispatch(WalletActions.initWallet()),
   unlockWallet: (password) => dispatch(WalletActions.unlockWallet({password})),
   // setNotification: (message) => dispatch(NotificationActions.notificationSuccess({message: message})),
-  initNotification: () => dispatch(NotificationActions.initNotification())
+  initNotification: () => dispatch(NotificationActions.initNotification()),
+  configRequest: (data) => dispatch(ConfigActions.configRequest(data))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(RootContainer)

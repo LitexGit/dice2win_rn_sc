@@ -3,14 +3,14 @@ import apisauce from 'apisauce'
 
 // our "constructor"
 const create = (baseURL = 'http://api.eth4.fun:7001/') => {
-// const create = (baseURL = 'http://192.168.51.137:7001') => {
+// const create = (baseURL = 'http://192.168.50.139:7001') => {
   // ------
   // STEP 1
   // ------
   //
   // Create and configure an apisauce-based api object.
   //
-  const api = apisauce.create({
+  ApiSauceObj = apisauce.create({
     // base URL is read from the "constructor"
     baseURL,
     // here are some default headers
@@ -35,19 +35,19 @@ const create = (baseURL = 'http://api.eth4.fun:7001/') => {
   // Since we can't hide from that, we embrace it by getting out of the
   // way at this level.
   //
-  const getRoot = () => api.get('')
-  const getConfig = () => api.get('api/v1/games/dev/configs')
-  const getABI = () => api.get('api/v1/games/dev/abi')
-  const getActivity = () => api.get('api/v1/games/dev/banners')
-  const getRecord = ({gameId, address, page, size}) => api.get('api/v1/games/dev/bet/history', {gameId, address, page, size})
-  const getUser = (uid) => api.get('api/v1/games/dev/userinfo', {uid})
-  const getPromotion = (uid) => api.get('api/v1/games/dev/shareinfo', {uid})
-  const getPromotionRecords = (data) => api.get('api/v1/games/dev/shares', data)
-  const getRandom = ({address, network_id}) => api.put('api/v1/games/dev/random', {address, network_id})
-  const getTx = (data) => api.get('api/v1/games/dev/transactions', data)
-  const commitTx = ({commit, tx_hash}) => api.put('api/v1/games/dev/commit', {commit, tx_hash})
+  const getRoot = () => ApiSauceObj.get('')
+  const getConfig = () => ApiSauceObj.get('api/v1/games/dev/configs')
+  const getABI = () => ApiSauceObj.get('api/v1/games/dev/abi')
+  const getActivity = () => ApiSauceObj.get('api/v1/games/dev/banners')
+  const getRecord = ({gameId, address, page, size}) => ApiSauceObj.get('api/v1/games/dev/bet/history', {gameId, address, page, size})
+  const getUser = (uid) => ApiSauceObj.get('api/v1/games/dev/userinfo', {uid})
+  const getPromotion = (uid) => ApiSauceObj.get('api/v1/games/dev/shareinfo', {uid})
+  const getPromotionRecords = (data) => ApiSauceObj.get('api/v1/games/dev/shares', data)
+  const getRandom = ({address, network_id}) => ApiSauceObj.put('api/v1/games/dev/random', {address, network_id})
+  const getTx = (data) => ApiSauceObj.get('api/v1/games/dev/transactions', data)
+  const commitTx = ({commit, tx_hash}) => ApiSauceObj.put('api/v1/games/dev/commit', {commit, tx_hash})
 
-  const register = ({inviter, nickname, address}) => api.put('api/v1/games/dev/register', {aff_code: inviter, nickname, eth_address: address})
+  const register = ({inviter, nickname, address}) => ApiSauceObj.put('api/v1/games/dev/register', {aff_code: inviter, nickname, eth_address: address})
 
   // ------
   // STEP 3

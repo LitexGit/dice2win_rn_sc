@@ -64,3 +64,4 @@ ios/Podfile.lock
 ios/assets/
 android/app/src/main/res/
 ethers
+ios/main.jsbundle.meta
