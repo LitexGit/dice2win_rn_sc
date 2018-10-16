@@ -78,8 +78,15 @@ export const request = (state, { data }) =>
 
 // successful api lookup
 export const success = (state, action) => {
-  let payload = {...state.payload, ...action.payload}
-  return state.merge({ fetching: false, error: null, payload })
+  // let payload = {...state.payload, ...action.payload}
+  let payload = { ...action.payload }
+  if (!!payload.network) W.network = payload.network
+  if (!!payload.base_domain) ApiSauceObj.setBaseURL(payload.base_domain)
+
+  console.tron.log(`omg i am now at ${ApiSauceObj.getBaseURL()}`)
+  // console.tron.log('omg api is', api)
+
+  return state.merge({ fetching: false, error: null, ...payload })
 }
 
 // Something went wrong somewhere.

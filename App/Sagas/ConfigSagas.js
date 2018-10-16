@@ -27,6 +27,7 @@ export function * getConfig (api, action) {
 
   // success?
   if (response.ok) {
+    console.tron.log('getConfig', response.data)
     // You might need to change the response here - do this with a 'transform',
     // located in ../Transforms/. Otherwise, just pass the data back from the api.
     yield put(ConfigActions.configSuccess(response.data))
