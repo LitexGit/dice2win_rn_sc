@@ -31,7 +31,6 @@ class SinglePwdInput extends Component {
                 size={25}
                 color={this.props.iconColor}
                 onPress={changePwdVis}/>
-          />
         </View>
       </React.Fragment>
     )

@@ -14,6 +14,7 @@ import Etheroll from '../Components/Etheroll'
 
 import ResultModal from '../Components/ResultModal'
 
+import { Colors } from '../Themes'
 import styles from './Styles/GameContainerScreenStyle'
 
 import WalletActions from '../Redux/WalletRedux'
@@ -28,11 +29,9 @@ class GameContainerScreen extends Component {
     return{
       title: navigation.getParam('title'),
       headerRight: (
-        <Button
-          onPress={navigation.getParam('gotoRecords')}
-          title="Records"
-          color="#fff"
-        />
+        <TouchableOpacity style={{padding: 10}} onPress={navigation.getParam('gotoRecords')}>
+          <Text style={{color:Colors.text}}> Global Records > </Text>
+        </TouchableOpacity>
       )
     }
   }

@@ -29,7 +29,6 @@ class DoublePwdInput extends Component {
                 size={25}
                 color={this.props.iconColor}
                 onPress={changePwd1Vis}/>
-          />
         </View>
         <View style={pwd2==='' ? styles.inputBox : (pwd2valid ? styles.inputBoxValid : styles.inputBoxUnvalid)}>
           <TextInput style={styles.inputText}
