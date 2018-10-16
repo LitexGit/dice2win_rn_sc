@@ -87,7 +87,20 @@ export function * initNotification(api, action){
       JPushModule.addReceiveNotificationListener(receiveNotificationListener)
     }
 
+    // JPushModule.deleteAlias(map=>{
+    // });
+
 }
+
+
+
+
+
+
+
+
+
+
 
 
 openNotificationListener = map => {

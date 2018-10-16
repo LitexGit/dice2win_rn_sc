@@ -15,6 +15,8 @@ import { call, put, take } from 'redux-saga/effects'
 import ConfigActions from '../Redux/ConfigRedux'
 import RecordActions, {RecordSelectors} from '../Redux/RecordRedux'
 import GameActions from '../Redux/GameRedux'
+import NotificationActions from '../Redux/NotificationRedux'
+import WalletActions from '../Redux/WalletRedux'
 import SocketIOClient from 'socket.io-client'
 // import { ConfigSelectors } from '../Redux/ConfigRedux'
 
@@ -31,6 +33,23 @@ export function * getConfig (api, action) {
     // You might need to change the response here - do this with a 'transform',
     // located in ../Transforms/. Otherwise, just pass the data back from the api.
     yield put(ConfigActions.configSuccess(response.data))
+
+
+    let { network, base_domain, ws } = response.data
+
+    console.tron.log('network', network, base_domain, ws)
+    if (!!network) W.network = network
+    if (!!base_domain) ApiSauceObj.setBaseURL(base_domain)
+
+    console.tron.log(`omg i am now at ${ApiSauceObj.getBaseURL()}`)
+  // console.tron.log('omg api is', api)
+
+    /* AFTER API Setup */
+    yield put(ConfigActions.socketInit(ws))
+    yield put(NotificationActions.initNotification())
+    yield put(WalletActions.initWallet())
+
+
   } else {
     yield put(ConfigActions.configFailure())
   }
@@ -78,6 +97,7 @@ const socketMessage = (msg) => {
     let result = {[msg.modulo]:{amount: msg.dice_payment}}
     socketStatusChannel.put(GameActions.updateResult(result))
   }
+  socket.emit('ack', msg._msgId)
   console.tron.log('Socket MSG:', msg)
 }
 

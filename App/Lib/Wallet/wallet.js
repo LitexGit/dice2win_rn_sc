@@ -216,18 +216,16 @@ async function initWallet() {
   // if keystore file not exist, create a fake file
   await createFakeWallet(keystorePath)
 
-  if (!W) {
-    W = { keystorePath: keystorePath };
-    // load keystore from keystorePath
-    try {
-      let keystore = await RNFS.readFile(keystorePath);
-      console.tron.log('initWallet', keystore);
-      initGlobalW(JSON.parse(keystore))
+  W.keystorePath = keystorePath;
+  // load keystore from keystorePath
+  try {
+    let keystore = await RNFS.readFile(keystorePath);
+    console.tron.log('initWallet', keystore);
+    initGlobalW(JSON.parse(keystore))
 
-    } catch (err) {
-      console.tron.log('initWallet', err);
-      W.keystoreInitialized = false;
-    }
+  } catch (err) {
+    console.tron.log('initWallet', err);
+    W.keystoreInitialized = false;
   }
   // await unlockWallet('123')
 
