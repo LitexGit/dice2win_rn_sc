@@ -15,7 +15,7 @@ import PwdModal from '../Components/PwdModal'
 import styles from './Styles/RootContainerStyles'
 
 global.socket = null
-global.W = null
+global.W = {}
 global.ApiSauceObj= null
 
 class RootContainer extends Component {
@@ -25,16 +25,7 @@ class RootContainer extends Component {
       this.props.startup()
     }
 
-
     this.props.configRequest();
-
-
-
-    /* AFTER API Setup */
-    this.props.initSocket(this.props.ws)
-    this.props.initNotification()
-    this.props.initWallet()
-
 
   }
 
