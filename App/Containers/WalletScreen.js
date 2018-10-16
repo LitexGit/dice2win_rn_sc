@@ -68,8 +68,9 @@ class WalletScreen extends Component {
   }
 
   _shareLink = () => {
-    let {shareInfo:{message, title, url}} = this.props
-    Share.share({message, title, url})
+    let {shareInfo:{message, title, url}, share_url} = this.props
+    let msg = message + "\r\n Download Url: " + share_url
+    Share.share({message : msg, title, url})
       .then(result => {console.tron.log('share result: ', result)})
       .catch(err => console.tron.log('error open telegram', err))
   }
@@ -197,14 +198,14 @@ class WalletScreen extends Component {
 const mapStateToProps = (state) => {
   let {
     wallet: {fetching, address, balance},
-    user: {uid, bonus, code},
+    user: {uid, bonus, code, share_url},
     config: {telegroup, shareInfo, faq},
   } = state
   balance && (balance = balance.toFixed(6))
   bonus && (bonus = parseFloat(parseFloat(bonus).toFixed(6))) // TODO maybe backend can pass bonus as a number
   return {
     fetching, address, balance,
-    uid, bonus, code,
+    uid, bonus, code, share_url,
     telegroup, shareInfo, faq,
   }
 }
