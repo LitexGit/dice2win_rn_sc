@@ -134,7 +134,7 @@ class BackupScreen extends Component {
           {this.state.stateWord.map((item, i) => this.renderItem(item, i))}
         </View>
         <View style={styles.actionWrapper}>
-          <TouchableOpacity style={styles.confirmButton} onPress={() => this._checkMnemonic()}>>
+          <TouchableOpacity style={styles.confirmButton} onPress={() => this._checkMnemonic()}>
             <Text style={styles.label}> Next </Text>
           </TouchableOpacity>
         </View>

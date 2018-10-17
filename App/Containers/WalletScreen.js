@@ -68,8 +68,9 @@ class WalletScreen extends Component {
   }
 
   _shareLink = () => {
-    let {shareInfo:{message, title, url}} = this.props
-    Share.share({message, title, url})
+    let {shareInfo:{message, title, url}, share_url} = this.props
+    let msg = message + "\r\n Download Url: " + share_url
+    Share.share({message : msg, title, url})
       .then(result => {console.tron.log('share result: ', result)})
       .catch(err => console.tron.log('error open telegram', err))
   }
@@ -111,17 +112,11 @@ class WalletScreen extends Component {
 
   render () {
     let {fetching, balance, address, bonus, code} = this.props
-    return (
-      <ScrollView style={styles.container} refreshControl={<RefreshControl
-        refreshing={fetching}
-        onRefresh={this._onRefresh}
-        tintColor={Colors.tintColor}
-        title="Refreshing..."
-        titleColor={Colors.text}/>}>
+    return <ScrollView style={styles.container} refreshControl={<RefreshControl refreshing={fetching} onRefresh={this._onRefresh} tintColor={Colors.tintColor} title="Refreshing..." titleColor={Colors.text} />}>
         <View style={styles.walletWrapper}>
           <View style={styles.walletEditWrapper}>
-            <TouchableOpacity style={styles.walletButton} onPress={_ => this._goto('wallet')}>
-              <FA5 name={'wallet'} size={24} style={styles.walletIcon} />
+            <TouchableOpacity style={styles.walletButton} onPress={_ => this._goto("wallet")}>
+              <FA5 name={"wallet"} size={24} style={styles.walletIcon} />
               <Text style={styles.walletText}>wallet</Text>
             </TouchableOpacity>
           </View>
@@ -129,21 +124,32 @@ class WalletScreen extends Component {
             <Text style={styles.balance}>{balance}</Text>
             <Text style={styles.unit}> ETH</Text>
           </View>
-          <View style={styles.qr}>{address && <QR value={address} size={100} color={Colors.neetGray} backgroundColor={Colors.steel} />}</View>
+          <View style={styles.qr}>
+            {!!address && (
+              <QR
+                value={address}
+                size={100}
+                color={Colors.neetGray}
+                backgroundColor={Colors.steel}
+              />
+            )}
+          </View>
           <Text style={styles.addressText}>{address}</Text>
           <TouchableOpacity style={styles.addressWrapper} onPress={_ => this._copyAddress()}>
             <Text style={styles.addressText}>copy address</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.shareWrapper}>
-          <TouchableOpacity style={styles.shareUp} onPress={_ => this._goto('promotion')}>
+          <TouchableOpacity style={styles.shareUp} onPress={_ => this._goto("promotion")}>
             <Text style={styles.label}>promotion bonus</Text>
             <View style={[styles.balanceWrapper, styles.bonusBalanceWrapper]}>
               <Text style={styles.bonus}>{bonus}</Text>
               <Text style={styles.unit}> ETH</Text>
             </View>
             <View style={styles.bonusDetailWrapper}>
-              <Text style={styles.bonusDetailText}><Entypo name={'chevron-thin-right'} size={28} color={Colors.cloud}/></Text>
+              <Text style={styles.bonusDetailText}>
+                <Entypo name={"chevron-thin-right"} size={28} color={Colors.cloud} />
+              </Text>
             </View>
           </TouchableOpacity>
           <View style={styles.shareDown}>
@@ -152,53 +158,54 @@ class WalletScreen extends Component {
               <Text style={styles.code}>{code}</Text>
             </View>
             <View style={styles.actionsWrapper}>
-              <TouchableOpacity onPress={_ => this._copyCode()} style={styles.actionWrapper}><Text
-                style={styles.action}>Copy Code</Text></TouchableOpacity>
-              <TouchableOpacity onPress={_ => this._shareLink()} style={styles.actionWrapper}><Text
-                style={styles.action}>Share Link</Text></TouchableOpacity>
+              <TouchableOpacity onPress={_ => this._copyCode()} style={styles.actionWrapper}>
+                <Text style={styles.action}>Copy Code</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={_ => this._shareLink()} style={styles.actionWrapper}>
+                <Text style={styles.action}>Share Link</Text>
+              </TouchableOpacity>
             </View>
           </View>
         </View>
 
         <View style={styles.buttons}>
           <View style={styles.button}>
-            <TouchableOpacity style={[styles.button, {borderWidth:0}]} onPress={_ => this._checkUpdate()}>
+            <TouchableOpacity style={[styles.button, { borderWidth: 0 }]} onPress={_ => this._checkUpdate()}>
               <Text style={styles.buttonText}>Version</Text>
               <Text style={styles.buttonText}>1.0.0</Text>
             </TouchableOpacity>
           </View>
           <View style={styles.button}>
-            <TouchableOpacity style={[styles.button, {borderWidth:0}]} onPress={_ => this._goto('faq')}>
+            <TouchableOpacity style={[styles.button, { borderWidth: 0 }]} onPress={_ => this._goto("faq")}>
               <Text style={styles.buttonText}>FAQ</Text>
             </TouchableOpacity>
           </View>
           <View style={styles.button}>
-            <TouchableOpacity style={[styles.button, {borderWidth:0}]} onPress={_ => this._goto('telegram')}>
+            <TouchableOpacity style={[styles.button, { borderWidth: 0 }]} onPress={_ => this._goto("telegram")}>
               <Text style={styles.buttonText}>Telegram</Text>
             </TouchableOpacity>
           </View>
           <View style={styles.button}>
-            <TouchableOpacity style={[styles.button, {borderWidth:0}]} onPress={_ => this._goto('settings')}>
+            <TouchableOpacity style={[styles.button, { borderWidth: 0 }]} onPress={_ => this._goto("settings")}>
               <Text style={styles.buttonText}>Settings</Text>
             </TouchableOpacity>
           </View>
         </View>
-      </ScrollView>
-    )
+      </ScrollView>;
   }
 }
 
 const mapStateToProps = (state) => {
   let {
     wallet: {fetching, address, balance},
-    user: {uid, bonus, code},
+    user: {uid, bonus, code, share_url},
     config: {telegroup, shareInfo, faq},
   } = state
   balance && (balance = balance.toFixed(6))
   bonus && (bonus = parseFloat(parseFloat(bonus).toFixed(6))) // TODO maybe backend can pass bonus as a number
   return {
     fetching, address, balance,
-    uid, bonus, code,
+    uid, bonus, code, share_url,
     telegroup, shareInfo, faq,
   }
 }

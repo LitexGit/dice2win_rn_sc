@@ -27,16 +27,16 @@ class PreBackupScreen extends Component {
         </View>
         <Text style={styles.infoText}>
           {'      Please record the mnemonic of your wallet and save it to a safe place. '}
-          </Text>
+        </Text>
         <Text style={styles.infoText}>
           {'      Wallet mnemonics are used to recover your account. Do not reveal' +
-          ' your mnemonics at any time. It is recommended not to use screen captures to' +
-          ' save it or transfer it via internet tools.'}
+            ' your mnemonics at any time. It is recommended not to use screen captures to' +
+            ' save it or transfer it via internet tools.'}
         </Text>
         <Text style={styles.mnemonicText}>
           {mnemonic}</Text>
         <View style={styles.actionWrapper}>
-          <TouchableOpacity style={styles.confirmButton} onPress={() => this.props.navigate('BackupScreen')}>>
+          <TouchableOpacity style={styles.confirmButton} onPress={() => this.props.navigate('BackupScreen')}>
             <Text style={styles.label}> Next </Text>
           </TouchableOpacity>
         </View>

@@ -21,11 +21,12 @@ class NewWalletScreen extends Component {
   }
 
   componentDidMount () {
-    this.props.newWallet()
+    // this.props.newWallet()
   }
 
   _checkPwd () {
     if (!!this.props.pwd1 && this.props.pwd1 === this.props.pwd2) {
+      this.props.newWallet()
       this.props.navigate('PreBackupScreen')
     } else {
       alert('passwords do not match')
@@ -44,7 +45,7 @@ class NewWalletScreen extends Component {
         <View style={styles.titleBox}>
           <Text style={styles.titleText}>Create you password </Text>
         </View>
-        <DoublePwdInput focus={false}/>
+        <DoublePwdInput focus={false} />
         <View style={styles.actionWrapper}>
           <TouchableOpacity style={styles.cancelButton} onPress={this.props.navigate.back}>
             <Text style={styles.label}> Cancel </Text>

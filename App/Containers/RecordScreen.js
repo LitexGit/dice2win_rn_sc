@@ -107,7 +107,8 @@ class RecordScreen extends Component {
   _renderTxItem = ({item}) => {
     let { remark, time, status, from, to, amount} = item
     let { address } = this.props
-    if(displayETH(amount) == 0 || status == 4)
+    console.tron.log('renderTxItem amount', amount, status)
+    if(amount == 0 || status == 4)
       return ''
 
     let type = from.localeCompare(address, 'en', {sensitivity: 'base'})?'in':'out'
@@ -132,7 +133,7 @@ class RecordScreen extends Component {
       this._refresh()
     })
   }
-  
+
   render () {
     let {gameSections, txSections, refreshing, loading} = this.props
     return (
@@ -192,7 +193,7 @@ const mapStateToProps = (state) => {
   let {base_etherscan} = state.config
   let {address} = state.wallet
   return {
-    refreshing, 
+    refreshing,
     loading,
     base_etherscan,
     address,
