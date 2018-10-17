@@ -17,7 +17,7 @@ const Bet = ({modulo, bet}) => <View style={styles.betWrapper}>
   { modulo==2 && <Image style={styles.icon} source={bet==1?Images.coinPosLight:Images.coinNegLight} /> }
   { modulo==6 && <Text style={styles.betText}>{bet.toString()}</Text> }
   { modulo==36 &&
-    <View style={{alignItems:'center',justifyContent:'space-around'}}>
+    <View style={{alignItems:'center',justifyContent:'space-between'}}>
       <Text style={styles.betText}>{bet.slice(0,4).toString()}</Text>
       { bet.length>4 && <Text style={styles.betText}>{bet.slice(4,8).toString()}</Text> }
       { bet.length>8 && <Text style={styles.betText}>{bet.slice(8).toString()}</Text> }

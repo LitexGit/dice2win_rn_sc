@@ -81,12 +81,12 @@ export function * watchSocketStatusChannel(){
   }
 }
 
-function * socketConnected() {
-  yield socketStatusChannel.put(ConfigActions.socketStatus('on'))
+function  socketConnected() {
+  socketStatusChannel.put(ConfigActions.socketStatus('on'))
   console.tron.log('Socket Connected', socket.id)
 
   if(!!W.address){
-    yield socket.emit('lottery', W.address)
+    socket.emit('lottery', W.address)
   }
 }
 

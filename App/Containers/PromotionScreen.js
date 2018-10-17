@@ -18,7 +18,7 @@ const STATUS = [
 
 class PromotionScreen extends Component {
   static navigationOptions = {
-    title: 'Promotion'
+    title: 'Referral'
   }
 
   constructor(props) {
@@ -81,7 +81,7 @@ class PromotionScreen extends Component {
             <Text style={styles.unit}> ETH</Text>
           </View>
           <TouchableOpacity style={styles.withdrawButton} onPress={_=>this._withdraw()}><Text style={styles.withdrawButtonText}>Withdraw to wallet</Text></TouchableOpacity>
-          <Text style={styles.label}>You have earned {displayETH(totalBonus)} ETH so far</Text>
+          <Text style={styles.label}>Total bonus you have earned: {displayETH(totalBonus)} ETH</Text>
           <TouchableOpacity onPress={this._shareLink.bind(this)}><Text style={styles.shareText}>SHARE to earn MORE</Text></TouchableOpacity>
         </View>
         <View style={styles.downWrapper}>

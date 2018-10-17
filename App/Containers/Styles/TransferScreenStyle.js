@@ -39,10 +39,9 @@ export default StyleSheet.create({
   ETH: {
     ...Fonts.style.h5,
     color: Colors.text,
-
     position: 'absolute',
     top: 13,
-    right: 38
+    right: 10
   },
   toInput: {
     marginTop: 20,

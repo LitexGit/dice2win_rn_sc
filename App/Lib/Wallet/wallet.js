@@ -186,15 +186,19 @@ async function getBalance(address) {
  */
 async function sendTx(wallet, toAddress, value, options) {
 
-  let defaultOptions = {
-    gasLimit: 21000,
-    gasPrice: 3e9
+  try {
+    let defaultOptions = {
+      gasLimit: 21000,
+      gasPrice: 3e9
+    }
+    let amount = utils.parseEther(value)
+    defaultOptions = Object.assign(defaultOptions, options)
+    console.tron.log('sendTx defaultOptions', defaultOptions)
+    let txHash = await wallet.send(toAddress, amount, defaultOptions)
+    return txHash
+  } catch (err) {
+    return null;
   }
-  let amount = utils.parseEther(value)
-  defaultOptions  = Object.assign(defaultOptions, options)
-  console.tron.log('sendTx defaultOptions', defaultOptions)
-  let txHash = await wallet.send(toAddress, amount, defaultOptions)
-  return txHash
 
 }
 
