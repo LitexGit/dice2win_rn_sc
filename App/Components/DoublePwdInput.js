@@ -18,7 +18,7 @@ class DoublePwdInput extends Component {
           <TextInput style={styles.inputText}
                      autoFocus={this.props.focus}
                      multiline={false}
-                     placeholder='Input your password'
+                     placeholder='Input password'
                      placeholderTextColor={'gray'}
                      secureTextEntry={pwd1vis}
                      clearButtonMode='always'
@@ -34,7 +34,7 @@ class DoublePwdInput extends Component {
           <TextInput style={styles.inputText}
                      autoFocus={false}
                      multiline={false}
-                     placeholder='Confirm your password'
+                     placeholder='Confirm password'
                      placeholderTextColor={'gray'}
                      secureTextEntry={pwd2vis}
                      clearButtonMode='always'

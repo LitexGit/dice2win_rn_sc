@@ -51,7 +51,7 @@ class OneDice extends Component {
     return (
       <React.Fragment>
         <View style={styles.infoBox}>
-          <Text style={styles.infoText}>Choose the dice number(s) to bet on</Text>
+          <Text style={styles.infoText}>Choose the dice number(s)</Text>
         </View>
         <View style={styles.oneDiceBox}>
           {this.props.diceWeights.map((value, idx) => (idx < 3) && this.renderDice(value, idx))}

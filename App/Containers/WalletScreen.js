@@ -136,12 +136,12 @@ class WalletScreen extends Component {
           </View>
           <Text style={styles.addressText}>{address}</Text>
           <TouchableOpacity style={styles.addressWrapper} onPress={_ => this._copyAddress()}>
-            <Text style={styles.addressText}>copy address</Text>
+            <Text style={styles.addressText}>Copy address</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.shareWrapper}>
           <TouchableOpacity style={styles.shareUp} onPress={_ => this._goto("promotion")}>
-            <Text style={styles.label}>promotion bonus</Text>
+            <Text style={styles.label}>Referral bonus</Text>
             <View style={[styles.balanceWrapper, styles.bonusBalanceWrapper]}>
               <Text style={styles.bonus}>{bonus}</Text>
               <Text style={styles.unit}> ETH</Text>
@@ -154,15 +154,15 @@ class WalletScreen extends Component {
           </TouchableOpacity>
           <View style={styles.shareDown}>
             <View style={styles.codeWrapper}>
-              <Text style={styles.label}>promotion code: </Text>
+              <Text style={styles.label}>Referral code: </Text>
               <Text style={styles.code}>{code}</Text>
             </View>
             <View style={styles.actionsWrapper}>
               <TouchableOpacity onPress={_ => this._copyCode()} style={styles.actionWrapper}>
-                <Text style={styles.action}>Copy Code</Text>
+                <Text style={styles.action}>Copy code</Text>
               </TouchableOpacity>
               <TouchableOpacity onPress={_ => this._shareLink()} style={styles.actionWrapper}>
-                <Text style={styles.action}>Share Link</Text>
+                <Text style={styles.action}>Share link</Text>
               </TouchableOpacity>
             </View>
           </View>
