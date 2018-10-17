@@ -20,21 +20,23 @@ import NavigationActions from 'react-navigation/src/NavigationActions'
 import Toast from 'react-native-root-toast'
 import JPushModule from 'jpush-react-native'
 
+import UserActions from '../Redux/UserRedux'
+
 // import { WalletSelectors } from '../Redux/WalletRedux'
 let ethers = require('ethers')
 let axios = require('axios')
 
 let setAlias = (alias) => {
-  return new Promise((resolve, reject)=>{
+  return new Promise((resolve, reject) => {
     JPushModule.setAlias(alias, map => {
       if (map.errorCode === 0) {
-        console.tron.log("jpush set alias succeed");
+        console.tron.log('jpush set alias succeed')
         resolve(true)
       } else {
-        console.tron.log("jpush set alias failed, errorCode: " + map.errorCode);
+        console.tron.log('jpush set alias failed, errorCode: ' + map.errorCode)
         reject(map.errorCode)
       }
-    });
+    })
   })
 }
 
@@ -47,13 +49,17 @@ function * postNewWallet () {
     actions: [
       NavigationActions.navigate({
         routeName: 'BottomTab',
-        action: NavigationActions.navigate({ routeName: 'Wallet' })
+        action: NavigationActions.navigate({routeName: 'Wallet'})
       }),
     ]
   }))
 
-  yield setAlias(W.address.substr(2))
+  // 钱包更换之后, 重新注册
+  yield put(UserActions.register({address: W.address, inviter: '', nickname: ''}))
+
   alert('Wallet create success')
+
+  yield setAlias(W.address.substr(2))
 }
 
 // 随机生成一个wallet，将wallet对象返回
@@ -83,12 +89,11 @@ export function * initWallet (api, action) {
   W.network = config.network
 
   // const delay = (ms) => new Promise(res => setTimeout(res, ms))
-  if(!!W.keystoreInitialized){
+  if (!!W.keystoreInitialized) {
 
     !!socket && (yield socket.emit('lottery', W.address))
 
     yield setAlias(W.address.substr(2))
-
 
   }
   // yield call(delay, 1000)
@@ -219,18 +224,14 @@ export function * placeBet (api, action) {
   let config = yield select(ConfigSelectors.getConfig)
 
   let {contract_address, abi} = config
-  let { fetching } = walletR
+  let {fetching} = walletR
 
   console.tron.log('placeBet secret', secret, gasPrice)
 
-
-  if(fetching || !secret.commit){
-    Toast.show("missing required info", { position: Toast.positions.CENTER });
+  if (fetching || !secret.commit) {
+    Toast.show('missing required info', {position: Toast.positions.CENTER})
     return
   }
-
-
-
 
   if (!W.wallet) {
     let result = yield call(walletLib.unlockWallet, password)
@@ -254,7 +255,7 @@ export function * placeBet (api, action) {
     yield put(PwdModalActions.closePwdModal())
   }
 
-  yield put(GameActions.updateStatus({[modulo]:'placing'}))
+  yield put(GameActions.updateStatus({[modulo]: 'placing'}))
 
   // const wallet = W.wallet
 
@@ -272,18 +273,19 @@ export function * placeBet (api, action) {
   //   secret.signature.r, secret.signature.s, overrideOptions)
   // console.tron.log('ans', ans)
 
+  let ans = yield call(walletLib.placeBet, W.wallet, {contract_address, abi}, {
+    betMask,
+    modulo,
+    secret
+  }, value, gasPrice)
 
-  let ans = yield call(walletLib.placeBet, W.wallet, {contract_address, abi}, {betMask, modulo, secret}, value, gasPrice)
-
-
-  if(!!ans && !!ans.hash){
+  if (!!ans && !!ans.hash) {
     yield call(api.commitTx, {commit: secret.commit, tx_hash: ans.hash})
-    yield put(GameActions.updateStatus({ [modulo]: 'placed' }))
-  }else{
-    yield put(GameActions.updateStatus({ [modulo]: 'idle' }))
-    Toast.show("place bet fail, can not submit to blockchain", { position: Toast.positions.CENTER });
+    yield put(GameActions.updateStatus({[modulo]: 'placed'}))
+  } else {
+    yield put(GameActions.updateStatus({[modulo]: 'idle'}))
+    Toast.show('place bet fail, can not submit to blockchain', {position: Toast.positions.CENTER})
   }
-
 
 }
 

@@ -25,7 +25,7 @@ import { initWallet, getWallet, newWallet, saveWallet, importFromMnemonic, unloc
 import { setStake } from './GameSagas'
 import { getSetting } from './SettingSagas'
 import { getNotification, initNotification, watchNotificationStatusChannel } from './NotificationSagas'
-import { register, getUser} from './UserSagas'
+import { register, getUser, fetchInviteCode } from './UserSagas'
 
 /* ------------- API ------------- */
 
@@ -46,6 +46,7 @@ export default function * root () {
     // User Sagas
     takeLatest(UserTypes.REGISTER, register, api),
     takeLatest(UserTypes.USER_REQUEST, getUser, api),
+    takeLatest(UserTypes.FETCH_INVITE_CODE, fetchInviteCode, api),
 
     // get data for activities
     takeLatest(ActivityTypes.ACTIVITY_REQUEST, getActivity, api),
