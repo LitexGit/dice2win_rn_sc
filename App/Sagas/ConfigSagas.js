@@ -47,10 +47,10 @@ export function * getConfig (api, action) {
     /* AFTER API Setup */
     yield put(ConfigActions.socketInit(ws))
     yield put(NotificationActions.initNotification())
-    yield put(WalletActions.initWallet())
 
 
   } else {
+    // if get config fail, will init wallet only
     yield put(ConfigActions.configFailure())
   }
 }
@@ -81,12 +81,12 @@ export function * watchSocketStatusChannel(){
   }
 }
 
-function * socketConnected() {
-  yield socketStatusChannel.put(ConfigActions.socketStatus('on'))
+function  socketConnected() {
+  socketStatusChannel.put(ConfigActions.socketStatus('on'))
   console.tron.log('Socket Connected', socket.id)
 
   if(!!W.address){
-    yield socket.emit('lottery', W.address)
+    socket.emit('lottery', W.address)
   }
 }
 

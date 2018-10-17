@@ -53,12 +53,12 @@ class WalletManageScreen extends Component {
         <TouchableOpacity style={styles.buttonWrapper} onPress={_ => this.props.navigate('ImportWalletScreen')}>
           <Text style={styles.buttonText}> Import Wallet </Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.buttonWrapper} onPress={this._backup.bind(this)}>
+        {!!W.address && <TouchableOpacity style={styles.buttonWrapper} onPress={this._backup.bind(this)}>
           <Text style={styles.buttonText}> Backup Wallet </Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.buttonWrapper} onPress={_ => this.props.navigate('TransferScreen')}>
+        </TouchableOpacity>}
+        {!!W.address && <TouchableOpacity style={styles.buttonWrapper} onPress={_ => this.props.navigate('TransferScreen')}>
           <Text style={styles.buttonText}> Transfer </Text>
-        </TouchableOpacity>
+        </TouchableOpacity>}
       </View>
     )
   }

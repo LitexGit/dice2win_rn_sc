@@ -41,7 +41,7 @@ let setAlias = (alias) => {
 function * postNewWallet () {
 
   yield socket.emit('lottery', W.address)
-  yield setAlias(W.address.substr(2))
+
   yield put(NavigationActions.reset({
     index: 0,
     actions: [
@@ -51,6 +51,8 @@ function * postNewWallet () {
       }),
     ]
   }))
+
+  yield setAlias(W.address.substr(2))
   alert('Wallet create success')
 }
 
@@ -82,7 +84,8 @@ export function * initWallet (api, action) {
 
   // const delay = (ms) => new Promise(res => setTimeout(res, ms))
   if(!!W.keystoreInitialized){
-    yield socket.emit('lottery', W.address)
+
+    !!socket && (yield socket.emit('lottery', W.address))
 
     yield setAlias(W.address.substr(2))
 
@@ -170,8 +173,14 @@ export function * transfer (api, action) {
   if (W.wallet) {
     let txHash = yield call(walletLib.sendTx, W.wallet, to, value, options)
     console.tron.log('setTx', txHash)
+
+    if(!txHash){
+      alert('Transfer too frequently, please try again later')
+      return
+    }
+
     yield put(WalletActions.setTx(txHash))
-    alert('transfer submit success')
+    alert('Transfer submit success')
   } else {
     alert('transfer submit fail')
   }
@@ -278,7 +287,8 @@ export function * placeBet (api, action) {
     yield put(GameActions.updateStatus({ [modulo]: 'placed' }))
   }else{
     yield put(GameActions.updateStatus({ [modulo]: 'idle' }))
-    Toast.show("place bet fail, can not submit to blockchain", { position: Toast.positions.CENTER });
+    alert('Place bet too frequently, please try again later')
+    //Toast.show("place bet fail, can not submit to blockchain", { position: Toast.positions.CENTER });
   }
 
 

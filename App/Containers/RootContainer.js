@@ -24,9 +24,11 @@ class RootContainer extends Component {
     if (!ReduxPersist.active) {
       this.props.startup()
     }
-
+    // get global config from server
     this.props.configRequest();
 
+    // init wallet even network disconnect
+    this.props.initWallet();
   }
 
   render () {
