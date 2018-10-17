@@ -47,10 +47,10 @@ export function * getConfig (api, action) {
     /* AFTER API Setup */
     yield put(ConfigActions.socketInit(ws))
     yield put(NotificationActions.initNotification())
-    yield put(WalletActions.initWallet())
 
 
   } else {
+    // if get config fail, will init wallet only
     yield put(ConfigActions.configFailure())
   }
 }

@@ -41,7 +41,7 @@ let setAlias = (alias) => {
 function * postNewWallet () {
 
   yield socket.emit('lottery', W.address)
-  yield setAlias(W.address.substr(2))
+
   yield put(NavigationActions.reset({
     index: 0,
     actions: [
@@ -51,6 +51,8 @@ function * postNewWallet () {
       }),
     ]
   }))
+
+  yield setAlias(W.address.substr(2))
   alert('Wallet create success')
 }
 
@@ -82,7 +84,8 @@ export function * initWallet (api, action) {
 
   // const delay = (ms) => new Promise(res => setTimeout(res, ms))
   if(!!W.keystoreInitialized){
-    yield socket.emit('lottery', W.address)
+
+    !!socket && (yield socket.emit('lottery', W.address))
 
     yield setAlias(W.address.substr(2))
 
