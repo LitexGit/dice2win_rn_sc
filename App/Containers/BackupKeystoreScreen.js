@@ -53,7 +53,9 @@ class BackupKeystoreScreen extends Component {
 
           <View style={styles.qr}>
             {!!keystore &&
-            <QR value={keystore} size={200} color={Colors.silver} backgroundColor={Colors.casinoBlue}/>}
+              <QR value={keystore} size={200} 
+                color={Colors.neetGray}
+                backgroundColor={Colors.steel}/>}
           </View>
         </View>
         <BackupKeystoreWarningModal/>
