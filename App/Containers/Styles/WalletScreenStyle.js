@@ -44,7 +44,7 @@ export default StyleSheet.create({
   
   qr:{
     margin:10,
-    padding: 1,
+    padding: 2,
     backgroundColor: Colors.steel,
   },
 

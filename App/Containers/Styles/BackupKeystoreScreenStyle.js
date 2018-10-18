@@ -35,7 +35,10 @@ export default StyleSheet.create({
     margin: 5
   },
   qr: {
-    alignItems: 'center'
+    alignSelf:'center',
+    margin: 10,
+    padding: 2,
+    backgroundColor: Colors.steel,
   }
 
 })

@@ -62,7 +62,7 @@ function * postNewWallet () {
 
   yield put(MessageBoxActions.openMessageBox({
     title: 'Info',
-    message: 'Wallet create success',
+    message: 'Wallet create success!\n\nTo play, you need to transfer ETH to your new wallet address',
     submitedActions: [{ action: WalletActions.navigateToBottomTab, data: { routeName: 'Wallet' } }]
   }))
 
