@@ -217,7 +217,7 @@ export function * transfer (api, action) {
     yield put(WalletActions.setTx(txHash))
     yield put(MessageBoxActions.openMessageBox({
       title: 'Info',
-      message: 'Transfer submit success',
+      message: 'Transfer submit success!\n\nPlease check in Tab Records -> Transactions',
       submitedActions: [{ action: WalletActions.navigateToBottomTab, data: { routeName: 'Record' } }]
     }))
   } else {
