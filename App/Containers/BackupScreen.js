@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 // import YourActions from '../Redux/YourRedux'
 import WalletActions from '../Redux/WalletRedux'
 import NewPwdModalActions from '../Redux/NewPwdModalRedux'
+import MessageBoxActions from '../Redux/MessageBoxRedux'
 
 // Styles
 import styles from './Styles/BackupScreenStyle'
@@ -91,12 +92,14 @@ class BackupScreen extends Component {
   _checkMnemonic () {
     // console.log('textarea:' + this.state.textarea)
     // console.log('mnemonic:' + this.props.mnemonic)
+
+    let { alert } = this.props
+
     if (this.state.textarea === this.props.mnemonic) {
       this.props.saveWallet(this.props.mnemonic, this.props.password)
-      this.props.navigate('BottomTab')
     }
     else {
-      alert('输入错误哦！')
+      alert('Wrong mnemonic')
     }
   }
 
@@ -125,6 +128,7 @@ class BackupScreen extends Component {
         <TextInput placeholder="输入助记词，按空格分隔；或者直接点击助记词按钮输入"
                    style={styles.textArea}
                    placeholderTextColor={Colors.inActiveTint}
+                   underlineColorAndroid={'transparent'}
                    multiline={true}
                    numberOfLines={5}
                    value={this.state.textarea}
@@ -154,6 +158,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     saveWallet: (mnemonic, password) => dispatch(WalletActions.saveWallet({mnemonic, password})),
     navigate: (target) => dispatch(NavigationActions.navigate({routeName: target})),
+    alert: (message) => dispatch(MessageBoxActions.openMessageBox({ title: 'Warning', message }))
   }
 }
 

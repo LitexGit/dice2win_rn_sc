@@ -7,6 +7,7 @@ import PwdModalActions from '../Redux/PwdModalRedux'
 import NavigationActions from 'react-navigation/src/NavigationActions'
 import connect from 'react-redux/es/connect/connect'
 import Icon from 'react-native-vector-icons/MaterialIcons'
+import { Colors } from '../Themes'
 
 class PwdModal extends Component {
 
@@ -53,6 +54,7 @@ class PwdModal extends Component {
             textAlign='center'
             placeholder='password'
             placeholderTextColor={'gray'}
+            underlineColorAndroid={'transparent'}
             secureTextEntry={true}
             onChangeText={val => {
               this.setState({pwd: val, submitted: false})

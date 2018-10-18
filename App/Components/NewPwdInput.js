@@ -34,6 +34,7 @@ class NewPwdInput extends Component {
                        multiline={false}
                        placeholder='Input your password'
                        placeholderTextColor={'gray'}
+                       underlineColorAndroid={'transparent'}
                        secureTextEntry={true}
                        value={this.state.pwd1}
                        onChangeText={val => this.setState({pwd1: val})}/>
@@ -42,6 +43,7 @@ class NewPwdInput extends Component {
                        multiline={false}
                        placeholder='Input your password'
                        placeholderTextColor={'gray'}
+                       underlineColorAndroid={'transparent'}
                        secureTextEntry={true}
                        value={this.state.pwd2}
                        onChangeText={val => this.setState({pwd2: val})}/>

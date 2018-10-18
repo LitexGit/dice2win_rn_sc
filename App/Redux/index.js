@@ -16,6 +16,7 @@ export const reducers = combineReducers({
   confirmModal: require('./ConfirmModalRedux').reducer,
   newPwdModal: require('./NewPwdModalRedux').reducer,
   pwdModal: require('./PwdModalRedux').reducer,
+  messageBox: require('./MessageBoxRedux').reducer,
   config: require('./ConfigRedux').reducer,
   setting: require('./SettingRedux').reducer,
   notification: require('./NotificationRedux').reducer,

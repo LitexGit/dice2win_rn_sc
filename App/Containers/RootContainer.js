@@ -9,6 +9,7 @@ import ConfigActions from '../Redux/ConfigRedux'
 import ReduxPersist from '../Config/ReduxPersist'
 import ConfirmModal from '../Components/ConfirmModal'
 import PwdModal from '../Components/PwdModal'
+import MessageBox from '../Components/MessageBox'
 
 
 // Styles
@@ -38,6 +39,8 @@ class RootContainer extends Component {
           <ReduxNavigation />
           <ConfirmModal />
           <PwdModal />
+          <MessageBox />
+
       </View>
     )
   }

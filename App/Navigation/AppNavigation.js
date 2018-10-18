@@ -63,6 +63,7 @@ const PrimaryNav = StackNavigator({
   // initialRouteName: 'TransferScreen',
   navigationOptions: {
     headerStyle: styles.header,
+    // headerTitleStyle: {textAlign: 'center', alignSelf: 'center', flex: 1},
     headerTintColor: Colors.snow,
   }
 })

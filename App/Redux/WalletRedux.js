@@ -3,25 +3,26 @@ import Immutable from 'seamless-immutable'
 
 /* ------------- Types and Action Creators ------------- */
 
-const {Types, Creators} = createActions({
+const { Types, Creators } = createActions({
+  navigateToBottomTab: ["data"],
   initWallet: null,
   newWallet: null,
-  saveWallet: ['data'],
-  encryptWallet: ['data'],
-  unlockWallet: ['data'],
-  setKeystore: ['keystore'],
-  setBalance: ['data'],
-  setTx: ['data'],
-  transfer: ['data'],
-  getRandom: ['data'],
-  placeBet: ['data'],
-  importFromMnemonic: ['data'],
-  importEncryptWallet: ['data'],
-  setWallet: ['wallet'],
-  walletRequest: ['data'],
-  walletSuccess: ['payload'],
-  walletFailure: ['payload']
-})
+  saveWallet: ["data"],
+  encryptWallet: ["data"],
+  unlockWallet: ["data"],
+  setKeystore: ["keystore"],
+  setBalance: ["data"],
+  setTx: ["data"],
+  transfer: ["data"],
+  getRandom: ["data"],
+  placeBet: ["data"],
+  importFromMnemonic: ["data"],
+  importEncryptWallet: ["data"],
+  setWallet: ["wallet"],
+  walletRequest: ["data"],
+  walletSuccess: ["payload"],
+  walletFailure: ["payload"]
+});
 
 export const WalletTypes = Types
 export default Creators

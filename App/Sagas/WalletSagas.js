@@ -13,12 +13,14 @@ import { call, put, select } from 'redux-saga/effects'
 import WalletActions, { WalletSelectors } from '../Redux/WalletRedux'
 import GameActions from '../Redux/GameRedux'
 import PwdModalActions, { PwdModalSelectors } from '../Redux/PwdModalRedux'
+import MessageBoxActions from '../Redux/MessageBoxRedux'
 import walletLib from '../Lib/Wallet/wallet'
 import ConfirmModalActions, { ConfirmModalSelectors } from '../Redux/ConfirmModalRedux'
 import { ConfigSelectors } from '../Redux/ConfigRedux'
 import NavigationActions from 'react-navigation/src/NavigationActions'
 import Toast from 'react-native-root-toast'
 import JPushModule from 'jpush-react-native'
+import { Alert } from 'react-native'
 
 import UserActions from '../Redux/UserRedux'
 
@@ -40,11 +42,12 @@ let setAlias = (alias) => {
   })
 }
 
+
 function * postNewWallet () {
 
   yield socket.emit('lottery', W.address)
 
-  yield put(NavigationActions.reset({
+  let resetData = {
     index: 0,
     actions: [
       NavigationActions.navigate({
@@ -52,14 +55,38 @@ function * postNewWallet () {
         action: NavigationActions.navigate({routeName: 'Wallet'})
       }),
     ]
-  }))
+  }
 
   // 钱包更换之后, 重新注册
   yield put(UserActions.register({address: W.address, inviter: '', nickname: ''}))
 
-  alert('Wallet create success')
+  yield put(MessageBoxActions.openMessageBox({
+    title: 'Info',
+    message: 'Wallet create success',
+    submitedActions: [{ action: WalletActions.navigateToBottomTab, data: { routeName: 'Wallet' } }]
+  }))
 
   yield setAlias(W.address.substr(2))
+}
+
+
+// 自动导航到主页的某个Tab
+export function * navigateToBottomTab(api, action){
+
+  let { routeName } = action.data
+  let resetData = {
+    index: 0,
+    actions: [
+      NavigationActions.navigate({
+        routeName: 'BottomTab',
+        action: NavigationActions.navigate({ routeName })
+      }),
+    ]
+  }
+
+  yield put(NavigationActions.reset(resetData))
+
+
 }
 
 // 随机生成一个wallet，将wallet对象返回
@@ -107,7 +134,9 @@ export function * importFromMnemonic (api, action) {
   if (!!wallet) {
     yield postNewWallet()
   } else {
-    alert('wrong mnemonic')
+
+    yield put(MessageBoxActions.openMessageBox({ title: 'Warning', message: 'wrong mnemonic' }))
+    // Alert.alert('Warning', 'wrong mnemonic', [{ text: 'OK' },], { cancelable: false })
   }
 }
 
@@ -120,7 +149,8 @@ export function * importEncryptWallet (api, action) {
   if (!!wallet) {
     yield postNewWallet()
   } else {
-    alert('wrong password')
+    yield put(MessageBoxActions.openMessageBox({ title: 'Warning', message: 'wrong password' }))
+    // Alert.alert('Warning', 'wrong password', [{ text: 'OK' },], { cancelable: false })
   }
 
 }
@@ -180,14 +210,18 @@ export function * transfer (api, action) {
     console.tron.log('setTx', txHash)
 
     if (!txHash) {
-      alert('Transfer too frequently, please try again later')
+      yield put(MessageBoxActions.openMessageBox({ title: 'Warning', message: 'Transfer too frequently, please try again later', }))
       return
     }
 
     yield put(WalletActions.setTx(txHash))
-    alert('Transfer submit success')
+    yield put(MessageBoxActions.openMessageBox({
+      title: 'Info',
+      message: 'Transfer submit success',
+      submitedActions: [{ action: WalletActions.navigateToBottomTab, data: { routeName: 'Record' } }]
+    }))
   } else {
-    alert('transfer submit fail')
+    yield put(MessageBoxActions.openMessageBox({ title: 'Warning', message: 'transfer submit fail' }))
   }
 }
 
@@ -234,8 +268,9 @@ export function * placeBet (api, action) {
 
   console.tron.log('placeBet secret', secret, gasPrice)
 
-  if (fetching || !secret.commit) {
-    Toast.show('missing required info', {position: Toast.positions.CENTER})
+
+  if(fetching || !secret.commit){
+    yield put(MessageBoxActions.openMessageBox({ title: 'Warning', message: 'Server no response' }))
     return
   }
 
@@ -287,11 +322,10 @@ export function * placeBet (api, action) {
 
   if (!!ans && !!ans.hash) {
     yield call(api.commitTx, {commit: secret.commit, tx_hash: ans.hash})
-    yield put(GameActions.updateStatus({[modulo]: 'placed'}))
+    yield put(GameActions.updateStatus({ [modulo]: 'placed' }))
   } else {
-    yield put(GameActions.updateStatus({[modulo]: 'idle'}))
-    alert('Place bet too frequently, please try again later')
-    // Toast.show("place bet fail, can not submit to blockchain", { position: Toast.positions.CENTER });
+    yield put(GameActions.updateStatus({ [modulo]: 'idle' }))
+    yield put(MessageBoxActions.openMessageBox({ title: 'Warning', message: 'Place bet too frequently, please try again later' }))
   }
 
 }

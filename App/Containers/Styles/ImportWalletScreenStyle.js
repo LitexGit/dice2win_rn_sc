@@ -40,6 +40,7 @@ export default StyleSheet.create({
     color: Colors.text,
     borderWidth: 1,
     borderColor: Colors.steel,
+    textAlignVertical: 'top',
   },
   keystoreInput: {
     fontSize: 11,
@@ -49,6 +50,7 @@ export default StyleSheet.create({
     color: Colors.text,
     borderWidth: 1,
     borderColor: Colors.steel,
+    textAlignVertical: 'top',
   },
 
   actionWrapper: {

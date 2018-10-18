@@ -10,6 +10,7 @@ import styles from './Styles/NewWalletScreenStyle'
 import Colors from '../Themes/Colors'
 import NavigationActions from 'react-navigation/src/NavigationActions'
 import DoublePwdInput from '../Components/DoublePwdInput'
+import MessageBoxActions from '../Redux/MessageBoxRedux'
 
 // var ethers = require('../Lib/ethers')
 
@@ -25,6 +26,9 @@ class NewWalletScreen extends Component {
   }
 
   _checkPwd () {
+
+    let { alert } = this.props
+
     if (!!this.props.pwd1 && this.props.pwd1 === this.props.pwd2) {
       this.props.newWallet()
       this.props.navigate('PreBackupScreen')
@@ -72,6 +76,7 @@ const mapDispatchToProps = (dispatch) => {
     newWallet: () => dispatch(WalletActions.newWallet()),
     navigate: (target) => dispatch(NavigationActions.navigate({routeName: target})),
     back: () => dispatch(NavigationActions.back()),
+    alert: (message) => dispatch(MessageBoxActions.openMessageBox({ title: 'Warning', message }))
   }
 }
 

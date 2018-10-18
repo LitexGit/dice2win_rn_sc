@@ -8,6 +8,7 @@ import { connect } from 'react-redux'
 // Styles
 import styles from './Styles/ImportWalletScreenStyle'
 import WalletActions from '../Redux/WalletRedux'
+import MessageBoxActions from '../Redux/MessageBoxRedux'
 import NavigationActions from 'react-navigation/src/NavigationActions'
 import Colors from '../Themes/Colors'
 import ScrollableTabView, { ScrollableTabBar } from 'react-native-scrollable-tab-view'
@@ -56,6 +57,7 @@ class ImportWalletScreen extends Component {
   }
 
   _checkPwd () {
+    let { alert } = this.props
     if (this.props.pwd1 === this.props.pwd2) {
       this.props.navigate('PreBackupScreen')
     } else {
@@ -64,7 +66,7 @@ class ImportWalletScreen extends Component {
   }
 
   render () {
-    let {pwd, pwd1, pwd2, back, importFromMnemonic, importEncryptWallet} = this.props
+    let { pwd, pwd1, pwd2, back, importFromMnemonic, importEncryptWallet, alert } = this.props
     return (
       <View style={styles.container}>
         <ScrollableTabView
@@ -80,6 +82,7 @@ class ImportWalletScreen extends Component {
               multiline
               placeholder='Input mnemonic, seperated with spaces'
               placeholderTextColor={Colors.cloud}
+              underlineColorAndroid={'transparent'}
               style={styles.mnemonicInput}
               value={this.state.mnemonic}
               onChangeText={(mnemonic) => this.setState({mnemonic})}/>
@@ -116,6 +119,7 @@ class ImportWalletScreen extends Component {
               numberOfLines={5}
               placeholder='please input keystore content'
               placeholderTextColor={Colors.cloud}
+              underlineColorAndroid={'transparent'}
               style={styles.keystoreInput}
               value={this.state.keystore}
               onChangeText={(keystore) => this.setState({keystore})}/>
@@ -162,7 +166,8 @@ const mapDispatchToProps = (dispatch) => {
     importFromMnemonic: (mnemonic, password) => dispatch(WalletActions.importFromMnemonic({mnemonic, password})),
     importEncryptWallet: (keystore, password) => dispatch(WalletActions.importEncryptWallet({keystore, password})),
     navigate: (target) => dispatch(NavigationActions.navigate({routeName: target})),
-    back: () => dispatch(NavigationActions.back())
+    back: () => dispatch(NavigationActions.back()),
+    alert: (message) => dispatch(MessageBoxActions.openMessageBox({ title: 'Warning', message }))
   }
 }
 

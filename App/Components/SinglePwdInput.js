@@ -23,6 +23,7 @@ class SinglePwdInput extends Component {
                      placeholderTextColor={'gray'}
                      secureTextEntry={pwdVis}
                      clearButtonMode='always'
+                     underlineColorAndroid={'transparent'}
                      value={pwd}
                      keyboardType='numeric'
                      onChangeText={changePwdInput}/>

@@ -8,8 +8,10 @@ import { connect } from 'react-redux'
 import styles from './Styles/TransferScreenStyle'
 import WalletActions from '../Redux/WalletRedux'
 import ConfirmModalActions from '../Redux/ConfirmModalRedux'
+import MessageBoxActions from '../Redux/MessageBoxRedux'
 import PwdModalActions, { openPwdModal } from '../Redux/PwdModalRedux'
 import { displayETH } from '../Lib/Utils/format'
+import { isAddress } from '../Lib/Utils/address'
 
 class TransferScreen extends Component {
 
@@ -19,15 +21,17 @@ class TransferScreen extends Component {
 
   state = {
     to: '', //'0x253917c6befa4251a26c9fd248275238eeabb663',
-    value:'', 
+    value:'',
   }
 
   _transfer () {
-    let {openConfirmModal, address, balance} = this.props
+    let { openConfirmModal, address, balance, alert } = this.props
 
     if (!W.address) {
       navigate('WalletManageScreen')
-    } else if (this.state.value >= balance) {
+    } else if(!isAddress(this.state.to)){
+      alert('Please input valid address')
+    }else if (this.state.value >= balance) {
       alert('You don\'t have enough balance to place Bet')
     } else {
 
@@ -67,6 +71,7 @@ class TransferScreen extends Component {
                      multiline={false}
                      placeholder='to address'
                      placeholderTextColor={'gray'}
+                     underlineColorAndroid={'transparent'}
                      clearButtonMode='always'
                      value={this.state.to}
                      onChangeText={(to) => this.setState({to})}/>
@@ -77,6 +82,7 @@ class TransferScreen extends Component {
                      multiline={false}
                      placeholder='amount'
                      placeholderTextColor={'gray'}
+                     underlineColorAndroid={'transparent'}
                      clearButtonMode='always'
                      keyboard='numeric'
                      value={this.state.value.toString()}
@@ -107,6 +113,7 @@ const mapDispatchToProps = (dispatch) => {
     transfer: (data) => dispatch(WalletActions.transfer(data)),
     openPwdModal: (data) => dispatch(PwdModalActions.openPwdModal(data)),
     openConfirmModal: (data) => dispatch(ConfirmModalActions.openConfirmModal(data)),
+    alert: (message) => dispatch(MessageBoxActions.openMessageBox({ title: 'Warning', message }))
   }
 }
 

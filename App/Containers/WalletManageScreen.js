@@ -19,6 +19,7 @@ class WalletManageScreen extends Component {
   static navigationOptions = ({navigation}) => {
     return {
       title: 'Wallet',
+      headerTitleStyle: { textAlign: 'center', alignSelf: 'center' },
     }
   }
 

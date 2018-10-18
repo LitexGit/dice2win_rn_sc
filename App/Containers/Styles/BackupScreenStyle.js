@@ -51,7 +51,8 @@ export default StyleSheet.create({
     borderWidth: 1,
     borderColor: Colors.steel,
     padding: 10,
-    margin: 5
+    margin: 5,
+    textAlignVertical: 'top',
   },
   darkButton: {
     flexDirection: 'row',
