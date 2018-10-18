@@ -62,15 +62,15 @@ class PwdModal extends Component {
         </View>
 
         {!!errInfo && <View style={styles.statusWrapper}>
-          <Text style={styles.errText}> {errInfo} </Text>}
+          <Text style={styles.errText}> {errInfo} </Text>
         </View> }
 
         <View style={styles.actionWrapper}>
           <TouchableOpacity style={styles.cancelButton} onPress={this._closeModal.bind(this)}>
             <Text style={styles.label}> Cancel </Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.confirmButton} disabled={submitted} onPress={this._checkPwd.bind(this)}>
-            <Text style={styles.label}> {submitted ? 'Checking..' : 'Submit'} </Text>
+          <TouchableOpacity style={styles.confirmButton} disabled={!!submitted} onPress={this._checkPwd.bind(this)}>
+            <Text style={styles.label}> {!!submitted ? 'Checking..' : 'Submit'} </Text>
           </TouchableOpacity>
         </View>
       </Overlay>
