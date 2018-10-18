@@ -30,7 +30,7 @@ const BottomTabNav = TabNavigator({
     activeTintColor: Colors.activeTint,
     inactiveTintColor: Colors.inActiveTint,
     tabStyle: styles.tab,
-
+    showIcon: true,
     style: {
       backgroundColor: Colors.casinoBlue
     }
