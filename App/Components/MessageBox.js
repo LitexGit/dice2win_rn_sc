@@ -7,7 +7,6 @@ import styles from './Styles/MessageBoxStyle'
 import MessageBoxActions from '../Redux/MessageBoxRedux'
 import NavigationActions from 'react-navigation/src/NavigationActions'
 import connect from 'react-redux/es/connect/connect'
-import Icon from 'react-native-vector-icons/MaterialIcons'
 
 
 class MessageBox extends Component {

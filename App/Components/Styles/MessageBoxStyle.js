@@ -42,9 +42,10 @@ export default StyleSheet.create({
     color: Colors.fire
   },
   actionWrapper: {
-    height: 50,
+    height: 60,
     margin: 15,
     marginTop: 0,
+    marginBottom: 5,
     flexDirection: 'row',
     alignItems: 'center',
   },
@@ -60,6 +61,7 @@ export default StyleSheet.create({
   cancelButton: {
     flex: 1,
     padding: 10,
+    margin: 10,
     alignItems: 'center',
     backgroundColor: Colors.ember,
   },
