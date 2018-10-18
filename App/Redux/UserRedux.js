@@ -7,7 +7,10 @@ const { Types, Creators } = createActions({
   register: ['data'],
   userRequest: ['data'],
   userSuccess: ['payload'],
-  userFailure: null
+  userFailure: null,
+  // 设置 邀请码
+  setInviteCode: ['invite'],
+  fetchInviteCode: null
 })
 
 export const UserTypes = Types
@@ -19,12 +22,13 @@ export const INITIAL_STATE = Immutable({
   data: null,
   fetching: null,
   payload: null,
-  
+
   uid: 0,
   nickname: '',
   address: '',
   inviter: 0,
   code: '',
+  invite: '',
 
   bonus: 0,
   totalBonus: 0,
@@ -37,6 +41,7 @@ export const INITIAL_STATE = Immutable({
 export const UserSelectors = {
   getData: state => state.data,
   getUid: state => state.user.uid,
+  getInviteCode: state => state.user.invite
 }
 
 /* ------------- Reducers ------------- */
@@ -55,11 +60,18 @@ export const success = (state, action) => {
 export const failure = state =>
   state.merge({ fetching: false, error: true, payload: null })
 
+// 保存 邀请人的邀请码
+export const setInviteCode = (state, action) => {
+  const {invite} = action
+  return state.merge({invite})
+}
+
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
   [Types.REGISTER]: request,
   [Types.USER_REQUEST]: request,
   [Types.USER_SUCCESS]: success,
-  [Types.USER_FAILURE]: failure
+  [Types.USER_FAILURE]: failure,
+  [Types.SET_INVITE_CODE]: setInviteCode
 })

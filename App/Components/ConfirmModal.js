@@ -27,7 +27,7 @@ class ConfirmModal extends Component {
 
   render () {
     let { modalIsOpen, amount, from, to, gasAuto,
-      updateGas,
+      updateGas, loading
     } = this.props
     let { displayGas, minGas, maxGas, } = this.state
 
@@ -86,8 +86,8 @@ class ConfirmModal extends Component {
           <TouchableOpacity style={styles.cancelButton} onPress={this._cancel.bind(this)}>
             <Text style={styles.label}> Cancel </Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.confirmButton} onPress={this._confirm.bind(this)}>
-            <Text style={styles.label}> Confirm </Text>
+          <TouchableOpacity style={styles.confirmButton} disabled={loading} onPress={this._confirm.bind(this)}>
+            <Text style={styles.label}> {loading?'Loading...':'Confirm'} </Text>
           </TouchableOpacity>
         </View>
       </Overlay>
@@ -108,7 +108,16 @@ class ConfirmModal extends Component {
 }
 
 const mapStateToProps = (state) => {
-  return { modalIsOpen, amount, from, to, gas, gasAuto, fetching, confirmedActions, canceledActions } = state.confirmModal
+  let {
+    confirmModal: { modalIsOpen, amount, from, to, gas, gasAuto,
+      fetching, confirmedActions, canceledActions },
+    wallet: {fetching: fetchingRandom, secret},
+  } = state
+
+  return { modalIsOpen, amount, from, to, gas, gasAuto,
+    fetching, confirmedActions, canceledActions,
+    loading: fetchingRandom || !secret,
+  }
 }
 
 const mapDispatchToProps = (dispatch) => {

@@ -108,7 +108,7 @@ class RecordScreen extends Component {
     let { remark, time, status, from, to, amount} = item
     let { address } = this.props
     console.tron.log('renderTxItem amount', amount, status)
-    if(amount == 0 || status == 4)
+    if(amount < 0.000001 || status == 4)
       return ''
 
     let type = from.localeCompare(address, 'en', {sensitivity: 'base'})?'in':'out'

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { ScrollView, Text, TouchableOpacity, TextInput, View } from 'react-native'
+import { Text, TouchableOpacity, TextInput, View } from 'react-native'
 import { connect } from 'react-redux'
 // Add Actions - replace 'Your' with whatever your reducer is called :)
 // import YourActions from '../Redux/YourRedux'
@@ -9,7 +9,7 @@ import styles from './Styles/TransferScreenStyle'
 import WalletActions from '../Redux/WalletRedux'
 import ConfirmModalActions from '../Redux/ConfirmModalRedux'
 import PwdModalActions, { openPwdModal } from '../Redux/PwdModalRedux'
-import { Colors } from '../Themes'
+import { displayETH } from '../Lib/Utils/format'
 
 class TransferScreen extends Component {
 
@@ -19,7 +19,7 @@ class TransferScreen extends Component {
 
   state = {
     to: '', //'0x253917c6befa4251a26c9fd248275238eeabb663',
-    value: '0.01'
+    value:'', 
   }
 
   _transfer () {
@@ -58,14 +58,14 @@ class TransferScreen extends Component {
       <View style={styles.container}>
         <View style={styles.titleBox}>
           <Text style={styles.titleText}>
-            Wallet balance: {this.props.balance.toFixed(9)} ETH
+            Wallet balance: {displayETH(this.props.balance)} ETH
           </Text>
         </View>
         <View style={styles.header}>
           <TextInput style={styles.headerText}
                      autoFocus={false}
                      multiline={false}
-                     placeholder='please input receiver eth address'
+                     placeholder='to address'
                      placeholderTextColor={'gray'}
                      clearButtonMode='always'
                      value={this.state.to}
@@ -75,7 +75,7 @@ class TransferScreen extends Component {
           <TextInput style={styles.valueText}
                      autoFocus={false}
                      multiline={false}
-                     placeholder='please input send eth amount'
+                     placeholder='amount'
                      placeholderTextColor={'gray'}
                      clearButtonMode='always'
                      keyboard='numeric'

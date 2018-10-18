@@ -42,8 +42,8 @@ export default StyleSheet.create({
     borderColor: Colors.steel,
   },
   keystoreInput: {
-    fontSize: 16,
-    height: 250,
+    fontSize: 11,
+    height: 150,
     margin: 5,
     padding: 5,
     color: Colors.text,

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Image, Text, View, FlatList, TouchableOpacity, TouchableWithoutFeedback } from 'react-native'
+import { Image, Text, View, FlatList, TouchableOpacity, TouchableWithoutFeedback, Clipboard } from 'react-native'
 import { Images } from '../Themes'
 import FA5 from 'react-native-vector-icons/FontAwesome5'
 import Swiper from 'react-native-swiper'
@@ -7,6 +7,9 @@ import Swiper from 'react-native-swiper'
 import ActivityActions from '../Redux/ActivityRedux'
 import GameActions from '../Redux/GameRedux'
 import BetActions from '../Redux/BetRedux'
+
+import UserActions from '../Redux/UserRedux'
+
 import { connect } from 'react-redux'
 // Add Actions - replace 'Your' with whatever your reducer is called :)
 // import YourActions from '../Redux/YourRedux'
@@ -34,6 +37,8 @@ class GameScreen extends Component {
   }
 
   componentDidMount () {
+    // 记录 邀请码
+    this.props.fetchInviteCode()
     this.props.loadBanners()
     console.tron.log('navigation', this.props.navigation)
   }
@@ -112,7 +117,9 @@ const mapDispatchToProps = (dispatch) => {
     loadCoin: () => dispatch(BetActions.loadCoin()),
     loadOneDice: () => dispatch(BetActions.loadOneDice()),
     loadTwoDice: () => dispatch(BetActions.loadTwoDice()),
-    loadEtheroll: () => dispatch(BetActions.loadEtheroll())
+    loadEtheroll: () => dispatch(BetActions.loadEtheroll()),
+    setInviteCode: (invite) => dispatch(UserActions.setInviteCode(invite)),
+    fetchInviteCode: () => dispatch(UserActions.fetchInviteCode())
   }
 }
 

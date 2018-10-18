@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { ScrollView, SectionList, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { Text, TextInput, TouchableOpacity, View, KeyboardAvoidingView, Alert } from 'react-native'
 import { connect } from 'react-redux'
 
 // Add Actions - replace 'Your' with whatever your reducer is called :)
@@ -43,6 +43,18 @@ class ImportWalletScreen extends Component {
     }
   }
 
+  componentDidMount () {
+    Alert.alert(
+      'ATTENTION!!!',
+      'Import new wallet will OVERRIDE current wallet, if you haven\'t back it up, you will LOST  your asset! Are you sure?',
+      [
+        {text: 'Import anyway'},
+        {text: 'Cancel', onPress: this.props.back, style: 'cancel'},
+      ],
+      { cancelable: false }
+    )
+  }
+
   _checkPwd () {
     if (this.props.pwd1 === this.props.pwd2) {
       this.props.navigate('PreBackupScreen')
@@ -52,9 +64,8 @@ class ImportWalletScreen extends Component {
   }
 
   render () {
-    let {pwd, pwd1, pwd2, navigate, importFromMnemonic, importEncryptWallet} = this.props
+    let {pwd, pwd1, pwd2, back, importFromMnemonic, importEncryptWallet} = this.props
     return (
-
       <View style={styles.container}>
         <ScrollableTabView
           initialPage={0}
@@ -62,12 +73,12 @@ class ImportWalletScreen extends Component {
           tabBarActiveTextColor={Colors.activeTint}
           tabBarInactiveTextColor={Colors.inActiveTint}
           tabBarUnderlineStyle={styles.tabBarUnderlineStyle}
-          renderTabBar={() => <ScrollableTabBar style={{borderBottomWidth: 0}}/>}
-          >
+          renderTabBar={() => <ScrollableTabBar style={{borderBottomWidth: 0}}/>}>
           <View tabLabel='Mnemonic' style={styles.content}>
+        <KeyboardAvoidingView behavior='position' keyboardVerticalOffset={100}>
             <TextInput
               multiline
-              placeholder='Please input mnemonic'
+              placeholder='Input mnemonic, seperated with spaces'
               placeholderTextColor={Colors.cloud}
               style={styles.mnemonicInput}
               value={this.state.mnemonic}
@@ -75,29 +86,31 @@ class ImportWalletScreen extends Component {
             <DoublePwdInput focus={false}/>
 
             <View style={styles.actionWrapper}>
-              <TouchableOpacity style={styles.cancelButton} onPress={navigate.back}>
+              <TouchableOpacity style={styles.cancelButton} onPress={back}>
                 <Text style={styles.label}> Cancel </Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.confirmButton}
-                                onPress={() => {
-                                  console.tron.log('this.props', this.props)
-                                  if(!this.state.mnemonic || this.state.mnemonic.length < 40){
-                                    alert('incorrect mnemonic')
-                                    return;
-                                  }
+                onPress={() => {
+                  console.tron.log('this.props', this.props)
+                  if(!this.state.mnemonic || this.state.mnemonic.length < 40){
+                    alert('incorrect mnemonic')
+                    return;
+                  }
 
-                                  if (!!pwd1 && pwd1 === pwd2) {
-                                    importFromMnemonic(this.state.mnemonic, pwd2)
-                                  } else {
-                                    alert('passwords do not match')
-                                  }
+                  if (!!pwd1 && pwd1 === pwd2) {
+                    importFromMnemonic(this.state.mnemonic, pwd2)
+                  } else {
+                    alert('passwords do not match')
+                  }
 
-                                }}>
-                <Text style={styles.label}> Confirm </Text>
+                }}>
+                <Text style={styles.label}> Import </Text>
               </TouchableOpacity>
             </View>
+            </KeyboardAvoidingView>
           </View>
           <View tabLabel='Keystore' style={styles.content}>
+          <KeyboardAvoidingView behavior='position' keyboardVerticalOffset={100}>
             <TextInput
               multiline
               numberOfLines={5}
@@ -109,32 +122,27 @@ class ImportWalletScreen extends Component {
             <SinglePwdInput/>
 
             <View style={styles.actionWrapper}>
-              <TouchableOpacity style={styles.cancelButton} onPress={navigate.back}>
+              <TouchableOpacity style={styles.cancelButton} onPress={back}>
                 <Text style={styles.label}> Cancel </Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.confirmButton} onPress={() => {
                 var keystore = this.state.keystore
-
                 if(!keystore ){
                   alert('keystore format is invalid')
                   return
                 }
-
                 if(!pwd){
                   alert('password can not be empty')
                   return
                 }
-
-
-
                 importEncryptWallet(JSON.parse(keystore), pwd)
               }}>
-                <Text style={styles.label}> Confirm </Text>
+                <Text style={styles.label}> Import </Text>
               </TouchableOpacity>
             </View>
+            </KeyboardAvoidingView>
           </View>
         </ScrollableTabView>
-
       </View>
 
     )
@@ -153,7 +161,8 @@ const mapDispatchToProps = (dispatch) => {
   return {
     importFromMnemonic: (mnemonic, password) => dispatch(WalletActions.importFromMnemonic({mnemonic, password})),
     importEncryptWallet: (keystore, password) => dispatch(WalletActions.importEncryptWallet({keystore, password})),
-    navigate: (target) => dispatch(NavigationActions.navigate({routeName: target}))
+    navigate: (target) => dispatch(NavigationActions.navigate({routeName: target})),
+    back: () => dispatch(NavigationActions.back())
   }
 }
 
