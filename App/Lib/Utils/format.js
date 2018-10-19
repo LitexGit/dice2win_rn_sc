@@ -53,6 +53,10 @@ function groupBy(objectArray, property) {
   }, {});
 }
 
+function toFixed(num, fixed) {
+  var re = new RegExp('^-?\\d+(?:\.\\d{0,' + (fixed || -1) + '})?');
+  return num.toString().match(re)[0];
+}
 
 const isString = n => typeof(n)==='string'
 const isNumber = n => Number(n)===n
@@ -69,4 +73,5 @@ module.exports = {
   formatDate,
   sectionlize,
   groupBy,
+  toFixed,
 }

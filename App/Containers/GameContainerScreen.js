@@ -107,9 +107,9 @@ class GameContainerScreen extends Component {
               <TouchableOpacity style={styles.stakeButton} onPress={_=>setStake(stake - 0.01)}>
                 <Text style={[styles.stakeButtonText, {fontSize: 28}]}>-</Text>
               </TouchableOpacity>
-              <TextInput value={parseFloat(stake).toFixed(2)} style={styles.stakeInput}
+              <TextInput value={stake.toFixed(2)} style={styles.stakeInput}
                 underlineColorAndroid={'transparent'}
-                keyboardType='decimal-pad' maxLength={4}
+                keyboardType='decimal-pad'
                 onChangeText={(val) =>{ setStake(parseFloat(val)); this.forceUpdate() } }/>
               <TouchableOpacity style={styles.stakeButton} onPress={_=>setStake(stake + 0.01)}>
                 <Text style={[styles.stakeButtonText, {fontSize: 28}]}>+</Text>

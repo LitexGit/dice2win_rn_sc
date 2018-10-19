@@ -15,6 +15,7 @@ import GameActions from '../Redux/GameRedux'
 import { ConfigSelectors } from '../Redux/ConfigRedux'
 import { BetSelectors } from '../Redux/BetRedux'
 import { getMaxBet } from '../Lib/Utils/calculate'
+import { toFixed } from '../Lib/Utils/format'
 
 export function * setStake (api, action) {
   let {stake} = action
@@ -24,10 +25,11 @@ export function * setStake (api, action) {
     select(ConfigSelectors.getEdge), 
     select(BetSelectors.getWinRate),
   ])
-  let maxBet = getMaxBet(maxWin, winRate, edge)
+  let maxBet = parseFloat(toFixed(getMaxBet(maxWin, winRate, edge), 2))
+  console.tron.log('MAX BET', maxBet)
   stake > maxBet && (stake = maxBet)
   stake < minBet && (stake = minBet)
-  stake = parseFloat(parseFloat(stake).toFixed(2))
+  // stake = parseFloat(stake)
   yield put(GameActions.gameSuccess({stake, rand: Math.random()}))
 }
 
