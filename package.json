@@ -54,6 +54,7 @@
     "react-native-haptic-feedback": "^1.3.0",
     "react-native-i18n": "^1.0.0",
     "react-native-iphone-x-helper": "^1.2.0",
+    "react-native-marquee": "git+ssh://git@gitlab.f3m.club:zhixian/react-native-marquee.git",
     "react-native-modal-overlay": "^1.2.3",
     "react-native-qrcode-svg": "^5.1.1",
     "react-native-root-toast": "^3.0.1",

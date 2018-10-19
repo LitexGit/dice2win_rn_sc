@@ -18,6 +18,7 @@ import { connect } from 'react-redux'
 import { Metrics } from '../Themes'
 import styles from './Styles/GameScreenStyle'
 import NavigationActions from 'react-navigation/src/NavigationActions'
+import MarqueeText from 'react-native-marquee'
 
 
 const entryData = [
@@ -36,6 +37,14 @@ class GameScreen extends Component {
     )
   }
 
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      noticeIndex: 0,
+    }
+  }
+
   componentDidMount () {
     // 记录 邀请码
     this.props.fetchInviteCode()
@@ -44,7 +53,6 @@ class GameScreen extends Component {
   }
 
   Slide = (item) => {
-    console.tron.log('SLIDE', item)
     return (
       <TouchableWithoutFeedback onPress={_=>{
         this.props.navigate('WebviewScreen', {url:item.img_href, title:item.title})
@@ -58,18 +66,10 @@ class GameScreen extends Component {
       <TouchableOpacity style={styles.entry} onPress={() => {
         this.props.setGameKey(item.key)
         switch (item.key) {
-          case 2:
-            this.props.loadCoin()
-            break
-          case 6:
-            this.props.loadOneDice()
-            break
-          case 36:
-            this.props.loadTwoDice()
-            break
-          case 100:
-            this.props.loadEtheroll()
-            break
+          case 2: this.props.loadCoin();break
+          case 6: this.props.loadOneDice();break
+          case 36: this.props.loadTwoDice();break
+          case 100: this.props.loadEtheroll();break
         }
         this.props.navigate('GameContainerScreen')
       }}>
@@ -84,13 +84,41 @@ class GameScreen extends Component {
     )
   }
 
+  _changeNotice = () => {
+    let noticeIndex = (this.state.noticeIndex + 1) % this.props.notices.length
+    this.setState({noticeIndex})
+    // let that = this
+    // setTimeout(_=>that.setState({noticeIndex}), 1000)
+  }
+
   render () {
+    let {banners, notices} = this.props
+    let {noticeIndex} = this.state
+    let notice = notices[noticeIndex]
     return (
       <View style={styles.container}>
         <View style={styles.swiper}>
           <Swiper autoplay={true} showsPagination={false}>
-            { this.props.banners && this.props.banners.map((item, i) => this.Slide(item)) }
+            { banners && banners.map((item, i) => this.Slide(item)) }
           </Swiper>
+        </View>
+        <View style={styles.noticeBar}>
+          <Image style={styles.noticeIcon} source={Images.bullhorn} />
+          <TouchableWithoutFeedback  onPress={_=>
+            this.props.navigate('WebviewScreen', {url:notice.url, title:notice.title})
+          }>
+            <View style={styles.noticeWrapper}>
+              <MarqueeText ref='marquee'
+                marqueeOnStart
+                loop
+                duration={3000}
+                marqueeResetDelay={1000}
+                onMarqueeComplete={this._changeNotice.bind(this)}
+                style={styles.noticeText}>
+                {notice && notice.text}
+              </MarqueeText>
+            </View>
+          </TouchableWithoutFeedback>
         </View>
         <FlatList
           style={styles.entryList}
@@ -104,8 +132,11 @@ class GameScreen extends Component {
 }
 
 const mapStateToProps = (state) => {
+  let {
+    activity:{banners, notices}
+  } = state
   return {
-    banners: state.activity.banners
+    banners, notices
   }
 }
 
