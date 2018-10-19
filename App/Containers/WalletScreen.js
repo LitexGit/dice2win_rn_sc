@@ -93,7 +93,7 @@ class WalletScreen extends Component {
   _openTelegram = () => {
     let {telegroup} = this.props
     Linking.canOpenURL(telegroup).then(supported => {
-      if (supported) {
+      if (!supported) {
         alert('Can\'t open Telegram')
       } else {
         return Linking.openURL(telegroup)
