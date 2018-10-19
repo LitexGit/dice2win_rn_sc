@@ -19,6 +19,7 @@ import { toFixed } from '../Lib/Utils/format'
 
 export function * setStake (api, action) {
   let {stake} = action
+  !stake && (stake = 0)
   let [maxWin, minBet, edge, winRate] = yield all([
     select(ConfigSelectors.getMaxWin),
     select(ConfigSelectors.getMinBet),
@@ -26,10 +27,9 @@ export function * setStake (api, action) {
     select(BetSelectors.getWinRate),
   ])
   let maxBet = parseFloat(toFixed(getMaxBet(maxWin, winRate, edge), 2))
-  console.tron.log('MAX BET', maxBet)
   stake > maxBet && (stake = maxBet)
   stake < minBet && (stake = minBet)
-  // stake = parseFloat(stake)
+  stake = parseFloat(stake.toFixed(2))
   yield put(GameActions.gameSuccess({stake, rand: Math.random()}))
 }
 
