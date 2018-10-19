@@ -15,20 +15,6 @@ import ScrollableTabView, { ScrollableTabBar } from 'react-native-scrollable-tab
 import DoublePwdInput from '../Components/DoublePwdInput'
 import SinglePwdInput from '../Components/SinglePwdInput'
 
-
-
-
-function isJsonString(str) {
-  try {
-      if (typeof JSON.parse(str) == "object") {
-          return true;
-      }
-  } catch(e) {
-  }
-  return false;
-}
-
-
 class ImportWalletScreen extends Component {
   static navigationOptions = ({navigation}) => {
     return {
@@ -140,7 +126,12 @@ class ImportWalletScreen extends Component {
                   alert('password can not be empty')
                   return
                 }
-                importEncryptWallet(JSON.parse(keystore), pwd)
+                try {
+                  keystore = JSON.parse(keystore)
+                  importEncryptWallet(keystore, pwd)
+                } catch(e) {
+                  alert('Invalid keystore format!')
+                }
               }}>
                 <Text style={styles.label}> Import </Text>
               </TouchableOpacity>
