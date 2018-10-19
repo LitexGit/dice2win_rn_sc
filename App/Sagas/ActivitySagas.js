@@ -10,7 +10,7 @@
 *    you'll need to define a constant in that file.
 *************************************************************/
 
-import { call, put } from 'redux-saga/effects'
+import { call, put, all } from 'redux-saga/effects'
 import ActivityActions from '../Redux/ActivityRedux'
 
 export function * getActivity (api, action) {
@@ -18,13 +18,16 @@ export function * getActivity (api, action) {
   // get current data from Store
   // const currentData = yield select(ActivitySelectors.getData)
   // make the call to the api
-  const response = yield call(api.getActivity)
+  let [bannerRes, noticeRes] = yield all([
+    call(api.getBanners),
+    call(api.getNotices),
+  ]) 
 
   // success?
-  if (response.ok) {
+  if (bannerRes.ok || noticeRes.ok) {
     // You might need to change the response here - do this with a 'transform',
     // located in ../Transforms/. Otherwise, just pass the data back from the api.
-    yield put(ActivityActions.activitySuccess(response.data))
+    yield put(ActivityActions.activitySuccess({banners: bannerRes.data, notices: noticeRes.data}))
   } else {
     yield put(ActivityActions.activityFailure())
   }

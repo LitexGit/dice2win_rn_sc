@@ -21,6 +21,29 @@ export default StyleSheet.create({
     backgroundColor: 'transparent'
   },
 
+  noticeBar: {
+    height: 30,
+    padding: 5,
+    backgroundColor: Colors.casinoBlue,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+  },
+  noticeIcon: {
+    height: 20,
+    width: 20,
+  },
+  noticeWrapper: {
+    flex: 1,
+    alignItems:'center',
+    justifyContent: 'center',
+  },
+  noticeText: {
+    color: 'darkorange',
+    fontSize: 13,
+    alignSelf: 'center',
+    textDecorationLine: 'underline',
+  },
   entryList: {
     flex: 1
   },

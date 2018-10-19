@@ -11,6 +11,7 @@ import NavigationActions from 'react-navigation/src/NavigationActions'
 import Colors from '../Themes/Colors'
 import PwdModalActions from '../Redux/PwdModalRedux'
 import BackupKeystoreWarningModal from '../Components/BackupKeystoreWarningModal'
+import MessageBoxActions from '../Redux/MessageBoxRedux'
 import Toast from 'react-native-root-toast'
 
 class BackupKeystoreScreen extends Component {
@@ -30,6 +31,11 @@ class BackupKeystoreScreen extends Component {
 
   componentDidMount () {
     // this.props.openPwdModal()
+    this.props.alert("DO NOT Make Any ScreenShot!!\n\n\n \
+    - Save your keystore offline\n\n \
+    - Don't transfer it with Internet\n\n \
+    - Only scan your keystore qrcode directly\n\n \
+    - Ensure no others and no cameras around\n")
   }
 
   render () {
@@ -58,7 +64,7 @@ class BackupKeystoreScreen extends Component {
                 backgroundColor={Colors.steel}/>}
           </View>
         </View>
-        <BackupKeystoreWarningModal/>
+        {/* <BackupKeystoreWarningModal/> */}
       </ScrollView>
     )
   }
@@ -71,7 +77,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     navigate: (target) => dispatch(NavigationActions.navigate({routeName: target})),
-    openPwdModal: () => dispatch(PwdModalActions.openPwdModal()),
+    // openPwdModal: () => dispatch(PwdModalActions.openPwdModal()),
+    alert: (message) => dispatch(MessageBoxActions.openMessageBox({ title: 'Warning', message }))
   }
 }
 

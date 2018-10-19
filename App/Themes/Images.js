@@ -27,6 +27,8 @@ const images = {
 
   diceBGLight : require('../Images/diceBGLight.png'), 
   diceBGDark : require('../Images/diceBGDark.png'), 
+
+  bullhorn: require('../Images/bullhorn.png'),
 }
 
 export default images

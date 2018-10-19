@@ -38,7 +38,8 @@ const create = (baseURL = Config.BASE_URL) => {
   const getRoot = () => ApiSauceObj.get('')
   const getConfig = () => ApiSauceObj.get('api/v1/games/dev/configs')
   const getABI = () => ApiSauceObj.get('api/v1/games/dev/abi')
-  const getActivity = () => ApiSauceObj.get('api/v1/games/dev/banners')
+  const getBanners = () => ApiSauceObj.get('api/v1/games/dev/banners')
+  const getNotices = () => ApiSauceObj.get('api/v1/games/dev/notices')
   const getRecord = ({gameId, address, page, size}) => ApiSauceObj.get('api/v1/games/dev/bet/history', {gameId, address, page, size})
   const getUser = (uid) => ApiSauceObj.get('api/v1/games/dev/userinfo', {uid})
   const getPromotion = (uid) => ApiSauceObj.get('api/v1/games/dev/shareinfo', {uid})
@@ -66,7 +67,8 @@ const create = (baseURL = Config.BASE_URL) => {
     getRoot,
     getConfig,
     getABI,
-    getActivity,
+    getBanners,
+    getNotices,
     getRecord,
     getUser,
     getPromotion,
