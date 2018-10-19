@@ -5,12 +5,8 @@ import _ from 'lodash'
 let BN = require('bn.js')
 
 /* ------------- Types and Action Creators ------------- */
-const betConfig = {
-  discount1: 0.99,
-  discount2: 0.95
-}
 
-const getRewardTime = winRate => betConfig.discount1 * betConfig.discount2 / winRate + 0.05
+const getRewardTime = (winRate, feeRate) => (1 - feeRate) * 0.95 / winRate + 0.05
 
 const {Types, Creators} = createActions({
   loadCoin: null,
@@ -22,6 +18,7 @@ const {Types, Creators} = createActions({
   clickTwoDice: ['idx'],
   clickEtheroll: ['val'],
 
+  updateRewardTime: ['data'],
   betRequest: ['data'],
   betSuccess: ['payload'],
   betFailure: null
@@ -42,6 +39,7 @@ export const INITIAL_STATE = Immutable({
   betMaskArr: [],
   betMask: new BN('1', 2),
   modulo: 2,
+  feeRate: 0.01,
 
   data: null,
   fetching: null,
@@ -138,7 +136,8 @@ export const clickCoin = (state) => {
   }
   let betMask = betMaskSum.toNumber()
   let winRate = 0.5
-  let rewardTime = getRewardTime(winRate)
+  let {feeRate} = state
+  let rewardTime = getRewardTime(winRate, feeRate)
   return state.merge({
     bets,
     betMask,
@@ -169,7 +168,8 @@ export const clickOneDice = (state, action) => {
     let betMask = betMaskSum.toNumber()
 
     let winRate = diceCount / 6
-    let rewardTime = getRewardTime(winRate)
+    let {feeRate} = state
+    let rewardTime = getRewardTime(winRate, feeRate)
     return state.merge({
       bets,
       betMask,
@@ -203,7 +203,8 @@ export const clickTwoDice = (state, action) => {
     let betMask = betMaskSum.toNumber()
 
     let winRate = diceCount / 36
-    let rewardTime = getRewardTime(winRate)
+    let {feeRate} = state
+    let rewardTime = getRewardTime(winRate, feeRate)
     return state.merge({
       bets,
       betMask,
@@ -218,11 +219,16 @@ export const clickTwoDice = (state, action) => {
 export const clickEtheroll = (state, action) => {
   let betMask = action.val
   let winRate = action.val / 100
-  let rewardTime = betConfig.discount1 * betConfig.discount2 / winRate + 0.05
+  let {feeRate} = state
+  let rewardTime = getRewardTime(winRate, feeRate)
   return state.merge({
     betMask, winRate, rewardTime
   })
 }
+
+export const updateRewardTime = (state, {data:{winRate, feeRate}}) =>
+  state.merge({rewardTime: getRewardTime(winRate, feeRate)})
+
 
 // request the data from an api
 export const request = (state, {data}) =>
@@ -231,7 +237,7 @@ export const request = (state, {data}) =>
 // successful api lookup
 export const success = (state, action) => {
   const {payload} = action
-  return state.merge({fetching: false, error: null, payload})
+  return state.merge({fetching: false, error: null, ...payload})
 }
 
 // Something went wrong somewhere.
@@ -250,6 +256,7 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.CLICK_TWO_DICE]: clickTwoDice,
   [Types.CLICK_ETHEROLL]: clickEtheroll,
 
+  [Types.UPDATE_REWARD_TIME]: updateRewardTime,
   [Types.BET_REQUEST]: request,
   [Types.BET_SUCCESS]: success,
   [Types.BET_FAILURE]: failure

@@ -76,7 +76,7 @@ class GameContainerScreen extends Component {
   }
 
   render () {
-    let { index, stake, balance, status, result, rewardTime, winRate, balanceFetching,
+    let { index, stake, balance, status, result, rewardTime, winRate, feeRate, balanceFetching,
       setStake,
     } = this.props
     return (
@@ -130,7 +130,7 @@ class GameContainerScreen extends Component {
                 </View>
               </View>
               <Text style={styles.rewardText}>you will win  <Text style={styles.keyText}>{(rewardTime * stake).toFixed(DECIMAL)}</Text>  ETH</Text>
-              <Text style={[styles.darkLabel, {fontSize: 11}]}>1% fee, 5% of winnings to your inviter</Text>
+              <Text style={[styles.darkLabel, {fontSize: 11}]}>{feeRate*100}% fee, 5% of winnings to your inviter</Text>
             </View>
             <View style={styles.startButtonWrapper}>
               <TouchableOpacity style={styles.startButton} onPress={this._placeBet}>
@@ -148,14 +148,14 @@ const mapStateToProps = (state) => {
   let {
     game: {key, stake, status, result},
     confirmModal: { modalIsOpen, loading, gas },
-    bet: { winRate, rewardTime, betMask, },
+    bet: { winRate, feeRate, rewardTime, betMask, },
     config: {contract_address},
     wallet: { fetching, balance, address, gasPrice, secret }
   } = state
   return {
     index:key, stake, status, result,
     modalIsOpen, loading, gas,
-    winRate, rewardTime, betMask,
+    winRate, feeRate, rewardTime, betMask,
     contract_address,
     balanceFetching:fetching, balance, address, gasPrice, secret
   }

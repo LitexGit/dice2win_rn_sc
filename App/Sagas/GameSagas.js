@@ -13,7 +13,7 @@
 import { call, put, select, all } from 'redux-saga/effects'
 import GameActions from '../Redux/GameRedux'
 import { ConfigSelectors } from '../Redux/ConfigRedux'
-import { BetSelectors } from '../Redux/BetRedux'
+import BetActions, { BetSelectors } from '../Redux/BetRedux'
 import { getMaxBet } from '../Lib/Utils/calculate'
 import { toFixed } from '../Lib/Utils/format'
 
@@ -30,7 +30,12 @@ export function * setStake (api, action) {
   stake > maxBet && (stake = maxBet)
   stake < minBet && (stake = minBet)
   stake = parseFloat(stake.toFixed(2))
+  let feeRate = 0.01
+  stake <= 0.02 && (feeRate = 0.015)
+  stake <= 0.01 && (feeRate = 0.03)
   yield put(GameActions.gameSuccess({stake, rand: Math.random()}))
+  yield put(BetActions.betSuccess({feeRate}))
+  yield put(BetActions.updateRewardTime({winRate, feeRate}))
 }
 
 export function * getGame (api, action) {
