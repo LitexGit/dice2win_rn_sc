@@ -1,9 +1,9 @@
 // a library to wrap and simplify api calls
 import apisauce from 'apisauce'
+import Config from 'react-native-config'
 
 // our "constructor"
-const create = (baseURL = 'http://api.eth4.fun:7001/') => {
-// const create = (baseURL = 'http://192.168.50.139:7001') => {
+const create = (baseURL = Config.BASE_URL) => {
   // ------
   // STEP 1
   // ------
