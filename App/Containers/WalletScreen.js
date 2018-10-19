@@ -2,13 +2,13 @@ import React, { Component } from 'react'
 import { ScrollView, Text, View, TouchableOpacity, Clipboard, RefreshControl, Linking, Share } from 'react-native'
 import FA5 from 'react-native-vector-icons/FontAwesome5'
 import Entypo from 'react-native-vector-icons/Entypo'
-import Feather from 'react-native-vector-icons/Feather'
 import QR from 'react-native-qrcode-svg'
 import Toast from 'react-native-root-toast'
 
 import WalletActions from '../Redux/WalletRedux'
 import UserActions from '../Redux/UserRedux'
 import { connect } from 'react-redux'
+import { displayETH } from '../Lib/Utils/format'
 // Add Actions - replace 'Your' with whatever your reducer is called :)
 // import YourActions from '../Redux/YourRedux'
 
@@ -143,7 +143,7 @@ class WalletScreen extends Component {
           <TouchableOpacity style={styles.shareUp} onPress={_ => this._goto("promotion")}>
             <Text style={styles.label}>Referral bonus</Text>
             <View style={[styles.balanceWrapper, styles.bonusBalanceWrapper]}>
-              <Text style={styles.bonus}>{bonus}</Text>
+              <Text style={styles.bonus}>{ displayETH(bonus) }</Text>
               <Text style={styles.unit}> ETH</Text>
             </View>
             <View style={styles.bonusDetailWrapper}>

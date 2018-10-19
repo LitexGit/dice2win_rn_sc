@@ -27,7 +27,12 @@ class NewWalletScreen extends Component {
 
   _checkPwd () {
 
-    let { alert } = this.props
+    let { alert, pwdValid } = this.props
+    
+    if(!pwdValid) {
+      alert('password format invalid')
+      return
+    }
 
     if (!!this.props.pwd1 && this.props.pwd1 === this.props.pwd2) {
       this.props.newWallet()
@@ -69,6 +74,7 @@ const mapStateToProps = (state) => {
     mnemonic: state.wallet.wallet.mnemonic,
     pwd1: state.doublePwdInput.pwd1,
     pwd2: state.doublePwdInput.pwd2,
+    pwdValid: state.doublePwdInput.pwd1valid,
   }
 }
 

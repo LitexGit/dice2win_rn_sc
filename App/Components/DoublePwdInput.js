@@ -19,13 +19,14 @@ class DoublePwdInput extends Component {
           <TextInput style={styles.inputText}
                      autoFocus={this.props.focus}
                      multiline={false}
-                     placeholder='Input password'
+                     maxLength={20}
+                     placeholder='Password (length:8-20)'
                      placeholderTextColor={'gray'}
                      underlineColorAndroid={'transparent'}
                      secureTextEntry={pwd1vis}
                      clearButtonMode='always'
                      value={pwd1}
-                     onChangeText={changePwd1Input}/>
+                     onChangeText={val=>changePwd1Input(val.trim())}/>
           <Icon style={styles.icon}
                 name={!pwd1vis ? 'visibility' : 'visibility-off'}
                 size={25}
@@ -36,13 +37,14 @@ class DoublePwdInput extends Component {
           <TextInput style={styles.inputText}
                      autoFocus={false}
                      multiline={false}
+                     maxLength={20}
                      placeholder='Confirm password'
                      placeholderTextColor={'gray'}
                      underlineColorAndroid={'transparent'}
                      secureTextEntry={pwd2vis}
                      clearButtonMode='always'
                      value={pwd2}
-                     onChangeText={changePwd2Input}/>
+                     onChangeText={val=>changePwd2Input(val.trim())}/>
           <Icon style={styles.icon}
                 name={!pwd2vis ? 'visibility' : 'visibility-off'}
                 size={25}
@@ -56,8 +58,8 @@ class DoublePwdInput extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    pwd1: state.doublePwdInput.pwd1,
-    pwd2: state.doublePwdInput.pwd2,
+    pwd1: state.doublePwdInput.pwd1.trim(),
+    pwd2: state.doublePwdInput.pwd2.trim(),
     pwd1vis: state.doublePwdInput.pwd1vis,
     pwd2vis: state.doublePwdInput.pwd2vis,
     pwd1valid: state.doublePwdInput.pwd1valid,

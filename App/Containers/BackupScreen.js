@@ -125,8 +125,7 @@ class BackupScreen extends Component {
         <View style={styles.titleBox}>
           <Text style={styles.titleText}>Back up your mnemonic</Text>
         </View>
-        <TextInput placeholder="输入助记词，按空格分隔；或者直接点击助记词按钮输入"
-                   style={styles.textArea}
+        <TextInput style={styles.textArea}
                    placeholderTextColor={Colors.inActiveTint}
                    underlineColorAndroid={'transparent'}
                    multiline={true}

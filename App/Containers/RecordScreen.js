@@ -105,24 +105,22 @@ class RecordScreen extends Component {
   }
 
   _renderTxItem = ({item}) => {
-    let { remark, time, status, from, to, amount} = item
+    let { remark, direction, time, status, from, to, amount} = item
     let { address } = this.props
-    console.tron.log('renderTxItem amount', amount, status)
     if(amount < 0.000001 || status == 4)
       return <View />
-
-    let type = from.localeCompare(address, 'en', {sensitivity: 'base'})?'in':'out'
-    let direction = type==='in'?'from':'to'
+    let mark = direction==='in'?'from':'to'
+    console.tron.log(item, mark)
     return <TouchableOpacity style={styles.txItem} onPress={_=>this._itemPressed(item)}>
       <View style={[styles.timeWrapper, {width: 80}]}>
         <Text style={styles.statusText}>{TX_STATUS[status].text}</Text>
         <Text style={styles.timeText}>{time}</Text>
       </View>
       <View style={styles.addressWrapper}>
-        <Text numberOfLines={1} ellipsizeMode='middle' style={styles.addressText}><Text style={{width: 20, textAlign:'right', color:'gray'}}>{direction}: </Text>{eval(direction)}</Text>
+        <Text numberOfLines={1} ellipsizeMode='middle' style={styles.addressText}><Text style={{width: 20, textAlign:'right', color:'gray'}}>{mark}: </Text>{eval(mark)}</Text>
       </View>
       <View style={styles.valueWrapper}>
-        <Text style={styles[type + 'comeValue']}>{(type==='in'?'+':'-') + displayETH(amount)}</Text>
+        <Text style={styles[direction + 'comeValue']}>{(direction=='in'?'+':'-') + displayETH(amount)}</Text>
       </View>
     </TouchableOpacity>
   }

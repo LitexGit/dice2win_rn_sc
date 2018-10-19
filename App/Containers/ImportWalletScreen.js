@@ -66,7 +66,7 @@ class ImportWalletScreen extends Component {
   }
 
   render () {
-    let { pwd, pwd1, pwd2, back, importFromMnemonic, importEncryptWallet, alert } = this.props
+    let { pwd, pwd1, pwd2, pwdValid, back, importFromMnemonic, importEncryptWallet, alert } = this.props
     return (
       <View style={styles.container}>
         <ScrollableTabView
@@ -99,13 +99,14 @@ class ImportWalletScreen extends Component {
                     alert('incorrect mnemonic')
                     return;
                   }
-
+                  if(!pwdValid){
+                    alert('password format invalid')
+                  }
                   if (!!pwd1 && pwd1 === pwd2) {
                     importFromMnemonic(this.state.mnemonic, pwd2)
                   } else {
                     alert('passwords do not match')
                   }
-
                 }}>
                 <Text style={styles.label}> Import </Text>
               </TouchableOpacity>
@@ -157,7 +158,8 @@ const mapStateToProps = (state) => {
   return {
     pwd1: state.doublePwdInput.pwd1,
     pwd2: state.doublePwdInput.pwd2,
-    pwd: state.singlePwdInput.pwd
+    pwdValid: state.doublePwdInput.pwd1valid,
+    pwd: state.singlePwdInput.pwd,
   }
 }
 
