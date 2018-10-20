@@ -14,7 +14,7 @@ class ConfirmModal extends Component {
     super(props)
     this.state = {
       displayGas: props.gas,
-      minGas: 4,
+      minGas: 1,
       maxGas: 100,
     }
   }
@@ -23,6 +23,13 @@ class ConfirmModal extends Component {
     let {gasAuto, updateGas} = this.props
     updateGas(gasAuto)
     this.setState({displayGas: gasAuto})
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    let {gasAuto, gas} = this.props
+    if(!gas || gasAuto != prevProps.gasAuto){
+      this._autoGas()
+    }
   }
 
   render () {
@@ -54,7 +61,7 @@ class ConfirmModal extends Component {
         </View>
         <View style={styles.gasWrapper}>
           <View style={styles.gasStatus}>
-            <View style={styles.hContainer}>
+            <View style={[styles.hContainer, {justifyContent:'flex-start'}]}>
               <Text style={styles.label}>Gas: </Text>
               <Text style={styles.gasText}><Text style={{fontWeight:'900'}}>{displayGas}</Text> Gwei</Text>
             </View>

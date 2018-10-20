@@ -82,8 +82,8 @@ export default StyleSheet.create({
     paddingTop: 3,
   },
   autoGasText:{
-    fontSize: 12,
-    color: Colors.casinoGreen,
+    fontSize: 13,
+    color: Colors.silver,
   },
 
   actionWrapper: {

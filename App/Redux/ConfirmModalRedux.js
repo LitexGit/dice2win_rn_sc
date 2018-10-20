@@ -24,7 +24,7 @@ export const INITIAL_STATE = Immutable({
   amount: 0,
   from: null,
   to: null,
-  gas: 4,
+  gas: 0,
   gasAuto: 4,
 
   // format: {action, data}
