@@ -21,6 +21,8 @@
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
 #import "iVersion.h"
+#import "ReactNativeConfig.h"
+
 
 @interface AppDelegate ()<JPUSHRegisterDelegate>
 
@@ -37,8 +39,12 @@
 {
   iVersion *versionUtils = [iVersion sharedInstance];
 //  versionUtils.checkingfromAppStore
-  versionUtils.updateURL = [NSURL URLWithString: @"itms-services://?action=download-manifest&url=https://eth4.fun/apps/eth4fun/eth4fun.plist"];
-  versionUtils.remoteVersionsPlistURL = @"https://eth4.fun/apps/eth4fun/versions.plist";
+  
+  NSString *updateURL = [NSString stringWithFormat:@"itms-services://?action=download-manifest&url=%@", [ReactNativeConfig envFor:@"IOS_UPDATE_URL"]];
+  
+  versionUtils.updateURL = [NSURL URLWithString: updateURL];
+  
+  versionUtils.remoteVersionsPlistURL = [ReactNativeConfig envFor:@"IOS_VERSION_PLIST_URL"];
 }
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
@@ -111,10 +117,14 @@
   NSURL *jsCodeLocation;
 
 
+#ifdef DEBUG
   jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
+#else
   //For Release
-//   jsCodeLocation = [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
+   jsCodeLocation = [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
+#endif
 
+  
   RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation
                                                       moduleName:@"Dice2Win"
                                                initialProperties:nil
