@@ -45,7 +45,7 @@ public class MainActivity extends ReactActivity {
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
 
-//        updateDiy2();
+        updateDiy2();
     }
 
     /**
@@ -143,7 +143,7 @@ public class MainActivity extends ReactActivity {
     /**
      * 自定义接口协议+自定义对话框
      *
-     * @param view
+     * @param
      */
     public void updateDiy2() {
         //不显示下载进度
@@ -159,8 +159,10 @@ public class MainActivity extends ReactActivity {
 
         params.put("appKey", "ab55ce55Ac4bcP408cPb8c1Aaeac179c5f6f");
         params.put("appVersion", AppUpdateUtils.getVersionName(MainActivity.this));
-        params.put("key1", "value2");
-        params.put("key2", "value3");
+        params.put("appName", AppUpdateUtils.getAppName(MainActivity.this));
+        params.put("versionCode", "" + AppUpdateUtils.getVersionCode(MainActivity.this));
+        params.put("package", "" + getApplicationContext().getPackageName());
+
 
         new UpdateAppManager
                 .Builder()
