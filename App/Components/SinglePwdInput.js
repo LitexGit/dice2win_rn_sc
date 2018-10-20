@@ -25,7 +25,7 @@ class SinglePwdInput extends Component {
                      clearButtonMode='always'
                      underlineColorAndroid={'transparent'}
                      value={pwd}
-                     keyboardType='numeric'
+                    //  keyboardType='numeric'
                      onChangeText={changePwdInput}/>
           <Icon style={styles.icon}
                 name={!pwdVis ? 'visibility' : 'visibility-off'}
