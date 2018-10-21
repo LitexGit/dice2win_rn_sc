@@ -49,6 +49,7 @@ const create = (baseURL = Config.BASE_URL) => {
   const commitTx = ({commit, tx_hash}) => ApiSauceObj.put('api/v1/games/dev/commit', {commit, tx_hash})
 
   const register = ({inviter, nickname, address}) => ApiSauceObj.put('api/v1/games/dev/register', {aff_code: inviter, nickname, eth_address: address})
+  const withdraw = ({uid, amount}) => ApiSauceObj.put('api/v1/games/dev/withdraw', {uid, amount})
 
   // ------
   // STEP 3
@@ -78,6 +79,7 @@ const create = (baseURL = Config.BASE_URL) => {
     commitTx,
 
     register,
+    withdraw,
   }
 }
 

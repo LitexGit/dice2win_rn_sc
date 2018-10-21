@@ -4,6 +4,7 @@ import Toast from 'react-native-root-toast'
 
 import { connect } from 'react-redux'
 import RecordActions from '../Redux/RecordRedux'
+import WalletActions from '../Redux/WalletRedux'
 
 import { displayETH, sectionlize } from '../Lib/Utils/format'
 
@@ -28,7 +29,7 @@ const STATUS = [
 
 class PromotionScreen extends Component {
   static navigationOptions = {
-    title: 'Referral'
+    title: I18n.t('Referral')
   }
 
   constructor(props) {
@@ -60,11 +61,18 @@ class PromotionScreen extends Component {
   }
 
 
-  _withdraw = () => {
-    Toast.show(I18n.t('WithdrawMsg'), {
-      duration: Toast.durations.LONG,
-      position: Toast.positions.CENTER,
-    })
+  _withdraw = (bonus) => {
+    console.tron.log('BONUS', bonus)
+    if(!bonus || bonus==='0'){
+      Toast.show(I18n.t('CannotWithdraw'), {
+        duration: Toast.durations.LONG,
+        position: Toast.positions.CENTER,
+      })
+      return
+    }
+
+    console.tron.log('BONUS', bonus)
+    this.props.withdraw()
   }
 
   _renderSectionHeader = ({section}) => {
@@ -111,7 +119,7 @@ class PromotionScreen extends Component {
             <Text style={styles.balance}>{displayETH(bonus)}</Text>
             <Text style={styles.unit}> ETH</Text>
           </View>
-          <TouchableOpacity style={styles.withdrawButton} onPress={_=>this._withdraw()}><Text style={styles.withdrawButtonText}>{I18n.t('Withdraw2Wallet')}</Text></TouchableOpacity>
+          <TouchableOpacity style={styles.withdrawButton} onPress={_=>this._withdraw(bonus)}><Text style={styles.withdrawButtonText}>{I18n.t('Withdraw2Wallet')}</Text></TouchableOpacity>
           <Text style={[styles.label, {textAlign:'center'}]}>{I18n.t('TotalBonus') + ':\n'}<Text style={styles.valueText}>{displayETH(totalBonus)}</Text> ETH</Text>
           <TouchableOpacity onPress={this._shareLink.bind(this)}><Text style={styles.shareText}>{I18n.t('Share2Earn')}</Text></TouchableOpacity>
         </View>
@@ -151,6 +159,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     loadRecords: (type, data) => dispatch(RecordActions.recordRequest({type, data})),
+    withdraw: () => dispatch(WalletActions.withdraw()),
   }
 }
 

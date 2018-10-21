@@ -19,6 +19,8 @@ const { Types, Creators } = createActions({
   importFromMnemonic: ["data"],
   importEncryptWallet: ["data"],
   setWallet: ["wallet"],
+  withdraw: null,
+
   walletRequest: ["data"],
   walletSuccess: ["payload"],
   walletFailure: ["payload"]

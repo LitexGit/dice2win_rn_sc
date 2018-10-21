@@ -41,7 +41,8 @@ export const INITIAL_STATE = Immutable({
 export const UserSelectors = {
   getData: state => state.data,
   getUid: state => state.user.uid,
-  getInviteCode: state => state.user.invite
+  getInviteCode: state => state.user.invite,
+  getBonus: state => state.user.bonus,
 }
 
 /* ------------- Reducers ------------- */

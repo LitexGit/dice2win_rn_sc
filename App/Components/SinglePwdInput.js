@@ -4,6 +4,7 @@ import styles from './Styles/SinglePwdInputStyle'
 import connect from 'react-redux/es/connect/connect'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import SinglePwdInputActions from '../Redux/SinglePwdInputRedux'
+import I18n from '../I18n'
 
 class SinglePwdInput extends Component {
 
@@ -19,7 +20,7 @@ class SinglePwdInput extends Component {
           <TextInput style={styles.inputText}
                      autoFocus={false}
                      multiline={false}
-                     placeholder='Input your password'
+                     placeholder={I18n.t('Password')}
                      placeholderTextColor={'gray'}
                      secureTextEntry={pwdVis}
                      clearButtonMode='always'

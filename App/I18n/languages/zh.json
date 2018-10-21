@@ -83,7 +83,9 @@
   "TotalBonus": "累计获得的邀请奖励",
   "Share2Earn": "分享以获得更多奖励",
   "RefLevel": "邀请层级",
-  "WithdrawMsg": "您的提现申请已提交，请等待审核",
+  "WithdrawSubmitted": "您的提现申请已提交，请等待审核",
+  "WithdrawFailed": "提交失败，请重试",
+  "CannotWithdraw": "您没有可提现的奖励，\n\n马上邀请好友玩游戏赚取奖励吧！",
 
 
   "SettingScreenLabel": "设置",

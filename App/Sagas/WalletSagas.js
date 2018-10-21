@@ -9,7 +9,7 @@
 *    you'll need to define a constant in that file.
 *************************************************************/
 
-import { call, put, select } from 'redux-saga/effects'
+import { call, put, select, all } from 'redux-saga/effects'
 import WalletActions, { WalletSelectors } from '../Redux/WalletRedux'
 import GameActions from '../Redux/GameRedux'
 import PwdModalActions, { PwdModalSelectors } from '../Redux/PwdModalRedux'
@@ -19,8 +19,9 @@ import ConfirmModalActions, { ConfirmModalSelectors } from '../Redux/ConfirmModa
 import { ConfigSelectors } from '../Redux/ConfigRedux'
 import NavigationActions from 'react-navigation/src/NavigationActions'
 import JPushModule from 'jpush-react-native'
-import UserActions from '../Redux/UserRedux'
+import UserActions, { UserSelectors } from '../Redux/UserRedux'
 import I18n from '../I18n'
+import Toast from 'react-native-root-toast';
 
 // import { WalletSelectors } from '../Redux/WalletRedux'
 let ethers = require('ethers')
@@ -339,4 +340,19 @@ export function * getWallet (api, action) {
   } catch (err) {
     yield put(WalletActions.walletFailure())
   }
+}
+
+export function * withdraw (api, action) {
+  let [uid, bonus] = yield all([
+    select(UserSelectors.getUid),
+    select(UserSelectors.getBonus),
+  ])
+  if(!bonus) return
+
+  const {ok, data:{status}} = yield call(api.withdraw, {uid, amount:bonus})
+  let message = (ok && status=='success') ? I18n.t('WithdrawSubmitted') : I18n.t('WithdrawFailed')
+  Toast.show(message, {
+    duration: Toast.durations.LONG,
+    position: Toast.positions.CENTER,
+  })
 }

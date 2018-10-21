@@ -83,7 +83,9 @@
   "TotalBonus": "Total bonus you have earned",
   "Share2Earn": "SHARE to earn MORE",
   "RefLevel": "Ref level",
-  "WithdrawMsg": "Withdraw request submitted, please wait for review",
+  "WithdrawSubmitted": "Withdraw request submitted, please wait for review",
+  "WithdrawFailed": "提交失败，请重试",
+  "CannotWithdraw": "No bonus to withdraw, SHARE to your friends and get bonus right now!",
 
 
   "SettingScreenLabel": "设置",
