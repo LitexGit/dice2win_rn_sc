@@ -5,6 +5,7 @@ import styles from './Styles/CoinStyle'
 import Images from '../Themes/Images'
 import BetActions from '../Redux/BetRedux'
 import connect from 'react-redux/es/connect/connect'
+import I18n from '../I18n'
 
 class Coin extends Component {
   componentDidMount () {
@@ -16,7 +17,7 @@ class Coin extends Component {
     return (
       <React.Fragment>
         <View style={styles.infoBox}>
-          <Text style={styles.infoText}>Choose coin side to bet on</Text>
+          <Text style={styles.infoText}>{I18n.t('GameCoin')}</Text>
         </View>
         <View style={styles.coinBox}>
           <TouchableOpacity onPress={clickCoin}>

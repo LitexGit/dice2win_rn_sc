@@ -7,13 +7,12 @@ import { connect } from 'react-redux'
 // Styles
 import styles from './Styles/PreBackupScreenStyle'
 import NavigationActions from 'react-navigation/src/NavigationActions'
-import Colors from '../Themes/Colors'
-import WalletActions from '../Redux/WalletRedux'
+import I18n from '../I18n'
 
 class PreBackupScreen extends Component {
   static navigationOptions = ({navigation}) => {
     return {
-      title: 'Back up your mnemonic',
+      title: I18n.t('BackupMnemonic'),
     }
   }
 
@@ -23,21 +22,22 @@ class PreBackupScreen extends Component {
     return (
       <View style={styles.container}>
         <View style={styles.titleBox}>
-          <Text style={styles.titleText}>Back up your mnemonic</Text>
+          <Text style={styles.titleText}>{I18n.t('BackupMnemonic')+'\n'}</Text>
         </View>
         <Text style={styles.infoText}>
-          {'      Please record the mnemonic of your wallet and save it to a safe place. '}
+          {I18n.t('MnemonicWarning1')+'\n'}
         </Text>
         <Text style={styles.infoText}>
-          {'      Wallet mnemonics are used to recover your account. Do not reveal' +
-            ' your mnemonics at any time. It is recommended not to use screen captures to' +
-            ' save it or transfer it via internet tools.'}
+          {I18n.t('MnemonicWarning2')+'\n'}
+        </Text>
+        <Text style={styles.infoText}>
+          {I18n.t('MnemonicWarning3')+'\n'}
         </Text>
         <Text style={styles.mnemonicText}>
           {mnemonic}</Text>
         <View style={styles.actionWrapper}>
           <TouchableOpacity style={styles.confirmButton} onPress={() => this.props.navigate('BackupScreen')}>
-            <Text style={styles.label}> Next </Text>
+            <Text style={styles.label}> {I18n.t('Next')} </Text>
           </TouchableOpacity>
         </View>
       </View>

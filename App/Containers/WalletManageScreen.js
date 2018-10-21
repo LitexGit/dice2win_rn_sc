@@ -7,18 +7,16 @@ import { connect } from 'react-redux'
 // Styles
 import styles from './Styles/WalletManageScreenStyle'
 import NavigationActions from 'react-navigation/src/NavigationActions'
-import Colors from '../Themes/Colors'
-import Metrics from '../Themes/Metrics'
-import NewPwdModalActions from '../Redux/NewPwdModalRedux'
 import PwdModalActions from '../Redux/PwdModalRedux'
 import WalletActions from '../Redux/WalletRedux'
+import I18n from '../I18n'
 
 class WalletManageScreen extends Component {
 
 
   static navigationOptions = ({navigation}) => {
     return {
-      title: 'Wallet',
+      title: I18n.t('Wallet'),
       headerTitleStyle: { textAlign: 'center', alignSelf: 'center' },
     }
   }
@@ -49,16 +47,16 @@ class WalletManageScreen extends Component {
     return (
       <View style={styles.container}>
         <TouchableOpacity style={styles.buttonWrapper} onPress={_ => this.props.navigate('NewWalletScreen')}>
-          <Text style={styles.buttonText}> New Wallet </Text>
+          <Text style={styles.buttonText}> {I18n.t('NewWallet')} </Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.buttonWrapper} onPress={_ => this.props.navigate('ImportWalletScreen')}>
-          <Text style={styles.buttonText}> Import Wallet </Text>
+          <Text style={styles.buttonText}> {I18n.t('ImportWallet')} </Text>
         </TouchableOpacity>
         {!!W.address && <TouchableOpacity style={styles.buttonWrapper} onPress={this._backup.bind(this)}>
-          <Text style={styles.buttonText}> Backup Wallet </Text>
+          <Text style={styles.buttonText}> {I18n.t('BackupWallet')} </Text>
         </TouchableOpacity>}
         {!!W.address && <TouchableOpacity style={styles.buttonWrapper} onPress={_ => this.props.navigate('TransferScreen')}>
-          <Text style={styles.buttonText}> Transfer </Text>
+          <Text style={styles.buttonText}> {I18n.t('Transfer')} </Text>
         </TouchableOpacity>}
       </View>
     )

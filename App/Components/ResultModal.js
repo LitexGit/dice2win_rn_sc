@@ -5,15 +5,16 @@ import WalletActions from '../Redux/WalletRedux'
 import { displayETH } from '../Lib/Utils/format'
 import styles from './Styles/ResultModalStyle'
 import { connect } from 'react-redux'
+import I18n from '../I18n'
 
 // i18n
 const STATUS_TEXT = {
-  placing: 'Submitting to contract..',
-  placed: 'Submitted, waiting for drawing..',
-  drawn: 'Drawing now..',
-  win: 'Congrats!!! YOU WIN:',
-  lose: 'Sorry you lose..',
-  fail: 'Submition failed, please bet again',
+  placing: I18n.t('placing'),
+  placed: I18n.t('placed'),
+  drawn: I18n.t('drawn'),
+  win: I18n.t('winMsg'),
+  lose: I18n.t('loseMsg'),
+  fail: I18n.t('failMsg'),
   won: 'Winning confirmed',
   lost: 'Lost confirmed',
 }
@@ -31,7 +32,7 @@ class ResultModal extends Component {
         </View>
         <View style={styles.buttonPanel}>
           <TouchableOpacity style={styles.buttonWrapper} onPress={_=>this.props.close(modulo, status)}>
-            <Text style={styles.buttonText}>Close</Text>
+            <Text style={styles.buttonText}>{I18n.t('Close')}</Text>
           </TouchableOpacity>
         </View>
       </View>

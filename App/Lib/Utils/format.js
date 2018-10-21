@@ -1,6 +1,7 @@
 'use strict'
 
 import { utils } from 'ethers'
+import I18n from '../../I18n'
 
 const DECIMAL = 6 // how many decimal places to display
 
@@ -32,8 +33,8 @@ const sectionlize = (items) => {
     let yesterday = formatDate(d)
     Object.keys(dateGroup).forEach(key=>{
       let data = dateGroup[key]
-      key===today && (key='today')
-      key===yesterday && (key='yesterday')
+      key===today && (key=I18n.t('today'))
+      key===yesterday && (key=I18n.t('yesterday'))
       sections.push({ key, data })
     })
   }

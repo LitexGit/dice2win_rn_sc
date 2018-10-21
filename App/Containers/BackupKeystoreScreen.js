@@ -9,33 +9,28 @@ import QR from 'react-native-qrcode-svg'
 import styles from './Styles/BackupKeystoreScreenStyle'
 import NavigationActions from 'react-navigation/src/NavigationActions'
 import Colors from '../Themes/Colors'
-import PwdModalActions from '../Redux/PwdModalRedux'
-import BackupKeystoreWarningModal from '../Components/BackupKeystoreWarningModal'
 import MessageBoxActions from '../Redux/MessageBoxRedux'
 import Toast from 'react-native-root-toast'
+import I18n from '../I18n'
 
 class BackupKeystoreScreen extends Component {
   static navigationOptions = ({navigation}) => {
     return {
-      title: 'Back up your wallet',
+      title: I18n.t('BackupWallet'),
     }
   }
 
   _copyKeystore () {
     let {keystore} = this.props
     Clipboard.setString(keystore)
-    Toast.show('keystore copied', {
+    Toast.show(I18n.t('KeystoreCopied'), {
       position: Toast.positions.CENTER,
     })
   }
 
   componentDidMount () {
     // this.props.openPwdModal()
-    this.props.alert("DO NOT Make Any ScreenShot!!\n\n\n \
-    - Save your keystore offline\n\n \
-    - Don't transfer it with Internet\n\n \
-    - Only scan your keystore qrcode directly\n\n \
-    - Ensure no others and no cameras around\n")
+    this.props.alert(I18n.t('BackupKeystoreWarning'))
   }
 
   render () {
@@ -45,7 +40,7 @@ class BackupKeystoreScreen extends Component {
       <ScrollView style={styles.container}>
         <View style={styles.content}>
           <View style={styles.header}>
-            <Text style={styles.headerText}>export keystore file: </Text>
+            <Text style={styles.headerText}>{I18n.t('ExportKeystore')}</Text>
           </View>
           <View>
             <Text style={styles.keystore} onPress={_ => this._copyKeystore()}>
@@ -54,7 +49,7 @@ class BackupKeystoreScreen extends Component {
           </View>
 
           <View style={styles.header}>
-            <Text style={styles.headerText}>Qrcode</Text>
+            <Text style={styles.headerText}>{I18n.t("QR")}</Text>
           </View>
 
           <View style={styles.qr}>

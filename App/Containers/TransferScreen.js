@@ -12,11 +12,12 @@ import MessageBoxActions from '../Redux/MessageBoxRedux'
 import PwdModalActions, { openPwdModal } from '../Redux/PwdModalRedux'
 import { displayETH } from '../Lib/Utils/format'
 import { isAddress } from '../Lib/Utils/address'
+import I18n from '../I18n'
 
 class TransferScreen extends Component {
 
   static navigationOptions = {
-    title: 'Transfer'
+    title: I18n.t('Transfer')
   }
 
   state = {
@@ -30,20 +31,17 @@ class TransferScreen extends Component {
     if (!W.address) {
       navigate('WalletManageScreen')
     } else if(!isAddress(this.state.to)){
-      alert('Please input valid address')
+      alert(I18n.t('InvalidAddress'))
     }else if (this.state.value >= balance) {
-      alert('You don\'t have enough balance to place Bet')
+      alert(I18n.t('InsufficientBalance'))
     } else {
-
       let confirmedActions = [{
         action: PwdModalActions.openPwdModal,
         data: {
-          submitedActions: [
-            {
-              action: WalletActions.transfer,
-              data: {...{to, value} = this.state}
-            }
-          ]
+          submitedActions: [{
+            action: WalletActions.transfer,
+            data: {...{to, value} = this.state}
+          }]
         }
       }]
 
@@ -62,14 +60,14 @@ class TransferScreen extends Component {
       <View style={styles.container}>
         <View style={styles.titleBox}>
           <Text style={styles.titleText}>
-            Wallet balance: {displayETH(this.props.balance)} ETH
+            {I18n.t('Balance')}: {displayETH(this.props.balance)} ETH
           </Text>
         </View>
         <View style={styles.header}>
           <TextInput style={styles.headerText}
                      autoFocus={false}
                      multiline={false}
-                     placeholder='to address'
+                     placeholder={I18n.t('ToAddress')}
                      placeholderTextColor={'gray'}
                      underlineColorAndroid={'transparent'}
                      clearButtonMode='always'
@@ -80,7 +78,7 @@ class TransferScreen extends Component {
           <TextInput style={styles.valueText}
                      autoFocus={false}
                      multiline={false}
-                     placeholder='amount'
+                     placeholder={I18n.t('amount')}
                      placeholderTextColor={'gray'}
                      underlineColorAndroid={'transparent'}
                      clearButtonMode='always'
@@ -92,7 +90,7 @@ class TransferScreen extends Component {
         <View style={styles.actionWrapper}>
           <TouchableOpacity style={styles.confirmButton}
                             onPress={this._transfer.bind(this)}>
-            <Text style={styles.label}> Transfer </Text>
+            <Text style={styles.label}> {I18n.t('Transfer')} </Text>
           </TouchableOpacity>
         </View>
       </View>

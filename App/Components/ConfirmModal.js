@@ -8,6 +8,7 @@ import Overlay from 'react-native-modal-overlay'
 import styles from './Styles/ConfirmModalStyle'
 import { displayETH } from '../Lib/Utils/format'
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback'
+import I18n from '../I18n'
 
 class ConfirmModal extends Component {
   constructor(props){
@@ -47,7 +48,7 @@ class ConfirmModal extends Component {
         animationType='zoomIn'
         animationDuration={300}>
         <View style={styles.header}>
-          <Text style={styles.headerText}>Confirm</Text>
+          <Text style={styles.headerText}>{I18n.t('Confirm')}</Text>
         </View>
         <View style={styles.ethWrapper}>
           <Text style={styles.ethText}><Text style={{fontWeight:'900'}}>{displayETH(amount)}</Text> ETH</Text>
@@ -66,11 +67,11 @@ class ConfirmModal extends Component {
               <Text style={styles.label}>Gas: </Text>
               <Text style={styles.gasText}><Text style={{fontWeight:'900'}}>{displayGas}</Text> Gwei</Text>
             </View>
-            <View style={styles.hContainer}>
-              <Text style={styles.autoGasText}>Recommend: </Text>
-              <Text style={styles.autoGasText}>{gasAuto} </Text>
+            <View style={[styles.hContainer, {justifyContent:'flex-end'}]}>
+              <Text style={styles.label}>{I18n.t('Recommend')}: </Text>
+              <Text style={styles.autoGasText}>{gasAuto}  </Text>
             </View>
-            <TouchableOpacity style={styles.autoGasButton} onPress={this._autoGas.bind(this)}><Text style={styles.label}> Apply </Text>
+            <TouchableOpacity style={styles.autoGasButton} onPress={this._autoGas.bind(this)}><Text style={styles.label}> {I18n.t('Apply')} </Text>
             </TouchableOpacity>
           </View>
           <View style={styles.sliderWrapper}>
@@ -92,10 +93,10 @@ class ConfirmModal extends Component {
 
         <View style={styles.actionWrapper}>
           <TouchableOpacity style={styles.cancelButton} onPress={this._cancel.bind(this)}>
-            <Text style={styles.label}> Cancel </Text>
+            <Text style={styles.label}> {I18n.t('Cancel')} </Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.confirmButton} disabled={loading} onPress={this._confirm.bind(this)}>
-            <Text style={styles.label}> {loading?'Loading...':'Confirm'} </Text>
+            <Text style={styles.label}> {loading?I18n.t('Loading')+'...':I18n.t('Confirm')} </Text>
           </TouchableOpacity>
         </View>
       </Overlay>

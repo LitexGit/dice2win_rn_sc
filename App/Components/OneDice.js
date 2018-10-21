@@ -5,6 +5,7 @@ import styles from './Styles/OneDiceStyle'
 import Images from '../Themes/Images'
 import BetActions from '../Redux/BetRedux'
 import connect from 'react-redux/es/connect/connect'
+import I18n from '../I18n'
 
 const diceImage = [
   {
@@ -51,7 +52,7 @@ class OneDice extends Component {
     return (
       <React.Fragment>
         <View style={styles.infoBox}>
-          <Text style={styles.infoText}>Choose the dice number(s)</Text>
+          <Text style={styles.infoText}>{I18n.t('GameDice1')}</Text>
         </View>
         <View style={styles.oneDiceBox}>
           {this.props.diceWeights.map((value, idx) => (idx < 3) && this.renderDice(value, idx))}

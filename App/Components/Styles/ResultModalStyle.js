@@ -13,7 +13,7 @@ export default StyleSheet.create({
     backgroundColor: Colors.facebook,
   },
   container_lose: {
-    backgroundColor: Colors.charcoal,
+    backgroundColor: Colors.windowTint,
   },
 
   content:{

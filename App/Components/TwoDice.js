@@ -6,6 +6,7 @@ import Images from '../Themes/Images'
 import BetActions from '../Redux/BetRedux'
 import connect from 'react-redux/es/connect/connect'
 import { Colors } from '../Themes';
+import I18n from '../I18n'
 
 const bets = [true, false, true, false, true, false, true, false, true, false, true]
 
@@ -29,7 +30,7 @@ class TwoDice extends Component {
     return (
       <React.Fragment>
         <View style={styles.infoBox}>
-          <Text style={styles.infoText}>Choose sum of dice to bet on </Text>
+          <Text style={styles.infoText}>{I18n.t('GameDice2')}</Text>
         </View>
         <View style={styles.twoDiceBox}>
           {this.props.diceWeights.map((value, idx) => idx < 4 && this.renderDice(value, idx))}

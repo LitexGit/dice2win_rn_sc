@@ -16,11 +16,12 @@ import { displayETH } from '../Lib/Utils/format'
 import { Metrics, Colors } from '../Themes'
 import styles from './Styles/WalletScreenStyle'
 import NavigationActions from 'react-navigation/src/NavigationActions'
+import I18n from '../I18n'
 
 class WalletScreen extends Component {
   static navigationOptions = {
-    title: 'Account',
-    tabBarLabel: 'Account',
+    title: I18n.t('AccountTabTitle'),
+    tabBarLabel: I18n.t('AccountTabLabel'),
     tabBarIcon: ({tintColor}) => (
       <FA5 name={'user'} size={Metrics.bottomTabIconSize} color={tintColor}/>
     )
@@ -28,8 +29,6 @@ class WalletScreen extends Component {
 
   constructor (props) {
     super(props)
-
-    console.tron.log('WalletScreen componentDidMount', W)
 
     if(!W.address){
       this.props.navigation.dispatch(NavigationActions.reset({
@@ -54,7 +53,7 @@ class WalletScreen extends Component {
   _copyAddress = () => {
     let {address} = this.props
     Clipboard.setString(address)
-    Toast.show('address copied', {
+    Toast.show(I18n.t('AddressCopied'), {
       position: Toast.positions.CENTER,
     })
   }
@@ -62,7 +61,7 @@ class WalletScreen extends Component {
   _copyCode = () => {
     let {code} = this.props
     Clipboard.setString(code)
-    Toast.show('code copied', {
+    Toast.show(I18n.t('CodeCopied'), {
       position: Toast.positions.CENTER,
     })
   }
@@ -108,12 +107,12 @@ class WalletScreen extends Component {
 
   render () {
     let {fetching, balance, address, bonus, code} = this.props
-    return <ScrollView style={styles.container} refreshControl={<RefreshControl refreshing={fetching} onRefresh={this._onRefresh} tintColor={Colors.tintColor} title="Refreshing..." titleColor={Colors.text} />}>
+    return <ScrollView style={styles.container} refreshControl={<RefreshControl refreshing={fetching} onRefresh={this._onRefresh} tintColor={Colors.tintColor} title={I18n.t('Refreshing')+'...'} titleColor={Colors.text} />}>
         <View style={styles.walletWrapper}>
           <View style={styles.walletEditWrapper}>
             <TouchableOpacity style={styles.walletButton} onPress={_ => this._goto("wallet")}>
               <FA5 name={"wallet"} size={24} style={styles.walletIcon} />
-              <Text style={styles.walletText}>wallet</Text>
+              <Text style={styles.walletText}>{I18n.t('wallet')}</Text>
             </TouchableOpacity>
           </View>
           <View style={styles.balanceWrapper}>
@@ -132,12 +131,12 @@ class WalletScreen extends Component {
           </View>
           <Text style={styles.addressText}>{address}</Text>
           <TouchableOpacity style={styles.addressWrapper} onPress={_ => this._copyAddress()}>
-            <Text style={styles.addressText}>Copy address</Text>
+            <Text style={styles.addressText}>{I18n.t('CopyAddress')}</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.shareWrapper}>
           <TouchableOpacity style={styles.shareUp} onPress={_ => this._goto("promotion")}>
-            <Text style={styles.label}>Referral bonus</Text>
+            <Text style={styles.label}>{I18n.t('ReferralBonus')}</Text>
             <View style={[styles.balanceWrapper, styles.bonusBalanceWrapper]}>
               <Text style={styles.bonus}>{ displayETH(bonus) }</Text>
               <Text style={styles.unit}> ETH</Text>
@@ -150,15 +149,15 @@ class WalletScreen extends Component {
           </TouchableOpacity>
           <View style={styles.shareDown}>
             <View style={styles.codeWrapper}>
-              <Text style={styles.label}>Referral code: </Text>
+              <Text style={styles.label}>{I18n.t('ReferralCode')+':'} </Text>
               <Text style={styles.code}>{code}</Text>
             </View>
             <View style={styles.actionsWrapper}>
               <TouchableOpacity onPress={_ => this._copyCode()} style={styles.actionWrapper}>
-                <Text style={styles.action}>Copy code</Text>
+                <Text style={styles.action}>{I18n.t('CopyCode')}</Text>
               </TouchableOpacity>
               <TouchableOpacity onPress={_ => this._shareLink()} style={styles.actionWrapper}>
-                <Text style={styles.action}>Share link</Text>
+                <Text style={styles.action}>{I18n.t('ShareLink')}</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -167,7 +166,7 @@ class WalletScreen extends Component {
         <View style={styles.buttons}>
           <View style={styles.button}>
             <TouchableOpacity style={[styles.button, { borderWidth: 0 }]} onPress={_ => this._checkUpdate()}>
-              <Text style={styles.buttonText}>Version</Text>
+              <Text style={styles.buttonText}>{I18n.t('Version')}</Text>
               <Text style={styles.buttonText}>1.0.0</Text>
             </TouchableOpacity>
           </View>
@@ -183,7 +182,7 @@ class WalletScreen extends Component {
           </View>
           <View style={styles.button}>
             <TouchableOpacity style={[styles.button, { borderWidth: 0 }]} onPress={_ => this._goto("settings")}>
-              <Text style={styles.buttonText}>Settings</Text>
+              <Text style={styles.buttonText}>{I18n.t('SettingScreenLabel')}</Text>
             </TouchableOpacity>
           </View>
         </View>

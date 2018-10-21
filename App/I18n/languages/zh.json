@@ -1,19 +1,92 @@
 {
-  "GamesTabTitle": "游戏",
+  "GamesTabTitle": "Eth 4 Fun",
   "GamesTabLabel": "游戏",
 
   "GameCoinTitle": "抛硬币",
   "GameCoinDesc": "猜正反，赢得最高1.98倍投注",
+  "GameCoin": "选择硬币的一面来进行投注",
 
   "GameDice1Title": "掷骰子",
   "GameDice1Desc": "选择可能出现的点数，最高赢5.94倍",
+  "GameDice1": "选择骰子数来进行投注",
 
   "GameDice2Title": "两个骰子",
   "GameDice2Desc": "猜中两个骰子点数之和，最高赢35.64倍",
+  "GameDice2": "选择要投注的骰子总和",
 
   "GameRollTitle": "过山车",
   "GameRollDesc": "从1%到97%选择任何胜率，赢高达99倍投注",
+  "GameRoll": "调整您的胜率",
 
+  "GlobalRecords": "全局记录",
+  "WinningPays": "赔率",
+  "WinningChance": "胜率",
+  "YouWillWin": "你将赢得",
+  "OfWinningsToYourInviter": "的奖金会返利给你的邀请者",
+  "Bet": "下注",
+
+
+
+  "RecordTabTitle": "记录", 
+  "RecordTabLabel": "记录", 
+  "GameHistory": "游戏记录", 
+  "Transactions": "转账记录", 
+
+  "AccountTabTitle": "账户",
+  "AccountTabLabel": "账户",
+
+
+  "placing": "正在向合约提交..",
+  "placed": "提交成功, 等待开奖..",
+  "drawn": "正在开奖..",
+  "failMsg": "提交失败，请重试",
+  "winMsg": "恭喜！您赢得了:",
+  "loseMsg": "抱歉您输了..\n再接再厉！",
+
+
+  "NewWallet": "新建钱包",
+  "ImportWallet": "导入钱包",
+  "BackupWallet": "备份钱包",
+  "Transfer": "转账",
+
+
+  "CreatePwd": "创建密码",
+  "ConfirmPwd": "确认密码",
+
+
+  "BackupMnemonic": "备份助记词",
+  "MnemonicWarning1": "请记录下方钱包助记词并存放在安全的位置",
+  "MnemonicWarning2": "钱包助记词是您用来恢复账户的工具，在任何情况下请不要向其他人透露您的助记词，任何获得助记词的人将能够随意支配您账户中的所有资产",
+  "MnemonicWarning3": "强烈建议您不要截图或者复制粘贴到软件中保存，也不要使用网络传递助记词",
+  "WrongMnemonic": "助记词错误",
+  "WalletCreateSuccess": "钱包创建成功！\n\n如果您的钱包是新创建的或者余额为0，您需要先向钱包地址转入一些ETH才能开始下注",
+  "Attention": "注意",
+  "ImportWarning": "导入钱包会*覆盖*现有的钱包，如果你还没有备份过现有的钱包，你将会*永远丢失*它，以及里面的所有数字资产。\n\n确定要导入吗？",
+  "ImportAnyway": "了解，我确定要导入",
+  "ImportMnemonic": "请输入助记词，用空格分隔",
+  "IncorrectMnemonic": "错误的助记词",
+  "ImportKeystore": "请输入Keystore文本（JSON格式）",
+  "InvalidKeystore": "Keystore格式错误",
+  "BackupKeystoreWarning": "*不要截图！！*\n\n\n - 离线保存您的Keystore\n\n - 不要使用网络传播Keystore\n\n - 二维码只供直接扫描使用\n\n - 请确保周边没有其他人或者摄像头\n",
+  "ExportKeystore": "导出您的Keystore文件（点击下方复制）",
+  "KeystoreCopied": "Keystore已复制",
+  "InvalidAddress": "请输入格式正确的地址",
+  "ToAddress": "目的地址",
+  "TransferSuccess": "转账成功！\n\n请前往「记录」->「转账」查看交易",
+  "TransferTooFreq": "转账过于频繁，请稍候再试",
+  "TransferFail": "转账提交失败",
+
+
+  "Referral": "推荐",
+  "Bonus2Withdraw": "你可以提现的奖励",
+  "Withdraw2Wallet": "提现到钱包",
+  "TotalBonus": "累计获得的邀请奖励",
+  "Share2Earn": "分享以获得更多奖励",
+  "RefLevel": "邀请层级",
+  "WithdrawMsg": "您的提现申请已提交，请等待审核",
+
+
+  "SettingScreenLabel": "设置",
   "SettingScreenTitle": "设置",
   "MsgNotiTitle": "事件通知",
   "MsgNotiDesc": "游戏结果、活动消息等",
@@ -21,9 +94,65 @@
   "TxNotiDesc": "转账到账、奖金到账等",
   "LangSelectTitle": "语言",
 
-   "username": "用户名",
-   "password": "密码",
-   "cancel": "取消",
-   "welcome": "欢迎",
-   "login": "登录"
+
+  "ShareLink": "复制邀请链接",
+  "CopyAddress": "复制地址",
+  "CopyCode": "复制邀请码",
+  "AddressCopied": "地址已复制",
+  "CodeCopied": "邀请码已复制",
+  "LoadMore": "加载更多",
+  "NoRecord": "没有记录",
+  "Refreshing": "刷新中",
+  "Loading": "加载中",
+  "Updating": "更新中",
+  "Checking": "校验中",
+
+  "QR": "二维码",
+  "Import": "导入",
+  "Mnemonic": "助记词",
+  "Next": "下一步",
+  "Apply": "应用",
+  "Recommend": "推荐值",
+  "Submit": "提交",
+  "Confirm": "确认",
+  "Cancel": "取消",
+  "Close": "关闭",
+  "fee": "手续费",
+  "Version":"版本",
+  "ReferralCode": "邀请码",
+  "ReferralBonus": "邀请奖励",
+  "Balance": "钱包余额",
+  "Username": "用户名",
+  "Password": "密码",
+  "Login": "登录",
+
+  "amount": "金额",
+  "Wallet": "钱包",
+  "wallet": "钱包",
+  "length": "长度",
+  "transfer": "转账",
+  "stake": "下注",
+  "bonus": "奖励",
+  "winning": "奖金",
+  "today": "今天",
+  "yesterday": "昨天",
+  "wait": "稍候",
+  "win": "赢了",
+  "lose": "输了",
+  "fail": "失败",
+  "failed": "失败",
+  "rejected": "已拒绝",
+  "success": "成功",
+  "pending": "等待中",
+  "approved": "已批准",
+  "withdraw": "提现",
+
+
+  "ComingSoon": "敬请期待",
+  "InsufficientBalance": "余额不足",
+  "PwdEmpty": "密码不能为空",
+  "PwdDismatch": "密码不匹配",
+  "PwdInvalid": "密码格式错误"
+
+
 }

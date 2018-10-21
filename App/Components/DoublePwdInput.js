@@ -4,7 +4,7 @@ import styles from './Styles/DoublePwdInputStyle'
 import connect from 'react-redux/es/connect/connect'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import DoublePwdInputActions from '../Redux/DoublePwdInputRedux'
-import {Colors} from '../Themes'
+import I18n from '../I18n'
 
 class DoublePwdInput extends Component {
   componentDidMount () {
@@ -20,7 +20,7 @@ class DoublePwdInput extends Component {
                      autoFocus={this.props.focus}
                      multiline={false}
                      maxLength={20}
-                     placeholder='Password (length:8-20)'
+                     placeholder={I18n.t('Password')+'('+I18n.t('length')+':8-20)'}
                      placeholderTextColor={'gray'}
                      underlineColorAndroid={'transparent'}
                      secureTextEntry={pwd1vis}
@@ -38,7 +38,7 @@ class DoublePwdInput extends Component {
                      autoFocus={false}
                      multiline={false}
                      maxLength={20}
-                     placeholder='Confirm password'
+                     placeholder={I18n.t('ConfirmPwd')}
                      placeholderTextColor={'gray'}
                      underlineColorAndroid={'transparent'}
                      secureTextEntry={pwd2vis}

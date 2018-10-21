@@ -83,6 +83,7 @@ export default StyleSheet.create({
   },
   autoGasText:{
     fontSize: 13,
+    fontWeight: '600',
     color: Colors.silver,
   },
 

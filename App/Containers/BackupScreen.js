@@ -1,16 +1,16 @@
 import React, { Component } from 'react'
-import { ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { Text, TextInput, TouchableOpacity, View } from 'react-native'
 import { connect } from 'react-redux'
 // Add Actions - replace 'Your' with whatever your reducer is called :)
 // import YourActions from '../Redux/YourRedux'
 import WalletActions from '../Redux/WalletRedux'
-import NewPwdModalActions from '../Redux/NewPwdModalRedux'
 import MessageBoxActions from '../Redux/MessageBoxRedux'
 
 // Styles
 import styles from './Styles/BackupScreenStyle'
 import NavigationActions from 'react-navigation/src/NavigationActions'
 import Colors from '../Themes/Colors'
+import I18n from '../I18n'
 
 Array.prototype.remove = function (val) {
   var index = this.indexOf(val)
@@ -22,7 +22,7 @@ Array.prototype.remove = function (val) {
 class BackupScreen extends Component {
   static navigationOptions = ({navigation}) => {
     return {
-      title: 'Back up your mnemonic',
+      title: I18n.t('BackupMnemonic'),
     }
   }
 
@@ -99,7 +99,7 @@ class BackupScreen extends Component {
       this.props.saveWallet(this.props.mnemonic, this.props.password)
     }
     else {
-      alert('Wrong mnemonic')
+      alert(I18n.t('WrongMnemonic'))
     }
   }
 
@@ -123,7 +123,7 @@ class BackupScreen extends Component {
     return (
       <View style={styles.container}>
         <View style={styles.titleBox}>
-          <Text style={styles.titleText}>Back up your mnemonic</Text>
+          <Text style={styles.titleText}>{I18n.t('BackupMnemonic')}</Text>
         </View>
         <TextInput style={styles.textArea}
                    placeholderTextColor={Colors.inActiveTint}
@@ -138,7 +138,7 @@ class BackupScreen extends Component {
         </View>
         <View style={styles.actionWrapper}>
           <TouchableOpacity style={styles.confirmButton} onPress={() => this._checkMnemonic()}>
-            <Text style={styles.label}> Next </Text>
+            <Text style={styles.label}> {I18n.t('Next')} </Text>
           </TouchableOpacity>
         </View>
       </View>

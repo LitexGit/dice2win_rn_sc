@@ -10,13 +10,14 @@ import styles from './Styles/NewWalletScreenStyle'
 import NavigationActions from 'react-navigation/src/NavigationActions'
 import DoublePwdInput from '../Components/DoublePwdInput'
 import MessageBoxActions from '../Redux/MessageBoxRedux'
+import I18n from '../I18n'
 
 // var ethers = require('../Lib/ethers')
 
 class NewWalletScreen extends Component {
   static navigationOptions = ({navigation}) => {
     return {
-      title: 'New Wallet',
+      title: I18n.t('NewWallet'),
       headerLeft: null,
     }
   }
@@ -30,7 +31,7 @@ class NewWalletScreen extends Component {
     let { alert, pwdValid } = this.props
     
     if(!pwdValid) {
-      alert('password format invalid')
+      alert(I18n.t('PwdInvalid'))
       return
     }
 
@@ -38,7 +39,7 @@ class NewWalletScreen extends Component {
       this.props.newWallet()
       this.props.navigate('PreBackupScreen')
     } else {
-      alert('passwords do not match')
+      alert(I18n.t('PwdDismatch'))
     }
   }
 
@@ -50,7 +51,7 @@ class NewWalletScreen extends Component {
 
       <View style={styles.container}>
         <View style={styles.titleBox}>
-          <Text style={styles.titleText}>Create you password </Text>
+          <Text style={styles.titleText}>{I18n.t('CreatePwd')}</Text>
         </View>
         <DoublePwdInput focus={false} />
         <View style={styles.actionWrapper}>
@@ -58,10 +59,10 @@ class NewWalletScreen extends Component {
             {text: 'Leave page', onPress: back, style: 'cancel'},
             {text: 'Continue wallet creation', style:'default'},
           ])}>
-            <Text style={styles.label}> Cancel </Text>
+            <Text style={styles.label}> {I18n.t('Cancel')} </Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.confirmButton} onPress={this._checkPwd.bind(this)}>
-            <Text style={styles.label}> Confirm </Text>
+            <Text style={styles.label}> {I18n.t('Confirm')} </Text>
           </TouchableOpacity>
         </View>
       </View>

@@ -14,11 +14,12 @@ import Colors from '../Themes/Colors'
 import ScrollableTabView, { ScrollableTabBar } from 'react-native-scrollable-tab-view'
 import DoublePwdInput from '../Components/DoublePwdInput'
 import SinglePwdInput from '../Components/SinglePwdInput'
+import I18n from '../I18n'
 
 class ImportWalletScreen extends Component {
   static navigationOptions = ({navigation}) => {
     return {
-      title: 'Import a Wallet',
+      title: I18n.t('ImportWallet'),
     }
   }
 
@@ -32,11 +33,11 @@ class ImportWalletScreen extends Component {
 
   componentDidMount () {
     Alert.alert(
-      'ATTENTION!!!',
-      'Import new wallet will OVERRIDE current wallet, if you haven\'t back it up, you will LOST  your asset! Are you sure?',
+      I18n.t('Attention')+'!!!',
+      I18n.t('ImportWarning'),
       [
-        {text: 'Import anyway'},
-        {text: 'Cancel', onPress: this.props.back, style: 'cancel'},
+        {text: I18n.t('ImportAnyway')},
+        {text: I18n.t('Cancel'), onPress: this.props.back, style: 'cancel'},
       ],
       { cancelable: false }
     )
@@ -47,7 +48,7 @@ class ImportWalletScreen extends Component {
     if (this.props.pwd1 === this.props.pwd2) {
       this.props.navigate('PreBackupScreen')
     } else {
-      alert('passwords do not match')
+      alert(I18n.t('PwdDismatch'))
     }
   }
 
@@ -62,11 +63,11 @@ class ImportWalletScreen extends Component {
           tabBarInactiveTextColor={Colors.inActiveTint}
           tabBarUnderlineStyle={styles.tabBarUnderlineStyle}
           renderTabBar={() => <ScrollableTabBar style={{borderBottomWidth: 0}}/>}>
-          <View tabLabel='Mnemonic' style={styles.content}>
+          <View tabLabel={I18n.t('Mnemonic')} style={styles.content}>
         <KeyboardAvoidingView behavior='position' keyboardVerticalOffset={100}>
             <TextInput
               multiline
-              placeholder='Input mnemonic, seperated with spaces'
+              placeholder={I18n.t('ImportMnemonic')}
               placeholderTextColor={Colors.cloud}
               underlineColorAndroid={'transparent'}
               style={styles.mnemonicInput}
@@ -76,25 +77,25 @@ class ImportWalletScreen extends Component {
 
             <View style={styles.actionWrapper}>
               <TouchableOpacity style={styles.cancelButton} onPress={back}>
-                <Text style={styles.label}> Cancel </Text>
+                <Text style={styles.label}> {I18n.t('Cancel')} </Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.confirmButton}
                 onPress={() => {
                   console.tron.log('this.props', this.props)
                   if(!this.state.mnemonic || this.state.mnemonic.length < 40){
-                    alert('incorrect mnemonic')
+                    alert(I18n.t('IncorrectMnemonic'))
                     return;
                   }
                   if(!pwdValid){
-                    alert('password format invalid')
+                    alert(I18n.t('PwdInvalid'))
                   }
                   if (!!pwd1 && pwd1 === pwd2) {
                     importFromMnemonic(this.state.mnemonic, pwd2)
                   } else {
-                    alert('passwords do not match')
+                    alert(I18n.t('PwdDismatch'))
                   }
                 }}>
-                <Text style={styles.label}> Import </Text>
+                <Text style={styles.label}> {I18n.t('Import')} </Text>
               </TouchableOpacity>
             </View>
             </KeyboardAvoidingView>
@@ -104,7 +105,7 @@ class ImportWalletScreen extends Component {
             <TextInput
               multiline
               numberOfLines={5}
-              placeholder='please input keystore content'
+              placeholder={I18n.t('ImportKeystore')}
               placeholderTextColor={Colors.cloud}
               underlineColorAndroid={'transparent'}
               style={styles.keystoreInput}
@@ -114,26 +115,26 @@ class ImportWalletScreen extends Component {
 
             <View style={styles.actionWrapper}>
               <TouchableOpacity style={styles.cancelButton} onPress={back}>
-                <Text style={styles.label}> Cancel </Text>
+                <Text style={styles.label}> {I18n.t('Cancel')} </Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.confirmButton} onPress={() => {
                 var keystore = this.state.keystore
                 if(!keystore ){
-                  alert('keystore format is invalid')
+                  alert(I18n.t('InvalidKeystore'))
                   return
                 }
                 if(!pwd){
-                  alert('password can not be empty')
+                  alert(I18n.t('PwdEmpty'))
                   return
                 }
                 try {
                   keystore = JSON.parse(keystore)
                   importEncryptWallet(keystore, pwd)
                 } catch(e) {
-                  alert('Invalid keystore format!')
+                  alert(I18n.t('InvalidKeystore'))
                 }
               }}>
-                <Text style={styles.label}> Import </Text>
+                <Text style={styles.label}> {I18n.t('Import')} </Text>
               </TouchableOpacity>
             </View>
             </KeyboardAvoidingView>

@@ -16,14 +16,6 @@ class SettingScreen extends Component {
     title: I18n.t('SettingScreenTitle'),
   }
 
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    if(this.props.language != prevProps.language){
-      I18n.locale = this.props.language
-      console.tron.debug('setting lang', I18n.currentLocale())
-      console.tron.debug('msg_noti', I18n.t('TxNotiTitle'))
-    }
-  }
-
   _switchValueChanged = (item, newValue) => {
     let newState = {[item.key]:newValue}
     this.props.setSetting(newState)
@@ -39,15 +31,17 @@ class SettingScreen extends Component {
         </View>
         <View style={styles.settingRight}>
           {needSwitch && <Switch value={this.props[key]} onValueChange={(newValue) => this._switchValueChanged(item, newValue)} />}
-          {key === 'language' && <LangPicker />}
+          {/* {key === 'language' && <LangPicker />} */}
+          {key === 'language' && <Text style={{color: 'grey'}}>{I18n.t('ComingSoon')}..</Text>}
         </View>
       </View>
     )
   }
 
   render () {
+    let {language} = this.props
     let entries = [
-      {'key':'msg_noti', 'title': I18n.t('MsgNotiTitle'), 'desc': I18n.t('MsgNotiDesc'), 'switch': true},
+      {'key':'msg_noti', 'title': I18n.t('MsgNotiTitle', {locale: language}), 'desc': I18n.t('MsgNotiDesc', {locale: language}), 'switch': true},
       {'key':'tx_noti', 'title': I18n.t('TxNotiTitle'), 'desc': I18n.t('TxNotiDesc'), 'switch': true},
       {'key':'language', 'title': I18n.t('LangSelectTitle')},
     ]
