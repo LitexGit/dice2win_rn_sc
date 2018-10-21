@@ -92,13 +92,13 @@ function  socketConnected() {
 
 const socketMessage = (msg) => {
   let status = msg.bet_res
+  socket.emit('ack', msg._msgId)
   if(!status || status==='won' || status==='lost') return
   !!status && socketStatusChannel.put(GameActions.updateStatus({[msg.modulo]:status}))
   if(status === 'win'){
     let result = {[msg.modulo]:{amount: msg.dice_payment}}
     socketStatusChannel.put(GameActions.updateResult(result))
   }
-  socket.emit('ack', msg._msgId)
   console.tron.log('Socket MSG:', msg)
 }
 
