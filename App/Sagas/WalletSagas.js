@@ -57,15 +57,22 @@ function * postNewWallet () {
   }
 
   // 钱包更换之后, 重新注册
-  yield put(UserActions.register({address: W.address, inviter: '', nickname: ''}))
+  try {
+    yield put(UserActions.register({ address: W.address, inviter: '', nickname: '' }))
+    yield put(MessageBoxActions.openMessageBox({
+      title: 'Info',
+      message: I18n.t('WalletCreateSuccess'),
+      submitedActions: [{ action: WalletActions.navigateToBottomTab, data: { routeName: 'Wallet' } }]
+    }))
+    yield setAlias(W.address.substr(2))
+  } catch (err) {
 
-  yield put(MessageBoxActions.openMessageBox({
-    title: 'Info',
-    message: I18n.t('WalletCreateSuccess'),
-    submitedActions: [{ action: WalletActions.navigateToBottomTab, data: { routeName: 'Wallet' } }]
-  }))
-
-  yield setAlias(W.address.substr(2))
+    console.tron.log("Wallet create failed due to register or setAlias fail");
+    yield put(MessageBoxActions.openMessageBox({
+      title: 'Err',
+      message: 'Wallet create fail!',
+    }))
+  }
 }
 
 
@@ -115,12 +122,16 @@ export function * initWallet (api, action) {
   W.network = config.network
 
   // const delay = (ms) => new Promise(res => setTimeout(res, ms))
-  if (!!W.keystoreInitialized) {
+  try{
+    if (!!W.keystoreInitialized) {
 
-    !!socket && (yield socket.emit('lottery', W.address))
+      !!socket && (yield socket.emit('lottery', W.address))
 
-    yield setAlias(W.address.substr(2))
+      yield setAlias(W.address.substr(2))
 
+    }
+  }catch(err){
+    console.tron.log("set alias fail");
   }
   // yield call(delay, 1000)
   // yield delay(5000)

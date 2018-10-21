@@ -251,7 +251,7 @@ public class MainActivity extends ReactActivity {
                      */
                     @Override
                     public void noNewApp(String error) {
-                        Toast.makeText(MainActivity.this, "没有新版本", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(MainActivity.this, "没有新版本", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
