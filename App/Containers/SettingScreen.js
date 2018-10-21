@@ -7,17 +7,21 @@ import { connect } from 'react-redux'
 // Styles
 import styles from './Styles/SettingScreenStyle'
 import SettingActions from '../Redux/SettingRedux'
+import I18n from '../I18n'
+import LangPicker from '../Components/LangPicker';
 
-const entries = [
-  {'key':'msg_noti', 'title': 'Event Notification', 'desc': 'game result, activities, etc', 'switch': true},
-  {'key':'tx_noti', 'title': 'Transaction Notification', 'desc': 'transactions, bonus, etc', 'switch': true},
-  {'key':'language', 'title': 'Language'},
-]
 
 class SettingScreen extends Component {
   static navigationOptions = {
-    title: 'Settings',
-    tabBarLabel: 'Settings'
+    title: I18n.t('SettingScreenTitle'),
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if(this.props.language != prevProps.language){
+      I18n.locale = this.props.language
+      console.tron.debug('setting lang', I18n.currentLocale())
+      console.tron.debug('msg_noti', I18n.t('TxNotiTitle'))
+    }
   }
 
   _switchValueChanged = (item, newValue) => {
@@ -26,28 +30,34 @@ class SettingScreen extends Component {
   }
 
   _renderItem ({item}) {
+    let {title, desc, switch:needSwitch, key} = item
     return (
       <View style={styles.setting}>
         <View style={styles.settingLeft}>
-          <Text style={styles.settingTitle}> {item.title} </Text>
-          {item.desc && <Text style={styles.settingDesc}> {item.desc} </Text>}
+          <Text style={styles.settingTitle}> {title} </Text>
+          {desc && <Text style={styles.settingDesc}> {desc} </Text>}
         </View>
         <View style={styles.settingRight}>
-          {item.switch && <Switch value={this.props.settings[item.key]} onValueChange={(newValue) => this._switchValueChanged(item, newValue)} />}
-          {item.key === 'language' && <Text style={styles.settingTitle}>{this.props.settings[item.key]}</Text>}
+          {needSwitch && <Switch value={this.props[key]} onValueChange={(newValue) => this._switchValueChanged(item, newValue)} />}
+          {key === 'language' && <LangPicker />}
         </View>
       </View>
     )
   }
 
   render () {
+    let entries = [
+      {'key':'msg_noti', 'title': I18n.t('MsgNotiTitle'), 'desc': I18n.t('MsgNotiDesc'), 'switch': true},
+      {'key':'tx_noti', 'title': I18n.t('TxNotiTitle'), 'desc': I18n.t('TxNotiDesc'), 'switch': true},
+      {'key':'language', 'title': I18n.t('LangSelectTitle')},
+    ]
     return (
       <View style={styles.container}>
         <View style={styles.settingList}>
           <FlatList
             data={entries}
             renderItem={this._renderItem.bind(this)}
-            extraData={this.props.settings}
+            extraData={this.props}
           />
         </View>
       </View>
@@ -57,7 +67,7 @@ class SettingScreen extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    settings: state.setting.payload
+    ...{ msg_noti, tx_noti, language } = state.setting,
   }
 }
 

@@ -19,19 +19,20 @@ import { Metrics } from '../Themes'
 import styles from './Styles/GameScreenStyle'
 import NavigationActions from 'react-navigation/src/NavigationActions'
 import MarqueeText from 'react-native-marquee'
+import I18n from '../I18n'
 
 
 const entryData = [
-  {img: Images.coin, title: 'Coin Flip', desc: 'Fifty-fifty Winning bet pays 1.98×', key: 2},
-  {img: Images.dice1, title: 'Roll a Dice', desc: '1 to 6 Winning bet pays up to 5.94×', key: 6},
-  {img: Images.dice2, title: 'Two Dices', desc: '2 to 12 Winning bet pays up to 35.64×', key: 36},
-  {img: Images.roll, title: 'Etheroll', desc: '1% to 97% Winning bet pays up to 99×', key: 100}
+  {img: Images.coin, title: I18n.t('GameCoinTitle'), desc: I18n.t('GameCoinDesc'), key: 2},
+  {img: Images.dice1, title: I18n.t('GameDice1Title'), desc: I18n.t('GameDice1Desc'), key: 6},
+  {img: Images.dice2, title: I18n.t('GameDice2Title'), desc: I18n.t('GameDice2Desc'), key: 36},
+  {img: Images.roll, title: I18n.t('GameRollTitle'), desc: I18n.t('GameRollDesc'), key: 100}
 ]
 
 class GameScreen extends Component {
   static navigationOptions = {
-    title: 'Games',
-    tabBarLabel: 'Games',
+    title: I18n.t('GamesTabTitle'),
+    tabBarLabel: I18n.t('GamesTabLabel'),
     tabBarIcon: ({tintColor}) => (
       <FA5 name={'dice'} size={Metrics.bottomTabIconSize} color={tintColor}/>
     )
@@ -94,7 +95,7 @@ class GameScreen extends Component {
   render () {
     let {banners, notices} = this.props
     let {noticeIndex} = this.state
-    let notice = notices[noticeIndex]
+    let notice = !!notices ? notices[noticeIndex] : null
     return (
       <View style={styles.container}>
         <View style={styles.swiper}>

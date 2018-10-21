@@ -1,1 +1,29 @@
-{}
+{
+  "GamesTabTitle": "游戏",
+  "GamesTabLabel": "游戏",
+
+  "GameCoinTitle": "抛硬币",
+  "GameCoinDesc": "猜正反，赢得最高1.98倍投注",
+
+  "GameDice1Title": "掷骰子",
+  "GameDice1Desc": "选择可能出现的点数，最高赢5.94倍",
+
+  "GameDice2Title": "两个骰子",
+  "GameDice2Desc": "猜中两个骰子点数之和，最高赢35.64倍",
+
+  "GameRollTitle": "过山车",
+  "GameRollDesc": "从1%到97%选择任何胜率，赢高达99倍投注",
+
+  "SettingScreenTitle": "设置",
+  "MsgNotiTitle": "事件通知",
+  "MsgNotiDesc": "游戏结果、活动消息等",
+  "TxNotiTitle": "转账通知",
+  "TxNotiDesc": "转账到账、奖金到账等",
+  "LangSelectTitle": "语言",
+
+   "username": "用户名",
+   "password": "密码",
+   "cancel": "取消",
+   "welcome": "欢迎",
+   "login": "登录"
+}

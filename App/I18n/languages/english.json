@@ -1,26 +1,30 @@
 {
-   "signIn": "Sign In",
-   "logOut": "Log Out",
-   "loginLogoutExampleTitle": "Login/Logout Redux + Sagas Example",
-   "progressiveImageComponent": "Progressive Image Component",
-   "api": "API",
-   "locale": "I18n Locale",
-   "rnVectorIcons": "RN Vector Icons",
-   "loginWithFacebook": "Login with Facebook",
-   "rni18n": "RN i18n",
-   "igniteGenerated": "Ignite Generate Screens",
-   "forgotPassword": "Forgot Password",
+  "GamesTabTitle": "Games",
+  "GamesTabLabel": "Games",
+
+  "GameCoinTitle": "Coin Flip",
+  "GameCoinDesc": "Fifty-fifty Winning bet pays 1.98×",
+
+  "GameDice1Title": "Roll a Dice",
+  "GameDice1Desc": "1 to 6 Winning bet pays up to 5.94×",
+
+  "GameDice2Title": "Two Dice",
+  "GameDice2Desc": "2 to 12 Winning bet pays up to 35.64×",
+
+  "GameRollTitle": "Etheroll", 
+  "GameRollDesc": "1% to 97% Winning bet pays up to 99×",
+
+  "SettingScreenTitle": "Settings",
+  "MsgNotiTitle": "Event Notification",
+  "MsgNotiDesc": "game result, activities, etc",
+  "TxNotiTitle": "Transaction Notification",
+  "TxNotiDesc": "transactions, bonus, etc",
+  "LangSelectTitle": "Language",
+  
    "username": "Username",
    "password": "Password",
    "cancel": "Cancel",
    "welcome": "Welcome",
-   "login": "Login",
-   "tempIndicator": "F",
-   "componentExamples": "Component Examples",
-   "usageExamples": "Usage Examples",
-   "apiTesting": "API Testing",
-   "themeSettings": "Theme Settings",
-   "deviceDetails": "Device Details",
-   "noItems": "No Items",
-   "search": "Search"
+   "login": "Login"
 }
+

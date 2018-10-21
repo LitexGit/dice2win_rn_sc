@@ -15,9 +15,13 @@ export default Creators
 /* ------------- Initial State ------------- */
 
 export const INITIAL_STATE = Immutable({
+  msg_noti: true,
+  tx_noti: true,
+  language: 'en',
+
   data: null,
   fetching: null,
-  payload: {msg_noti: true, tx_noti: true, language: 'English'},
+  payload: null,
   error: null
 })
 
@@ -34,11 +38,8 @@ export const request = (state, { data }) =>
   state.merge({ fetching: true, data, payload: null })
 
 // successful api lookup
-export const success = (state, action) => {
-  let { payload } = action
-  payload = {...state.payload, ...payload}
-  return state.merge({ fetching: false, error: null, payload })
-}
+export const success = (state, action) => 
+  state.merge({ fetching: false, error: null, ...action.payload })
 
 // Something went wrong somewhere.
 export const failure = state =>
