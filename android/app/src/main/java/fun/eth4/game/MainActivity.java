@@ -5,14 +5,12 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Environment;
 import android.text.TextUtils;
-import android.view.View;
 import android.widget.Toast;
 
 import com.facebook.react.ReactActivity;
 import com.vector.update_app.UpdateAppBean;
 import com.vector.update_app.UpdateAppManager;
 import com.vector.update_app.UpdateCallback;
-import com.vector.update_app.listener.ExceptionHandler;
 import com.vector.update_app.service.DownloadService;
 import com.vector.update_app.utils.AppUpdateUtils;
 
@@ -20,22 +18,17 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.nio.charset.MalformedInputException;
 import java.util.HashMap;
 import java.util.Map;
 
-import fun.eth4.game.util.CProgressDialogUtils;
 import fun.eth4.game.util.HProgressDialogUtils;
 import fun.eth4.game.util.OkGoUpdateHttpUtil;
-import fun.eth4.game.util.UpdateAppHttpUtil;
 
 public class MainActivity extends ReactActivity {
 
 
-    private String mUpdateUrl = "https://raw.githubusercontent.com/WVector/AppUpdateDemo/master/json/json.txt";
-    private String mUpdateUrl1 = "https://raw.githubusercontent.com/WVector/AppUpdateDemo/master/json/json1.txt";
+    private String mUpdateUrl = fun.eth4.game.BuildConfig.ANDROID_UPDATE_URL;
     private boolean isShowDownloadProgress;
-    private String mApkFileUrl = "https://raw.githubusercontent.com/WVector/AppUpdateDemo/master/apk/sample-debug.apk";
 
 
 
@@ -52,7 +45,7 @@ public class MainActivity extends ReactActivity {
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
 
-//        updateDiy2();
+        updateDiy2();
     }
 
     /**
@@ -150,7 +143,7 @@ public class MainActivity extends ReactActivity {
     /**
      * 自定义接口协议+自定义对话框
      *
-     * @param view
+     * @param
      */
     public void updateDiy2() {
         //不显示下载进度
@@ -166,8 +159,10 @@ public class MainActivity extends ReactActivity {
 
         params.put("appKey", "ab55ce55Ac4bcP408cPb8c1Aaeac179c5f6f");
         params.put("appVersion", AppUpdateUtils.getVersionName(MainActivity.this));
-        params.put("key1", "value2");
-        params.put("key2", "value3");
+        params.put("appName", AppUpdateUtils.getAppName(MainActivity.this));
+        params.put("versionCode", "" + AppUpdateUtils.getVersionCode(MainActivity.this));
+        params.put("package", "" + getApplicationContext().getPackageName());
+
 
         new UpdateAppManager
                 .Builder()
