@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 // import PropTypes from 'prop-types';
 import { View, Text, TouchableOpacity, Slider } from 'react-native'
 import ConfirmModalActions from '../Redux/ConfirmModalRedux'
- 
+
 import connect from 'react-redux/es/connect/connect'
 import Overlay from 'react-native-modal-overlay'
 import styles from './Styles/ConfirmModalStyle'
@@ -39,10 +39,11 @@ class ConfirmModal extends Component {
     let { displayGas, minGas, maxGas, } = this.state
 
     return (
-      <Overlay 
+      <Overlay
         containerStyle={styles.modal}
         childrenWrapperStyle={styles.content}
         visible={modalIsOpen}
+        onRequestClose={this._cancel.bind(this)}
         animationType='zoomIn'
         animationDuration={300}>
         <View style={styles.header}>
@@ -74,7 +75,7 @@ class ConfirmModal extends Component {
           </View>
           <View style={styles.sliderWrapper}>
             <Text style={styles.label}>{minGas} </Text>
-            <Slider style={styles.slider} 
+            <Slider style={styles.slider}
               step={1}
               value={displayGas}
               minimumValue={minGas}
@@ -130,7 +131,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     closeConfirmModal: () => dispatch(ConfirmModalActions.closeConfirmModal()),
-    dispatch: ({action, data}) => dispatch(action(data)), 
+    dispatch: ({action, data}) => dispatch(action(data)),
     updateGas: (gas) => dispatch(ConfirmModalActions.confirmModalSuccess({gas})),
     onCancel: (canceledActions) => {
       canceledActions.map(({action, data}) => dispatch(action(data)))

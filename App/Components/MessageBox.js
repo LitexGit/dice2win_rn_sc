@@ -39,6 +39,7 @@ class MessageBox extends Component {
         containerStyle={styles.modal}
         childrenWrapperStyle={styles.content}
         visible={isOpen}
+        onRequestClose={this._close.bind(this)}
         animationType='zoomIn'
         animationDuration={300}>
         <View style={styles.header}>

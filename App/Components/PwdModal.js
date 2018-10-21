@@ -45,6 +45,7 @@ class PwdModal extends Component {
         containerStyle={styles.modal}
         childrenWrapperStyle={styles.content}
         visible={this.props.modalIsOpen}
+        onRequestClose={this._closeModal.bind(this)}
         animationType='zoomIn'
         animationDuration={300}>
         <View style={styles.header}>
