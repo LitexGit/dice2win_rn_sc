@@ -17,26 +17,27 @@ import ListFooterComponent from '../Components/ListFooterComponent'
 import { displayETH, sectionlize } from '../Lib/Utils/format'
 import styles from './Styles/RecordScreenStyle'
 import NavigationActions from 'react-navigation/src/NavigationActions';
+import I18n from '../I18n'
 
 const GAME_STATUS = [
-  {text: 'wait', style:{color:'gray'}},
-  {text: 'win', style:{color:'darkorange'}},
-  {text: 'lose', style:{color: 'mediumaquamarine'}},
+  {text: I18n.t('wait'), style:{color:'gray'}},
+  {text: I18n.t('win'), style:{color:'darkorange'}},
+  {text: I18n.t('lose'), style:{color: 'mediumaquamarine'}},
 ]
 
 const TX_STATUS = [
   {},
-  {text: 'stake'},
-  {text: 'transfer'},
-  {text: 'bonus'},
-  {text: 'bonus'},
-  {text: 'winning'}
+  {text: I18n.t('stake')},
+  {text: I18n.t('transfer')},
+  {text: I18n.t('bonus')},
+  {text: I18n.t('bonus')},
+  {text: I18n.t('winning')}
 ]
 
 class RecordScreen extends Component {
   static navigationOptions = {
-    title: 'Records',
-    tabBarLabel: 'Records',
+    title: I18n.t('RecordTabTitle'),
+    tabBarLabel: I18n.t('RecordTabLabel'),
     tabBarIcon: ({tintColor}) => (
       <FA5 name={'list'} size={Metrics.bottomTabIconSize} color={tintColor}/>
     )
@@ -144,14 +145,14 @@ class RecordScreen extends Component {
           tabBarUnderlineStyle={styles.tabBarUnderlineStyle}
           renderTabBar={() => <ScrollableTabBar style={{borderBottomWidth: 0}}/>}
           onChangeTab={this._tabChanged.bind(this)}>
-          <View tabLabel='Game History' style={styles.container}>
+          <View tabLabel={I18n.t('GameHistory')} style={styles.container}>
             {/* Game Section */}
             <SectionList
               refreshControl={<RefreshControl
                 refreshing={refreshing}
                 onRefresh={this._refresh}
                 tintColor={Colors.tintColor}
-                title="Refreshing..."
+                title={I18n.t('Refreshing')+".."}
                 titleColor={Colors.text}/>}
               sections={gameSections}
               renderSectionHeader={this._renderSectionHeader}
@@ -162,14 +163,14 @@ class RecordScreen extends Component {
                 onPress={this._loadMore}/>}
             />
           </View>
-          <View tabLabel='Transactions' style={styles.container}>
+          <View tabLabel={I18n.t('Transactions')} style={styles.container}>
             {/* Tx Section */}
             <SectionList
               refreshControl={<RefreshControl
                 refreshing={refreshing}
                 onRefresh={this._refresh}
                 tintColor={Colors.tintColor}
-                title="Refreshing..."
+                title={I18n.t('Refreshing')+".."}
                 titleColor={Colors.text}/>}
               sections={txSections}
               renderSectionHeader={this._renderSectionHeader}

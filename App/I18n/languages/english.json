@@ -1,19 +1,92 @@
 {
-  "GamesTabTitle": "Games",
+  "GamesTabTitle": "Eth 4 Fun",
   "GamesTabLabel": "Games",
 
   "GameCoinTitle": "Coin Flip",
   "GameCoinDesc": "Fifty-fifty Winning bet pays 1.98×",
+  "GameCoin": "Choose coin side to bet on",
 
   "GameDice1Title": "Roll a Dice",
   "GameDice1Desc": "1 to 6 Winning bet pays up to 5.94×",
+  "GameDice1": "Choose the dice number(s)",
 
   "GameDice2Title": "Two Dice",
   "GameDice2Desc": "2 to 12 Winning bet pays up to 35.64×",
+  "GameDice2": "Choose sum of dice to bet on",
 
   "GameRollTitle": "Etheroll", 
   "GameRollDesc": "1% to 97% Winning bet pays up to 99×",
+  "GameRoll": "Adjust you win chance",
 
+  "GlobalRecords": "Global Records",
+  "WinningPays": "winning pays",
+  "WinningChance": "winning chance",
+  "YouWillWin": "You will win",
+  "OfWinningsToYourInviter": "of winnings to your inviter",
+  "Bet": "Bet",
+
+
+
+  "RecordTabTitle": "Records", 
+  "RecordTabLabel": "Records", 
+  "GameHistory": "Game History", 
+  "Transactions": "Transactions", 
+
+  "AccountTabTitle": "Account",
+  "AccountTabLabel": "Account",
+
+
+  "placing": "Submitting to contract..",
+  "placed": "Submitted, waiting for drawing..",
+  "drawn": "Drawing now..",
+  "failMsg": "Submition failed, please bet again",
+  "winMsg": "Congrats!!! YOU WIN:",
+  "loseMsg": "Sorry you lose..\nGood luck next time!",
+
+
+  "NewWallet": "New Wallet",
+  "ImportWallet": "Import Wallet",
+  "BackupWallet": "Backup Wallet",
+  "Transfer": "Transfer",
+
+
+  "CreatePwd": "Create your password",
+  "ConfirmPwd": "Confirm password",
+
+
+  "BackupMnemonic": "Back up your mnemonic",
+  "MnemonicWarning1": "Please record the mnemonic of your wallet and save it to a safe place.",
+  "MnemonicWarning2": "Wallet mnemonics are used to recover your account. Do not reveal your mnemonics at any time.",
+  "MnemonicWarning3": "It is strongly recommended NOT to use screen captures or copy & paste to save your mnemonic or transfer it via Internet.",
+  "WrongMnemonic": "Wrong Mnemonic",
+  "WalletCreateSuccess": "Wallet create success!\n\nIf your balance is 0, you need to transfer some ETH to your wallet address to play",
+  "Attention": "ATTENTION",
+  "ImportWarning": "Import new wallet will OVERRIDE current wallet! If you haven't back it up, you will LOST all your asset in it!\n\nAre you sure?",
+  "ImportAnyway": "Understood, I want to import",
+  "ImportMnemonic": "Input mnemonic, seperated with spaces",
+  "IncorrectMnemonic": "Incorrect mnemonic",
+  "ImportKeystore": "Please input keystore content (in JSON format)",
+  "InvalidKeystore": "Invalid keystore format",
+  "BackupKeystoreWarning": "DO NOT Make Any ScreenShot!!\n\n\n - Save your keystore offline\n\n - Don't transfer it with Internet\n\n - Only scan your keystore qrcode directly\n\n - Ensure no others and no cameras around\n",
+  "ExportKeystore": "Export your keystore file (Click to copy)",
+  "KeystoreCopied": "Keystore copied",
+  "InvalidAddress": "Please input valid address",
+  "ToAddress": "To address",
+  "TransferSuccess": "Transfer submit success!\n\nPlease check in Tab Records -> Transactions",
+  "TransferTooFreq": "Transfer too frequently, please try again later",
+  "TransferFail": "transfer submit fail",
+
+
+  "Referral": "Referral",
+  "Bonus2Withdraw": "Bonus you can withdraw",
+  "Withdraw2Wallet": "Withdraw to wallet",
+  "TotalBonus": "Total bonus you have earned",
+  "Share2Earn": "SHARE to earn MORE",
+  "RefLevel": "Ref level",
+  "WithdrawMsg": "Withdraw request submitted, please wait for review",
+
+
+  "SettingScreenLabel": "设置",
   "SettingScreenTitle": "Settings",
   "MsgNotiTitle": "Event Notification",
   "MsgNotiDesc": "game result, activities, etc",
@@ -21,10 +94,66 @@
   "TxNotiDesc": "transactions, bonus, etc",
   "LangSelectTitle": "Language",
   
-   "username": "Username",
-   "password": "Password",
-   "cancel": "Cancel",
-   "welcome": "Welcome",
-   "login": "Login"
+
+  "ShareLink": "Share link",
+  "CopyAddress": "Copy address",
+  "CopyCode": "Copy code",
+  "AddressCopied": "Address copied",
+  "CodeCopied": "Code copied",
+  "LoadMore": "Load more",
+  "NoRecord": "No record",
+  "Refreshing": "Refreshing",
+  "Loading": "Loading",
+  "Updating": "Updating",
+  "Checking": "Checking",
+
+  "QR": "QR Code",
+  "Import": "Import",
+  "Mnemonic": "Mnemonic",
+  "Next": "Next",
+  "Apply": "Apply",
+  "Recommend": "Recommend",
+  "Submit": "Submit",
+  "Confirm": "Confirm",
+  "Cancel": "Cancel",
+  "Close": "Close",
+  "fee": "fee",
+  "Version":"Version",
+  "ReferralCode": "Referral Code",
+  "ReferralBonus": "Referral Bonus",
+  "Balance": "Balance",
+  "Username": "Username",
+  "Password": "Password",
+  "Login": "Login",
+
+  "amount": "amount",
+  "Wallet": "Wallet",
+  "wallet": "wallet",
+  "length": "length",
+  "transfer": "transfer",
+  "stake": "stake",
+  "bonus": "bonus",
+  "winning": "winning",
+  "today": "today",
+  "yesterday": "yesterday",
+
+  "wait": "wait",
+  "win": "win",
+  "lose": "lose",
+  "fail": "fail",
+  "failed": "fail",
+  "rejected": "rejected",
+  "success": "success",
+  "pending": "pending",
+  "approved": "approved",
+  "withdraw": "withdraw",
+
+
+  "CommingSoon": "Coming soon",
+  "InsufficientBalance": "You don't have enough balance to place Bet",
+  "PwdEmpty": "Password can't be empty",
+  "PwdDismatch": "Passwords do not match",
+  "PwdInvalid": "Password format invalid"
+
 }
 

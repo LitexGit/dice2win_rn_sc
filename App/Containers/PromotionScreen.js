@@ -11,6 +11,7 @@ import ListEmptyComponent from '../Components/ListEmptyComponent'
 import ListFooterComponent from '../Components/ListFooterComponent'
 import styles from './Styles/PromotionScreenStyle'
 import {Colors} from '../Themes'
+import I18n from '../I18n'
 
 const TYPE = [
   '',
@@ -60,7 +61,7 @@ class PromotionScreen extends Component {
 
 
   _withdraw = () => {
-    Toast.show('withdraw request submitted, please wait for review', {
+    Toast.show(I18n.t('WithdrawMsg'), {
       duration: Toast.durations.LONG,
       position: Toast.positions.CENTER,
     })
@@ -71,7 +72,6 @@ class PromotionScreen extends Component {
   }
 
   _itemPressed = (item) => {
-    Toast.show('type' + item.type)
   }
 
   _renderItem = ({item}) => {
@@ -80,15 +80,15 @@ class PromotionScreen extends Component {
     type = TYPE[type]
     return <TouchableOpacity style={styles.itemWrapper} onPress={_=>this._itemPressed(item)}>
       <View style={styles.timeWrapper}>
-        <View style={styles.statusWrapper}><Text style={styles[type+'Text']}>{type}</Text></View>
+        <View style={styles.statusWrapper}><Text style={styles[type+'Text']}>{I18n.t(type)}</Text></View>
         <Text style={styles.timeText}>{time}</Text>
       </View>
       <View style={styles.timeWrapper}>
-        <View style={styles.statusWrapper}><Text style={styles[status+'Text']}>{status}</Text></View>
+        <View style={styles.statusWrapper}><Text style={styles[status+'Text']}>{I18n.t(status)}</Text></View>
       </View>
       <View style={styles.sourceWrapper}>
         <View style={styles.statusWrapper}><Text style={styles.addressText} numberOfLines={1} ellipsizeMode='middle'>{address}</Text></View>
-        <View style={styles.statusWrapper}><Text style={styles.levelText}>{'Ref level: '}{level}</Text></View>
+        <View style={styles.statusWrapper}><Text style={styles.levelText}>{I18n.t('RefLevel') + ': '}{level}</Text></View>
       </View>
       <View style={styles.valueWrapper}><Text style={styles.darkLabel}><Text style={styles.valueText}>{displayETH(amount)}</Text>  ETH</Text></View>
   </TouchableOpacity>
@@ -106,14 +106,14 @@ class PromotionScreen extends Component {
     return (
       <View style={styles.container}>
         <View style={styles.upWrapper}>
-          <Text style={styles.label}>Bonus you can withdraw</Text>
+          <Text style={styles.label}>{I18n.t('Bonus2Withdraw')}</Text>
           <View style={styles.balanceWrapper}>
             <Text style={styles.balance}>{displayETH(bonus)}</Text>
             <Text style={styles.unit}> ETH</Text>
           </View>
-          <TouchableOpacity style={styles.withdrawButton} onPress={_=>this._withdraw()}><Text style={styles.withdrawButtonText}>Withdraw to wallet</Text></TouchableOpacity>
-          <Text style={[styles.label, {textAlign:'center'}]}>Total bonus you have earned: {'\n'} <Text style={styles.valueText}>{displayETH(totalBonus)}</Text> ETH</Text>
-          <TouchableOpacity onPress={this._shareLink.bind(this)}><Text style={styles.shareText}>SHARE to earn MORE</Text></TouchableOpacity>
+          <TouchableOpacity style={styles.withdrawButton} onPress={_=>this._withdraw()}><Text style={styles.withdrawButtonText}>{I18n.t('Withdraw2Wallet')}</Text></TouchableOpacity>
+          <Text style={[styles.label, {textAlign:'center'}]}>{I18n.t('TotalBonus') + ':\n'}<Text style={styles.valueText}>{displayETH(totalBonus)}</Text> ETH</Text>
+          <TouchableOpacity onPress={this._shareLink.bind(this)}><Text style={styles.shareText}>{I18n.t('Share2Earn')}</Text></TouchableOpacity>
         </View>
         <View style={styles.downWrapper}>
           <SectionList

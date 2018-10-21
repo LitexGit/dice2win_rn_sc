@@ -16,12 +16,20 @@ import ResultModal from '../Components/ResultModal'
 
 import { Colors } from '../Themes'
 import styles from './Styles/GameContainerScreenStyle'
+import Entypo from 'react-native-vector-icons/Entypo'
 
 import WalletActions from '../Redux/WalletRedux'
 import { displayETH, DECIMAL } from '../Lib/Utils/format'
+import I18n from '../I18n'
 
 const GAME_COMS = {2:<Coin />, 6:<OneDice />, 36:<TwoDice />, 100:<Etheroll />}
-const GAME_TITLES = {2: 'Coin Flip', 6: 'Roll a Dice', 36: 'Two Dices', 100: 'Etheroll'}
+
+const GAME_TITLES = {
+  2: I18n.t('GameCoinTitle'),
+  6: I18n.t('GameDice1Title'),
+  36: I18n.t('GameDice2Title'),
+  100: I18n.t('GameRollTitle')
+}
 
 class GameContainerScreen extends Component {
 
@@ -29,20 +37,23 @@ class GameContainerScreen extends Component {
     return{
       title: navigation.getParam('title'),
       headerRight: (
-        <TouchableOpacity style={{padding: 10}} onPress={navigation.getParam('gotoRecords')}>
-          <Text style={{color:Colors.text}}> Global Records > </Text>
+        <TouchableOpacity style={{padding: 10, flexDirection:'row', alignItems:'center'}} onPress={navigation.getParam('gotoRecords')}>
+          <Text style={{color:'lightsteelblue'}}>
+            {I18n.t('GlobalRecords')}  
+          </Text>
+          <Entypo name={"chevron-thin-right"} size={20} color={Colors.cloud} />
         </TouchableOpacity>
       )
     }
   }
 
-  _placeBet = ()=>{
+  _placeBet = () => {
     let { index, stake, contract_address, address, betMask, openConfirmModal, navigate, getRandom, balance } = this.props
 
     if(!W.address) {
       navigate('WalletManageScreen')
     } else if (stake >= balance) {
-      alert('You don\'t have enough balance to place Bet')
+      alert(I18n.t('InsufficientBalance'))
     } else {
 
       getRandom({address: W.address})
@@ -117,24 +128,24 @@ class GameContainerScreen extends Component {
               </TouchableOpacity>
             </View>
             </KeyboardAvoidingView>
-            <Text style={[styles.darkLabel, {alignSelf:'center', margin: 10}]}>Balance:  <Text style={styles.balanceText}>{balanceFetching?'updating..':displayETH(balance)}</Text>  ETH</Text>
+            <Text style={[styles.darkLabel, {alignSelf:'center', margin: 10}]}>{I18n.t('Balance')}:  <Text style={styles.balanceText}>{balanceFetching?I18n.t('Updating'):displayETH(balance)}</Text>  ETH</Text> 
             <View style={styles.rewardWrapper}>
               <View style={styles.infoWrapper}>
                 <View style={styles.info}>
-                  <Text style={styles.rewardText}>winning pays</Text>
+                  <Text style={styles.rewardText}>{I18n.t('WinningPays')}</Text>
                   <Text style={styles.keyText}>{(this.props.rewardTime).toFixed(2)}x</Text>
                 </View>
                 <View style={styles.info}>
-                  <Text style={styles.rewardText}>winning chance</Text>
+                  <Text style={styles.rewardText}>{I18n.t('WinningChance')}</Text>
                   <Text style={styles.keyText}>{(winRate * 100).toFixed(2)}%</Text>
                 </View>
               </View>
-              <Text style={styles.rewardText}>you will win  <Text style={styles.keyText}>{(rewardTime * stake).toFixed(DECIMAL)}</Text>  ETH</Text>
-              <Text style={[styles.darkLabel, {fontSize: 11}]}>{feeRate*100}% fee, 5% of winnings to your inviter</Text>
+              <Text style={styles.rewardText}>{I18n.t('YouWillWin')}  <Text style={styles.keyText}>{(rewardTime * stake).toFixed(DECIMAL)}</Text>  ETH</Text>
+              <Text style={[styles.darkLabel, {fontSize: 11}]}>{feeRate*100}% {I18n.t('fee')}, 5% {I18n.t('OfWinningsToYourInviter')}</Text>
             </View>
             <View style={styles.startButtonWrapper}>
               <TouchableOpacity style={styles.startButton} onPress={this._placeBet}>
-                <Text style={styles.startButtonText}> Bet! </Text>
+                <Text style={styles.startButtonText}> {I18n.t('Bet')}! </Text>
               </TouchableOpacity>
             </View>
           </View>}

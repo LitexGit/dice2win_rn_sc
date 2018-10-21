@@ -6,11 +6,12 @@ import styles from './Styles/GameRecordScreenStyle'
 import Images from '../Themes/Images'
 import ListEmptyComponent from '../Components/ListEmptyComponent'
 import { displayETH } from '../Lib/Utils/format'
+import I18n from '../I18n'
 
 const GAME_STATUS = [
-  {text: 'wait', style:{color:'gray'}},
-  {text: 'win', style:{color:'darkorange'}},
-  {text: 'lose', style:{color: 'mediumaquamarine'}},
+  {text: I18n.t('wait'), style:{color:'gray'}},
+  {text: I18n.t('win'), style:{color:'darkorange'}},
+  {text: I18n.t('lose'), style:{color: 'mediumaquamarine'}},
 ]
 
 const Bet = ({modulo, bet}) => <View style={styles.betWrapper}> 

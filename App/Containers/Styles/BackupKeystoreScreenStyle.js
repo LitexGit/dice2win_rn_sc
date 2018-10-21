@@ -23,7 +23,7 @@ export default StyleSheet.create({
     marginBottom: 10,
   },
   headerText: {
-    ...Fonts.style.h5,
+    fontSize: 16,
     color: Colors.text,
   },
   keystore: {

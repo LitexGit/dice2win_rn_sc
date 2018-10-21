@@ -5,6 +5,7 @@ import styles from './Styles/EtherollStyle'
 import BetActions from '../Redux/BetRedux'
 import connect from 'react-redux/es/connect/connect'
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback'
+import I18n from '../I18n'
 
 class Etheroll extends Component {
   constructor(props) {
@@ -22,7 +23,7 @@ class Etheroll extends Component {
     return (
       <React.Fragment>
         <View style={styles.infoBox}>
-          <Text style={styles.infoText}>Adjust you winning chance</Text>
+          <Text style={styles.infoText}>{I18n.t('GameRoll')}</Text>
         </View>
         <View style={{ flex: 1, flexDirection: 'row' }}>
           <View style={styles.rateWrapper}>

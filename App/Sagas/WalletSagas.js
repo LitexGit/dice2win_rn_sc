@@ -18,11 +18,9 @@ import walletLib from '../Lib/Wallet/wallet'
 import ConfirmModalActions, { ConfirmModalSelectors } from '../Redux/ConfirmModalRedux'
 import { ConfigSelectors } from '../Redux/ConfigRedux'
 import NavigationActions from 'react-navigation/src/NavigationActions'
-import Toast from 'react-native-root-toast'
 import JPushModule from 'jpush-react-native'
-import { Alert } from 'react-native'
-
 import UserActions from '../Redux/UserRedux'
+import I18n from '../I18n'
 
 // import { WalletSelectors } from '../Redux/WalletRedux'
 let ethers = require('ethers')
@@ -62,7 +60,7 @@ function * postNewWallet () {
 
   yield put(MessageBoxActions.openMessageBox({
     title: 'Info',
-    message: 'Wallet create success!\n\nTo play, you need to transfer ETH to your new wallet address',
+    message: I18n.t('WalletCreateSuccess'),
     submitedActions: [{ action: WalletActions.navigateToBottomTab, data: { routeName: 'Wallet' } }]
   }))
 
@@ -210,18 +208,18 @@ export function * transfer (api, action) {
     console.tron.log('setTx', txHash)
 
     if (!txHash) {
-      yield put(MessageBoxActions.openMessageBox({ title: 'Warning', message: 'Transfer too frequently, please try again later', }))
+      yield put(MessageBoxActions.openMessageBox({ title: 'Warning', message: I18n.t('TransferTooFreq')}))
       return
     }
 
     yield put(WalletActions.setTx(txHash))
     yield put(MessageBoxActions.openMessageBox({
       title: 'Info',
-      message: 'Transfer submit success!\n\nPlease check in Tab Records -> Transactions',
+      message: I18n.t('TransferSuccess'),
       submitedActions: [{ action: WalletActions.navigateToBottomTab, data: { routeName: 'Record' } }]
     }))
   } else {
-    yield put(MessageBoxActions.openMessageBox({ title: 'Warning', message: 'transfer submit fail' }))
+    yield put(MessageBoxActions.openMessageBox({ title: 'Warning', message: I18n.t('TransferFail') }))
   }
 }
 

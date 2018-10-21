@@ -6,8 +6,7 @@ import styles from './Styles/PwdModalStyle'
 import PwdModalActions from '../Redux/PwdModalRedux'
 import NavigationActions from 'react-navigation/src/NavigationActions'
 import connect from 'react-redux/es/connect/connect'
-import Icon from 'react-native-vector-icons/MaterialIcons'
-import { Colors } from '../Themes'
+import I18n from '../I18n'
 
 class PwdModal extends Component {
 
@@ -53,7 +52,7 @@ class PwdModal extends Component {
             autoFocus={true}
             multiline={false}
             textAlign='center'
-            placeholder='password'
+            placeholder={I18n.t('Password')}
             placeholderTextColor={'gray'}
             underlineColorAndroid={'transparent'}
             secureTextEntry={true}
@@ -70,10 +69,10 @@ class PwdModal extends Component {
 
         <View style={styles.actionWrapper}>
           <TouchableOpacity style={styles.cancelButton} onPress={this._closeModal.bind(this)}>
-            <Text style={styles.label}> Cancel </Text>
+            <Text style={styles.label}> {I18n.t('Cancel')} </Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.confirmButton} disabled={!!submitted} onPress={this._checkPwd.bind(this)}>
-            <Text style={styles.label}> {!!submitted ? 'Checking..' : 'Submit'} </Text>
+            <Text style={styles.label}> {!!submitted ? I18n.t('Checking')+'..' : I18n.t('Submit')} </Text>
           </TouchableOpacity>
         </View>
       </Overlay>
