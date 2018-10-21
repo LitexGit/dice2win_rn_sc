@@ -86,21 +86,23 @@ class GameScreen extends Component {
   }
 
   _changeNotice = () => {
-    let noticeIndex = (this.state.noticeIndex + 1) % this.props.notices.length
+    let {notices} = this.props
+    let {noticeIndex} = this.state
+
+    if(!notices || !notices.length) return
+    noticeIndex = (noticeIndex + 1) % notices.length
     this.setState({noticeIndex})
-    // let that = this
-    // setTimeout(_=>that.setState({noticeIndex}), 1000)
   }
 
   render () {
     let {banners, notices} = this.props
     let {noticeIndex} = this.state
-    let notice = !!notices ? notices[noticeIndex] : null
+    let notice = (!!notices && notices.length) ? notices[noticeIndex] : null
     return (
       <View style={styles.container}>
         <View style={styles.swiper}>
           <Swiper autoplay={true} showsPagination={false}>
-            { banners && banners.map((item, i) => this.Slide(item)) }
+            { !!banners && banners.map((item, i) => this.Slide(item)) }
           </Swiper>
         </View>
         <View style={styles.noticeBar}>

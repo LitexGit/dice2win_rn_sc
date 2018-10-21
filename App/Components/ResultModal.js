@@ -12,7 +12,10 @@ const STATUS_TEXT = {
   placed: 'Submitted, waiting for drawing..',
   drawn: 'Drawing now..',
   win: 'Congrats!!! YOU WIN:',
-  lose: 'Sorry you lose..'
+  lose: 'Sorry you lose..',
+  fail: 'Submition failed, please bet again',
+  won: 'Winning confirmed',
+  lost: 'Lost confirmed',
 }
 
 class ResultModal extends Component {
