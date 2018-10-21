@@ -46,7 +46,7 @@ class BackupScreen extends Component {
     // console.log(this.state)
     var mnemonic = this.props.mnemonic
     // var words = mnemonic.split(' ').sort(()=> .5 - Math.random());
-    var words = mnemonic.split(' ')
+    var words = mnemonic.split(' ').sort(function() { return .5 - Math.random(); });
     var wordState = new Array()
     words.map((item, i) => wordState[i] = true)
     this.setState({stateWord: words, wordState: wordState}, () => {
