@@ -188,7 +188,7 @@ async function sendTx(wallet, toAddress, value, options) {
 
   try {
     let defaultOptions = {
-      gasLimit: 21000,
+      // gasLimit: 21000,
       gasPrice: 3e9
     }
     let amount = utils.parseEther(value)
