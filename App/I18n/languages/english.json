@@ -59,6 +59,9 @@
   "MnemonicWarning2": "Wallet mnemonics are used to recover your account. Do not reveal your mnemonics at any time.",
   "MnemonicWarning3": "It is strongly recommended NOT to use screen captures or copy & paste to save your mnemonic or transfer it via Internet.",
   "WrongMnemonic": "Wrong Mnemonic",
+  "DiscardWallet": "This will cancel the wallet creation, do you want to leave?",
+  "LeavePage": "Leave page",
+  "ContinueCreation": "Continue wallet creation",
   "WalletCreateSuccess": "Wallet create success!\n\nIf your balance is 0, you need to transfer some ETH to your wallet address to play",
   "Attention": "ATTENTION",
   "ImportWarning": "Import new wallet will OVERRIDE current wallet! If you haven't back it up, you will LOST all your asset in it!\n\nAre you sure?",
@@ -84,11 +87,13 @@
   "Share2Earn": "SHARE to earn MORE",
   "RefLevel": "Ref level",
   "WithdrawSubmitted": "Withdraw request submitted, please wait for review",
-  "WithdrawFailed": "提交失败，请重试",
+  "WithdrawFailed": "Withdraw failed, please try again",
   "CannotWithdraw": "No bonus to withdraw, SHARE to your friends and get bonus right now!",
+  "GasAwareness": "Fee Awareness",
+  "WithdrawGas": "We need to charge 0.001 ETH for gas fee and man labor",
 
 
-  "SettingScreenLabel": "设置",
+  "SettingScreenLabel": "Settings",
   "SettingScreenTitle": "Settings",
   "MsgNotiTitle": "Event Notification",
   "MsgNotiDesc": "game result, activities, etc",
@@ -151,6 +156,7 @@
   "withdraw": "withdraw",
 
 
+  "IAccept": "I Accept",
   "CommingSoon": "Coming soon",
   "InsufficientBalance": "You don't have enough balance to place Bet",
   "PwdEmpty": "Password can't be empty",

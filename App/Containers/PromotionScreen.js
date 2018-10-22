@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, View, TouchableOpacity, SectionList, RefreshControl, Share } from 'react-native'
+import { Text, View, TouchableOpacity, SectionList, RefreshControl, Share, Alert } from 'react-native'
 import Toast from 'react-native-root-toast'
 
 import { connect } from 'react-redux'
@@ -65,7 +65,6 @@ class PromotionScreen extends Component {
 
 
   _withdraw = (bonus) => {
-    console.tron.log('BONUS', bonus)
     if(!bonus || bonus==='0'){
       Toast.show(I18n.t('CannotWithdraw'), {
         duration: Toast.durations.LONG,
@@ -74,8 +73,10 @@ class PromotionScreen extends Component {
       return
     }
 
-    console.tron.log('BONUS', bonus)
-    this.props.withdraw()
+    Alert.alert(I18n.t('GasAwareness'), I18n.t('WithdrawGas'), [
+      {text: I18n.t('Cancel'), style: 'cancel'},
+      {text: I18n.t('IAccept'), style:'default', onPress: this.props.withdraw},
+    ])
   }
 
   _renderSectionHeader = ({section}) => {
@@ -97,10 +98,10 @@ class PromotionScreen extends Component {
       <View style={styles.timeWrapper}>
         <View style={styles.statusWrapper}><Text style={styles[status+'Text']}>{I18n.t(status)}</Text></View>
       </View>
-      <View style={styles.sourceWrapper}>
+      {/* <View style={styles.sourceWrapper}>
         <View style={styles.statusWrapper}><Text style={styles.addressText} numberOfLines={1} ellipsizeMode='middle'>{address}</Text></View>
         <View style={styles.statusWrapper}><Text style={styles.levelText}>{I18n.t('RefLevel') + ': '}{level}</Text></View>
-      </View>
+      </View> */}
       <View style={styles.valueWrapper}><Text style={styles.darkLabel}><Text style={styles.valueText}>{displayETH(amount)}</Text>  ETH</Text></View>
   </TouchableOpacity>
   }

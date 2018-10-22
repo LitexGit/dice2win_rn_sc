@@ -55,9 +55,9 @@ class NewWalletScreen extends Component {
         </View>
         <DoublePwdInput focus={false} />
         <View style={styles.actionWrapper}>
-          <TouchableOpacity style={styles.cancelButton} onPress={_=>Alert.alert('Attention', 'This will cancel the wallet creation, do you want to leave?', [
-            {text: 'Leave page', onPress: back, style: 'cancel'},
-            {text: 'Continue wallet creation', style:'default'},
+          <TouchableOpacity style={styles.cancelButton} onPress={_=>Alert.alert(I18n.t('Attention'), I18n.t('DiscardWallet'), [
+            {text: I18n.t('LeavePage'), onPress: back, style: 'cancel'},
+            {text: I18n.t('ContinueCreation'), style:'default'},
           ])}>
             <Text style={styles.label}> {I18n.t('Cancel')} </Text>
           </TouchableOpacity>
