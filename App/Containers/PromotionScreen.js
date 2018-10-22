@@ -5,6 +5,7 @@ import Toast from 'react-native-root-toast'
 import { connect } from 'react-redux'
 import RecordActions from '../Redux/RecordRedux'
 import WalletActions from '../Redux/WalletRedux'
+import UserActions from '../Redux/UserRedux'
 
 import { displayETH, sectionlize } from '../Lib/Utils/format'
 
@@ -45,8 +46,10 @@ class PromotionScreen extends Component {
   }
 
   _refresh = () => {
+    let {uid} = this.props
     this.setState({page: 1})
     this.props.loadRecords('bonus', 1)
+    this.props.refreshBonus(uid)
   }
 
   _loadMore = () => {
@@ -148,16 +151,17 @@ class PromotionScreen extends Component {
 const mapStateToProps = (state) => {
   let {
     record: { bonus: list, refreshing, loading },
-    user: { bonus, totalBonus, },
+    user: { uid, bonus, totalBonus, },
     config: {shareInfo},
   } = state
   return {
-    refreshing, loading, sections: sectionlize(list), bonus, totalBonus, shareInfo
+    refreshing, loading, sections: sectionlize(list), uid, bonus, totalBonus, shareInfo
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    refreshBonus: (uid) => dispatch(UserActions.userRequest(uid)),
     loadRecords: (type, data) => dispatch(RecordActions.recordRequest({type, data})),
     withdraw: () => dispatch(WalletActions.withdraw()),
   }

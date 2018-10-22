@@ -335,7 +335,7 @@ export function * placeBet (api, action) {
     yield put(GameActions.updateStatus({ [modulo]: 'placed' }))
   } else {
     yield put(GameActions.updateStatus({ [modulo]: 'idle' }))
-    yield put(MessageBoxActions.openMessageBox({ title: 'Warning', message: 'Place bet too frequently, please try again later' }))
+    yield put(MessageBoxActions.openMessageBox({ title: 'Warning', message: I18n.t('TransferTooFreq') }))
   }
 
 }

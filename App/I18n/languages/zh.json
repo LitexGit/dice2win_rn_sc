@@ -97,7 +97,7 @@
   "LangSelectTitle": "语言",
 
 
-  "ShareLink": "复制邀请链接",
+  "ShareLink": "分享邀请链接",
   "CopyAddress": "复制地址",
   "CopyCode": "复制邀请码",
   "AddressCopied": "地址已复制",
@@ -138,7 +138,7 @@
   "winning": "奖金",
   "today": "今天",
   "yesterday": "昨天",
-  "wait": "稍候",
+  "wait": "确认中",
   "win": "赢了",
   "lose": "输了",
   "fail": "失败",
