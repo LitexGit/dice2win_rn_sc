@@ -19,6 +19,10 @@ const STATUS_TEXT = {
   lost: 'Lost confirmed',
 }
 
+const GAME_ENDED = (status) => {
+  return ['win', 'lose', 'fail', 'won', 'lost'].includes(status)
+}
+
 class ResultModal extends Component {
 
   render () {
@@ -31,9 +35,9 @@ class ResultModal extends Component {
           {status==='win' && result.amount && <Text style={styles.amountText}>{displayETH(result.amount)} ETH!</Text>}
         </View>
         <View style={styles.buttonPanel}>
-          <TouchableOpacity style={styles.buttonWrapper} onPress={_=>this.props.close(modulo, status)}>
+          {GAME_ENDED(status) && <TouchableOpacity style={styles.buttonWrapper} onPress={_=>this.props.close(modulo, status)}>
             <Text style={styles.buttonText}>{I18n.t('Close')}</Text>
-          </TouchableOpacity>
+          </TouchableOpacity>}
         </View>
       </View>
     )
