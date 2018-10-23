@@ -58,7 +58,7 @@ export const updateBet = (state, action) => {
 export const updateStatus = (state, action) => {
   let {status, hash} = action.data
   let modulo = Object.keys(status)[0]
-  if(!!hash && hash != state.bet[modulo]) return
+  if (!!hash && hash != state.bet[modulo]) return state
 
   status = {...state.status, ...status}
   return state.merge({status})
