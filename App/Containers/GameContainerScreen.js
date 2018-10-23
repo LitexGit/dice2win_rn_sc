@@ -48,8 +48,13 @@ class GameContainerScreen extends Component {
   }
 
   _placeBet = () => {
-    let { index, stake, contract_address, address, betMask, openConfirmModal, navigate, getRandom, balance } = this.props
+    let { index, stake, contract_address, address, betMask, openConfirmModal, navigate, getRandom, balance, uid } = this.props
 
+    tracker.trackEvent('BetButton', "Click", {
+      label: `uid:${uid},modulo:${index},stake:${stake}`,
+      value: uid
+    })
+    
     if(!W.address) {
       navigate('WalletManageScreen')
     } else if (stake >= balance) {
@@ -58,7 +63,7 @@ class GameContainerScreen extends Component {
 
       getRandom({address: W.address})
 
-      // callback actions
+      // callback action 
       let confirmedActions = [{
         action: WalletActions.placeBet,
         data: { address, value: stake, betMask, modulo: index, password: '' }
@@ -161,14 +166,16 @@ const mapStateToProps = (state) => {
     confirmModal: { modalIsOpen, loading, gas },
     bet: { winRate, feeRate, rewardTime, betMask, },
     config: {contract_address},
-    wallet: { fetching, balance, address, gasPrice, secret }
+    wallet: { fetching, balance, address, gasPrice, secret },
+    user: {uid}
   } = state
   return {
     index:key, stake, status, result,
     modalIsOpen, loading, gas,
     winRate, feeRate, rewardTime, betMask,
     contract_address,
-    balanceFetching:fetching, balance, address, gasPrice, secret
+    balanceFetching:fetching, balance, address, gasPrice, secret,
+    uid,
   }
 }
 

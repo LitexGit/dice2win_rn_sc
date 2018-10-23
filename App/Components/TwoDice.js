@@ -14,6 +14,7 @@ const bets = [true, false, true, false, true, false, true, false, true, false, t
 class TwoDice extends Component {
   componentDidMount () {
     this.props.loadTwoDice()
+    tracker.trackScreenView('Dice2')
   }
 
   renderDice (freq, idx) {

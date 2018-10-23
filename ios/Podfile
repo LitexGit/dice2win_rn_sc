@@ -28,6 +28,8 @@ target 'Dice2Win' do
 
   pod 'RNReactNativeHapticFeedback', :path => '../node_modules/react-native-haptic-feedback'
 
+  pod 'react-native-google-analytics-bridge', :path => '../node_modules/react-native-google-analytics-bridge'
+
   target 'Dice2WinTests' do
     inherit! :search_paths
     # Pods for testing

@@ -37,6 +37,7 @@ const diceImage = [
 class OneDice extends Component {
   componentDidMount () {
     this.props.loadOneDice()
+    tracker.trackScreenView('Dice1')
   }
 
   renderDice (value, idx) {

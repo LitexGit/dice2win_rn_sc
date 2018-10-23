@@ -3,6 +3,7 @@ package fun.eth4.game;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.idehub.GoogleAnalyticsBridge.GoogleAnalyticsBridgePackage;
 import com.rnfs.RNFSPackage;
 import com.crypho.scrypt.RNScryptPackage;
 import com.tectiv3.aes.RCTAesPackage;
@@ -35,6 +36,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new GoogleAnalyticsBridgePackage(),
             new RNFSPackage(),
             new RNScryptPackage(),
             new RCTAesPackage(),

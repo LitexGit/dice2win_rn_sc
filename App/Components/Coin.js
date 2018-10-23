@@ -10,6 +10,7 @@ import I18n from '../I18n'
 class Coin extends Component {
   componentDidMount () {
     this.props.loadCoin()
+    tracker.trackScreenView('Dice1')
   }
 
   render () {

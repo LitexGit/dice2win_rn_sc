@@ -28,7 +28,8 @@ export const INITIAL_STATE = Immutable({
   // ws: 'http://192.168.51.137:7001',
   // base_domain: "http://192.168.51.137:7001",
   contract_address: "0x3d392560290a746542Cb14429E9ED2898aa74464",
-  network: 'ropsten',
+  network: 'rinkeby',
+  trackId: 'UA-127960812-1',
   abi: abi,
   api_list: {
     get_abi: "http://api.eth4.fun/api/v1/games/dev/abi",
@@ -50,7 +51,7 @@ export const INITIAL_STATE = Immutable({
   edge: 0.01,
   shareInfo:{
     message:'ETH 4 FUN! \n shared from app',
-    link: 'eth4.fun',
+    link: 'https://eth4.fun',
     title: 'share to friends and get bonus'
   },
 

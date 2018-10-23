@@ -17,6 +17,7 @@ class Etheroll extends Component {
 
   componentDidMount () {
     this.props.loadEtheroll()
+    tracker.trackScreenView('Roll')
   }
 
   render () {

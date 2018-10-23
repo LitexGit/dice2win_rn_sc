@@ -51,6 +51,7 @@ class WalletScreen extends Component {
   }
 
   _copyAddress = () => {
+    this._trackClick('CopyAddress')
     let {address} = this.props
     Clipboard.setString(address)
     Toast.show(I18n.t('AddressCopied'), {
@@ -59,6 +60,7 @@ class WalletScreen extends Component {
   }
 
   _copyCode = () => {
+    this._trackClick('CopyCode')
     let {code} = this.props
     Clipboard.setString(code)
     Toast.show(I18n.t('CodeCopied'), {
@@ -67,6 +69,7 @@ class WalletScreen extends Component {
   }
 
   _shareLink = () => {
+    this._trackClick('ShareLink')
     let {shareInfo:{message, title, url}, share_url} = this.props
     let msg = message + "\r\n Download Url: " + share_url
     Share.share({message : msg, title, url})
@@ -90,6 +93,7 @@ class WalletScreen extends Component {
   }
 
   _openTelegram = () => {
+    this._trackClick('Telegram')
     let {telegroup} = this.props
     Linking.canOpenURL(telegroup).then(supported => {
       return Linking.openURL(telegroup)
@@ -97,12 +101,19 @@ class WalletScreen extends Component {
   }
 
   _openFAQ = () => {
+    this._trackClick('FAQ')
     let {faq, navigate} = this.props
     navigate('WebviewScreen', {title: 'FAQ', url: faq})
   }
 
   _checkUpdate = () => {
+    this._trackClick('Version')
 
+  }
+
+  _trackClick = (button) => {
+    let {address, uid} = this.props
+    tracker.trackEvent(button, 'Click', { label:uid, value:address })
   }
 
   render () {

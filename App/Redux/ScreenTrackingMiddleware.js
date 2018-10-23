@@ -1,4 +1,5 @@
 import { NavigationActions } from 'react-navigation'
+import { GoogleAnalyticsTracker } from 'react-native-google-analytics-bridge';
 
 // gets the current screen from navigation state
 const getCurrentRouteName = (navigationState) => {
@@ -27,6 +28,7 @@ const screenTracking = ({ getState }) => next => (action) => {
   if (nextScreen !== currentScreen) {
     try {
       console.tron.log(`NAVIGATING ${currentScreen} to ${nextScreen}`)
+      tracker.trackScreenView(nextScreen)
       // Example: Analytics.trackEvent('user_navigation', {currentScreen, nextScreen})
     } catch (e) {
       console.tron.log(e)
