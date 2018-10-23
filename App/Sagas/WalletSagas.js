@@ -316,7 +316,7 @@ export function * placeBet (api, action) {
     yield put(PwdModalActions.closePwdModal())
   }
 
-  yield put(GameActions.updateStatus({[modulo]: 'placing'}))
+  yield put(GameActions.updateStatus({status:{[modulo]: 'placing'}}))
 
   // const wallet = W.wallet
 
@@ -342,9 +342,10 @@ export function * placeBet (api, action) {
 
   if (!!ans && !!ans.hash) {
     yield call(api.commitTx, {commit: secret.commit, tx_hash: ans.hash})
-    yield put(GameActions.updateStatus({ [modulo]: 'placed' }))
+    yield put(GameActions.updateBet({ [modulo]: ans.hash }))
+    yield put(GameActions.updateStatus({status:{[modulo]: 'placed'}}))
   } else {
-    yield put(GameActions.updateStatus({ [modulo]: 'idle' }))
+    yield put(GameActions.updateStatus({status:{[modulo]: 'idle'}}))
     yield put(MessageBoxActions.openMessageBox({ title: 'Warning', message: I18n.t('TransferTooFreq') }))
   }
 

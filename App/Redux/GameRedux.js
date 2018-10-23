@@ -11,7 +11,8 @@ const {Types, Creators} = createActions({
   gameRequest: ['data'],
   gameSuccess: ['payload'],
   gameFailure: null,
-  updateStatus: ['status'],
+  updateBet: ['bet'],
+  updateStatus: ['data'],
   updateResult: ['result'],
 })
 
@@ -37,6 +38,7 @@ export const INITIAL_STATE = Immutable({
 
   result: {2:{}, 6:{}, 36:{}, 100:{}},
   status: {2:'idle', 6:'idle', 36:'idle', 100:'idle'},
+  bet: {2:null, 6:null, 36:null, 100:null},
 })
 
 /* ------------- Selectors ------------- */
@@ -44,12 +46,21 @@ export const INITIAL_STATE = Immutable({
 export const GameSelectors = {
   getData: state => state.data,
   getGameId: state => state.game.key,
+  getBet: state => state.game.bet,
 }
 
 /* ------------- Reducers ------------- */
+export const updateBet = (state, action) => {
+  let bet = {...state.bet, ...action.bet}
+  return state.merge({bet})
+}
 
 export const updateStatus = (state, action) => {
-  let status = {...state.status, ...action.status}
+  let {status, hash} = action.data
+  let modulo = Object.keys(status)[0]
+  if(!!hash && hash != state.bet[modulo]) return
+
+  status = {...state.status, ...status}
   return state.merge({status})
 }
 
@@ -81,6 +92,7 @@ export const failure = state =>
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
+  [Types.UPDATE_BET]: updateBet,
   [Types.UPDATE_STATUS]: updateStatus,
   [Types.UPDATE_RESULT]: updateResult,
   [Types.SET_GAME_KEY]: setGameKey,

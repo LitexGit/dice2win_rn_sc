@@ -52,7 +52,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     close: (modulo, status)=>{
-      dispatch(GameActions.updateStatus({[modulo]:'idle'}))
+      dispatch(GameActions.updateStatus({status:{[modulo]:'idle'}}))
       dispatch(WalletActions.walletRequest())
     }
   }

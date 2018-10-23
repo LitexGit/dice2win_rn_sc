@@ -14,7 +14,7 @@ import { channel } from 'redux-saga'
 import { call, put, take } from 'redux-saga/effects'
 import ConfigActions from '../Redux/ConfigRedux'
 import RecordActions, {RecordSelectors} from '../Redux/RecordRedux'
-import GameActions from '../Redux/GameRedux'
+import GameActions, {GameSelectors} from '../Redux/GameRedux'
 import NotificationActions from '../Redux/NotificationRedux'
 import WalletActions from '../Redux/WalletRedux'
 import SocketIOClient from 'socket.io-client'
@@ -81,7 +81,7 @@ export function * watchSocketStatusChannel(){
   }
 }
 
-function  socketConnected() {
+function socketConnected() {
   socketStatusChannel.put(ConfigActions.socketStatus('on'))
   console.tron.log('Socket Connected', socket.id)
 
@@ -91,12 +91,17 @@ function  socketConnected() {
 }
 
 const socketMessage = (msg) => {
-  let status = msg.bet_res
-  socket.emit('ack', msg._msgId)
-  if(!status || status==='won' || status==='lost') return
-  !!status && socketStatusChannel.put(GameActions.updateStatus({[msg.modulo]:status}))
+  let {_msgId, bet_res:status, tx_hash:hash, modulo, dice_payment:amount} = msg
+
+  socket.emit('ack', _msgId)
+
+  if(!status 
+    || status==='won' 
+    || status==='lost') return
+
+  !!status && socketStatusChannel.put(GameActions.updateStatus({status:{[modulo]:status}, hash}))
   if(status === 'win'){
-    let result = {[msg.modulo]:{amount: msg.dice_payment}}
+    let result = {[modulo]:{amount}}
     socketStatusChannel.put(GameActions.updateResult(result))
   }
   console.tron.log('Socket MSG:', msg)
