@@ -49,7 +49,7 @@ class GameScreen extends Component {
   componentDidMount () {
     // 记录 邀请码
     this.props.fetchInviteCode()
-    this.props.loadBanners()
+    this.props.loadBanners({locale: I18n.currentLocale()})
     console.tron.log('navigation', this.props.navigation)
   }
 
@@ -145,7 +145,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    loadBanners: () => dispatch(ActivityActions.activityRequest()),
+    loadBanners: (data) => dispatch(ActivityActions.activityRequest(data)),
     setGameKey: (key) => dispatch(GameActions.setGameKey(key)),
     navigate: (target, params) => dispatch(NavigationActions.navigate({routeName: target, params: params})),
     loadCoin: () => dispatch(BetActions.loadCoin()),

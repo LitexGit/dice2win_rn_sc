@@ -36,10 +36,10 @@ const create = (baseURL = Config.BASE_URL) => {
   // way at this level.
   //
   const getRoot = () => ApiSauceObj.get('')
-  const getConfig = () => ApiSauceObj.get('api/v1/games/dev/configs')
+  const getConfig = ({locale}) => ApiSauceObj.get('api/v1/games/dev/configs', {locale})
   const getABI = () => ApiSauceObj.get('api/v1/games/dev/abi')
-  const getBanners = () => ApiSauceObj.get('api/v1/games/dev/banners')
-  const getNotices = () => ApiSauceObj.get('api/v1/games/dev/notices')
+  const getBanners = ({locale}) => ApiSauceObj.get('api/v1/games/dev/banners', {locale})
+  const getNotices = ({locale}) => ApiSauceObj.get('api/v1/games/dev/notices', {locale})
   const getRecord = ({gameId, address, page, size}) => ApiSauceObj.get('api/v1/games/dev/bet/history', {gameId, address, page, size})
   const getUser = (uid) => ApiSauceObj.get('api/v1/games/dev/userinfo', {uid})
   const getPromotion = (uid) => ApiSauceObj.get('api/v1/games/dev/shareinfo', {uid})

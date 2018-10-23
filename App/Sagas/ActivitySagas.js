@@ -19,8 +19,8 @@ export function * getActivity (api, action) {
   // const currentData = yield select(ActivitySelectors.getData)
   // make the call to the api
   let [bannerRes, noticeRes] = yield all([
-    call(api.getBanners),
-    call(api.getNotices),
+    call(api.getBanners, data),
+    call(api.getNotices, data),
   ]) 
 
   // success?

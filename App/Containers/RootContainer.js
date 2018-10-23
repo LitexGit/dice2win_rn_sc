@@ -15,6 +15,7 @@ import {
   GoogleTagManager,
   GoogleAnalyticsSettings
 } from 'react-native-google-analytics-bridge'
+import I18n from '../I18n'
 
 
 // Styles
@@ -33,7 +34,7 @@ class RootContainer extends Component {
       this.props.startup()
     }
     // get global config from server
-    this.props.configRequest();
+    this.props.configRequest({locale: I18n.currentLocale()});
 
     // GA settings
     tracker = new GoogleAnalyticsTracker(trackId)
