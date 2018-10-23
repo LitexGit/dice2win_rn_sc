@@ -47,8 +47,21 @@ class GameContainerScreen extends Component {
     }
   }
 
+  constructor(props) {
+    super(props)
+    this.state = {
+      stake: 0.1,
+      valid: true,
+    }
+  }
+
   _placeBet = () => {
-    let { index, stake, contract_address, address, betMask, openConfirmModal, navigate, getRandom, balance, uid } = this.props
+    let { index, stake, contract_address, address, betMask, openConfirmModal, navigate, getRandom, setStake, balance, uid } = this.props
+    let {valid} = this.state
+    if(!valid) {
+      alert(I18n.t('InvalidStake'))
+      return
+    }
 
     tracker.trackEvent('BetButton', "Click", {
       label: `uid:${uid},modulo:${index},stake:${stake}`,
@@ -89,6 +102,9 @@ class GameContainerScreen extends Component {
     if(this.props.winRate != prevProps.winRate){
       this.props.setStake(this.props.stake)
     }
+    if(this.props.stake != prevProps.stake) {
+      this.setState({stake:this.props.stake})
+    }
   }
 
   render () {
@@ -123,11 +139,25 @@ class GameContainerScreen extends Component {
               <TouchableOpacity style={styles.stakeButton} onPress={_=>setStake(stake - 0.01)}>
                 <Text style={[styles.stakeButtonText, {fontSize: 28}]}>-</Text>
               </TouchableOpacity>
-              <TextInput value={''+stake} style={styles.stakeInput}
+
+              <TextInput value={''+this.state.stake} style={[styles.stakeInput, !this.state.valid && {borderBottomColor: 'red'}]}
                 underlineColorAndroid={'transparent'}
                 keyboardType='decimal-pad'
-                onBlur={_=>setStake(parseFloat(stake.toFixed(2)))}
-                onChangeText={(val) =>{ setStake(parseFloat(val)); this.forceUpdate() } }/>
+                numberOfLines={1}
+                onChangeText={text => {
+                  this.setState({stake:text})
+                  if(/^\d+(\.\d{1,2})?$/.test(text)){
+                    let stake = parseFloat(text)
+                    if(!!stake){
+                    this.setState({valid:true})
+                      setStake(stake)
+                    }
+                  } else {
+                    this.setState({valid:false})
+                  }
+                }}
+                />
+
               <TouchableOpacity style={styles.stakeButton} onPress={_=>setStake(stake + 0.01)}>
                 <Text style={[styles.stakeButtonText, {fontSize: 28}]}>+</Text>
               </TouchableOpacity>

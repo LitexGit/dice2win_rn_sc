@@ -18,7 +18,6 @@ export default StyleSheet.create({
     padding: 20,
   },
   stakeBox: {
-    flex: 1,
     height: STAKE_BOX_HEIGHT,
     marginTop: 20,
     flexDirection: 'row',
@@ -43,7 +42,7 @@ export default StyleSheet.create({
     flex: 1,
     textAlign: 'center',
     color: Colors.activeTint,
-    fontSize: 30,
+    fontSize: 26,
     marginLeft:10,
     marginRight:10,
     borderBottomWidth: 1,
