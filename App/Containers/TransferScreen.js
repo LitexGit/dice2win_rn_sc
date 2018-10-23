@@ -56,6 +56,8 @@ class TransferScreen extends Component {
   }
 
   render () {
+    let {loading} = this.props
+
     return (
       <View style={styles.container}>
         <View style={styles.titleBox}>
@@ -89,8 +91,9 @@ class TransferScreen extends Component {
         </View>
         <View style={styles.actionWrapper}>
           <TouchableOpacity style={styles.confirmButton}
-                            onPress={this._transfer.bind(this)}>
-            <Text style={styles.label}> {I18n.t('Transfer')} </Text>
+            disabled={loading}
+            onPress={this._transfer.bind(this)}>
+            <Text style={styles.label}> {I18n.t(loading?'Processing':'Transfer')} </Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -100,9 +103,7 @@ class TransferScreen extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    balance: state.wallet.balance,
-    // txHash: state.wallet.tx.hash,
-    address: state.wallet.address
+    ...{balance, address, loading} = state.wallet
   }
 }
 

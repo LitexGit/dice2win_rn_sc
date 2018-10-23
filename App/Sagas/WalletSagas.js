@@ -140,7 +140,11 @@ export function * initWallet (api, action) {
 // 从助记词导入钱包，并将其存入本地存储中
 export function * importFromMnemonic (api, action) {
   let {mnemonic, password} = action.data
+
+  yield put(WalletActions.setLoading(true))
   let wallet = yield call(walletLib.importMnemonic, mnemonic, password)
+  yield put(WalletActions.setLoading(false))
+  
   if (!!wallet) {
     yield postNewWallet()
   } else {
@@ -148,6 +152,7 @@ export function * importFromMnemonic (api, action) {
     yield put(MessageBoxActions.openMessageBox({ title: 'Warning', message: 'wrong mnemonic' }))
     // Alert.alert('Warning', 'wrong mnemonic', [{ text: 'OK' },], { cancelable: false })
   }
+
 }
 
 // 从keystore导入钱包，并将其存入本地存储中
@@ -155,7 +160,10 @@ export function * importEncryptWallet (api, action) {
   console.tron.log('wallet importEncryptWallet', action)
   let {keystore, password} = action.data
 
+  yield put(WalletActions.setLoading(true))
   let wallet = yield call(walletLib.importKeyStore, keystore, password)
+  yield put(WalletActions.setLoading(false))
+
   if (!!wallet) {
     yield postNewWallet()
   } else {
@@ -207,6 +215,7 @@ export function * transfer (api, action) {
   let gasPrice = (yield select(ConfirmModalSelectors.getGas)) * 1e9
   let options = {gasPrice}
 
+  yield put(WalletActions.setLoading(true))
   let result = yield call(walletLib.unlockWallet, password)
   if (!result) {
     yield put(PwdModalActions.setErrInfo({errInfo: 'wrong password'}))
@@ -233,6 +242,7 @@ export function * transfer (api, action) {
   } else {
     yield put(MessageBoxActions.openMessageBox({ title: 'Warning', message: I18n.t('TransferFail') }))
   }
+  yield put(WalletActions.setLoading(false))
 }
 
 //获取当前账户的以太坊余额

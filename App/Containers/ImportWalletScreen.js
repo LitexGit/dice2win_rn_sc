@@ -53,7 +53,7 @@ class ImportWalletScreen extends Component {
   }
 
   render () {
-    let { pwd, pwd1, pwd2, pwdValid, back, importFromMnemonic, importEncryptWallet, alert } = this.props
+    let { pwd, pwd1, pwd2, pwdValid, back, importFromMnemonic, importEncryptWallet, alert, loading } = this.props
     return (
       <View style={styles.container}>
         <ScrollableTabView
@@ -80,6 +80,7 @@ class ImportWalletScreen extends Component {
                 <Text style={styles.label}> {I18n.t('Cancel')} </Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.confirmButton}
+                disabled={loading}
                 onPress={() => {
                   console.tron.log('this.props', this.props)
                   if(!this.state.mnemonic || this.state.mnemonic.length < 40){
@@ -95,7 +96,7 @@ class ImportWalletScreen extends Component {
                     alert(I18n.t('PwdDismatch'))
                   }
                 }}>
-                <Text style={styles.label}> {I18n.t('Import')} </Text>
+                <Text style={styles.label}> {I18n.t(loading?'Loading':'Import')} </Text>
               </TouchableOpacity>
             </View>
             </KeyboardAvoidingView>
@@ -117,24 +118,27 @@ class ImportWalletScreen extends Component {
               <TouchableOpacity style={styles.cancelButton} onPress={back}>
                 <Text style={styles.label}> {I18n.t('Cancel')} </Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.confirmButton} onPress={() => {
-                var keystore = this.state.keystore
-                if(!keystore ){
-                  alert(I18n.t('InvalidKeystore'))
-                  return
+              <TouchableOpacity style={styles.confirmButton}
+                disabled={loading}
+                onPress={() => {
+                  var keystore = this.state.keystore
+                  if(!keystore ){
+                    alert(I18n.t('InvalidKeystore'))
+                    return
+                  }
+                  if(!pwd){
+                    alert(I18n.t('PwdEmpty'))
+                    return
+                  }
+                  try {
+                    keystore = JSON.parse(keystore)
+                    importEncryptWallet(keystore, pwd)
+                  } catch(e) {
+                    alert(I18n.t('InvalidKeystore'))
+                  }
                 }
-                if(!pwd){
-                  alert(I18n.t('PwdEmpty'))
-                  return
-                }
-                try {
-                  keystore = JSON.parse(keystore)
-                  importEncryptWallet(keystore, pwd)
-                } catch(e) {
-                  alert(I18n.t('InvalidKeystore'))
-                }
-              }}>
-                <Text style={styles.label}> {I18n.t('Import')} </Text>
+              }>
+                <Text style={styles.label}> {I18n.t(loading?'Loading':'Import')} </Text>
               </TouchableOpacity>
             </View>
             </KeyboardAvoidingView>
@@ -152,6 +156,7 @@ const mapStateToProps = (state) => {
     pwd2: state.doublePwdInput.pwd2,
     pwdValid: state.doublePwdInput.pwd1valid,
     pwd: state.singlePwdInput.pwd,
+    loading: state.wallet.loading,
   }
 }
 

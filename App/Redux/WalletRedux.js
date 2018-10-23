@@ -19,6 +19,7 @@ const { Types, Creators } = createActions({
   importFromMnemonic: ["data"],
   importEncryptWallet: ["data"],
   setWallet: ["wallet"],
+  setLoading: ["loading"],
   withdraw: null,
 
   walletRequest: ["data"],
@@ -36,13 +37,16 @@ export const INITIAL_STATE = Immutable({
   tx: {hash: ''},
   wallet: {wallet: {mnemonic: null}},
   data: null,
-  fetching: null,
+  gasPrice: 3e9,
   address: '',
   balance: '',
+  secret: {},
+
+  loading: false,
+
+  fetching: null,
   payload: null,
   error: null,
-  gasPrice: 3e9,
-  secret: {}
 
 })
 
@@ -55,6 +59,9 @@ export const WalletSelectors = {
 }
 
 /* ------------- Reducers ------------- */
+
+export const setLoading = (state, {loading}) =>
+  state.merge({loading})
 
 export const setWallet = (state, {wallet}) =>
   // console.tron.log('setWallet', wallet)
@@ -90,6 +97,7 @@ export const failure = (state, action) => {
 
 export const reducer = createReducer(INITIAL_STATE, {
   [Types.SET_WALLET]: setWallet,
+  [Types.SET_LOADING]: setLoading,
   [Types.SET_KEYSTORE]: setKeystore,
   [Types.SET_TX]: setTx,
   [Types.SET_BALANCE]: setBalance,
