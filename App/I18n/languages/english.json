@@ -55,9 +55,10 @@
 
 
   "BackupMnemonic": "Back up your mnemonic",
-  "MnemonicWarning1": "Please record the mnemonic of your wallet and save it to a safe place.",
-  "MnemonicWarning2": "Wallet mnemonics are used to recover your account. Do not reveal your mnemonics at any time.",
+  "MnemonicWarning1": "Please write down the mnemonic below",
+  "MnemonicWarning2": "Wallet mnemonic is used to recover your wallet or reset your wallet password. Write it down and store it in a safe place.",
   "MnemonicWarning3": "It is strongly recommended NOT to use screen captures or copy & paste to save your mnemonic or transfer it via Internet.",
+  "MnemonicConfirm": "Please tap the words in right order, in order to make sure you write them down correctly",
   "WrongMnemonic": "Wrong Mnemonic",
   "DiscardWallet": "This will cancel the wallet creation, do you want to leave?",
   "LeavePage": "Leave page",

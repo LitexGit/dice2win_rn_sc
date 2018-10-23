@@ -55,9 +55,10 @@
 
 
   "BackupMnemonic": "备份助记词",
-  "MnemonicWarning1": "请记录下方钱包助记词并存放在安全的位置",
-  "MnemonicWarning2": "钱包助记词是您用来恢复账户的工具，在任何情况下请不要向其他人透露您的助记词，任何获得助记词的人将能够随意支配您账户中的所有资产",
+  "MnemonicWarning1": "抄写下你的钱包助记词",
+  "MnemonicWarning2": "助记词用于恢复钱包或重置钱包密码，将它准确地抄写在纸上，并存放在只有你知道的安全的地方",
   "MnemonicWarning3": "强烈建议您不要截图或者复制粘贴到软件中保存，也不要使用网络传递助记词",
+  "MnemonicConfirm": "请按顺序点击助记词，以确认你抄写下的助记词是正确的",
   "WrongMnemonic": "助记词错误",
   "DiscardWallet": "将会取消钱包的创建，您确定要这么做吗？",
   "LeavePage": "离开页面",

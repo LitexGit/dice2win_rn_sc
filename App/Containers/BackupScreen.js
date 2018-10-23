@@ -123,7 +123,8 @@ class BackupScreen extends Component {
     return (
       <View style={styles.container}>
         <View style={styles.titleBox}>
-          <Text style={styles.titleText}>{I18n.t('BackupMnemonic')}</Text>
+          <Text style={styles.titleText}>{I18n.t('BackupMnemonic')+'\n'}</Text>
+          <Text style={styles.infoText}>{I18n.t('MnemonicConfirm')}</Text>
         </View>
         <TextInput style={styles.textArea}
                    placeholderTextColor={Colors.inActiveTint}
