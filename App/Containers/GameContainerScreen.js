@@ -131,7 +131,7 @@ class GameContainerScreen extends Component {
               <TouchableOpacity style={styles.stakeButton} onPress={() => setStake(0.15)}>
                 <Text style={styles.stakeButtonText}>0.15</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.stakeButton} onPress={() => setStake(10000)}>
+              <TouchableOpacity style={styles.stakeButton} onPress={() => setStake(10000.0)}>
                 <Text style={styles.stakeButtonText}>Max</Text>
               </TouchableOpacity>
             </View>
