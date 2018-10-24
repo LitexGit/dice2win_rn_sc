@@ -13,6 +13,7 @@ const {Types, Creators} = createActions({
   gameFailure: null,
   updateBet: ['bet'],
   updateStatus: ['data'],
+  refreshStatus: ['data'],
   updateResult: ['result'],
 })
 
@@ -61,8 +62,12 @@ export const updateStatus = (state, action) => {
   if (!!hash && hash != state.bet[modulo]) return state
 
   status = {...state.status, ...status}
-  return state.merge({status})
+  return state.merge({status, fetching: false})
 }
+
+export const refreshStatus = (state, action) => 
+  state.merge({fetching: true})
+
 
 export const updateResult = (state, action) => {
   let result = {...state.result, ...action.result}
@@ -94,6 +99,7 @@ export const failure = state =>
 export const reducer = createReducer(INITIAL_STATE, {
   [Types.UPDATE_BET]: updateBet,
   [Types.UPDATE_STATUS]: updateStatus,
+  [Types.REFRESH_STATUS]: refreshStatus,
   [Types.UPDATE_RESULT]: updateResult,
   [Types.SET_GAME_KEY]: setGameKey,
   [Types.GAME_REQUEST]: request,

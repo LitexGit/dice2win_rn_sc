@@ -22,7 +22,7 @@ import { getActivity } from './ActivitySagas'
 import { getRecord, handleGlobal } from './RecordSagas'
 import { getConfig, socketInit, watchSocketStatusChannel } from './ConfigSagas'
 import { navigateToBottomTab, initWallet, getWallet, newWallet, saveWallet, importFromMnemonic, unlockWallet, encryptWallet, importEncryptWallet, transfer, getRandom, placeBet, withdraw } from './WalletSagas'
-import { setStake } from './GameSagas'
+import { setStake, refreshStatus } from './GameSagas'
 import { getSetting } from './SettingSagas'
 import { getNotification, initNotification, watchNotificationStatusChannel } from './NotificationSagas'
 import { register, getUser, fetchInviteCode } from './UserSagas'
@@ -81,6 +81,7 @@ export default function * root () {
 
     // Game Sagas
     takeLatest(GameTypes.SET_STAKE, setStake, api),
+    takeLatest(GameTypes.REFRESH_STATUS, refreshStatus, api),
 
     // Notification Saga
     takeLatest(NotificationTypes.INIT_NOTIFICATION, initNotification, api)

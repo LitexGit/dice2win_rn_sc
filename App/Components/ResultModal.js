@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity } from 'react-native'
 import GameActions from '../Redux/GameRedux'
 import WalletActions from '../Redux/WalletRedux'
 import { displayETH } from '../Lib/Utils/format'
+import Icon from 'react-native-vector-icons/SimpleLineIcons'
 import styles from './Styles/ResultModalStyle'
 import { connect } from 'react-redux'
 import I18n from '../I18n'
@@ -38,6 +39,10 @@ class ResultModal extends Component {
           {GAME_ENDED(status) && <TouchableOpacity style={styles.buttonWrapper} onPress={_=>this.props.close(modulo, status)}>
             <Text style={styles.buttonText}>{I18n.t('Close')}</Text>
           </TouchableOpacity>}
+          {!GAME_ENDED(status) && <TouchableOpacity style={styles.buttonWrapper} onPress={_=>this.props.refresh(modulo, status)}>
+            <Icon name={'refresh'} style={styles.refreshIcon} />
+            <Text style={styles.buttonText}>{I18n.t('Refresh')}</Text>
+          </TouchableOpacity>}
         </View>
       </View>
     )
@@ -54,7 +59,8 @@ const mapDispatchToProps = (dispatch) => {
     close: (modulo, status)=>{
       dispatch(GameActions.updateStatus({status:{[modulo]:'idle'}}))
       dispatch(WalletActions.walletRequest())
-    }
+    },
+    refresh: () => dispatch(GameActions.refreshStatus())
   }
 }
 

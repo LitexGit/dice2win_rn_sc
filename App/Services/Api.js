@@ -47,6 +47,7 @@ const create = (baseURL = Config.BASE_URL) => {
   const getRandom = ({address, network_id}) => ApiSauceObj.put('api/v1/games/dev/random', {address, network_id})
   const getTx = (data) => ApiSauceObj.get('api/v1/games/dev/transactions', data)
   const commitTx = ({commit, tx_hash}) => ApiSauceObj.put('api/v1/games/dev/commit', {commit, tx_hash})
+  const refreshStatus = ({hash}) => ApiSauceObj.get('api/v1/games/dev/bet_status', {hash})
 
   const register = ({inviter, nickname, address}) => ApiSauceObj.put('api/v1/games/dev/register', {aff_code: inviter, nickname, eth_address: address})
   const withdraw = ({uid, amount}) => ApiSauceObj.put('api/v1/games/dev/withdraw', {uid, amount})
@@ -77,6 +78,7 @@ const create = (baseURL = Config.BASE_URL) => {
     getRandom,
     getTx,
     commitTx,
+    refreshStatus,
 
     register,
     withdraw,

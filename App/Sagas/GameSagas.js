@@ -54,3 +54,13 @@ export function * getGame (api, action) {
     yield put(GameActions.gameFailure())
   }
 }
+
+export function * refreshStatus (api, action) {
+  const { data } = action
+  const {ok, data: {modulo, hash, status}} = yield call(api.refreshStatus, data)
+  if (ok) {
+    yield put(GameActions.updateStatus({status:{[modulo]:status}, hash}))
+  } else {
+    yield put(GameActions.gameFailure())
+  }
+}

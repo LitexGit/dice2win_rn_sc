@@ -32,18 +32,26 @@ export default StyleSheet.create({
   },
 
   buttonPanel:{
-    height: 30,
+    height: 40,
     alignItems: 'stretch',
     justifyContent: 'center'
   },
 
   buttonWrapper: {
     flex:1,
+    flexDirection: 'row',
     backgroundColor: Colors.casinoBlue,
     alignItems: 'center',
     justifyContent: 'center'
   },
   buttonText: {
     color: Colors.text,
+    margin: 5,
+  },
+  refreshIcon :{
+    color: Colors.text,
+    fontSize: 14,
+    fontWeight: '600',
+    margin: 5,
   }
 })
