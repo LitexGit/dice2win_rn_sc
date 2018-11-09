@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { View, Text, Image, SectionList, TouchableOpacity, RefreshControl } from 'react-native'
 import FA5 from 'react-native-vector-icons/FontAwesome5'
-import ScrollableTabView, { ScrollableTabBar, } from 'react-native-scrollable-tab-view'
+import ScrollableTabView, { DefaultTabBar, } from 'react-native-scrollable-tab-view'
 
 import RecordActions from '../Redux/RecordRedux'
 import {GAME_NAMES} from '../Redux/GameRedux'
@@ -143,7 +143,7 @@ class RecordScreen extends Component {
           tabBarActiveTextColor={Colors.activeTint}
           tabBarInactiveTextColor={Colors.inActiveTint}
           tabBarUnderlineStyle={styles.tabBarUnderlineStyle}
-          renderTabBar={() => <ScrollableTabBar style={{borderBottomWidth: 0}}/>}
+          renderTabBar={() => <DefaultTabBar style={{borderBottomWidth: 0}}/>}
           onChangeTab={this._tabChanged.bind(this)}>
           <View tabLabel={I18n.t('GameHistory')} style={styles.container}>
             {/* Game Section */}

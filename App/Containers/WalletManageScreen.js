@@ -52,6 +52,9 @@ class WalletManageScreen extends Component {
         <TouchableOpacity style={styles.buttonWrapper} onPress={_ => this.props.navigate('ImportWalletScreen')}>
           <Text style={styles.buttonText}> {I18n.t('ImportWallet')} </Text>
         </TouchableOpacity>
+        {!!W.address && <TouchableOpacity style={styles.buttonWrapper} onPress={_ => this.props.navigate('ChannelScreen')}>
+          <Text style={styles.buttonText}> {I18n.t('Channel')} </Text>
+        </TouchableOpacity>}
         {!!W.address && <TouchableOpacity style={styles.buttonWrapper} onPress={this._backup.bind(this)}>
           <Text style={styles.buttonText}> {I18n.t('BackupWallet')} </Text>
         </TouchableOpacity>}

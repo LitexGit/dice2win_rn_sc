@@ -11,6 +11,8 @@ import BetActions from '../Redux/BetRedux'
 import UserActions from '../Redux/UserRedux'
 
 import { connect } from 'react-redux'
+
+import StatusBar from '../Components/StatusBar'
 // Add Actions - replace 'Your' with whatever your reducer is called :)
 // import YourActions from '../Redux/YourRedux'
 
@@ -101,6 +103,7 @@ class GameScreen extends Component {
     return (
       <View style={styles.container}>
         <View style={styles.swiper}>
+          <StatusBar />
           <Swiper autoplay={true} showsPagination={false}>
             { !!banners && banners.map((item, i) => this.Slide(item)) }
           </Swiper>

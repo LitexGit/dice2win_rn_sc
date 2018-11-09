@@ -8,6 +8,7 @@ import NotificationActions from '../Redux/NotificationRedux'
 import ConfigActions from '../Redux/ConfigRedux'
 import ReduxPersist from '../Config/ReduxPersist'
 import ConfirmModal from '../Components/ConfirmModal'
+import ChannelConfirmModal from '../Components/ChannelConfirmModal'
 import PwdModal from '../Components/PwdModal'
 import MessageBox from '../Components/MessageBox'
 import {
@@ -51,6 +52,7 @@ class RootContainer extends Component {
         <StatusBar barStyle='light-content' />
           <ReduxNavigation />
           <ConfirmModal />
+          <ChannelConfirmModal />
           <PwdModal />
           <MessageBox />
 

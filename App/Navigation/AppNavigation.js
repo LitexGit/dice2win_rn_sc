@@ -1,4 +1,5 @@
 import { StackNavigator, TabNavigator } from 'react-navigation'
+import ChannelScreen from '../Containers/ChannelScreen'
 import BackupKeystoreScreen from '../Containers/BackupKeystoreScreen'
 import GameRecordScreen from '../Containers/GameRecordScreen'
 import TransferScreen from '../Containers/TransferScreen'
@@ -39,6 +40,7 @@ const BottomTabNav = TabNavigator({
 
 // Manifest of possible screens
 const PrimaryNav = StackNavigator({
+  ChannelScreen: { screen: ChannelScreen },
   BackupKeystoreScreen: { screen: BackupKeystoreScreen },
   GameRecordScreen: { screen: GameRecordScreen },
   TransferScreen: { screen: TransferScreen },

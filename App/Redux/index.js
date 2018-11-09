@@ -22,6 +22,7 @@ export const reducers = combineReducers({
   notification: require('./NotificationRedux').reducer,
   doublePwdInput: require('./DoublePwdInputRedux').reducer,
   singlePwdInput: require('./SinglePwdInputRedux').reducer,
+  channelConfirmModal: require('./ChannelConfirmModalRedux').reducer,
 })
 
 export default () => {

@@ -21,6 +21,7 @@ import Entypo from 'react-native-vector-icons/Entypo'
 import WalletActions from '../Redux/WalletRedux'
 import { displayETH, DECIMAL } from '../Lib/Utils/format'
 import I18n from '../I18n'
+import StatusBar from '../Components/StatusBar';
 
 const GAME_COMS = {2:<Coin />, 6:<OneDice />, 36:<TwoDice />, 100:<Etheroll />}
 
@@ -75,7 +76,7 @@ class GameContainerScreen extends Component {
     } else {
 
       getRandom({address: W.address})
-
+      
       // callback action 
       let confirmedActions = [{
         action: WalletActions.placeBet,
@@ -113,6 +114,7 @@ class GameContainerScreen extends Component {
     } = this.props
     return (
       <ScrollView style={styles.container}>
+        <StatusBar />
         <View style={styles.GameContainerScreen}>
           {status[index]!='idle' && (
             <ResultModal modulo={index} status={status[index]} result={result[index]} />
