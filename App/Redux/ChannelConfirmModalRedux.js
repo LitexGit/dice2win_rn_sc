@@ -21,8 +21,8 @@ export const INITIAL_STATE = Immutable({
   modalIsOpen: false,
   channelAmount: 0,
 
-  confirmedActions: null,
-  canceledActions: null,
+  channelConfirmedActions: null,
+  channelCanceledActions: null,
 
   data: null,
   fetching: null,

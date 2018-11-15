@@ -10,49 +10,31 @@
 *    you'll need to define a constant in that file.
 *************************************************************/
 
-import { call, put } from 'redux-saga/effects'
+import { call, put, select, all } from 'redux-saga/effects'
 import ChannelActions from '../Redux/ChannelRedux'
-// import { ChannelSelectors } from '../Redux/ChannelRedux'
+import { ChannelSelectors } from '../Redux/ChannelRedux'
 import { ChannelConfirmModalSelectors } from '../Redux/ChannelConfirmModalRedux'
 import { ConfigSelectors } from '../Redux/ConfigRedux'
-
-/*
-export function * getChannel (api, action) {
-  const { data } = action
-  // get current data from Store
-  // const currentData = yield select(ChannelSelectors.getData)
-  // make the call to the api
-  const response = yield call(api.getchannel, data)
-
-  // success?
-  if (response.ok) {
-    // You might need to change the response here - do this with a 'transform',
-    // located in ../Transforms/. Otherwise, just pass the data back from the api.
-    yield put(ChannelActions.channelSuccess(response.data))
-  } else {
-    yield put(ChannelActions.channelFailure())
-  }
-}
-*/
+import MessageBoxActions from '../Redux/MessageBoxRedux'
 
 // 加载必要类库
 var SCClient = require("statechannelnode");
 var io = require("socket.io-client");
 let SQLite = require('react-native-sqlite-storage');
-var squel = require("squel");
 let dbfactory = require('../../db/dbfactory');
 
-let ethWSUrl = 'ws://54.250.21.165:8546';
+// 获取客户端
 let address = '0x56d77fcb5e4Fd52193805EbaDeF7a9D75325bdC0';
 let privateKey = '118538D2E2B08396D49AB77565F3038510B033A74C7D920C1C9C7E457276A3FB';
 
 let socket = io("http://192.168.51.227");
-let dbprovider = { type: 'react-native', config: { db: this.db } };
+let db = SQLite.openDatabase({ name: "client.db", createFromLocation: 1 });
+let dbprovider = { type: 'react-native', config: { db: db } };
 let dbhelper = dbfactory.initDBHelper(dbprovider);
 
-// 获取客户端
-let scclient = new SCClient(web3, dbhelper, address, privateKey);
+scclient = new SCClient(web3, dbhelper, address, privateKey);
 scclient.initMessageHandler(socket);
+console.tron.log('scclient', scclient);
 
 /**
  * 开通通道
@@ -66,11 +48,16 @@ scclient.initMessageHandler(socket);
 export function * openChannel (api, action) {
   // 读取配置信息
   let sysConfig = yield select(ConfigSelectors.getConfig)
-
   let partnerAddress = sysConfig.partnerAddress
-  let depositAmount = yield select(ChannelConfirmModalSelectors.getChannelAmount);
 
-  yield call(scclient.openChannel(partnerAddress, depositAmount));
+  // let depositAmount = yield select(ChannelConfirmModalSelectors.getChannelAmount)
+  let depositAmount = 0.1 * 1e18;
+
+  // yield put(MessageBoxActions.openMessageBox({ title: 'Warning', message: 'a: '+depositAmount }))
+  // return;
+  let channel = yield scclient.openChannel(partnerAddress, depositAmount);
+  console.tron.log(channel)
+  yield put(ChannelActions.setChannel(channel));
 }
 
 /**
@@ -87,7 +74,7 @@ export function * closeChannel (api, action) {
 
   let partnerAddress = sysConfig.partnerAddress
 
-  yield call(scclient.closeChannel(partnerAddress));
+  yield scclient.closeChannel(partnerAddress);
 }
 
 // 向通道存钱
@@ -98,7 +85,7 @@ export function * deposit (api, action) {
   let partnerAddress = sysConfig.partnerAddress
   let depositAmount = yield select(ChannelConfirmModalSelectors.getChannelAmount);
 
-  yield call(scclient.deposit(partnerAddress, depositAmount));
+  yield scclient.deposit(partnerAddress, depositAmount);
 }
 
 // 下注
@@ -109,59 +96,47 @@ export function * startBet (api, action) {
   let partnerAddress = sysConfig.partnerAddress
   let {betMask, modulo, value, randomSeed} = action.data
 
-  yield call(scclient.startBet(partnerAddress, betMask, modulo, value, randomSeed));
+  yield scclient.startBet(partnerAddress, betMask, modulo, value, randomSeed);
 }
 
 // 获取所有通道
 export function * getAllChannels (api, action) {
-  yield call(scclient.getAllChannels());
+  yield scclient.getAllChannels();
 }
 
 // 获取单个通道信息
 export function * getChannel (api, action) {
-  // 读取配置信息
-  // let sysConfig = yield select(ConfigSelectors.getConfig)
-  // let partnerAddress = sysConfig.partnerAddress
-  // console.log(scclient)
-  // scclient.dbhelper.getChannel(channelIdentifier).then((channel)=>{
-  //   if(!channel)
-  //     return;
-  //   console.tron.log('channel is ', channel);
-  //   // let str = "local: " + channel.localBalance + "    remote: " + channel.remoteBalance + " status: " + channel.status;
-  //   ChannelActions.setChannel(channel);
-  // });
-
+  // 读取Channel信息
+  let channel = yield select(ChannelSelectors.getChannel);
+  // let channelIdentifier = channel.channelId;
+  let channelIdentifier = '0x2afe9725b95038ec3fc02ca77d4d39ae229f17d94904c5da1d18d0eaab75c614';
+  
+  if(!channelIdentifier) 
+    return ;
   
   try {
-    // yield call(scclient.getChannel(partnerAddress));
-    yield put(ChannelActions.channelSuccess({
-      channel_identifier: '123', 
-      partner_address: 'partner_address', 
-      total_amount: '100.00', 
-      local_balance: '40', 
-      remote_balance: '45', 
-      local_lock_amount: '10', 
-      remote_lock_amount: '5', 
-      state: 'opened', 
-      settle_timeout: 500, 
-      reveal_timeout: 30}))
+    yield scclient.dbhelper.getChannel(channelIdentifier).then((channel) => {
+      if(!channel)
+        return;
+      console.tron.log('channel is ', channel);
+      ChannelActions.setChannel(channel);
+    });
 
   } catch (err) {
     yield put(ChannelActions.channelFailure())
   }
-  
 }
 
 // 获取所有下注信息
 export function * getAllBets (api, action) {
   let {condition, offset, limit} = action.data
 
-  yield call(scclient.getAllBets(condition, offset, limit));
+  yield scclient.getAllBets(condition, offset, limit);
 }
 
 // 根据ID获取下注详情
 export function * getBetById (api, action) {
   let {betId} = action.data
 
-  yield call(scclient.getBetById(betId));
+  yield scclient.getBetById(betId);
 }

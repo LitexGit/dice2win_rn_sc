@@ -16,18 +16,12 @@ class StatusBar extends Component {
   }
 
   componentDidMount() {
-
-    web3.eth.getBalance('0x0000000000000000000000000000000000000000', (err, balance) => {
-      console.tron.log('aaaa', balance);
-      this.setState({balance});
-    });
-
     this.props.loadChannel()
   }
 
   render () {
-    let { channel } = this.props
-    console.tron.log('aaa', channel)
+    let { channel, channelIdentifier } = this.props
+    console.tron.log('aaa', channel, channelIdentifier)
 
     return (
       <View style={styles.container}>
@@ -41,11 +35,11 @@ class StatusBar extends Component {
 
 const mapStateToProps = (state) => {
   let {
-    channel
+    channel: { channel, channelIdentifier }
   } = state
 
   return {
-    channel
+    channel, channelIdentifier
   }
 }
 

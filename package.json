@@ -44,6 +44,8 @@
     "jcore-react-native": "^1.2.10",
     "jpush-react-native": "^2.2.11",
     "lodash": "^4.17.4",
+    "node-libs-browser": "^2.1.0",
+    "process": "^0.11.10",
     "prop-types": "^15.6.2",
     "querystringify": "1.0.0",
     "ramda": "^0.25.0",
@@ -79,6 +81,7 @@
     "reduxsauce": "0.7.0",
     "seamless-immutable": "^7.1.4",
     "socket.io": "^2.1.1",
+    "socket.io-client": "^2.1.1",
     "squel": "^5.12.2",
     "web3": "^1.0.0-beta.36"
   },

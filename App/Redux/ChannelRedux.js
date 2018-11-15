@@ -4,8 +4,6 @@ import Immutable from 'seamless-immutable'
 /* ------------- Types and Action Creators ------------- */
 
 const { Types, Creators } = createActions({
-  channel: ["data"],
-
   openChannel: ["data"],
   closeChannel: ["data"],
   deposit: ["data"],
@@ -28,7 +26,8 @@ export default Creators
 /* ------------- Initial State ------------- */
 
 export const INITIAL_STATE = Immutable({
-  channel: null,
+  channel: {},
+  channelIdentifier: null,
 
   data: null,
   fetching: null,

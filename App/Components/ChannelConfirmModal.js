@@ -31,8 +31,8 @@ class ChannelConfirmModal extends Component {
         </View>
         
         <View style={styles.fromToWrapper}>
-          <Text style={styles.label}>From: </Text>
-          <TextInput style={{height:40}} underlineColorAndroid="transparent" placeholder="请输入金额" keyboardType='numeric'></TextInput>
+          <Text style={styles.label}>Amount: </Text>
+          <TextInput underlineColorAndroid="transparent" placeholder="请输入金额" keyboardType='numeric'></TextInput>
         </View>
 
         <View style={styles.actionWrapper}>
@@ -48,25 +48,24 @@ class ChannelConfirmModal extends Component {
   }
 
   _confirm = () => {
-    let { closeChannelConfirmModal, dispatch, confirmedActions } = this.props
-    confirmedActions && confirmedActions.forEach(a => dispatch(a));
+    let { closeChannelConfirmModal, dispatch, channelConfirmedActions } = this.props
+    channelConfirmedActions && channelConfirmedActions.forEach(a => dispatch(a));
     closeChannelConfirmModal()
   }
 
   _cancel = () => {
-    let { closeChannelConfirmModal, dispatch, canceledActions } = this.props
-    canceledActions  && canceledActions.forEach(a => dispatch(a));
+    let { closeChannelConfirmModal, dispatch, channelCanceledActions } = this.props
+    channelCanceledActions  && channelCanceledActions.forEach(a => dispatch(a));
     closeChannelConfirmModal()
   }
 }
 
 const mapStateToProps = (state) => {
   let {
-    channelConfirmModal: { modalIsOpen, channelAmount, confirmedActions, canceledActions }
+    channelConfirmModal: { modalIsOpen, channelAmount, channelConfirmedActions, channelCanceledActions }
   } = state
 
-  return { modalIsOpen, channelAmount, confirmedActions, canceledActions
-  }
+  return { modalIsOpen, channelAmount, channelConfirmedActions, channelCanceledActions }
 }
 
 const mapDispatchToProps = (dispatch) => {

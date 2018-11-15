@@ -7,7 +7,7 @@ import StatusBar from '../Components/StatusBar'
 
 import NavigationActions from 'react-navigation/src/NavigationActions'
 import ChannelConfirmModalActions from '../Redux/ChannelConfirmModalRedux'
-import WalletActions from '../Redux/WalletRedux'
+import ChannelActions from '../Redux/ChannelRedux'
 
 import I18n from '../I18n'
 
@@ -25,21 +25,21 @@ class ChannelScreen extends Component {
   }
 
   _recharge = () => {
-    let { openChannelConfirmModal, navigate, balance, address } = this.props
+    let { openChannelConfirmModal, navigate, balance } = this.props
     
     if(!W.address) {
       navigate('WalletManageScreen')
-    } else if (balance <= 0) {
+    } /*else if (balance <= 0) {
       alert(I18n.t('InsufficientBalance'))
-    } else {
+    }*/ else {
       // callback action 
-      let confirmedActions = [{
-        action: WalletActions.placeBet,
-        data: { address }
+      let channelConfirmedActions = [{
+        action: ChannelActions.openChannel,
+        data: { channelAmount: '5' }
       }]
 
       openChannelConfirmModal({
-        confirmedActions
+        channelConfirmedActions
       })
     }
   }
@@ -111,7 +111,13 @@ class ChannelScreen extends Component {
 }
 
 const mapStateToProps = (state) => {
+  let {
+    confirmModal: { modalIsOpen, loading, gas },
+    wallet: { fetching, balance, address, gasPrice, secret },
+  } = state
   return {
+    modalIsOpen, loading, gas,
+    balanceFetching:fetching, balance, address, gasPrice, secret
   }
 }
 
