@@ -5,13 +5,24 @@ import { connect } from 'react-redux'
 import ListEmptyComponent from '../Components/ListEmptyComponent'
 import StatusBar from '../Components/StatusBar'
 
+import NavigationActions from 'react-navigation/src/NavigationActions'
 import ChannelConfirmModalActions from '../Redux/ChannelConfirmModalRedux'
 import WalletActions from '../Redux/WalletRedux'
+
+import I18n from '../I18n'
 
 // Styles
 import styles from './Styles/ChannelScreenStyle'
 
 class ChannelScreen extends Component {
+
+  static navigationOptions = {
+    title: I18n.t('AccountTabTitle'),
+    tabBarLabel: I18n.t('AccountTabLabel'),
+    tabBarIcon: ({tintColor}) => (
+      <FA5 name={'user'} size={Metrics.bottomTabIconSize} color={tintColor}/>
+    )
+  }
 
   _recharge = () => {
     let { openChannelConfirmModal, navigate, balance, address } = this.props
@@ -69,21 +80,21 @@ class ChannelScreen extends Component {
       <View style={styles.container}>
         <StatusBar />
         <View style={styles.channelInfo}>
-          <Text style={[styles.myBalance]}>我的余额: --ETH</Text>
-          <Text style={[styles.rivalBalance]}>对手余额: --ETH</Text>
+          <Text style={[styles.myBalance]}>{I18n.t('ChannelMyBalance')}: --ETH</Text>
+          <Text style={[styles.rivalBalance]}>{I18n.t('ChannelRivalBalance')}: --ETH</Text>
         </View>
 
         <View style={styles.statusInfo}>
-          <Text style={[styles.channelStatus]}>Closed</Text>
+          <Text style={[styles.channelStatus]}>{I18n.t('ChannelClosed')}</Text>
         </View>
 
         <View style={styles.buttonInfo}>
           <TouchableOpacity style={styles.rechargeButton} onPress={() => this._recharge()}>
-            <Text style={styles.buttonText}>充值</Text>
+            <Text style={styles.buttonText}>{I18n.t('ChannelRecharge')}</Text>
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.depositButton} onPress={() => this._recharge()}>
-            <Text style={styles.buttonText}>提现</Text>
+            <Text style={styles.buttonText}>{I18n.t('ChannelWithdrawal')}</Text>
           </TouchableOpacity>
         </View>
 
@@ -106,6 +117,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    navigate: (target) => dispatch(NavigationActions.navigate({routeName: target})),
     openChannelConfirmModal: (data) => dispatch(ChannelConfirmModalActions.openChannelConfirmModal(data)),
   }
 }

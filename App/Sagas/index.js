@@ -14,6 +14,7 @@ import { ConfigTypes } from '../Redux/ConfigRedux'
 import { SettingTypes } from '../Redux/SettingRedux'
 import { NotificationTypes } from '../Redux/NotificationRedux'
 import { UserTypes } from '../Redux/UserRedux'
+import { ChannelTypes } from '../Redux/ChannelRedux'
 
 /* ------------- Sagas ------------- */
 
@@ -26,6 +27,7 @@ import { setStake, refreshStatus } from './GameSagas'
 import { getSetting } from './SettingSagas'
 import { getNotification, initNotification, watchNotificationStatusChannel } from './NotificationSagas'
 import { register, getUser, fetchInviteCode } from './UserSagas'
+import { getChannel, openChannel, closeChannel, deposit, startBet, getAllChannels, getAllBets, getBetById } from './ChannelSagas'
 
 /* ------------- API ------------- */
 
@@ -82,6 +84,17 @@ export default function * root () {
     // Game Sagas
     takeLatest(GameTypes.SET_STAKE, setStake, api),
     takeLatest(GameTypes.REFRESH_STATUS, refreshStatus, api),
+
+    // Channel Sagas
+    takeLatest(ChannelTypes.CHANNEL_REQUEST, getChannel, api),
+    takeLatest(ChannelTypes.OPEN_CHANNEL, openChannel, api),
+    takeLatest(ChannelTypes.CLOSE_CHANNEL, closeChannel, api),
+    takeLatest(ChannelTypes.DEPOSIT, deposit, api),
+    takeLatest(ChannelTypes.START_BET, startBet, api),
+    takeLatest(ChannelTypes.GET_ALL_CHANNELS, getAllChannels, api),
+    // takeLatest(ChannelTypes.GET_CHANNEL_INFO, getChannelInfo, api),
+    takeLatest(ChannelTypes.GET_ALL_BETS, getAllBets, api),
+    takeLatest(ChannelTypes.GET_BET_BY_ID, getBetById, api),
 
     // Notification Saga
     takeLatest(NotificationTypes.INIT_NOTIFICATION, initNotification, api)

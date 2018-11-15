@@ -4,25 +4,31 @@ import Immutable from 'seamless-immutable'
 /* ------------- Types and Action Creators ------------- */
 
 const { Types, Creators } = createActions({
-  openChannelConfirmModal: ['data'],
-  closeChannelConfirmModal: null,
+  channel: ["data"],
 
-  channelConfirmModalRequest: ['data'],
-  channelConfirmModalSuccess: ['payload'],
-  channelConfirmModalFailure: null
+  openChannel: ["data"],
+  closeChannel: ["data"],
+  deposit: ["data"],
+  startBet: ["data"],
+  getAllChannels: ["data"],
+  getChannelInfo: ["data"],
+  getAllBets: ["data"],
+  getBetById: ["data"],
+
+  setChannel: ["channel"],
+
+  channelRequest: ['data'],
+  channelSuccess: ['payload'],
+  channelFailure: null
 })
 
-export const ChannelConfirmModalTypes = Types
+export const ChannelTypes = Types
 export default Creators
 
 /* ------------- Initial State ------------- */
 
 export const INITIAL_STATE = Immutable({
-  modalIsOpen: false,
-  channelAmount: 0,
-
-  confirmedActions: null,
-  canceledActions: null,
+  channel: null,
 
   data: null,
   fetching: null,
@@ -32,18 +38,16 @@ export const INITIAL_STATE = Immutable({
 
 /* ------------- Selectors ------------- */
 
-export const ChannelConfirmModalSelectors = {
-  getData: state => state.data,
-  getChannelAmount: state => state.channelConfirmModal.channelAmount
+export const ChannelSelectors = {
+  getChannel: state => state.channel,
 }
 
 /* ------------- Reducers ------------- */
 
-export const openChannelConfirmModal = (state, action) =>
-  state.merge({modalIsOpen: true, ...action.data})
-
-export const closeChannelConfirmModal = (state) => 
-  state.merge({...INITIAL_STATE})
+export const setChannel = (state, {channel}) =>
+  // console.tron.log('setWallet', wallet)
+  state.merge({channel})
+  // console.log(state.wallet)
 
 // request the data from an api
 export const request = (state, { data }) =>
@@ -62,10 +66,9 @@ export const failure = state =>
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
-  [Types.OPEN_CHANNEL_CONFIRM_MODAL]: openChannelConfirmModal,
-  [Types.CLOSE_CHANNEL_CONFIRM_MODAL]: closeChannelConfirmModal,
+  [Types.SET_CHANNEL]: setChannel,
 
-  [Types.CHANNEL_CONFIRM_MODAL_REQUEST]: request,
-  [Types.CHANNEL_CONFIRM_MODAL_SUCCESS]: success,
-  [Types.CHANNEL_CONFIRM_MODAL_FAILURE]: failure
+  [Types.CHANNEL_REQUEST]: request,
+  [Types.CHANNEL_SUCCESS]: success,
+  [Types.CHANNEL_FAILURE]: failure
 })

@@ -28,6 +28,7 @@ export const INITIAL_STATE = Immutable({
   // ws: 'http://192.168.51.137:7001',
   // base_domain: "http://192.168.51.137:7001",
   contract_address: "0x3d392560290a746542Cb14429E9ED2898aa74464",
+  partnerAddress: "just test",
   network: 'rinkeby',
   trackId: 'UA-127960812-1',
   abi: abi,

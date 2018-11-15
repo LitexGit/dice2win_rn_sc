@@ -166,7 +166,17 @@
   "InsufficientBalance": "You don't have enough balance to place Bet",
   "PwdEmpty": "Password can't be empty",
   "PwdDismatch": "Passwords do not match",
-  "PwdInvalid": "Password format invalid"
+  "PwdInvalid": "Password format invalid",
+
+  "ChannelMyBalance": "My Balance",
+  "ChannelRivalBalance": "Rival Balance",
+  "ChannelRecharge": "recharge",
+  "ChannelWithdrawal": "withdrawal",
+  "ChannelStatus": "Channel Status",
+  "ChannelDesc": "Can't play",
+  "ChannelClosed": "Closed",
+  "ChannelActive": "Active",
+  "ChannelPending": "Pending"
 
 }
 

@@ -166,6 +166,7 @@ class GameContainerScreen extends Component {
             </View>
             </KeyboardAvoidingView>
             <Text style={[styles.darkLabel, {alignSelf:'center', margin: 10}]}>{I18n.t('Balance')}:  <Text style={styles.balanceText}>{balanceFetching?I18n.t('Updating'):displayETH(balance)}</Text>  ETH</Text> 
+            <Text style={[styles.darkLabel, {alignSelf:'center', margin: 10}]}>{I18n.t('Balance')}:  <Text style={styles.balanceText}>{balanceFetching?I18n.t('Updating'):displayETH(balance)}</Text>  ETH</Text> 
             <View style={styles.rewardWrapper}>
               <View style={styles.infoWrapper}>
                 <View style={styles.info}>

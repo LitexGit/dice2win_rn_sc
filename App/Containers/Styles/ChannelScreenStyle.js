@@ -11,7 +11,7 @@ export default StyleSheet.create({
   },
 
   myBalance: {
-    ...Fonts.style.normal,
+    fontSize: Fonts.size.medium,
     justifyContent: 'center',
     alignItems: 'center',
     color: Colors.snow,
@@ -20,7 +20,7 @@ export default StyleSheet.create({
   },
 
   rivalBalance: {
-    ...Fonts.style.normal,
+    fontSize: Fonts.size.medium,
     justifyContent: 'center',
     alignItems: 'center',
     color: Colors.snow,

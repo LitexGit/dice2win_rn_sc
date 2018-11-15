@@ -165,7 +165,17 @@
   "InsufficientBalance": "余额不足",
   "PwdEmpty": "密码不能为空",
   "PwdDismatch": "密码不匹配",
-  "PwdInvalid": "密码格式错误"
+  "PwdInvalid": "密码格式错误",
+
+  "ChannelMyBalance": "我的余额",
+  "ChannelRivalBalance": "对手余额",
+  "ChannelRecharge": "充值",
+  "ChannelWithdrawal": "提现",
+  "ChannelStatus": "通道状态",
+  "ChannelDesc": "无法进行支付",
+  "ChannelClosed": "已关闭",
+  "ChannelActive": "已激活",
+  "ChannelPending": "挂起中"
 
 
 }

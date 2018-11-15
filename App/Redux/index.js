@@ -23,6 +23,7 @@ export const reducers = combineReducers({
   doublePwdInput: require('./DoublePwdInputRedux').reducer,
   singlePwdInput: require('./SinglePwdInputRedux').reducer,
   channelConfirmModal: require('./ChannelConfirmModalRedux').reducer,
+  channel: require('./ChannelRedux').reducer,
 })
 
 export default () => {
