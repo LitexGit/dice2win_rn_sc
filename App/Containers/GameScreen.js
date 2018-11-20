@@ -26,9 +26,9 @@ import I18n from '../I18n'
 
 const entryData = [
   {img: Images.coin, title: I18n.t('GameCoinTitle'), desc: I18n.t('GameCoinDesc'), key: 2},
-  {img: Images.dice1, title: I18n.t('GameDice1Title'), desc: I18n.t('GameDice1Desc'), key: 6},
-  {img: Images.dice2, title: I18n.t('GameDice2Title'), desc: I18n.t('GameDice2Desc'), key: 36},
-  {img: Images.roll, title: I18n.t('GameRollTitle'), desc: I18n.t('GameRollDesc'), key: 100}
+  // {img: Images.dice1, title: I18n.t('GameDice1Title'), desc: I18n.t('GameDice1Desc'), key: 6},
+  // {img: Images.dice2, title: I18n.t('GameDice2Title'), desc: I18n.t('GameDice2Desc'), key: 36},
+  // {img: Images.roll, title: I18n.t('GameRollTitle'), desc: I18n.t('GameRollDesc'), key: 100}
 ]
 
 class GameScreen extends Component {
