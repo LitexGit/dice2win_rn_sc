@@ -28,9 +28,19 @@ export default StyleSheet.create({
     paddingTop: 10
   },
 
-  channelStatus: {
+  channelStatusClosed: {
     padding: 15,
     color: 'red',
+    textAlign:'center',
+    alignItems:'center',
+    justifyContent:'center',
+    textAlignVertical:'center',
+    fontSize: Fonts.size.h3
+  },
+
+  channelStatusActive: {
+    padding: 15,
+    color: 'green',
     textAlign:'center',
     alignItems:'center',
     justifyContent:'center',

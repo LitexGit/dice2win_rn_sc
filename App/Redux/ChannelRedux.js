@@ -26,8 +26,16 @@ export default Creators
 /* ------------- Initial State ------------- */
 
 export const INITIAL_STATE = Immutable({
-  channel: {},
-  channelIdentifier: null,
+  channel: { status: 6 },
+
+  bonus: {},
+  record: {},
+  global: {
+    2:[],
+    6:[],
+    36:[],
+    100:[],
+  },
 
   data: null,
   fetching: null,
@@ -39,6 +47,8 @@ export const INITIAL_STATE = Immutable({
 
 export const ChannelSelectors = {
   getChannel: state => state.channel,
+  getRecords: state => state.channel.record,
+  getGlobalRecords: state => state.channel.global,
 }
 
 /* ------------- Reducers ------------- */

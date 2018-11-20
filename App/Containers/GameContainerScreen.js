@@ -19,6 +19,7 @@ import styles from './Styles/GameContainerScreenStyle'
 import Entypo from 'react-native-vector-icons/Entypo'
 
 import WalletActions from '../Redux/WalletRedux'
+import ChannelActions from '../Redux/ChannelRedux'
 import { displayETH, DECIMAL } from '../Lib/Utils/format'
 import I18n from '../I18n'
 import StatusBar from '../Components/StatusBar';
@@ -57,7 +58,8 @@ class GameContainerScreen extends Component {
   }
 
   _placeBet = () => {
-    let { index, stake, contract_address, address, betMask, openConfirmModal, navigate, getRandom, setStake, balance, uid } = this.props
+    let { index, stake, contract_address, address, betMask, openConfirmModal, navigate, uid, channel } = this.props
+
     let {valid} = this.state
     if(!valid) {
       alert(I18n.t('InvalidStake'))
@@ -71,15 +73,14 @@ class GameContainerScreen extends Component {
     
     if(!W.address) {
       navigate('WalletManageScreen')
-    } else if (stake >= balance) {
-      alert(I18n.t('InsufficientBalance'))
+    } else if (channel.status != 2) {
+      alert('通道尚未激活, 无法进行游戏')
     } else {
-
-      getRandom({address: W.address})
+      // getRandom({address: W.address})
       
       // callback action 
       let confirmedActions = [{
-        action: WalletActions.placeBet,
+        action: ChannelActions.startBet,
         data: { address, value: stake, betMask, modulo: index, password: '' }
       }]
 
@@ -110,7 +111,7 @@ class GameContainerScreen extends Component {
 
   render () {
     let { index, stake, balance, status, result, rewardTime, winRate, feeRate, balanceFetching,
-      setStake,
+      setStake, channel
     } = this.props
     return (
       <ScrollView style={styles.container}>
@@ -165,8 +166,8 @@ class GameContainerScreen extends Component {
               </TouchableOpacity>
             </View>
             </KeyboardAvoidingView>
-            <Text style={[styles.darkLabel, {alignSelf:'center', margin: 10}]}>{I18n.t('Balance')}:  <Text style={styles.balanceText}>{balanceFetching?I18n.t('Updating'):displayETH(balance)}</Text>  ETH</Text> 
-            <Text style={[styles.darkLabel, {alignSelf:'center', margin: 10}]}>{I18n.t('Balance')}:  <Text style={styles.balanceText}>{balanceFetching?I18n.t('Updating'):displayETH(balance)}</Text>  ETH</Text> 
+            <Text style={[styles.darkLabel, {alignSelf:'center', margin: 5}]}>{I18n.t('ChannelMyBalance')}:  <Text style={styles.balanceText}>{displayETH(channel.localBalance)}</Text> ETH</Text>
+            <Text style={[styles.darkLabel, {alignSelf:'center', margin: 5}]}>{I18n.t('ChannelRivalBalance')}:  <Text style={styles.balanceText}>{displayETH(channel.remoteBalance)}</Text> ETH</Text>
             <View style={styles.rewardWrapper}>
               <View style={styles.infoWrapper}>
                 <View style={styles.info}>
@@ -200,7 +201,8 @@ const mapStateToProps = (state) => {
     bet: { winRate, feeRate, rewardTime, betMask, },
     config: {contract_address},
     wallet: { fetching, balance, address, gasPrice, secret },
-    user: {uid}
+    user: {uid},
+    channel: { channel }
   } = state
   return {
     index:key, stake, status, result,
@@ -208,7 +210,7 @@ const mapStateToProps = (state) => {
     winRate, feeRate, rewardTime, betMask,
     contract_address,
     balanceFetching:fetching, balance, address, gasPrice, secret,
-    uid,
+    uid, channel
   }
 }
 

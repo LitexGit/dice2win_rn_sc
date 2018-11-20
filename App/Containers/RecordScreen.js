@@ -3,7 +3,8 @@ import { View, Text, Image, SectionList, TouchableOpacity, RefreshControl } from
 import FA5 from 'react-native-vector-icons/FontAwesome5'
 import ScrollableTabView, { DefaultTabBar, } from 'react-native-scrollable-tab-view'
 
-import RecordActions from '../Redux/RecordRedux'
+import ChannelActions from '../Redux/ChannelRedux'
+// import RecordActions from '../Redux/RecordRedux'
 import {GAME_NAMES} from '../Redux/GameRedux'
 import { connect } from 'react-redux'
 // Add Actions - replace 'Your' with whatever your reducer is called :)
@@ -87,7 +88,22 @@ class RecordScreen extends Component {
   _renderGameItem = ({item}) => {
     let {modulo, amount:inValue, dice_payment:outValue, time, bet_res: status} = item
     let icon = Images[GAME_NAMES[modulo]]
-
+    return <TouchableOpacity style={styles.gameItem} onPress={_=>this._itemPressed(item)}>
+    <View style={styles.timeWrapper}>
+      <Text style={[styles.statusText]}>{status}</Text>
+      <Text style={styles.timeText}>{time}</Text>
+    </View>
+    <View style={styles.iconWrapper}><Image style={styles.icon} resizeMode='contain' source={icon}/></View>
+    <View style={styles.inWrapper}>
+      <Text style={styles.darkLabel}>in: </Text>
+      <Text style={styles.inValue}>{displayETH(inValue, 4)}</Text>
+    </View>
+    <View style={styles.outWrapper}>
+      <Text style={styles.darkLabel}>out: </Text>
+      <Text style={styles.outValue}>{displayETH(outValue, 4)}</Text>
+    </View>
+  </TouchableOpacity>
+    /*
     return <TouchableOpacity style={styles.gameItem} onPress={_=>this._itemPressed(item)}>
       <View style={styles.timeWrapper}>
         <Text style={[styles.statusText, GAME_STATUS[status].style]}>{GAME_STATUS[status].text}</Text>
@@ -103,6 +119,7 @@ class RecordScreen extends Component {
         <Text style={styles.outValue}>{displayETH(outValue, 4)}</Text>
       </View>
     </TouchableOpacity>
+    */
   }
 
   _renderTxItem = ({item}) => {
@@ -203,7 +220,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    loadRecords: (type, data) => dispatch(RecordActions.recordRequest({type, data})),
+    loadRecords: (type, data) => dispatch(ChannelActions.getAllBets({type, data})),
     navigate: (routeName, params) => dispatch(NavigationActions.navigate({routeName, params}))
   }
 }

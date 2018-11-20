@@ -8,12 +8,19 @@ export default StyleSheet.create({
     justifyContent:'center',
     textAlignVertical:'center',
     lineHeight:25,
-    backgroundColor: 'gray'
   },
 
-  channelStatus: {
+  channelStatusClosed: {
     color: '#000',
+    backgroundColor: 'gray',
     fontSize: 12,
-    marginLeft: 10
+    padding: 5
+  },
+
+  channelStatusActive: {
+    color: '#fff',
+    backgroundColor: 'green',
+    fontSize: 12,
+    padding: 5
   }
 })

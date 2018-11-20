@@ -7,7 +7,13 @@ import StatusBar from '../Components/StatusBar'
 
 import NavigationActions from 'react-navigation/src/NavigationActions'
 import ChannelConfirmModalActions from '../Redux/ChannelConfirmModalRedux'
+import ChannelWithdrawModalActions from '../Redux/ChannelWithdrawModalRedux'
+
 import ChannelActions from '../Redux/ChannelRedux'
+
+import MessageBoxActions from '../Redux/MessageBoxRedux'
+
+import { displayETH, DECIMAL } from '../Lib/Utils/format'
 
 import I18n from '../I18n'
 
@@ -24,8 +30,12 @@ class ChannelScreen extends Component {
     )
   }
 
+  constructor(props) {
+    super(props)
+  }
+
   _recharge = () => {
-    let { openChannelConfirmModal, navigate, balance } = this.props
+    let { openChannelConfirmModal, navigate, channel } = this.props
     
     if(!W.address) {
       navigate('WalletManageScreen')
@@ -35,12 +45,44 @@ class ChannelScreen extends Component {
       // callback action 
       let channelConfirmedActions = [{
         action: ChannelActions.openChannel,
-        data: { channelAmount: '5' }
+        data: {}
       }]
+      
+      if(channel.status == 2) {
+        // callback action 
+        channelConfirmedActions = [{
+          action: ChannelActions.deposit,
+          data: {}
+        }]
+      }
 
       openChannelConfirmModal({
         channelConfirmedActions
       })
+    }
+  }
+
+  _withdraw = () => {
+    let { openChannelWithdrawModal, navigate, channel } = this.props
+
+    if(!W.address) {
+      navigate('WalletManageScreen')
+    } /*else if (balance <= 0) {
+      alert(I18n.t('InsufficientBalance'))
+    }*/ else {
+      if(channel.status == 2) {
+        // callback action 
+        let withdrawConfirmedActions = [{
+          action: ChannelActions.closeChannel,
+          data: {}
+        }]
+
+        openChannelWithdrawModal({
+          withdrawConfirmedActions
+        })
+      } else {
+        alert('通道已关闭, 无法提现');
+      }
     }
   }
 
@@ -76,16 +118,18 @@ class ChannelScreen extends Component {
   }
 
   render () {
+    let { channel } = this.props
+    
     return (
       <View style={styles.container}>
         <StatusBar />
         <View style={styles.channelInfo}>
-          <Text style={[styles.myBalance]}>{I18n.t('ChannelMyBalance')}: --ETH</Text>
-          <Text style={[styles.rivalBalance]}>{I18n.t('ChannelRivalBalance')}: --ETH</Text>
+          <Text style={[styles.myBalance]}>{I18n.t('ChannelMyBalance')}: {displayETH(channel.localBalance)} ETH</Text>
+          <Text style={[styles.rivalBalance]}>{I18n.t('ChannelRivalBalance')}: {displayETH(channel.remoteBalance)} ETH</Text>
         </View>
 
         <View style={styles.statusInfo}>
-          <Text style={[styles.channelStatus]}>{I18n.t('ChannelClosed')}</Text>
+          <Text style={channel.status == 2 ? styles.channelStatusActive : styles.channelStatusClosed}>{channel.status == 2 ? I18n.t('ChannelActive') : I18n.t('ChannelClosed')}</Text>
         </View>
 
         <View style={styles.buttonInfo}>
@@ -93,9 +137,9 @@ class ChannelScreen extends Component {
             <Text style={styles.buttonText}>{I18n.t('ChannelRecharge')}</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.depositButton} onPress={() => this._recharge()}>
+          {channel.status == 2 && <TouchableOpacity style={styles.depositButton} onPress={() => this._withdraw()}>
             <Text style={styles.buttonText}>{I18n.t('ChannelWithdrawal')}</Text>
-          </TouchableOpacity>
+          </TouchableOpacity>}
         </View>
 
         <View>
@@ -112,12 +156,11 @@ class ChannelScreen extends Component {
 
 const mapStateToProps = (state) => {
   let {
-    confirmModal: { modalIsOpen, loading, gas },
-    wallet: { fetching, balance, address, gasPrice, secret },
+    channel: { channel }
   } = state
+
   return {
-    modalIsOpen, loading, gas,
-    balanceFetching:fetching, balance, address, gasPrice, secret
+    channel
   }
 }
 
@@ -125,6 +168,8 @@ const mapDispatchToProps = (dispatch) => {
   return {
     navigate: (target) => dispatch(NavigationActions.navigate({routeName: target})),
     openChannelConfirmModal: (data) => dispatch(ChannelConfirmModalActions.openChannelConfirmModal(data)),
+    openChannelWithdrawModal: (data) => dispatch(ChannelWithdrawModalActions.openChannelWithdrawModal(data)),
+    alert: (message) => dispatch(MessageBoxActions.openMessageBox({ title: 'Warning', message }))
   }
 }
 

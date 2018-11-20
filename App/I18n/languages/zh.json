@@ -173,6 +173,7 @@
   "ChannelWithdrawal": "提现",
   "ChannelStatus": "通道状态",
   "ChannelDesc": "无法进行支付",
+  "ChannelActiveDesc": "可以进行游戏了",
   "ChannelClosed": "已关闭",
   "ChannelActive": "已激活",
   "ChannelPending": "挂起中"

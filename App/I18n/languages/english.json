@@ -174,9 +174,9 @@
   "ChannelWithdrawal": "withdrawal",
   "ChannelStatus": "Channel Status",
   "ChannelDesc": "Can't play",
+  "ChannelActiveDesc": "Ready to play",
   "ChannelClosed": "Closed",
   "ChannelActive": "Active",
   "ChannelPending": "Pending"
-
 }
 

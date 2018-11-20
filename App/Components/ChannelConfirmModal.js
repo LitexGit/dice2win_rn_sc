@@ -11,8 +11,9 @@ import styles from './Styles/ConfirmModalStyle'
 import I18n from '../I18n'
 
 class ChannelConfirmModal extends Component {
-  constructor(props){
-    super(props)
+
+  state = {
+    channelAmount: '',
   }
 
   render () {
@@ -32,7 +33,17 @@ class ChannelConfirmModal extends Component {
         
         <View style={styles.fromToWrapper}>
           <Text style={styles.label}>Amount: </Text>
-          <TextInput underlineColorAndroid="transparent" placeholder="请输入金额" keyboardType='numeric'></TextInput>
+          <TextInput 
+            autoFocus={true}
+            multiline={false}
+            textAlign='center'
+            placeholder="请输入金额"
+            placeholderTextColor={'gray'}
+            underlineColorAndroid={'transparent'}
+            keyboardType='numeric'
+            onChangeText={val => {
+              this.setState({channelAmount: val})
+            }}></TextInput>
         </View>
 
         <View style={styles.actionWrapper}>
@@ -48,7 +59,8 @@ class ChannelConfirmModal extends Component {
   }
 
   _confirm = () => {
-    let { closeChannelConfirmModal, dispatch, channelConfirmedActions } = this.props
+    let { closeChannelConfirmModal, dispatch, channelConfirmedActions, setChannelAmount } = this.props
+    setChannelAmount(this.state.channelAmount)
     channelConfirmedActions && channelConfirmedActions.forEach(a => dispatch(a));
     closeChannelConfirmModal()
   }
@@ -71,6 +83,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     closeChannelConfirmModal: () => dispatch(ChannelConfirmModalActions.closeChannelConfirmModal()),
+    setChannelAmount: (amount) => dispatch(ChannelConfirmModalActions.setChannelAmount(amount)),
     dispatch: ({action, data}) => dispatch(action(data))
   }
 }

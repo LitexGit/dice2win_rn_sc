@@ -381,4 +381,25 @@ function convertResult(results) {
     }
     return data;
 }
+
+function getChannelIdentifier() {
+    let sql = squel
+        .select("channelId")
+        .from(this.TABLE_CHANNEL)
+        .where("status=?", 2)
+        .order("createdAt", "DESC")
+        .toString();
+
+    console.log('get Channel Id sql ', sql);
+
+    return new Promise((resolve, reject) => {
+        this.db.transaction(tx => {
+            tx.executeSql(sql, [], (tx, result) => {
+                let data = convertResult(result);
+                let dataItem = data.length > 0 ? data[0] : null;
+                resolve(dataItem);
+            });
+        });
+    });
+}
 module.exports = rnDBHelper;

@@ -9,6 +9,7 @@ import ConfigActions from '../Redux/ConfigRedux'
 import ReduxPersist from '../Config/ReduxPersist'
 import ConfirmModal from '../Components/ConfirmModal'
 import ChannelConfirmModal from '../Components/ChannelConfirmModal'
+import ChannelWithdrawModal from '../Components/ChannelWithdrawModal'
 import PwdModal from '../Components/PwdModal'
 import MessageBox from '../Components/MessageBox'
 import {
@@ -53,6 +54,7 @@ class RootContainer extends Component {
           <ReduxNavigation />
           <ConfirmModal />
           <ChannelConfirmModal />
+          <ChannelWithdrawModal />
           <PwdModal />
           <MessageBox />
 

@@ -13,3 +13,5 @@ let ethWSUrl = 'ws://54.250.21.165:8546';
 let web3 = new Web3(Web3.givenProvider || ethWSUrl);
 
 global.web3 = web3;
+global.scclient = null;
+global.dbInitializing = false;

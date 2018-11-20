@@ -21,7 +21,14 @@ class ConfirmModal extends Component {
   }
 
   _autoGas() {
-    let {gasAuto, updateGas} = this.props
+    let { minGas, maxGas, } = this.state
+    let {updateGas} = this.props
+
+    let Range = maxGas - minGas;
+    let Rand = Math.random();
+
+    let gasAuto = (minGas + Math.round(Rand * Range));
+
     updateGas(gasAuto)
     this.setState({displayGas: gasAuto})
   }
@@ -64,15 +71,9 @@ class ConfirmModal extends Component {
         <View style={styles.gasWrapper}>
           <View style={styles.gasStatus}>
             <View style={[styles.hContainer, {justifyContent:'flex-start'}]}>
-              <Text style={styles.label}>Gas: </Text>
-              <Text style={styles.gasText}><Text style={{fontWeight:'900'}}>{displayGas}</Text> Gwei</Text>
+              <Text style={styles.label}>Random: </Text>
+              <Text style={styles.gasText}><Text style={{fontWeight:'900'}}>{displayGas}</Text> </Text>
             </View>
-            <View style={[styles.hContainer, {justifyContent:'flex-end'}]}>
-              <Text style={styles.label}>{I18n.t('Recommend')}: </Text>
-              <Text style={styles.autoGasText}>{gasAuto}  </Text>
-            </View>
-            <TouchableOpacity style={styles.autoGasButton} onPress={this._autoGas.bind(this)}><Text style={styles.label}> {I18n.t('Apply')} </Text>
-            </TouchableOpacity>
           </View>
           <View style={styles.sliderWrapper}>
             <Text style={styles.label}>{minGas} </Text>

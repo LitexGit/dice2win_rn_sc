@@ -11,11 +11,16 @@
 *************************************************************/
 
 import { call, put, select, all } from 'redux-saga/effects'
-import ChannelActions from '../Redux/ChannelRedux'
-import { ChannelSelectors } from '../Redux/ChannelRedux'
+import ChannelActions, {ChannelSelectors} from '../Redux/ChannelRedux'
+import GameActions from '../Redux/GameRedux'
 import { ChannelConfirmModalSelectors } from '../Redux/ChannelConfirmModalRedux'
 import { ConfigSelectors } from '../Redux/ConfigRedux'
+import { WalletSelectors } from '../Redux/WalletRedux'
+import { GameSelectors } from '../Redux/GameRedux'
 import MessageBoxActions from '../Redux/MessageBoxRedux'
+import RecordActions from '../Redux/RecordRedux'
+
+import { ConfirmModalSelectors } from '../Redux/ConfirmModalRedux';
 
 // 加载必要类库
 var SCClient = require("statechannelnode");
@@ -25,16 +30,44 @@ let dbfactory = require('../../db/dbfactory');
 
 // 获取客户端
 let address = '0x56d77fcb5e4Fd52193805EbaDeF7a9D75325bdC0';
+// let address = W.address;
 let privateKey = '118538D2E2B08396D49AB77565F3038510B033A74C7D920C1C9C7E457276A3FB';
 
 let socket = io("http://192.168.51.227");
-let db = SQLite.openDatabase({ name: "client.db", createFromLocation: 1 });
-let dbprovider = { type: 'react-native', config: { db: db } };
-let dbhelper = dbfactory.initDBHelper(dbprovider);
 
-scclient = new SCClient(web3, dbhelper, address, privateKey);
-scclient.initMessageHandler(socket);
-console.tron.log('scclient', scclient);
+// let db = SQLite.openDatabase({ name: "client.db", createFromLocation: 1 }, ()=>{console.log('db open success')});
+
+function * initDB(){
+
+  console.tron.log('initDB start');
+
+  let db = null;
+  let dbInitializing = false;
+  let initPromise = new Promise((resolve, reject)=>{
+    dbInitializing = true;
+    db = SQLite.openDatabase({ name: "client.db", createFromLocation: 1 }, ()=>{
+      console.log('Open Success');
+      resolve(true);
+    }, ()=>{
+      console.log('Open Fail');
+      reject(null);
+    });
+  })
+  yield initPromise;
+
+  dbInitializing = false;
+  let dbprovider = { type: 'react-native', config: { db: db } };
+  let dbhelper = dbfactory.initDBHelper(dbprovider);
+
+  scclient = new SCClient(web3, dbhelper, address, privateKey);
+  scclient.initMessageHandler(socket);
+  console.log('scclient', scclient);
+  global.scclient = scclient;
+  global.dbInitializing = dbInitializing;
+
+  let all = yield scclient.getAllChannels()
+  console.log(all)
+}
 
 /**
  * 开通通道
@@ -50,14 +83,21 @@ export function * openChannel (api, action) {
   let sysConfig = yield select(ConfigSelectors.getConfig)
   let partnerAddress = sysConfig.partnerAddress
 
-  // let depositAmount = yield select(ChannelConfirmModalSelectors.getChannelAmount)
-  let depositAmount = 0.1 * 1e18;
+  let depositAmount = yield select(ChannelConfirmModalSelectors.getChannelAmount);
+  if(isNaN(depositAmount) || depositAmount <= 0) {
+    yield put(MessageBoxActions.openMessageBox({ title: 'Error', message: 'Amount Faild.' }));
+  } else {
+    console.log(depositAmount)
+    depositAmount = depositAmount * 1e18;
 
-  // yield put(MessageBoxActions.openMessageBox({ title: 'Warning', message: 'a: '+depositAmount }))
-  // return;
-  let channel = yield scclient.openChannel(partnerAddress, depositAmount);
-  console.tron.log(channel)
-  yield put(ChannelActions.setChannel(channel));
+    try {
+      yield scclient.openChannel(partnerAddress, depositAmount);
+      yield put(MessageBoxActions.openMessageBox({ title: 'Message', message: 'The request has been submitted. Please wait.' }));
+    } catch(err) {
+      console.log(err)
+      yield put(MessageBoxActions.openMessageBox({ title: 'Error', message: 'Opreation Faild.' }));
+    }
+  }
 }
 
 /**
@@ -71,10 +111,19 @@ export function * openChannel (api, action) {
 export function * closeChannel (api, action) {
   // 读取配置信息
   let sysConfig = yield select(ConfigSelectors.getConfig)
-
   let partnerAddress = sysConfig.partnerAddress
-
-  yield scclient.closeChannel(partnerAddress);
+  
+  
+  try {
+    // let close = yield scclient.closeChannel(partnerAddress);
+    let close = yield scclient.closeChannelCooperative(partnerAddress);
+    
+    yield put(MessageBoxActions.openMessageBox({ title: 'Message', message: 'The request has been submitted. Please wait.' }));
+  } catch(err) {
+    console.log(err)
+    yield put(MessageBoxActions.openMessageBox({ title: 'Error', message: 'Opreation Faild.' }));
+  }
+  
 }
 
 // 向通道存钱
@@ -83,20 +132,44 @@ export function * deposit (api, action) {
   let sysConfig = yield select(ConfigSelectors.getConfig)
 
   let partnerAddress = sysConfig.partnerAddress
-  let depositAmount = yield select(ChannelConfirmModalSelectors.getChannelAmount);
 
-  yield scclient.deposit(partnerAddress, depositAmount);
+  let depositAmount = parseFloat(yield select(ChannelConfirmModalSelectors.getChannelAmount));
+  
+  if(isNaN(depositAmount) || depositAmount <= 0) {
+    yield put(MessageBoxActions.openMessageBox({ title: 'Error', message: 'Amount Faild.' }));
+  } else {
+    depositAmount = depositAmount * 1e18;
+
+    try {
+      yield scclient.deposit(partnerAddress, depositAmount);
+      yield put(MessageBoxActions.openMessageBox({ title: 'Message', message: 'The request has been submitted. Please wait.' }));
+    } catch (err) {
+      yield put(MessageBoxActions.openMessageBox({ title: 'Error', message: 'Opreation Faild.' }));
+    }
+  }
 }
 
 // 下注
 export function * startBet (api, action) {
   // 读取配置信息
   let sysConfig = yield select(ConfigSelectors.getConfig)
-
   let partnerAddress = sysConfig.partnerAddress
-  let {betMask, modulo, value, randomSeed} = action.data
+  
+  let {betMask, modulo, value} = action.data
 
-  yield scclient.startBet(partnerAddress, betMask, modulo, value, randomSeed);
+  let randomSeed = yield select(ConfirmModalSelectors.getGas)
+
+  try {
+    let betInfo = yield scclient.startBet('0xbe6d5ee53365506a8facb1ab35448ec3325545947d8451ac31e2c3da37af2db1', partnerAddress, betMask, modulo, value, randomSeed);
+    console.log(betInfo);
+    if(betInfo == false) {
+      yield put(MessageBoxActions.openMessageBox({ title: 'Warning', message: '交易请求次数过多' }))
+    } else {
+      yield put(GameActions.updateStatus({status:{[modulo]: 'drawn'}}))
+    }
+  } catch(err) {
+    yield put(MessageBoxActions.openMessageBox({ title: 'Warning', message: '交易请求次数过多' }))
+  }
 }
 
 // 获取所有通道
@@ -106,22 +179,20 @@ export function * getAllChannels (api, action) {
 
 // 获取单个通道信息
 export function * getChannel (api, action) {
-  // 读取Channel信息
-  let channel = yield select(ChannelSelectors.getChannel);
+  if(scclient == null && dbInitializing == false) {
+    yield initDB();
+  }
+
   // let channelIdentifier = channel.channelId;
-  let channelIdentifier = '0x2afe9725b95038ec3fc02ca77d4d39ae229f17d94904c5da1d18d0eaab75c614';
+  // let channelIdentifier = yield scclient.dbhelper.getChannelIdentifier();
+  let channelIdentifier = '0xbe6d5ee53365506a8facb1ab35448ec3325545947d8451ac31e2c3da37af2db1';
   
   if(!channelIdentifier) 
     return ;
   
   try {
-    yield scclient.dbhelper.getChannel(channelIdentifier).then((channel) => {
-      if(!channel)
-        return;
-      console.tron.log('channel is ', channel);
-      ChannelActions.setChannel(channel);
-    });
-
+    let channelInfo = yield scclient.dbhelper.getChannel(channelIdentifier);
+    yield put(ChannelActions.setChannel(channelInfo));
   } catch (err) {
     yield put(ChannelActions.channelFailure())
   }
@@ -129,9 +200,47 @@ export function * getChannel (api, action) {
 
 // 获取所有下注信息
 export function * getAllBets (api, action) {
-  let {condition, offset, limit} = action.data
+  const { type, data:{page, size=20} } = action.data
+  const [ gameId, address ] = yield all([
+    select(GameSelectors.getGameId),
+    select(WalletSelectors.getAddress),
+    select(ChannelSelectors.getRecords)
+  ])
 
-  yield scclient.getAllBets(condition, offset, limit);
+  let condition = '1 = 1';
+  let data = null;
+  switch(type) {
+    // case 'bonus': response = yield call(api.getPromotionRecords, {uid, page, size});break
+    case 'game': data = yield scclient.getAllBets(condition, page, size);break
+    case 'global': data = yield scclient.getAllBets(condition, page, size);break
+    case 'tx': data = yield call(api.getTx, {address, page, size});break
+    default: data = {}
+  }
+ 
+  if(data) {
+    // convert date and time to local format
+    /*
+    data = data.map((item) => {
+      let { date, time} = item
+      let { timeZone } = require('../Themes/Metrics')
+      
+      time = new Date(`${date}T${time}`)
+        .toLocaleTimeString('zh-CN', {timeZone, hour12: false}) 
+      return {...item, time}
+    })
+    */
+
+    if(page > 1) { // load more, use append mode
+      data = [...oldData, ...data]
+    } else {
+      type==='global' && (data = {...oldData, [gameId]: data}) 
+    }
+
+    yield put(RecordActions.recordSuccess({[type]:data}))
+  } else {
+    yield put(RecordActions.recordFailure())
+  }
+
 }
 
 // 根据ID获取下注详情

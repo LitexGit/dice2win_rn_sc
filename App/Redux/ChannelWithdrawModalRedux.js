@@ -4,27 +4,24 @@ import Immutable from 'seamless-immutable'
 /* ------------- Types and Action Creators ------------- */
 
 const { Types, Creators } = createActions({
-  openChannelConfirmModal: ['data'],
-  closeChannelConfirmModal: null,
+  openChannelWithdrawModal: ['data'],
+  closeChannelWithdrawModal: null,
 
-  setChannelAmount: ['channelAmount'],
-
-  channelConfirmModalRequest: ['data'],
-  channelConfirmModalSuccess: ['payload'],
-  channelConfirmModalFailure: null
+  channelWithdrawModalRequest: ['data'],
+  channelWithdrawModalSuccess: ['payload'],
+  channelWithdrawModalFailure: null
 })
 
-export const ChannelConfirmModalTypes = Types
+export const ChannelWithdrawModalTypes = Types
 export default Creators
 
 /* ------------- Initial State ------------- */
 
 export const INITIAL_STATE = Immutable({
   modalIsOpen: false,
-  channelAmount: 0,
 
-  channelConfirmedActions: null,
-  channelCanceledActions: null,
+  withdrawConfirmedActions: null,
+  withdrawCanceledActions: null,
 
   data: null,
   fetching: null,
@@ -34,20 +31,16 @@ export const INITIAL_STATE = Immutable({
 
 /* ------------- Selectors ------------- */
 
-export const ChannelConfirmModalSelectors = {
-  getData: state => state.data,
-  getChannelAmount: state => state.channelConfirmModal.channelAmount
+export const ChannelWithdrawModalSelectors = {
+  getData: state => state.data
 }
 
 /* ------------- Reducers ------------- */
 
-export const setChannelAmount = (state, { channelAmount }) => 
-  state.merge({ channelAmount })
-
-export const openChannelConfirmModal = (state, action) =>
+export const openChannelWithdrawModal = (state, action) =>
   state.merge({modalIsOpen: true, ...action.data})
 
-export const closeChannelConfirmModal = (state) => 
+export const closeChannelWithdrawModal = (state) => 
   state.merge({...INITIAL_STATE})
 
 // request the data from an api
@@ -67,11 +60,10 @@ export const failure = state =>
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
-  [Types.OPEN_CHANNEL_CONFIRM_MODAL]: openChannelConfirmModal,
-  [Types.CLOSE_CHANNEL_CONFIRM_MODAL]: closeChannelConfirmModal,
-  [Types.SET_CHANNEL_AMOUNT]: setChannelAmount,
+  [Types.OPEN_CHANNEL_WITHDRAW_MODAL]: openChannelWithdrawModal,
+  [Types.CLOSE_CHANNEL_WITHDRAW_MODAL]: closeChannelWithdrawModal,
 
-  [Types.CHANNEL_CONFIRM_MODAL_REQUEST]: request,
-  [Types.CHANNEL_CONFIRM_MODAL_SUCCESS]: success,
-  [Types.CHANNEL_CONFIRM_MODAL_FAILURE]: failure
+  [Types.CHANNEL_WITHDRAW_MODAL_REQUEST]: request,
+  [Types.CHANNEL_WITHDRAW_MODAL_SUCCESS]: success,
+  [Types.CHANNEL_WITHDRAW_MODAL_FAILURE]: failure
 })

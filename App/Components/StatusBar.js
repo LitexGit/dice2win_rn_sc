@@ -16,17 +16,21 @@ class StatusBar extends Component {
   }
 
   componentDidMount() {
-    this.props.loadChannel()
+
+    if(!dbInitializing && scclient == null) {
+      this.props.loadChannel(true)
+    } else {
+      this.props.loadChannel(false)
+    }
   }
 
   render () {
-    let { channel, channelIdentifier } = this.props
-    console.tron.log('aaa', channel, channelIdentifier)
+    let { channel } = this.props
 
     return (
       <View style={styles.container}>
         <TouchableOpacity onPress={_ => this.props.navigate('ChannelScreen')}>
-          <Text style={styles.channelStatus}>{I18n.t('ChannelStatus')}: {I18n.t('ChannelClosed')}, {I18n.t('ChannelDesc')}.</Text>
+          <Text style={channel.status == 2 ? styles.channelStatusActive : styles.channelStatusClosed}>{I18n.t('ChannelStatus')}: {channel.status == 2 ? I18n.t('ChannelActive') : I18n.t('ChannelClosed')}, {channel.status == 2 ? I18n.t('ChannelActiveDesc') : I18n.t('ChannelDesc')}.</Text>
         </TouchableOpacity>
       </View>
     )
@@ -35,18 +39,18 @@ class StatusBar extends Component {
 
 const mapStateToProps = (state) => {
   let {
-    channel: { channel, channelIdentifier }
+    channel: { channel }
   } = state
 
   return {
-    channel, channelIdentifier
+    channel
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
     navigate: (target) => dispatch(NavigationActions.navigate({routeName: target})),
-    loadChannel: () => dispatch(ChannelActions.channelRequest())
+    loadChannel: (doInit) => dispatch(ChannelActions.channelRequest({doInit}))
   }
 }
 
