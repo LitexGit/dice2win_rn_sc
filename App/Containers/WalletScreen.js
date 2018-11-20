@@ -69,14 +69,14 @@ class WalletScreen extends Component {
     })
   }
 
-  _shareLink = () => {
-    this._trackClick('ShareLink')
-    let {shareInfo:{message, title, url}, share_url} = this.props
-    let msg = message + "\r\n Download Url: " + share_url
-    Share.share({message : msg, title, url})
-      .then(result => {console.tron.log('share result: ', result)})
-      .catch(err => console.tron.log('error open telegram', err))
-  }
+  // _shareLink = () => {
+  //   this._trackClick('ShareLink')
+  //   let {shareInfo:{message, title, url}, share_url} = this.props
+  //   let msg = message + "\r\n Download Url: " + share_url
+  //   Share.share({message : msg, title, url})
+  //     .then(result => {console.tron.log('share result: ', result)})
+  //     .catch(err => console.tron.log('error open telegram', err))
+  // }
 
   _onRefresh = () => {
     this.props.loadWallet()
@@ -169,9 +169,9 @@ class WalletScreen extends Component {
               <TouchableOpacity onPress={_ => this._copyCode()} style={styles.actionWrapper}>
                 <Text style={styles.action}>{I18n.t('CopyCode')}</Text>
               </TouchableOpacity>
-              <TouchableOpacity onPress={_ => this._shareLink()} style={styles.actionWrapper}>
+              {/* <TouchableOpacity onPress={_ => this._shareLink()} style={styles.actionWrapper}>
                 <Text style={styles.action}>{I18n.t('ShareLink')}</Text>
-              </TouchableOpacity>
+              </TouchableOpacity> */}
             </View>
           </View>
         </View>
