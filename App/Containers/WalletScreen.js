@@ -147,7 +147,9 @@ class WalletScreen extends Component {
             <Text style={styles.addressText}>{I18n.t('CopyAddress')}</Text>
           </TouchableOpacity>
         </View>
-        <View style={styles.shareWrapper}>
+
+
+        {/* <View style={styles.shareWrapper}>
           <TouchableOpacity style={styles.shareUp} onPress={_ => this._goto("promotion")}>
             <Text style={styles.label}>{I18n.t('ReferralBonus')}</Text>
             <View style={[styles.balanceWrapper, styles.bonusBalanceWrapper]}>
@@ -169,14 +171,14 @@ class WalletScreen extends Component {
               <TouchableOpacity onPress={_ => this._copyCode()} style={styles.actionWrapper}>
                 <Text style={styles.action}>{I18n.t('CopyCode')}</Text>
               </TouchableOpacity>
-              {/* <TouchableOpacity onPress={_ => this._shareLink()} style={styles.actionWrapper}>
+              <TouchableOpacity onPress={_ => this._shareLink()} style={styles.actionWrapper}>
                 <Text style={styles.action}>{I18n.t('ShareLink')}</Text>
-              </TouchableOpacity> */}
+              </TouchableOpacity>
             </View>
           </View>
-        </View>
+        </View> */}
 
-        <View style={styles.buttons}>
+        {/* <View style={styles.buttons}>
           <View style={styles.button}>
             <TouchableOpacity style={[styles.button, { borderWidth: 0 }]} onPress={_ => this._checkUpdate()}>
               <Text style={styles.buttonText}>{I18n.t('Version')}</Text>
@@ -198,7 +200,7 @@ class WalletScreen extends Component {
               <Text style={styles.buttonText}>{I18n.t('SettingScreenLabel')}</Text>
             </TouchableOpacity>
           </View>
-        </View>
+        </View> */}
       </ScrollView>;
   }
 }
