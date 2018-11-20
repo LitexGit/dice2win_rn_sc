@@ -30,6 +30,8 @@ target 'Dice2Win' do
 
   pod 'react-native-google-analytics-bridge', :path => '../node_modules/react-native-google-analytics-bridge'
 
+  pod 'react-native-sqlite-storage', :path => '../node_modules/react-native-sqlite-storage'
+
   target 'Dice2WinTests' do
     inherit! :search_paths
     # Pods for testing

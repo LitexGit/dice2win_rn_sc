@@ -76,6 +76,7 @@
 		B855922FB9FD465C8209DBAB /* libRNDeviceInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DF311F8F866644EE8CE5CB53 /* libRNDeviceInfo.a */; };
 		C9651CDCEB3D4EE1AAE94A7C /* libRNSVG.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D809A07946F415A8FFF280D /* libRNSVG.a */; };
 		D69EFE43193B4E0F9DE070FB /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 91C8AC28587346D8A3427550 /* EvilIcons.ttf */; };
+		DA55114221A3D92000A0215A /* www in Resources */ = {isa = PBXBuildFile; fileRef = DA55114121A3D92000A0215A /* www */; };
 		DC8C1AB80E2B450EB573892D /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5FF378A8CAF84044A9254891 /* FontAwesome.ttf */; };
 		EBBE17DFD11A4B2D8D7A3749 /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 56B45F5D034445188A941A91 /* Zocial.ttf */; };
 		ED786FD162C740E8B3758AFF /* FontAwesome5_Brands.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7518DBA4481940568402886E /* FontAwesome5_Brands.ttf */; };
@@ -502,6 +503,7 @@
 		ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTBlob.xcodeproj; path = "../node_modules/react-native/Libraries/Blob/RCTBlob.xcodeproj"; sourceTree = "<group>"; };
 		B531D0D2E5F71E1958DB99BD /* libPods-Dice2Win-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Dice2Win-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BFE41FCC1772499397588E2C /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Solid.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; };
+		DA55114121A3D92000A0215A /* www */ = {isa = PBXFileReference; lastKnownFileType = folder; name = www; path = ../www; sourceTree = "<group>"; };
 		DC6065541CE19971CAC35415 /* libPods-Dice2WinTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Dice2WinTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		DF311F8F866644EE8CE5CB53 /* libRNDeviceInfo.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNDeviceInfo.a; sourceTree = "<group>"; };
 		E94EE50B54915DA20225F1A9 /* Pods-Dice2WinTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Dice2WinTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Dice2WinTests/Pods-Dice2WinTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -673,6 +675,7 @@
 		13B07FAE1A68108700A75B9A /* Dice2Win */ = {
 			isa = PBXGroup;
 			children = (
+				DA55114121A3D92000A0215A /* www */,
 				1F320E76215F67570032FA9B /* main.jsbundle */,
 				1F320E72215F672D0032FA9B /* assets */,
 				1F2B3951215BA3140055B8B6 /* iVersion.h */,
@@ -1502,6 +1505,7 @@
 				ADC61CD5A6C745E2A89C5AC1 /* Octicons.ttf in Resources */,
 				5FEA498DFBC640A4B100FE0E /* SimpleLineIcons.ttf in Resources */,
 				EBBE17DFD11A4B2D8D7A3749 /* Zocial.ttf in Resources */,
+				DA55114221A3D92000A0215A /* www in Resources */,
 				9004EB594583432EB0A0EF2D /* (null) in Resources */,
 				ED786FD162C740E8B3758AFF /* FontAwesome5_Brands.ttf in Resources */,
 				79212A82DD4B4D82B822E6E0 /* FontAwesome5_Regular.ttf in Resources */,
