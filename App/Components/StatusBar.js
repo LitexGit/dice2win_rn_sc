@@ -16,12 +16,13 @@ class StatusBar extends Component {
   }
 
   componentDidMount() {
-
-    if(!dbInitializing && scclient == null) {
-      this.props.loadChannel(true)
-    } else {
-      this.props.loadChannel(false)
-    }
+    // if(!!W.wallet) {
+      if(!dbInitializing && scclient == null) {
+        this.props.loadChannel(true)
+      } else {
+        this.props.loadChannel(false)
+      }
+    // }
   }
 
   render () {

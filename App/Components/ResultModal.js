@@ -27,10 +27,8 @@ const GAME_ENDED = (status) => {
 class ResultModal extends Component {
 
   render () {
-    let {modulo, status, result} = this.props 
-    console.log('status is ', status)
-    console.log('result is ', result)
-    console.log('modulo is ', modulo)
+    let {modulo, status, result} = this.props
+    console.log(result)
     return (
       <View style={[styles.container, styles['container_'+status]]}>
         <View style={styles.content}>
@@ -53,6 +51,7 @@ class ResultModal extends Component {
 
 const mapStateToProps = (state) => {
   return {
+
   }
 }
 
