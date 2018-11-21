@@ -119,7 +119,30 @@ export default StyleSheet.create({
 
   channelTradingList:{
     marginTop:15,
+    marginBottom:150,
   },
+
+  winnerText:{
+    color:'#4A90E2',
+    fontSize: 16,
+  },
+  timeText:{
+    color:'#f3f3f3',
+    fontSize: 12,
+    paddingTop: 5,
+  },
+  fromText:{
+    color:'#f3f3f3',
+    fontSize: 12,
+  },
+  fromAddrText:{
+    color:'#FFFFFF',
+    fontSize: 12,
+  },
+  valueText:{
+    color:'#F8E71C',
+    fontSize: 16,
+  }
 
 
 })

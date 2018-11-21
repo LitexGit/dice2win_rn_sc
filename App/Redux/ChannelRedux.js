@@ -71,8 +71,14 @@ export const setTimer = (state, { timer }) =>
   state.merge({ timer })
 
 // request the data from an api
-export const request = (state, { data }) =>
-  state.merge({ fetching: true, data, payload: null })
+export const request = (state, { data }) =>{
+  // let {page=1} = data.data
+  // if(page > 1){
+  //   return state.merge({loading: true, data, payload: null})
+  // } else {
+    return state.merge({refreshing: true, data, payload: null})
+  // }
+}
 
 // successful api lookup
 export const success = (state, action) => {
@@ -81,12 +87,12 @@ export const success = (state, action) => {
   console.log('==============merge======================');
   console.log(state.merge({ fetching: false, error: null, ...payload }));
   console.log('==============merge======================');
-  return state.merge({ fetching: false, error: null, ...payload });
+
+  return state.merge({ refreshing: false, loading: false, error: null, ...payload })
 }
 
 // Something went wrong somewhere.
-export const failure = state =>
-  state.merge({ fetching: false, error: true, payload: null })
+export const failure = state => state.merge({ refreshing: false, loading: false, error: true, payload: null })
 
 /* ------------- Hookup Reducers To Types ------------- */
 

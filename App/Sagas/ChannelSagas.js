@@ -250,9 +250,6 @@ export function * getAllBets (api, action) {
   let type = 'game'
 
   let data = yield scclient.getAllBets(condition, 1, 20);
-  console.log('==============function * getAllBets======================');
-  console.log(data);
-  console.log('==============function * getAllBets======================');
 
   // if(data) {
   //   if(page > 1) { // load more, use append mode
@@ -278,8 +275,24 @@ export function * getPayments (api, action) {
   offset = offset >= 0 ? offset : 0;
 
   let result = yield scclient.getPayments(condition, offset, limit);
-  // // ZJ 001：模拟假数据
-  // result = [{winner:0, createdAt:'2018-11-15 05:25:15.266 +00:00',  negativeB:'0x633177eeE5dB5a2c504e0AE6044d20a9287909f9', winAmount:'96000000000000'}];
+
+
+
+  // convert date and time to local format
+  result = result.map((item) => {
+    item.date = "2018-11-15";
+    item.time = "05:55:21";
+    let { date, time} = item
+    let { timeZone } = require('../Themes/Metrics')
+
+    time = new Date(`${date}T${time}`)
+      .toLocaleTimeString('zh-CN', {timeZone, hour12: false})
+    return {...item, time, date}
+  })
+  console.log('===========result=========================');
+  console.log(result);
+  console.log('===========result=========================');
+
 
   if(result) {
     if(page > 1) {
@@ -298,15 +311,7 @@ export function * getBetById (api, action) {
   yield scclient.getBetById(betId);
 }
 
-    // convert date and time to local format
-    // data = data.map((item) => {
-    //   let { date, time} = item
-    //   let { timeZone } = require('../Themes/Metrics')
 
-    //   time = new Date(`${date}T${time}`)
-    //     .toLocaleTimeString('zh-CN', {timeZone, hour12: false})
-    //   return {...item, time}
-    // })
 
 
 

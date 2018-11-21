@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
-import { View, Text, TouchableOpacity, FlatList } from 'react-native'
+import { View, Text, TouchableOpacity, FlatList, RefreshControl} from 'react-native'
 import { connect } from 'react-redux'
 
 import ListEmptyComponent from '../Components/ListEmptyComponent'
+import ListFooterComponent from '../Components/ListFooterComponent'
 import StatusBar from '../Components/StatusBar'
 
 import NavigationActions from 'react-navigation/src/NavigationActions'
@@ -20,6 +21,9 @@ import I18n from '../I18n'
 // Styles
 import styles from './Styles/ChannelScreenStyle'
 
+// Styles
+import { Colors, Images, Metrics } from '../Themes'
+
 class ChannelScreen extends Component {
 
   static navigationOptions = {
@@ -32,6 +36,10 @@ class ChannelScreen extends Component {
 
   constructor(props) {
     super(props)
+    this.state = {
+      type: 'payments',
+      game: { page: 1 },
+    }
   }
 
   componentDidMount (){
@@ -39,15 +47,24 @@ class ChannelScreen extends Component {
   }
 
   _refresh=()=>{
-    const type='payments'
+    let {type} = this.state
+    this.setState({[type]:{page:1}})
     this.props.getPayments(type, {page:1})
   }
 
   _loadMore=()=>{
+    if (this.props.loading) return;
+
+    const {type} = this.state;
+    let {page} = this.state[type];
+    page = page + 1
+    this.setState({[type]:{page}})
+    console.tron.log(`loading page ${page} of ${type}`)
+    this.props.getPayments(type, {page})
   }
 
   _recharge = () => {
-    let { openChannelConfirmModal, navigate, channel } = this.props
+    let { openChannelConfirmModal, navigate, channel} = this.props
 
     if(!W.address) {
       navigate('WalletManageScreen')
@@ -98,6 +115,12 @@ class ChannelScreen extends Component {
     }
   }
 
+  _itemPressed=(item)=>{
+    console.log('========item============================');
+    console.log(item);
+    console.log('========item============================');
+  }
+
   _renderItem = ({item}) => {
 
     /**
@@ -112,16 +135,16 @@ class ChannelScreen extends Component {
     return <TouchableOpacity style={styles.gameItem} onPress={_=>this._itemPressed(item)}>
        <View style={styles.item}>
          <View style={styles.leftSection}>
-           <Text>{winner == 1 ? '赢了' : '亏了' }</Text>
-           <Text numberOfLines={1} ellipsizeMode='tail'>{createdAt}</Text>
+           <Text style={styles.winnerText}>{winner == 1 ? '赢了' : '亏了' }</Text>
+           <Text numberOfLines={1} ellipsizeMode='tail' style={styles.timeText}>{createdAt}</Text>
          </View>
          <View style={styles.centerSection}>
-           <Text>{winner == 1 ? 'from: ' : 'to: '}</Text>
-           <Text numberOfLines={1} ellipsizeMode='middle'>{fromAddr}</Text>
+           <Text style={styles.fromText}>{winner == 1 ? 'from: ' : 'to: '}</Text>
+           <Text numberOfLines={1} ellipsizeMode='middle' style={styles.fromAddrText}>{fromAddr}</Text>
          </View>
          <View style={styles.rightSection}>
-           <Text>{winner == 1 ? '+' : '-:'}</Text>
-           <Text numberOfLines={1} ellipsizeMode='tail'>{displayETH(value)}</Text>
+           <Text style={styles.timeText}>{winner == 1 ? '+' : '-'}</Text>
+           <Text numberOfLines={1} ellipsizeMode='tail' style={styles.valueText}>{displayETH(value)}</Text>
          </View>
        </View>
     </TouchableOpacity>
@@ -129,17 +152,15 @@ class ChannelScreen extends Component {
 
   _renderHeaderComponent = () =>{
     const data = '2018-10-24';
-    const paymentDes = '仅显示链下交易';
     return (
       <View style={styles.header}>
         <Text>{data}</Text>
-        <Text>{paymentDes}</Text>
       </View>
     )
   }
 
   render () {
-    let { channel, payments} = this.props
+    let { channel, payments, refreshing, loading} = this.props
     return (
       <View style={styles.container}>
         <StatusBar />
@@ -164,11 +185,21 @@ class ChannelScreen extends Component {
 
         <View>
           <FlatList style={styles.channelTradingList}
+            refreshControl={<RefreshControl
+              refreshing={refreshing}
+              onRefresh={this._refresh}
+              tintColor={Colors.tintColor}
+              title={I18n.t('Refreshing')+".."}
+              titleColor={Colors.text}/>}
+
             data={payments}
             extraData={this.props}
             renderItem={this._renderItem}
             ListEmptyComponent={ListEmptyComponent}
             ListHeaderComponent={this._renderHeaderComponent}
+            ListFooterComponent={payments && payments.length && <ListFooterComponent
+              loading={loading}
+              onPress={this._loadMore}/>}
             />
         </View>
 
@@ -179,10 +210,13 @@ class ChannelScreen extends Component {
 
 const mapStateToProps = (state) => {
   let {
-    channel: { channel,  payments},
+    channel: { channel,  payments, refreshing, loading}
   } = state
   return {
-    channel,payments
+    channel,
+    payments,
+    refreshing,
+    loading
   }
 }
 
