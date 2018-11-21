@@ -42,9 +42,7 @@ let socket = io("http://192.168.51.227");
 const channelListener = channel()
 
 function * initDB(){
-
   console.tron.log('initDB start');
-
   let db = null;
   let dbInitializing = false;
   let initPromise = new Promise((resolve, reject)=>{
@@ -68,9 +66,6 @@ function * initDB(){
   global.scclient = scclient;
   global.dbInitializing = dbInitializing;
 
-  // let all = yield scclient.getAllChannels()
-  // console.log(all)
-
   yield listenerInit(scclient)
 }
 
@@ -83,16 +78,16 @@ function listenerInit(client) {
     // console.log(channel)
     channelListener.put(ChannelActions.setChannel(channel));
     channelListener.put(GameActions.updateStatus({status:{[bet.modulo]: result}}))
-  }).on('ChannelOpen', (channel)=>{
+  }).on('ChannelOpen', (channel)=> {
     this.channelIdentifier = channel.channelId;
     
-  }).on('CooperativeSettled', (channel)=>{
+  }).on('CooperativeSettled', (channel)=>{ 
     
   })
 }
 
 export function * watchChannelListener() {
-  while(true){
+  while(true) {
     const action = yield take(channelListener)
     yield put(action)
   }
@@ -162,7 +157,6 @@ export function * closeChannel (api, action) {
 export function * deposit (api, action) {
   // 读取配置信息
   let sysConfig = yield select(ConfigSelectors.getConfig)
-
   let partnerAddress = sysConfig.partnerAddress
 
   let depositAmount = parseFloat(yield select(ChannelConfirmModalSelectors.getChannelAmount));
@@ -196,12 +190,11 @@ export function * startBet (api, action) {
 
   try {
     let betInfo = yield scclient.startBet('0x08b2f4a26bb6d160013ea88404467d864c041a8a52d74e468a046d1cebc1dafe', partnerAddress, betMask, modulo, amount, randomSeed);
-    
     if(betInfo == false) {
       yield put(MessageBoxActions.openMessageBox({ title: 'Warning', message: '交易请求次数过多' }))
     }
-
   } catch(err) {
+    console.log(err)
     yield put(MessageBoxActions.openMessageBox({ title: 'Warning', message: '交易请求次数过多' }))
   }
 }
@@ -217,15 +210,12 @@ export function * getChannel (api, action) {
     yield initDB();
   }
 
-  // let channelIdentifier = channel.channelId;
-  // let channelIdentifier = yield scclient.dbhelper.getChannelIdentifier();
-  let channelIdentifier = '0x08b2f4a26bb6d160013ea88404467d864c041a8a52d74e468a046d1cebc1dafe';
+  // 读取配置信息
+  let sysConfig = yield select(ConfigSelectors.getConfig)
+  let partnerAddress = sysConfig.partnerAddress
   
-  if(!channelIdentifier) 
-    return ;
-
   try {
-    let channelInfo = yield scclient.dbhelper.getChannel(channelIdentifier);
+    let channelInfo = yield scclient.getChannel(partnerAddress);
     
     // 初始化默认值
     if(!channelInfo) {
@@ -236,33 +226,32 @@ export function * getChannel (api, action) {
     
     yield put(ChannelActions.setChannel(channelInfo));
   } catch (err) {
+    console.log(err)
     yield put(ChannelActions.channelFailure())
   }
 }
 
 // 获取所有下注信息
 export function * getAllBets (api, action) {
-
-  const { type, data:{page=1, limit=20} } = action.data
-
   const [ gameId, address, record] = yield all([
     select(GameSelectors.getGameId),
     select(WalletSelectors.getAddress),
     select(ChannelSelectors.getRecords)
   ])
 
-  // let condition = '1 = 1';
+  let condition = '1 = 1';
   // switch(type) {
   //   case 'game': data = yield scclient.getAllBets(condition, page, size); break
   //   case 'records': data = yield scclient.getAllBets(condition, page, size); break
   //   default: data = {}
   // }
 
-  let condition = '';
-  const offset = (page - 1) * limit;
-  // let data = yield scclient.getAllBets(condition, offset, limit);
-  let data = yield scclient.getAllBets(condition, 0, 30);
+  let page = 1;
+  let type = 'game'
 
+  let data = yield scclient.getAllBets(condition, 1, 20);
+  console.log(data)
+  
   if(data) {
     if(page > 1) { // load more, use append mode
       data = [...oldData, ...data]
@@ -271,6 +260,7 @@ export function * getAllBets (api, action) {
   } else {
     yield put(ChannelActions.channelFailure())
   }
+
 }
 
 // 根据ID获取下注详情

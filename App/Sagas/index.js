@@ -88,7 +88,7 @@ export default function * root () {
     takeLatest(GameTypes.REFRESH_STATUS, refreshStatus, api),
 
     // Channel Sagas
-    // takeLatest(ChannelTypes.CHANNEL_REQUEST, getChannel, api),
+    takeLatest(ChannelTypes.CHANNEL_REQUEST, getChannel, api),
     takeLatest(ChannelTypes.OPEN_CHANNEL, openChannel, api),
     takeLatest(ChannelTypes.CLOSE_CHANNEL, closeChannel, api),
     takeLatest(ChannelTypes.DEPOSIT, deposit, api),

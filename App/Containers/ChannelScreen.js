@@ -139,10 +139,6 @@ class ChannelScreen extends Component {
   render () {
     let { channel, records} = this.props
 
-    console.log('============render========================');
-    console.log(records);
-    console.log('============render========================');
-
     return (
       <View style={styles.container}>
         <StatusBar />
