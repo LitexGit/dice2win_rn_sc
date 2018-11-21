@@ -24,6 +24,10 @@ import { ConfirmModalSelectors } from '../Redux/ConfirmModalRedux';
 
 import { channel } from 'redux-saga'
 
+import Moment from 'moment';
+import cn from 'moment/locale/zh-cn';
+Moment.locale('zh-cn');
+
 // 加载必要类库
 var SCClient = require("statechannelnode");
 var io = require("socket.io-client");
@@ -276,23 +280,16 @@ export function * getPayments (api, action) {
 
   let result = yield scclient.getPayments(condition, offset, limit);
 
-
-
   // convert date and time to local format
   result = result.map((item) => {
-    item.date = "2018-11-15";
-    item.time = "05:55:21";
-    let { date, time} = item
+    const {createdAt} = item;
+    const date = Moment(createdAt).format('YYYY-MM-DD');
+    let time = Moment(createdAt).format('HH:mm:ss');
     let { timeZone } = require('../Themes/Metrics')
-
     time = new Date(`${date}T${time}`)
       .toLocaleTimeString('zh-CN', {timeZone, hour12: false})
     return {...item, time, date}
   })
-  console.log('===========result=========================');
-  console.log(result);
-  console.log('===========result=========================');
-
 
   if(result) {
     if(page > 1) {

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, TouchableOpacity, FlatList, RefreshControl} from 'react-native'
+import { View, Text, TouchableOpacity, SectionList, RefreshControl} from 'react-native'
 import { connect } from 'react-redux'
 
 import ListEmptyComponent from '../Components/ListEmptyComponent'
@@ -14,14 +14,12 @@ import ChannelActions from '../Redux/ChannelRedux'
 
 import MessageBoxActions from '../Redux/MessageBoxRedux'
 
-import { displayETH, DECIMAL } from '../Lib/Utils/format'
+import { displayETH, DECIMAL, sectionlize} from '../Lib/Utils/format'
 
 import I18n from '../I18n'
 
 // Styles
 import styles from './Styles/ChannelScreenStyle'
-
-// Styles
 import { Colors, Images, Metrics } from '../Themes'
 
 class ChannelScreen extends Component {
@@ -116,9 +114,7 @@ class ChannelScreen extends Component {
   }
 
   _itemPressed=(item)=>{
-    console.log('========item============================');
-    console.log(item);
-    console.log('========item============================');
+
   }
 
   _renderItem = ({item}) => {
@@ -129,14 +125,14 @@ class ChannelScreen extends Component {
      * negativeB 庄家地址
      * winAmount 赚取金额
      * */
-    let { winner = 0, createdAt,  fromAddr, value} = item;
+    let { winner = 0, time,  fromAddr, value} = item;
 
     let { modulo } = this.props
     return <TouchableOpacity style={styles.gameItem} onPress={_=>this._itemPressed(item)}>
        <View style={styles.item}>
          <View style={styles.leftSection}>
            <Text style={styles.winnerText}>{winner == 1 ? '赢了' : '亏了' }</Text>
-           <Text numberOfLines={1} ellipsizeMode='tail' style={styles.timeText}>{createdAt}</Text>
+           <Text numberOfLines={1} ellipsizeMode='tail' style={styles.timeText}>{time}</Text>
          </View>
          <View style={styles.centerSection}>
            <Text style={styles.fromText}>{winner == 1 ? 'from: ' : 'to: '}</Text>
@@ -150,17 +146,17 @@ class ChannelScreen extends Component {
     </TouchableOpacity>
   }
 
-  _renderHeaderComponent = () =>{
-    const data = '2018-10-24';
-    return (
-      <View style={styles.header}>
-        <Text>{data}</Text>
-      </View>
-    )
+  _renderSectionHeader = ({section}) => {
+    return <View style={styles.sectionHeader}><Text style={styles.sectionHeaderText}>{section.key}</Text></View>
   }
 
   render () {
     let { channel, payments, refreshing, loading} = this.props
+
+    console.log('===============payments=====================');
+    console.log(payments);
+    console.log('===============payments=====================');
+
     return (
       <View style={styles.container}>
         <StatusBar />
@@ -184,23 +180,22 @@ class ChannelScreen extends Component {
         </View>
 
         <View>
-          <FlatList style={styles.channelTradingList}
-            refreshControl={<RefreshControl
+        <SectionList style={styles.channelTradingList}
+              refreshControl={<RefreshControl
               refreshing={refreshing}
               onRefresh={this._refresh}
               tintColor={Colors.tintColor}
               title={I18n.t('Refreshing')+".."}
               titleColor={Colors.text}/>}
-
-            data={payments}
+            sections={payments}
             extraData={this.props}
+            renderSectionHeader={this._renderSectionHeader}
             renderItem={this._renderItem}
-            ListEmptyComponent={ListEmptyComponent}
-            ListHeaderComponent={this._renderHeaderComponent}
+            ListEmptyComponent = {ListEmptyComponent}
             ListFooterComponent={payments && payments.length && <ListFooterComponent
               loading={loading}
               onPress={this._loadMore}/>}
-            />
+             />
         </View>
 
       </View>
@@ -214,7 +209,7 @@ const mapStateToProps = (state) => {
   } = state
   return {
     channel,
-    payments,
+    payments:sectionlize(payments),
     refreshing,
     loading
   }
@@ -231,3 +226,5 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ChannelScreen)
+
+

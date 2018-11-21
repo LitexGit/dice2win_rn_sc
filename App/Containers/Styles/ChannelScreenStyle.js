@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native'
 import { ApplicationStyles, Fonts, Colors } from '../../Themes/'
-import { red } from 'ansi-colors';
+import { red, white } from 'ansi-colors';
 // import Metrics from './Metrics'
 
 export default StyleSheet.create({
@@ -107,14 +107,16 @@ export default StyleSheet.create({
     justifyContent: 'flex-end',
   },
 
-  header:{
+  sectionHeader:{
     flexDirection:"row",
     paddingHorizontal:15,
     paddingVertical:5,
-    backgroundColor:Colors.steel,
+    backgroundColor:'#666666',
 
     alignItems:'center',
-    opacity:0.5,
+  },
+  sectionHeaderText:{
+    color: '#FFFFFF',
   },
 
   channelTradingList:{
