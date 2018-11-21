@@ -74,6 +74,7 @@ export const setTimer = (state, { timer }) =>
 
 // request the data from an api
 export const request = (state, {data} ) =>{
+
   let {page=1} = data
   if(page > 1){
     return state.merge({loading: true, data, payload: null})
@@ -83,8 +84,7 @@ export const request = (state, {data} ) =>{
 }
 
 // successful api lookup
-export const success = (state, action) => {
-  const { payload } = action
+export const success = (state, { payload }) => {
   return state.merge({ refreshing: false, loading: false, error: null, ...payload })
 }
 
@@ -94,11 +94,12 @@ export const failure = state => state.merge({ refreshing: false, loading: false,
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
-  [Types.GET_ALL_BETS]: getAllBets,
   [Types.SET_CHANNEL]: setChannel,
   [Types.CHANNEL_REQUEST]: request,
   [Types.CHANNEL_SUCCESS]: success,
   [Types.CHANNEL_FAILURE]: failure,
+
   [Types.GET_PAYMENTS]: request,
+  [Types.GET_ALL_BETS]: request,
 
 })

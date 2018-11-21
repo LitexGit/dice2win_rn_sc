@@ -66,7 +66,6 @@ class RecordScreen extends Component {
     } else {
       this.props.loadGameRecords('game', {page:1})
     }
-    
   }
 
   _loadMore = () => {
@@ -79,9 +78,9 @@ class RecordScreen extends Component {
     page = page + 1
     this.setState({[type]:{page}})
     if(type == 'tx') {
-      this.props.loadTxRecords('tx', {page:1})
+      this.props.loadTxRecords('tx', {page})
     } else {
-      this.props.loadGameRecords('game', {page:1})
+      this.props.loadGameRecords('game', {page})
     }
   }
 
@@ -94,12 +93,36 @@ class RecordScreen extends Component {
     navigate('WebviewScreen', {title: 'ID: ' + item.id, url: base_etherscan + item.tx_hash})
   }
 
+  /**
+    betId: 99
+    betMask: "1"
+    channelId: "0xf06be3caa544e2e43f460e3900bca841258bc07e18a95a850d8362c5f289694a"
+    createdAt: "2018-11-15 05:25:26.117 +00:00"
+    date: "2018-11-15"
+    gameContractAddress: "0xE44C8bA910A179A801267442224F9B7f3065E0ec"
+    hashRa: "0xc76e920b7d7d93c10db53a86fd4f2310014a7972647287ae76cdd16c1d101e28"
+    modulo: 2
+    negativeB: "0x633177eeE5dB5a2c504e0AE6044d20a9287909f9"
+    positiveA: "0x56d77fcb5e4Fd52193805EbaDeF7a9D75325bdC0"
+    ra: "fd5c1e7eec6a93a3d0c44a6519bc142242a5e4169275b40a56b2be966d06b6c700e2f3f4b6d5dada6216ca89cd46000690c39f62c6ef21dc57949824ab7da570"
+    rb: "f48fd63082398c86049a25847669ad82c096beba43723c82e5aeffd597d6e5067883aced0245eccdbad3565dd6edf0c436a3929d548dbdb72cf9597368d3a059"
+    round: 99
+    signatureA: "0x6410e718728f95432900dd464156ff13ced073b4930c9e444c3fbffa5bae4c0277d29173c3522b722d6267a352bacffdf69f51d023ed134a6a3207a4107ea4621b"
+    signatureB: "0x7fc73a2ce89630d81570d0091d846af54afc0c750ccbabd37e7d7b3f6c1fe53969808b47fb9e070381ea11c6ed978a6ec5e8853a241811ffcc0336bc2cfeae0a1b"
+    status: 8
+    time: "13:25:26"
+    updatedAt: "2018-11-15 05:25:26.201 +00:00"
+    value: "100000000000000"
+    winAmount: "96000000000000"
+    winner: "0"
+   */
   _renderGameItem = ({item}) => {
-    let {modulo, amount:inValue, dice_payment:outValue, time, bet_res: status} = item
+
+    let {modulo, value:inValue, winAmount:outValue, time, winner: status} = item
     let icon = Images[GAME_NAMES[modulo]]
     return <TouchableOpacity style={styles.gameItem} onPress={_=>this._itemPressed(item)}>
     <View style={styles.timeWrapper}>
-      <Text style={[styles.statusText]}>{status}</Text>
+      <Text style={[styles.statusText]}>{status==0?'输了':'赢了'}</Text>
       <Text style={styles.timeText}>{time}</Text>
     </View>
     <View style={styles.iconWrapper}><Image style={styles.icon} resizeMode='contain' source={icon}/></View>
@@ -112,6 +135,9 @@ class RecordScreen extends Component {
       <Text style={styles.outValue}>{displayETH(outValue, 4)}</Text>
     </View>
   </TouchableOpacity>
+
+
+
     /*
     return <TouchableOpacity style={styles.gameItem} onPress={_=>this._itemPressed(item)}>
       <View style={styles.timeWrapper}>
@@ -161,7 +187,8 @@ class RecordScreen extends Component {
   }
 
   render () {
-    let {gameSections, txSections, refreshing, loading} = this.props
+    let {gameSections, txSections, refreshing, loading} = this.props;
+
     return (
       <View style={styles.container}>
         <ScrollableTabView
@@ -215,9 +242,11 @@ class RecordScreen extends Component {
 }
 
 const mapStateToProps = (state) => {
-  let {refreshing, loading, game, tx} = state.record
-  let {base_etherscan} = state.config
-  let {address} = state.wallet
+  const {tx} = state.record;
+  const {refreshing, loading, game} = state.channel;
+  const {base_etherscan} = state.config
+  const {address} = state.wallet
+
   return {
     refreshing,
     loading,
