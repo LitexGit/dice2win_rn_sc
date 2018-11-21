@@ -80,9 +80,9 @@ function listenerInit(client) {
     channelListener.put(GameActions.updateStatus({status:{[bet.modulo]: result}}))
   }).on('ChannelOpen', (channel)=> {
     this.channelIdentifier = channel.channelId;
-    
-  }).on('CooperativeSettled', (channel)=>{ 
-    
+
+  }).on('CooperativeSettled', (channel)=>{
+
   })
 }
 
@@ -213,17 +213,17 @@ export function * getChannel (api, action) {
   // 读取配置信息
   let sysConfig = yield select(ConfigSelectors.getConfig)
   let partnerAddress = sysConfig.partnerAddress
-  
+
   try {
     let channelInfo = yield scclient.getChannel(partnerAddress);
-    
+
     // 初始化默认值
     if(!channelInfo) {
       channelInfo = {
         status: 6
       }
     }
-    
+
     yield put(ChannelActions.setChannel(channelInfo));
   } catch (err) {
     console.log(err)
@@ -250,17 +250,45 @@ export function * getAllBets (api, action) {
   let type = 'game'
 
   let data = yield scclient.getAllBets(condition, 1, 20);
-  console.log(data)
-  
-  if(data) {
-    if(page > 1) { // load more, use append mode
-      data = [...oldData, ...data]
+  console.log('==============function * getAllBets======================');
+  console.log(data);
+  console.log('==============function * getAllBets======================');
+
+  // if(data) {
+  //   if(page > 1) { // load more, use append mode
+  //     data = [...oldData, ...data]
+  //   }
+  //   yield put(ChannelActions.channelSuccess({[type]:data}))
+  // } else {
+  //   yield put(ChannelActions.channelFailure())
+  // }
+
+}
+
+
+// 获取所有下注信息
+export function * getPayments (api, action) {
+  const {data:param={}} = action;
+  const {type='payments',data={}}= param;
+  const {page=1, limit=20}=data;
+
+  const condition = '';
+
+  let offset =  (page -1) * limit;
+  offset = offset >= 0 ? offset : 0;
+
+  let result = yield scclient.getPayments(condition, offset, limit);
+  // ZJ 001：模拟假数据
+  result = {payments:[{winner:0, createdAt:'2018-11-15 05:25:15.266 +00:00',  negativeB:'0x633177eeE5dB5a2c504e0AE6044d20a9287909f9', winAmount:'96000000000000'}]}
+
+  if(result) {
+    if(page > 1) {
+      result = [...oldData, ...result]
     }
-    yield put(ChannelActions.channelSuccess({[type]:data}))
+    yield put(ChannelActions.channelSuccess({[type]:result}))
   } else {
     yield put(ChannelActions.channelFailure())
   }
-
 }
 
 // 根据ID获取下注详情

@@ -39,8 +39,8 @@ class ChannelScreen extends Component {
   }
 
   _refresh=()=>{
-    const type='records'
-    this.props.getAllBets(type, {page:1})
+    const type='payments'
+    this.props.getPayments(type, {page:1})
   }
 
   _loadMore=()=>{
@@ -188,7 +188,7 @@ const mapDispatchToProps = (dispatch) => {
     openChannelConfirmModal: (data) => dispatch(ChannelConfirmModalActions.openChannelConfirmModal(data)),
     openChannelWithdrawModal: (data) => dispatch(ChannelWithdrawModalActions.openChannelWithdrawModal(data)),
     alert: (message) => dispatch(MessageBoxActions.openMessageBox({ title: 'Warning', message })),
-    getAllBets: (type, data) => dispatch(ChannelActions.getAllBets({type, data})),
+    getPayments: (type, data) => dispatch(ChannelActions.getPayments({type, data})),
   }
 }
 

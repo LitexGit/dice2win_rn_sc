@@ -15,7 +15,9 @@ const { Types, Creators } = createActions({
   setChannel: ["channel"],
   channelRequest: ['data'],
   channelSuccess: ['payload'],
-  channelFailure: null
+  channelFailure: null,
+
+  getPayments: ["data"],
 })
 
 export const ChannelTypes = Types
@@ -42,7 +44,8 @@ export const INITIAL_STATE = Immutable({
   data: null,
   fetching: null,
   payload: null,
-  error: null
+  error: null,
+  payments: [],
 })
 
 /* ------------- Selectors ------------- */
@@ -51,11 +54,15 @@ export const ChannelSelectors = {
   getChannel: state => state.channel,
   getGlobalRecords: state => state.channel.global,
   getRecords: state => state.channel.records,
+  // getPayments: state => state.channel.payments,
 }
 
 /* ------------- Reducers ------------- */
 
 export const getAllBets = (state, {records}) => state.merge({records})
+
+export const getPayments = (state, { payments }) => state.merge({ payments })
+
 
 export const setChannel = (state, {channel}) =>
   state.merge({ channel })
@@ -69,6 +76,9 @@ export const request = (state, { data }) =>
 
 // successful api lookup
 export const success = (state, action) => {
+  console.log('========action============================');
+  console.log(action);
+  console.log('========action============================');
   const { payload } = action
   return state.merge({ fetching: false, error: null, ...payload });
 }
@@ -84,5 +94,7 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.SET_CHANNEL]: setChannel,
   [Types.CHANNEL_REQUEST]: request,
   [Types.CHANNEL_SUCCESS]: success,
-  [Types.CHANNEL_FAILURE]: failure
+  [Types.CHANNEL_FAILURE]: failure,
+  [Types.GET_PAYMENTS]: getPayments,
+
 })
