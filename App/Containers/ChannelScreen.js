@@ -122,6 +122,17 @@ class ChannelScreen extends Component {
 
   }
 
+  /*
+  betId: 106
+  createdAt: "2018-11-15 05:55:19.068 +00:00"
+  date: "2018-11-15"
+  fromAddr: "0x633177eeE5dB5a2c504e0AE6044d20a9287909f9"
+  paymentId: 106
+  time: "13:55:19"
+  toAddr: "0x56d77fcb5e4Fd52193805EbaDeF7a9D75325bdC0"
+  updatedAt: "2018-11-15 05:55:19.068 +00:00"
+  value: "19200000000000000"
+  */
   _renderItem = ({item}) => {
 
     /**
@@ -130,9 +141,13 @@ class ChannelScreen extends Component {
      * negativeB 庄家地址
      * winAmount 赚取金额
      * */
-    let { winner = 0, time,  fromAddr, value} = item;
+    let { winner = 0, time,  fromAddr, value, toAddr} = item;
+    if(!W.address) {
+      navigate('WalletManageScreen')
+    } else {
+      winner = W.address == toAddr ? 1 : 0;
+    }
 
-    let { modulo } = this.props
     return <TouchableOpacity style={styles.gameItem} onPress={_=>this._itemPressed(item)}>
        <View style={styles.item}>
          <View style={styles.leftSection}>
