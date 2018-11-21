@@ -30,7 +30,7 @@ class StatusBar extends Component {
     return (
       <View style={styles.container}>
         <TouchableOpacity onPress={_ => this.props.navigate('ChannelScreen')}>
-          <Text style={channel.status == 2 ? styles.channelStatusActive : styles.channelStatusClosed}>{I18n.t('ChannelStatus')}: {channel.status == 2 ? I18n.t('ChannelActive') : I18n.t('ChannelClosed')}, {channel.status == 2 ? I18n.t('ChannelActiveDesc') : I18n.t('ChannelDesc')}.</Text>
+          <Text style={channel.status == 2 ? styles.channelStatusActive : channel.status == 0 ? styles.channelStatusPending : styles.channelStatusClosed}>{I18n.t('ChannelStatus')}: {channel.status == 2 ? I18n.t('ChannelActive') : channel.status == 0 ? I18n.t('ChannelPending') : I18n.t('ChannelClosed')}, {channel.status == 2 ? I18n.t('ChannelActiveDesc') : I18n.t('ChannelDesc')}.</Text>
         </TouchableOpacity>
       </View>
     )

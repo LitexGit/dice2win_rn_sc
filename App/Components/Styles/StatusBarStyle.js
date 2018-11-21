@@ -2,7 +2,6 @@ import { StyleSheet } from 'react-native'
 
 export default StyleSheet.create({
 
-
   container: {
     height: 25,
     justifyContent:'center',
@@ -22,5 +21,12 @@ export default StyleSheet.create({
     backgroundColor: 'green',
     fontSize: 12,
     padding: 5
-  }
+  },
+
+  channelStatusPending: {
+    color: '#000',
+    backgroundColor: 'yellow',
+    fontSize: 12,
+    padding: 5
+  },
 })

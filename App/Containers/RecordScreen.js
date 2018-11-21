@@ -4,7 +4,7 @@ import FA5 from 'react-native-vector-icons/FontAwesome5'
 import ScrollableTabView, { DefaultTabBar, } from 'react-native-scrollable-tab-view'
 
 import ChannelActions from '../Redux/ChannelRedux'
-// import RecordActions from '../Redux/RecordRedux'
+import RecordActions from '../Redux/RecordRedux'
 import {GAME_NAMES} from '../Redux/GameRedux'
 import { connect } from 'react-redux'
 // Add Actions - replace 'Your' with whatever your reducer is called :)
@@ -59,12 +59,18 @@ class RecordScreen extends Component {
 
   _refresh = () => {
     let {type} = this.state
+
     this.setState({[type]:{page:1}})
-    this.props.loadRecords(type, {page:1})
+    if(type == 'tx') {
+      this.props.loadTxRecords('tx', {page:1})
+    } else {
+      this.props.loadGameRecords('game', {page:1})
+    }
+    
   }
 
   _loadMore = () => {
-    if(this.props.loading){
+    if(this.props.loading) {
       return
     }
     let {type} = this.state
@@ -72,8 +78,11 @@ class RecordScreen extends Component {
 
     page = page + 1
     this.setState({[type]:{page}})
-    console.tron.log(`loading page ${page} of ${type}`)
-    this.props.loadRecords(type, {page})
+    if(type == 'tx') {
+      this.props.loadTxRecords('tx', {page:1})
+    } else {
+      this.props.loadGameRecords('game', {page:1})
+    }
   }
 
   _renderSectionHeader = ({section}) => {
@@ -135,7 +144,8 @@ class RecordScreen extends Component {
         <Text style={styles.timeText}>{time}</Text>
       </View>
       <View style={styles.addressWrapper}>
-        <Text numberOfLines={1} ellipsizeMode='middle' style={styles.addressText}><Text style={{width: 20, textAlign:'right', color:'gray'}}>{mark}: </Text>{eval(mark)}</Text>
+        <Text numberOfLines={1} ellipsizeMode='middle' style={styles.addressText}>
+        <Text style={{width: 20, textAlign:'right', color:'gray'}}>{mark}: </Text>{eval(mark)}</Text>
       </View>
       <View style={styles.valueWrapper}>
         <Text style={styles[direction + 'comeValue']}>{(direction=='in'?'+':'-') + displayETH(amount)}</Text>
@@ -220,10 +230,10 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    loadRecords: (type, data) => dispatch(ChannelActions.getAllBets({type, data})),
+    loadTxRecords: (type, data) => dispatch(RecordActions.recordRequest({type, data})),
+    loadGameRecords: (type, data) => dispatch(ChannelActions.getAllBets({type, data})),
     navigate: (routeName, params) => dispatch(NavigationActions.navigate({routeName, params}))
   }
 }
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(RecordScreen)

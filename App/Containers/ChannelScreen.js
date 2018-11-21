@@ -167,7 +167,9 @@ class ChannelScreen extends Component {
         </View>
 
         <View style={styles.statusInfo}>
-          <Text style={channel.status == 2 ? styles.channelStatusActive : styles.channelStatusClosed}>{channel.status == 2 ? I18n.t('ChannelActive') : I18n.t('ChannelClosed')}</Text>
+          <Text style={channel.status == 2 ? styles.channelStatusActive : channel.status == 0 ? styles.channelStatusPending : styles.channelStatusClosed}>{
+            channel.status == 2 ? I18n.t('ChannelActive') : channel.status == 0 ?  I18n.t('ChannelPending') : I18n.t('ChannelClosed')
+          }</Text>
         </View>
 
         <View style={styles.buttonInfo}>

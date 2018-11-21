@@ -36,7 +36,7 @@ export const INITIAL_STATE = Immutable({
   diceCount: 1,
   diceWeights: [],
   winRate: 0.5,
-  rewardTime: 1.93,
+  rewardTime: 2,
   betMaskArr: [],
   betMask: new BN('1', 2),
   modulo: 2,

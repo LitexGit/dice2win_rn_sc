@@ -3,6 +3,15 @@ import { ApplicationStyles, Fonts, Colors } from '../../Themes/'
 import { red, white } from 'ansi-colors';
 // import Metrics from './Metrics'
 
+const channelStatus = {
+  padding: 15,
+  textAlign:'center',
+  alignItems:'center',
+  justifyContent:'center',
+  textAlignVertical:'center',
+  fontSize: Fonts.size.h3
+}
+
 export default StyleSheet.create({
   ...ApplicationStyles.screen,
 
@@ -30,24 +39,21 @@ export default StyleSheet.create({
     paddingTop: 10
   },
 
+  
+
   channelStatusClosed: {
-    padding: 15,
     color: 'red',
-    textAlign:'center',
-    alignItems:'center',
-    justifyContent:'center',
-    textAlignVertical:'center',
-    fontSize: Fonts.size.h3
+    ...channelStatus
+  },
+
+  channelStatusPending: {
+    color: 'yellow',
+    ...channelStatus
   },
 
   channelStatusActive: {
-    padding: 15,
     color: 'green',
-    textAlign:'center',
-    alignItems:'center',
-    justifyContent:'center',
-    textAlignVertical:'center',
-    fontSize: Fonts.size.h3
+    ...channelStatus
   },
 
   buttonInfo: {

@@ -28,7 +28,9 @@ class ResultModal extends Component {
 
   render () {
     let {modulo, status, result} = this.props 
-    console.tron.log('result: ', result)
+    console.log('status is ', status)
+    console.log('result is ', result)
+    console.log('modulo is ', modulo)
     return (
       <View style={[styles.container, styles['container_'+status]]}>
         <View style={styles.content}>

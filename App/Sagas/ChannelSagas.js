@@ -39,7 +39,7 @@ let address = '0x56d77fcb5e4Fd52193805EbaDeF7a9D75325bdC0';
 // let address = W.address;
 let privateKey = '118538D2E2B08396D49AB77565F3038510B033A74C7D920C1C9C7E457276A3FB';
 
-let socket = io("http://192.168.51.227");
+let socket = io("http://13.113.50.143:9527");
 
 // let db = SQLite.openDatabase({ name: "client.db", createFromLocation: 1 }, ()=>{console.log('db open success')});
 
@@ -51,11 +51,11 @@ function * initDB(){
   let dbInitializing = false;
   let initPromise = new Promise((resolve, reject)=>{
     dbInitializing = true;
-    db = SQLite.openDatabase({ name: "client.db", createFromLocation: 1 }, ()=>{
-      console.log('Open Success');
+    db = SQLite.openDatabase({ name: "client.db", createFromLocation: 1 }, () => {
+      // console.log('Open Success');
       resolve(true);
     }, ()=>{
-      console.log('Open Fail');
+      // console.log('Open Fail');
       reject(null);
     });
   })
@@ -74,19 +74,20 @@ function * initDB(){
 }
 
 function listenerInit(client) {
-  client.on('BetSettled', (channel, bet)=>{
-    let result = 'lose'
+  client.on('BetSettled', (channel, bet) => {
+    let status = 'lose'
     if(bet.winner == 1) {
-      result = 'win'
+      status = 'win'
     }
     // console.log(channel)
     channelListener.put(ChannelActions.setChannel(channel));
-    channelListener.put(GameActions.updateStatus({status:{[bet.modulo]: result}}))
-  }).on('ChannelOpen', (channel)=> {
-    this.channelIdentifier = channel.channelId;
-
-  }).on('CooperativeSettled', (channel)=>{
-
+    channelListener.put(GameActions.updateStatus({ status: {[bet.modulo]: status}}));
+  }).on('ChannelOpen', (channel) => {
+    channelListener.put(ChannelActions.setChannel(channel));
+  }).on('ChannelClose', (channel) => {
+    console.log('LISTEN CHANNEL CLOSE');
+    console.log(channel);
+    channelListener.put(ChannelActions.setChannel(channel));
   })
 }
 
@@ -115,18 +116,15 @@ export function * openChannel (api, action) {
   if(isNaN(depositAmount) || depositAmount <= 0) {
     yield put(MessageBoxActions.openMessageBox({ title: 'Error', message: 'Amount Faild.' }));
   } else {
-    console.log(depositAmount)
     depositAmount = depositAmount * 1e18;
 
     try {
       yield scclient.openChannel(partnerAddress, depositAmount);
       yield put(MessageBoxActions.openMessageBox({ title: 'Message', message: 'The request has been submitted. Please wait.' }));
-
-      // 监听通道开启事件
-    scclient.on('ChannelOpen', (channel) => {
-      put(ChannelActions.setChannel({ channel }));
-    })
-
+      // 改为 Pending 状态
+      yield put(ChannelActions.setChannel({
+        status: 0
+      }));
     } catch(err) {
       console.log(err)
       yield put(MessageBoxActions.openMessageBox({ title: 'Error', message: 'Opreation Faild.' }));
@@ -151,6 +149,7 @@ export function * closeChannel (api, action) {
     // yield scclient.closeChannel(partnerAddress);
     yield scclient.closeChannelCooperative(partnerAddress);
     yield put(MessageBoxActions.openMessageBox({ title: 'Message', message: 'The request has been submitted. Please wait.' }));
+    yield put(ChannelActions.setChannel({status: 0}));
   } catch(err) {
     yield put(MessageBoxActions.openMessageBox({ title: 'Error', message: 'Opreation Faild.' }));
   }
@@ -186,21 +185,26 @@ export function * startBet (api, action) {
   let partnerAddress = sysConfig.partnerAddress
 
   let {betMask, modulo, value} = action.data
-
   let randomSeed = yield select(ConfirmModalSelectors.getGas)
+
+  let channelObject = yield select(ChannelSelectors.getChannel)
+  
+  let channelId = channelObject.channel.channelId;
 
   // 转换成 BN
   let amount = web3.utils.toWei(value.toString(), 'ether')
 
   try {
-    let betInfo = yield scclient.startBet('0x08b2f4a26bb6d160013ea88404467d864c041a8a52d74e468a046d1cebc1dafe', partnerAddress, betMask, modulo, amount, randomSeed);
+    let betInfo = yield scclient.startBet(channelId, partnerAddress, betMask, modulo, amount, randomSeed);
+    // console.log(betInfo);
     if(betInfo == false) {
-      yield put(MessageBoxActions.openMessageBox({ title: 'Warning', message: '交易请求次数过多' }))
+      yield put(MessageBoxActions.openMessageBox({ title: 'Warning', message: '交易太频繁' }))
     }
   } catch(err) {
     console.log(err)
-    yield put(MessageBoxActions.openMessageBox({ title: 'Warning', message: '交易请求次数过多' }))
+    yield put(MessageBoxActions.openMessageBox({ title: 'Warning', message: '交易太频繁' }))
   }
+  
 }
 
 // 获取所有通道
@@ -277,10 +281,6 @@ export function * getPayments (api, action) {
 
   let offset =  (page -1) * limit;
   offset = offset >= 0 ? offset : 0;
-
-  console.log('============offset========================');
-  console.log(offset);
-  console.log('============offset========================');
 
   let result = yield scclient.getPayments(condition, offset, limit);
 
