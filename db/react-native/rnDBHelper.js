@@ -163,10 +163,13 @@ class rnDBHelper {
         .order("paymentId", false)
         .toString();
 
+        console.log("getPayments sql", sql);
+
         return new Promise((resolve, reject) => {
             this.db.transaction(tx => {
                 tx.executeSql(sql, [], (tx, result) => {
                     let data = convertResult(result);
+                    console.log("payments data", data);
                     resolve(data);
                 });
             });

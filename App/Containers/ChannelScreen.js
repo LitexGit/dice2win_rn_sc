@@ -106,39 +106,40 @@ class ChannelScreen extends Component {
      * negativeB 庄家地址
      * winAmount 赚取金额
      * */
-    let { winner = 0, createdAt,  negativeB, winAmount} = item
+    let { winner = 0, createdAt,  fromAddr, value} = item;
+
     let { modulo } = this.props
     return <TouchableOpacity style={styles.gameItem} onPress={_=>this._itemPressed(item)}>
-      <View style={styles.timeWrapper}>
-        <Text style={[styles.statusText, GAME_STATUS[status].style]}>{GAME_STATUS[status].text}</Text>
-        <Text style={styles.timeText}>{time}</Text>
-      </View>
-
-      <View style={styles.userWrapper}>
-        <Text numberOfLines={1} ellipsizeMode='tail' style={styles.userText}>{user}</Text>
-      </View>
-
-      <Bet modulo={modulo} bet={bet} />
-
-      <View style={styles.inWrapper}>
-        <Text style={styles.darkLabel}>in: </Text>
-        <Text style={styles.inValue}>{displayETH(inValue, 2)}</Text>
-      </View>
-
-      <View style={styles.resultWrapper}>
-        <Result modulo={modulo} result={result} />
-      </View>
-
-      <View style={styles.outWrapper}>
-        <Text style={styles.darkLabel}>out: </Text>
-        <Text style={styles.outValue}>{displayETH(outValue, 2)}</Text>
-      </View>
+       <View style={styles.item}>
+         <View style={styles.leftSection}>
+           <Text>{winner == 1 ? '赢了' : '亏了' }</Text>
+           <Text numberOfLines={1} ellipsizeMode='tail'>{createdAt}</Text>
+         </View>
+         <View style={styles.centerSection}>
+           <Text>{winner == 1 ? 'from: ' : 'to: '}</Text>
+           <Text numberOfLines={1} ellipsizeMode='middle'>{fromAddr}</Text>
+         </View>
+         <View style={styles.rightSection}>
+           <Text>{winner == 1 ? '+' : '-:'}</Text>
+           <Text numberOfLines={1} ellipsizeMode='tail'>{displayETH(value)}</Text>
+         </View>
+       </View>
     </TouchableOpacity>
   }
 
-  render () {
-    let { channel, records} = this.props
+  _renderHeaderComponent = () =>{
+    const data = '2018-10-24';
+    const paymentDes = '仅显示链下交易';
+    return (
+      <View style={styles.header}>
+        <Text>{data}</Text>
+        <Text>{paymentDes}</Text>
+      </View>
+    )
+  }
 
+  render () {
+    let { channel, payments} = this.props
     return (
       <View style={styles.container}>
         <StatusBar />
@@ -163,9 +164,12 @@ class ChannelScreen extends Component {
 
         <View>
           <FlatList style={styles.channelTradingList}
-            data={this.props.records}
+            data={payments}
+            extraData={this.props}
             renderItem={this._renderItem}
-            ListEmptyComponent={ListEmptyComponent} />
+            ListEmptyComponent={ListEmptyComponent}
+            ListHeaderComponent={this._renderHeaderComponent}
+            />
         </View>
 
       </View>
@@ -175,10 +179,10 @@ class ChannelScreen extends Component {
 
 const mapStateToProps = (state) => {
   let {
-    channel: { channel,  records},
+    channel: { channel,  payments},
   } = state
   return {
-    channel,records
+    channel,payments
   }
 }
 

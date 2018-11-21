@@ -76,10 +76,11 @@ export const request = (state, { data }) =>
 
 // successful api lookup
 export const success = (state, action) => {
-  console.log('========action============================');
-  console.log(action);
-  console.log('========action============================');
   const { payload } = action
+
+  console.log('==============merge======================');
+  console.log(state.merge({ fetching: false, error: null, ...payload }));
+  console.log('==============merge======================');
   return state.merge({ fetching: false, error: null, ...payload });
 }
 

@@ -278,8 +278,8 @@ export function * getPayments (api, action) {
   offset = offset >= 0 ? offset : 0;
 
   let result = yield scclient.getPayments(condition, offset, limit);
-  // ZJ 001：模拟假数据
-  result = {payments:[{winner:0, createdAt:'2018-11-15 05:25:15.266 +00:00',  negativeB:'0x633177eeE5dB5a2c504e0AE6044d20a9287909f9', winAmount:'96000000000000'}]}
+  // // ZJ 001：模拟假数据
+  // result = [{winner:0, createdAt:'2018-11-15 05:25:15.266 +00:00',  negativeB:'0x633177eeE5dB5a2c504e0AE6044d20a9287909f9', winAmount:'96000000000000'}];
 
   if(result) {
     if(page > 1) {
@@ -297,9 +297,6 @@ export function * getBetById (api, action) {
 
   yield scclient.getBetById(betId);
 }
-
-
-
 
     // convert date and time to local format
     // data = data.map((item) => {

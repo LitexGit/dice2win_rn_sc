@@ -1,5 +1,7 @@
 import { StyleSheet } from 'react-native'
 import { ApplicationStyles, Fonts, Colors } from '../../Themes/'
+import { red } from 'ansi-colors';
+// import Metrics from './Metrics'
 
 export default StyleSheet.create({
   ...ApplicationStyles.screen,
@@ -75,5 +77,49 @@ export default StyleSheet.create({
   buttonText: {
     ...Fonts.style.description,
     color: Colors.text,
-  }
+  },
+
+
+  item:{
+    flexDirection:"row",
+    paddingHorizontal:15,
+    paddingVertical:20,
+
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.steel,
+  },
+  leftSection:{
+    flexDirection:"column",
+    flex:1,
+    alignItems:'center',
+  },
+  centerSection:{
+    flexDirection:"row",
+    flex:2,
+    paddingLeft: 10,
+    paddingRight:30,
+    alignItems: 'center',
+  },
+  rightSection:{
+    flexDirection:"row",
+    flex:1,
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+  },
+
+  header:{
+    flexDirection:"row",
+    paddingHorizontal:15,
+    paddingVertical:5,
+    backgroundColor:Colors.steel,
+
+    alignItems:'center',
+    opacity:0.5,
+  },
+
+  channelTradingList:{
+    marginTop:15,
+  },
+
+
 })
