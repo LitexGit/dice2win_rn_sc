@@ -113,6 +113,7 @@ class GameContainerScreen extends Component {
     let { index, stake, balance, status, result, rewardTime, winRate, feeRate, balanceFetching,
       setStake, channel
     } = this.props
+
     return (
       <ScrollView style={styles.container}>
         <StatusBar />

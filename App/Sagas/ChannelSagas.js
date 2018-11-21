@@ -20,6 +20,9 @@ import { GameSelectors } from '../Redux/GameRedux'
 import MessageBoxActions from '../Redux/MessageBoxRedux'
 import RecordActions from '../Redux/RecordRedux'
 
+import walletLib from '../Lib/Wallet/wallet'
+import PwdModalActions, { PwdModalSelectors } from '../Redux/PwdModalRedux'
+
 import { ConfirmModalSelectors } from '../Redux/ConfirmModalRedux';
 
 import { channel } from 'redux-saga'
@@ -76,11 +79,14 @@ function * initDB(){
 function listenerInit(client) {
   client.on('BetSettled', (channel, bet) => {
     let status = 'lose'
+    let winAmount = web3.utils.fromWei(bet.winAmount, 'ether');
+
     if(bet.winner == 1) {
       status = 'win'
     }
     // console.log(channel)
     channelListener.put(ChannelActions.setChannel(channel));
+    channelListener.put(GameActions.updateResult({[bet.modulo]: { amount: winAmount } }));
     channelListener.put(GameActions.updateStatus({ status: {[bet.modulo]: status}}));
   }).on('ChannelOpen', (channel) => {
     channelListener.put(ChannelActions.setChannel(channel));
@@ -190,6 +196,30 @@ export function * startBet (api, action) {
   let channelObject = yield select(ChannelSelectors.getChannel)
 
   let channelId = channelObject.channel.channelId;
+  /*
+  if (!W.wallet) {
+    let result = yield call(walletLib.unlockWallet, password)
+
+    if (!result) {
+      yield put(PwdModalActions.openPwdModal({
+        submitedActions: [
+          {
+            action: ChannelActions.startBet,
+            data: {betMask, modulo, value}
+          }
+        ]
+      }))
+
+      password = yield select(PwdModalSelectors.getPassword)
+      if (!!password) {
+        yield put(PwdModalActions.setErrInfo({errInfo: 'wrong password'}))
+      }
+      return ;
+    }
+
+    yield put(PwdModalActions.closePwdModal())
+  }
+  */
 
   // 转换成 BN
   let amount = web3.utils.toWei(value.toString(), 'ether')
