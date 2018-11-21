@@ -188,7 +188,7 @@ export function * startBet (api, action) {
   let randomSeed = yield select(ConfirmModalSelectors.getGas)
 
   let channelObject = yield select(ChannelSelectors.getChannel)
-  
+
   let channelId = channelObject.channel.channelId;
 
   // 转换成 BN
@@ -204,7 +204,7 @@ export function * startBet (api, action) {
     console.log(err)
     yield put(MessageBoxActions.openMessageBox({ title: 'Warning', message: '交易太频繁' }))
   }
-  
+
 }
 
 // 获取所有通道
@@ -241,32 +241,36 @@ export function * getChannel (api, action) {
 
 // 获取所有下注信息
 export function * getAllBets (api, action) {
-  const [ gameId, address, record] = yield all([
-    select(GameSelectors.getGameId),
-    select(WalletSelectors.getAddress),
-    select(ChannelSelectors.getRecords)
-  ])
 
-  let condition = '1 = 1';
-  // switch(type) {
-  //   case 'game': data = yield scclient.getAllBets(condition, page, size); break
-  //   case 'records': data = yield scclient.getAllBets(condition, page, size); break
-  //   default: data = {}
-  // }
+  const {data:param={}} = action;
+  const {type='game',data={}}= param;
+  const {page=1, limit=20}=data;
 
-  let page = 1;
-  let type = 'game'
+  const condition = '';
+  let offset =  (page -1) * limit;
+  offset = offset >= 0 ? offset : 0;
+  let result = yield scclient.getAllBets(condition, offset, limit);
 
-  let data = yield scclient.getAllBets(condition, 1, 20);
+  result = result.map((item) => {
+    const {createdAt} = item;
+    const date = Moment(createdAt).format('YYYY-MM-DD');
+    let time = Moment(createdAt).format('HH:mm:ss');
+    let { timeZone } = require('../Themes/Metrics')
+    time = new Date(`${date}T${time}`)
+      .toLocaleTimeString('zh-CN', {timeZone, hour12: false})
 
-  // if(data) {
-  //   if(page > 1) { // load more, use append mode
-  //     data = [...oldData, ...data]
-  //   }
-  //   yield put(ChannelActions.channelSuccess({[type]:data}))
-  // } else {
-  //   yield put(ChannelActions.channelFailure())
-  // }
+    return {...item, time, date}
+  })
+
+  if(result) {
+    if(page > 1) {
+      let oldData = yield select(ChannelSelectors.getRecords);
+      result = [...oldData, ...result];
+    }
+    yield put(ChannelActions.channelSuccess({[type]:result}))
+  } else {
+    yield put(ChannelActions.channelFailure())
+  }
 
 }
 
@@ -294,12 +298,6 @@ export function * getPayments (api, action) {
       .toLocaleTimeString('zh-CN', {timeZone, hour12: false})
     return {...item, time, date}
   })
-
-  const [ gameId, address, record] = yield all([
-    select(GameSelectors.getGameId),
-    select(WalletSelectors.getAddress),
-
-  ])
 
   if(result) {
     if(page > 1) {
