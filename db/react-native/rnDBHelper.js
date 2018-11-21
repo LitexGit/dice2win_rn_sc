@@ -81,12 +81,20 @@ class rnDBHelper {
 
     }
 
-    async getChannels() {
+    async getChannels(condition, offset, limit) {
 
         let sql = squel
             .select()
-            .from(this.TABLE_CHANNEL)
-            .toString();
+            .from(this.TABLE_CHANNEL);
+      let keys = Object.keys(condition);
+      for (var key of keys) {
+        sql = sql.where(key + "=?", condition[key]);
+      }
+      sql = sql
+        .offset(offset)
+        .limit(limit)
+        .order("createdAt", false)
+        .toString();
 
         return new Promise((resolve, reject) => {
             this.db.transaction(tx => {
@@ -140,11 +148,20 @@ class rnDBHelper {
         });
     }
 
-    async getPaymetns() {
-        let sql = squel
+    async getPayments(condition, offset, limit) {
+      let sql = squel
             .select()
-            .from(this.TABLE_PAYMENT)
-            .toString();
+            .from(this.TABLE_PAYMENT);
+
+      let keys = Object.keys(condition);
+      for(var key of keys){
+          sql = sql.where(key + "=?", condition[key]);
+      }
+      sql = sql
+        .offset(offset)
+        .limit(limit)
+        .order("paymentId", false)
+        .toString();
 
         return new Promise((resolve, reject) => {
             this.db.transaction(tx => {
@@ -292,11 +309,20 @@ class rnDBHelper {
         });
     }
 
-    async getBets() {
-        let sql = squel
+    async getBets(condition, offset, limit) {
+
+      let sql = squel
             .select()
-            .from(this.TABLE_BET)
-            .toString();
+            .from(this.TABLE_BET);
+      let keys = Object.keys(condition);
+      for(var key of keys){
+          sql = sql.where(key + "=?", condition[key]);
+      }
+      sql = sql
+        .offset(offset)
+        .limit(limit)
+        .order("betId", false)
+        .toString();
 
         return new Promise((resolve, reject) => {
             this.db.transaction(tx => {
