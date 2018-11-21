@@ -10,24 +10,24 @@ class DBHelper {
   addChannel(channel) {}
   updateChannel(channelId, newAttr) {}
   deleteChannel(channelId) {}
-  getChannels() {}
+  getChannels(condition, offset, limit) { }
   getChannel(channelId) {}
 
   addPayment(payment) {}
-  getPaymetns() {}
+  getPayments(condition, offset, limit) {}
 
   addTransfer(transfer) {}
   updateTransfer(transferId, newAttr) {}
   deleteTransfer(transferId) {}
   getTransfer(transferId) {}
-  getLatestTransfer(where){}
+  getLatestTransfer(where) {}
 
   addBet(bet) {}
   updateBet(betId, newAttr) {}
-  getBets() {}
+  getBets(condition, offset, limit) {}
   getBet(betId) {}
-  getBetByChannel(where){}
-  getLatestRound(channelId){}
+  getBetByChannel(where) {}
+  getLatestRound(channelId) {}
 }
 
 module.exports = DBHelper;
