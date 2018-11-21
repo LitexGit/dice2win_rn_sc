@@ -278,6 +278,10 @@ export function * getPayments (api, action) {
   let offset =  (page -1) * limit;
   offset = offset >= 0 ? offset : 0;
 
+  console.log('============offset========================');
+  console.log(offset);
+  console.log('============offset========================');
+
   let result = yield scclient.getPayments(condition, offset, limit);
 
   // convert date and time to local format
@@ -291,9 +295,16 @@ export function * getPayments (api, action) {
     return {...item, time, date}
   })
 
+  const [ gameId, address, record] = yield all([
+    select(GameSelectors.getGameId),
+    select(WalletSelectors.getAddress),
+
+  ])
+
   if(result) {
     if(page > 1) {
-      result = [...oldData, ...result]
+      let oldData = yield select(ChannelSelectors.getPayments);
+      result = [...oldData, ...result];
     }
     yield put(ChannelActions.channelSuccess({[type]:result}))
   } else {

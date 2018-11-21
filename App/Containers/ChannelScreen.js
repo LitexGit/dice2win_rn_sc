@@ -36,7 +36,7 @@ class ChannelScreen extends Component {
     super(props)
     this.state = {
       type: 'payments',
-      game: { page: 1 },
+      page: 1,
     }
   }
 
@@ -46,17 +46,22 @@ class ChannelScreen extends Component {
 
   _refresh=()=>{
     let {type} = this.state
-    this.setState({[type]:{page:1}})
+    this.setState({
+      page:1
+    })
     this.props.getPayments(type, {page:1})
   }
 
   _loadMore=()=>{
-    if (this.props.loading) return;
+    // if (this.props.loading) return;
 
     const {type} = this.state;
-    let {page} = this.state[type];
+    let {page} = this.state;
     page = page + 1
-    this.setState({[type]:{page}})
+
+    this.setState({
+      page
+    })
     console.tron.log(`loading page ${page} of ${type}`)
     this.props.getPayments(type, {page})
   }
@@ -153,10 +158,6 @@ class ChannelScreen extends Component {
   render () {
     let { channel, payments, refreshing, loading} = this.props
 
-    console.log('===============payments=====================');
-    console.log(payments);
-    console.log('===============payments=====================');
-
     return (
       <View style={styles.container}>
         <StatusBar />
@@ -221,7 +222,12 @@ const mapDispatchToProps = (dispatch) => {
     openChannelConfirmModal: (data) => dispatch(ChannelConfirmModalActions.openChannelConfirmModal(data)),
     openChannelWithdrawModal: (data) => dispatch(ChannelWithdrawModalActions.openChannelWithdrawModal(data)),
     alert: (message) => dispatch(MessageBoxActions.openMessageBox({ title: 'Warning', message })),
-    getPayments: (type, data) => dispatch(ChannelActions.getPayments({type, data})),
+    getPayments: (type, data) => {
+      console.log('=====type======data=========================');
+      console.log(data);
+      console.log('=====type==========data=====================');
+      dispatch(ChannelActions.getPayments({type, data}))
+    },
   }
 }
 

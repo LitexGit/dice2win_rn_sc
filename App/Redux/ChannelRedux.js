@@ -46,6 +46,8 @@ export const INITIAL_STATE = Immutable({
   payload: null,
   error: null,
   payments: [],
+  loading: false,
+  refreshing: false,
 })
 
 /* ------------- Selectors ------------- */
@@ -54,7 +56,7 @@ export const ChannelSelectors = {
   getChannel: state => state.channel,
   getGlobalRecords: state => state.channel.global,
   getRecords: state => state.channel.records,
-  // getPayments: state => state.channel.payments,
+  getPayments: state => state.channel.payments,
 }
 
 /* ------------- Reducers ------------- */
@@ -71,13 +73,13 @@ export const setTimer = (state, { timer }) =>
   state.merge({ timer })
 
 // request the data from an api
-export const request = (state, { data }) =>{
-  // let {page=1} = data.data
-  // if(page > 1){
-  //   return state.merge({loading: true, data, payload: null})
-  // } else {
+export const request = (state, {data} ) =>{
+  let {page=1} = data
+  if(page > 1){
+    return state.merge({loading: true, data, payload: null})
+  } else {
     return state.merge({refreshing: true, data, payload: null})
-  // }
+  }
 }
 
 // successful api lookup
@@ -97,6 +99,6 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.CHANNEL_REQUEST]: request,
   [Types.CHANNEL_SUCCESS]: success,
   [Types.CHANNEL_FAILURE]: failure,
-  [Types.GET_PAYMENTS]: getPayments,
+  [Types.GET_PAYMENTS]: request,
 
 })
