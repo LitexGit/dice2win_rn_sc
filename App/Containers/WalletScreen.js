@@ -69,14 +69,14 @@ class WalletScreen extends Component {
     })
   }
 
-  _shareLink = () => {
-    this._trackClick('ShareLink')
-    let {shareInfo:{message, title, url}, share_url} = this.props
-    let msg = message + "\r\n Download Url: " + share_url
-    Share.share({message : msg, title, url})
-      .then(result => {console.tron.log('share result: ', result)})
-      .catch(err => console.tron.log('error open telegram', err))
-  }
+  // _shareLink = () => {
+  //   this._trackClick('ShareLink')
+  //   let {shareInfo:{message, title, url}, share_url} = this.props
+  //   let msg = message + "\r\n Download Url: " + share_url
+  //   Share.share({message : msg, title, url})
+  //     .then(result => {console.tron.log('share result: ', result)})
+  //     .catch(err => console.tron.log('error open telegram', err))
+  // }
 
   _onRefresh = () => {
     this.props.loadWallet()
@@ -147,7 +147,9 @@ class WalletScreen extends Component {
             <Text style={styles.addressText}>{I18n.t('CopyAddress')}</Text>
           </TouchableOpacity>
         </View>
-        <View style={styles.shareWrapper}>
+
+
+        {/* <View style={styles.shareWrapper}>
           <TouchableOpacity style={styles.shareUp} onPress={_ => this._goto("promotion")}>
             <Text style={styles.label}>{I18n.t('ReferralBonus')}</Text>
             <View style={[styles.balanceWrapper, styles.bonusBalanceWrapper]}>
@@ -174,9 +176,9 @@ class WalletScreen extends Component {
               </TouchableOpacity>
             </View>
           </View>
-        </View>
+        </View> */}
 
-        <View style={styles.buttons}>
+        {/* <View style={styles.buttons}>
           <View style={styles.button}>
             <TouchableOpacity style={[styles.button, { borderWidth: 0 }]} onPress={_ => this._checkUpdate()}>
               <Text style={styles.buttonText}>{I18n.t('Version')}</Text>
@@ -198,7 +200,7 @@ class WalletScreen extends Component {
               <Text style={styles.buttonText}>{I18n.t('SettingScreenLabel')}</Text>
             </TouchableOpacity>
           </View>
-        </View>
+        </View> */}
       </ScrollView>;
   }
 }

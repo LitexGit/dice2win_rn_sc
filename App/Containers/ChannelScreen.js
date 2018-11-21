@@ -34,22 +34,34 @@ class ChannelScreen extends Component {
     super(props)
   }
 
+  componentDidMount (){
+    this._refresh();
+  }
+
+  _refresh=()=>{
+    const type='records'
+    this.props.getAllBets(type, {page:1})
+  }
+
+  _loadMore=()=>{
+  }
+
   _recharge = () => {
     let { openChannelConfirmModal, navigate, channel } = this.props
-    
+
     if(!W.address) {
       navigate('WalletManageScreen')
     } /*else if (balance <= 0) {
       alert(I18n.t('InsufficientBalance'))
     }*/ else {
-      // callback action 
+      // callback action
       let channelConfirmedActions = [{
         action: ChannelActions.openChannel,
         data: {}
       }]
-      
+
       if(channel.status == 2) {
-        // callback action 
+        // callback action
         channelConfirmedActions = [{
           action: ChannelActions.deposit,
           data: {}
@@ -71,7 +83,7 @@ class ChannelScreen extends Component {
       alert(I18n.t('InsufficientBalance'))
     }*/ else {
       if(channel.status == 2) {
-        // callback action 
+        // callback action
         let withdrawConfirmedActions = [{
           action: ChannelActions.closeChannel,
           data: {}
@@ -87,14 +99,21 @@ class ChannelScreen extends Component {
   }
 
   _renderItem = ({item}) => {
-    let { amount:inValue, address_from:user, dice_payment:outValue, time, bet_res:status, bet_mask:bet, bet_detail:result} = item
+
+    /**
+     * winner    是否获胜 1 获胜 0亏损
+     * createdAt 创建时间
+     * negativeB 庄家地址
+     * winAmount 赚取金额
+     * */
+    let { winner = 0, createdAt,  negativeB, winAmount} = item
     let { modulo } = this.props
     return <TouchableOpacity style={styles.gameItem} onPress={_=>this._itemPressed(item)}>
       <View style={styles.timeWrapper}>
         <Text style={[styles.statusText, GAME_STATUS[status].style]}>{GAME_STATUS[status].text}</Text>
         <Text style={styles.timeText}>{time}</Text>
       </View>
-      
+
       <View style={styles.userWrapper}>
         <Text numberOfLines={1} ellipsizeMode='tail' style={styles.userText}>{user}</Text>
       </View>
@@ -118,8 +137,12 @@ class ChannelScreen extends Component {
   }
 
   render () {
-    let { channel } = this.props
-    
+    let { channel, records} = this.props
+
+    console.log('============render========================');
+    console.log(records);
+    console.log('============render========================');
+
     return (
       <View style={styles.container}>
         <StatusBar />
@@ -156,11 +179,10 @@ class ChannelScreen extends Component {
 
 const mapStateToProps = (state) => {
   let {
-    channel: { channel }
+    channel: { channel,  records},
   } = state
-
   return {
-    channel
+    channel,records
   }
 }
 
@@ -169,7 +191,8 @@ const mapDispatchToProps = (dispatch) => {
     navigate: (target) => dispatch(NavigationActions.navigate({routeName: target})),
     openChannelConfirmModal: (data) => dispatch(ChannelConfirmModalActions.openChannelConfirmModal(data)),
     openChannelWithdrawModal: (data) => dispatch(ChannelWithdrawModalActions.openChannelWithdrawModal(data)),
-    alert: (message) => dispatch(MessageBoxActions.openMessageBox({ title: 'Warning', message }))
+    alert: (message) => dispatch(MessageBoxActions.openMessageBox({ title: 'Warning', message })),
+    getAllBets: (type, data) => dispatch(ChannelActions.getAllBets({type, data})),
   }
 }
 

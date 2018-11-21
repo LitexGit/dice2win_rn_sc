@@ -106,12 +106,12 @@ class PromotionScreen extends Component {
   </TouchableOpacity>
   }
 
-  _shareLink = () => {
-    let {shareInfo:{message, title, url}} = this.props
-    Share.share({message, title, url})
-      .then(result => {console.tron.log('share result: ', result)})
-      .catch(err => console.tron.log('error open telegram', err))
-  }
+  // _shareLink = () => {
+  //   let {shareInfo:{message, title, url}} = this.props
+  //   Share.share({message, title, url})
+  //     .then(result => {console.tron.log('share result: ', result)})
+  //     .catch(err => console.tron.log('error open telegram', err))
+  // }
   render () {
     let {bonus, totalBonus, sections, refreshing, loading} = this.props
     console.tron.log('bonus sections', sections)
@@ -125,7 +125,7 @@ class PromotionScreen extends Component {
           </View>
           <TouchableOpacity style={styles.withdrawButton} onPress={_=>this._withdraw(bonus)}><Text style={styles.withdrawButtonText}>{I18n.t('Withdraw2Wallet')}</Text></TouchableOpacity>
           <Text style={[styles.label, {textAlign:'center'}]}>{I18n.t('TotalBonus') + ':\n'}<Text style={styles.valueText}>{displayETH(totalBonus)}</Text> ETH</Text>
-          <TouchableOpacity onPress={this._shareLink.bind(this)}><Text style={styles.shareText}>{I18n.t('Share2Earn')}</Text></TouchableOpacity>
+          {/* <TouchableOpacity onPress={this._shareLink.bind(this)}><Text style={styles.shareText}>{I18n.t('Share2Earn')}</Text></TouchableOpacity> */}
         </View>
         <View style={styles.downWrapper}>
           <SectionList

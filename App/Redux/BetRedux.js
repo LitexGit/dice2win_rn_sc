@@ -6,7 +6,8 @@ let BN = require('bn.js')
 
 /* ------------- Types and Action Creators ------------- */
 
-const getRewardTime = (winRate, feeRate) => (1 - feeRate) * 0.95 / winRate + 0.05
+// const getRewardTime = (winRate, feeRate) => (1 - feeRate) * 0.95 / winRate + 0.05
+const getRewardTime = (winRate, feeRate)=>2.00
 
 const {Types, Creators} = createActions({
   loadCoin: null,
@@ -116,10 +117,10 @@ export const loadTwoDice = (state) =>
   })
 
 export const loadEtheroll = (state) => state.merge({
-  betMask: 50, 
+  betMask: 50,
   modulo: 100,
   winRate: 0.5,
-  rewardTime: 1.931, 
+  rewardTime: 1.931,
 })
 
 export const clickCoin = (state) => {
