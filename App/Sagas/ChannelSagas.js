@@ -71,7 +71,7 @@ function * initDB(){
 
 /**
  * 开通通道
- * 
+ *
  * @description 参数说明
  * [
  *   string partnerAddress 对方以太坊地址
@@ -102,28 +102,28 @@ export function * openChannel (api, action) {
 
 /**
  * 关闭通道
- * 
+ *
  * @description 参数说明
  * [
  *   string partnerAddress 对方以太坊地址
- * ] 
+ * ]
  */
 export function * closeChannel (api, action) {
   // 读取配置信息
   let sysConfig = yield select(ConfigSelectors.getConfig)
   let partnerAddress = sysConfig.partnerAddress
-  
-  
+
+
   try {
     // let close = yield scclient.closeChannel(partnerAddress);
     let close = yield scclient.closeChannelCooperative(partnerAddress);
-    
+
     yield put(MessageBoxActions.openMessageBox({ title: 'Message', message: 'The request has been submitted. Please wait.' }));
   } catch(err) {
     console.log(err)
     yield put(MessageBoxActions.openMessageBox({ title: 'Error', message: 'Opreation Faild.' }));
   }
-  
+
 }
 
 // 向通道存钱
@@ -134,7 +134,7 @@ export function * deposit (api, action) {
   let partnerAddress = sysConfig.partnerAddress
 
   let depositAmount = parseFloat(yield select(ChannelConfirmModalSelectors.getChannelAmount));
-  
+
   if(isNaN(depositAmount) || depositAmount <= 0) {
     yield put(MessageBoxActions.openMessageBox({ title: 'Error', message: 'Amount Faild.' }));
   } else {
@@ -154,7 +154,7 @@ export function * startBet (api, action) {
   // 读取配置信息
   let sysConfig = yield select(ConfigSelectors.getConfig)
   let partnerAddress = sysConfig.partnerAddress
-  
+
   let {betMask, modulo, value} = action.data
 
   let randomSeed = yield select(ConfirmModalSelectors.getGas)
@@ -186,10 +186,10 @@ export function * getChannel (api, action) {
   // let channelIdentifier = channel.channelId;
   // let channelIdentifier = yield scclient.dbhelper.getChannelIdentifier();
   let channelIdentifier = '0xbe6d5ee53365506a8facb1ab35448ec3325545947d8451ac31e2c3da37af2db1';
-  
-  if(!channelIdentifier) 
+
+  if(!channelIdentifier)
     return ;
-  
+
   try {
     let channelInfo = yield scclient.dbhelper.getChannel(channelIdentifier);
     yield put(ChannelActions.setChannel(channelInfo));
@@ -200,47 +200,35 @@ export function * getChannel (api, action) {
 
 // 获取所有下注信息
 export function * getAllBets (api, action) {
-  const { type, data:{page, size=20} } = action.data
-  const [ gameId, address ] = yield all([
+
+  const { type, data:{page=1, limit=20} } = action.data
+
+  const [ gameId, address, record] = yield all([
     select(GameSelectors.getGameId),
     select(WalletSelectors.getAddress),
     select(ChannelSelectors.getRecords)
   ])
 
-  let condition = '1 = 1';
-  let data = null;
-  switch(type) {
-    // case 'bonus': response = yield call(api.getPromotionRecords, {uid, page, size});break
-    case 'game': data = yield scclient.getAllBets(condition, page, size);break
-    case 'global': data = yield scclient.getAllBets(condition, page, size);break
-    case 'tx': data = yield call(api.getTx, {address, page, size});break
-    default: data = {}
-  }
- 
-  if(data) {
-    // convert date and time to local format
-    /*
-    data = data.map((item) => {
-      let { date, time} = item
-      let { timeZone } = require('../Themes/Metrics')
-      
-      time = new Date(`${date}T${time}`)
-        .toLocaleTimeString('zh-CN', {timeZone, hour12: false}) 
-      return {...item, time}
-    })
-    */
+  // let condition = '1 = 1';
+  // switch(type) {
+  //   case 'game': data = yield scclient.getAllBets(condition, page, size); break
+  //   case 'records': data = yield scclient.getAllBets(condition, page, size); break
+  //   default: data = {}
+  // }
 
+  let condition = '';
+  const offset = (page - 1) * limit;
+  // let data = yield scclient.getAllBets(condition, offset, limit);
+  let data = yield scclient.getAllBets(condition, 0, 30);
+
+  if(data) {
     if(page > 1) { // load more, use append mode
       data = [...oldData, ...data]
-    } else {
-      type==='global' && (data = {...oldData, [gameId]: data}) 
     }
-
-    yield put(RecordActions.recordSuccess({[type]:data}))
+    yield put(ChannelActions.channelSuccess({[type]:data}))
   } else {
-    yield put(RecordActions.recordFailure())
+    yield put(ChannelActions.channelFailure())
   }
-
 }
 
 // 根据ID获取下注详情
@@ -249,3 +237,19 @@ export function * getBetById (api, action) {
 
   yield scclient.getBetById(betId);
 }
+
+
+
+
+    // convert date and time to local format
+    // data = data.map((item) => {
+    //   let { date, time} = item
+    //   let { timeZone } = require('../Themes/Metrics')
+
+    //   time = new Date(`${date}T${time}`)
+    //     .toLocaleTimeString('zh-CN', {timeZone, hour12: false})
+    //   return {...item, time}
+    // })
+
+
+

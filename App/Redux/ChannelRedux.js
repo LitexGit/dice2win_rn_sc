@@ -12,9 +12,7 @@ const { Types, Creators } = createActions({
   getChannelInfo: ["data"],
   getAllBets: ["data"],
   getBetById: ["data"],
-
   setChannel: ["channel"],
-
   channelRequest: ['data'],
   channelSuccess: ['payload'],
   channelFailure: null
@@ -23,13 +21,15 @@ const { Types, Creators } = createActions({
 export const ChannelTypes = Types
 export default Creators
 
+
+
 /* ------------- Initial State ------------- */
 
 export const INITIAL_STATE = Immutable({
   channel: { status: 6 },
 
   bonus: {},
-  record: {},
+  records: [],
   global: {
     2:[],
     6:[],
@@ -47,11 +47,13 @@ export const INITIAL_STATE = Immutable({
 
 export const ChannelSelectors = {
   getChannel: state => state.channel,
-  getRecords: state => state.channel.record,
   getGlobalRecords: state => state.channel.global,
+  getRecords: state => state.channel.records,
 }
 
 /* ------------- Reducers ------------- */
+
+export const getAllBets = (state, {records}) => state.merge({records})
 
 export const setChannel = (state, {channel}) =>
   // console.tron.log('setWallet', wallet)
@@ -65,7 +67,7 @@ export const request = (state, { data }) =>
 // successful api lookup
 export const success = (state, action) => {
   const { payload } = action
-  return state.merge({ fetching: false, error: null, payload })
+  return state.merge({ fetching: false, error: null, ...payload });
 }
 
 // Something went wrong somewhere.
@@ -75,8 +77,8 @@ export const failure = state =>
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
+  [Types.GET_ALL_BETS]: getAllBets,
   [Types.SET_CHANNEL]: setChannel,
-
   [Types.CHANNEL_REQUEST]: request,
   [Types.CHANNEL_SUCCESS]: success,
   [Types.CHANNEL_FAILURE]: failure

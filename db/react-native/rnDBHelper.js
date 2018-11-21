@@ -307,7 +307,7 @@ class rnDBHelper {
             });
         });
     }
-    
+
     async getBet(betId) {
         let sql = squel
             .select()
@@ -373,7 +373,7 @@ class rnDBHelper {
 
 function convertResult(results) {
     var len = results.rows.length;
-    console.log('convertResult len is ', len);
+    // console.log('convertResult len is ', len);
     let data = [];
     for (let i = 0; i < len; i++) {
         let row = results.rows.item(i);
