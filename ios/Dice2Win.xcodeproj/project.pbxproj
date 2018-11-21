@@ -5,7 +5,6 @@
 	};
 	objectVersion = 46;
 	objects = {
-
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -43,6 +42,7 @@
 		1F916449215A203200E2D21B /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F916448215A203200E2D21B /* libz.tbd */; };
 		1F91644B215A203A00E2D21B /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F91644A215A203A00E2D21B /* AdSupport.framework */; };
 		1F91644D215A204B00E2D21B /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F91644C215A204B00E2D21B /* libresolv.tbd */; };
+		23983B9B21A562D000E5B28D /* libfishhook.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D16E6841FA4F8DC00B85C8A /* libfishhook.a */; };
 		2CF62BBCC11E397FCC4C9A89 /* libPods-Dice2WinTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DC6065541CE19971CAC35415 /* libPods-Dice2WinTests.a */; };
 		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
@@ -528,6 +528,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				23983B9B21A562D000E5B28D /* libfishhook.a in Frameworks */,
 				1F64BE6E215E32BA00E6A6B8 /* libRCTAes.a in Frameworks */,
 				1F91644D215A204B00E2D21B /* libresolv.tbd in Frameworks */,
 				1F78999421576ECD002B6D3D /* UserNotifications.framework in Frameworks */,
