@@ -10,7 +10,7 @@
 *    you'll need to define a constant in that file.
 *************************************************************/
 
-import { call, put, select, all } from 'redux-saga/effects'
+import { call, put, select, all, take } from 'redux-saga/effects'
 import ChannelActions, {ChannelSelectors} from '../Redux/ChannelRedux'
 import GameActions from '../Redux/GameRedux'
 import { ChannelConfirmModalSelectors } from '../Redux/ChannelConfirmModalRedux'
@@ -21,6 +21,8 @@ import MessageBoxActions from '../Redux/MessageBoxRedux'
 import RecordActions from '../Redux/RecordRedux'
 
 import { ConfirmModalSelectors } from '../Redux/ConfirmModalRedux';
+
+import { channel } from 'redux-saga'
 
 // 加载必要类库
 var SCClient = require("statechannelnode");
@@ -36,6 +38,8 @@ let privateKey = '118538D2E2B08396D49AB77565F3038510B033A74C7D920C1C9C7E457276A3
 let socket = io("http://192.168.51.227");
 
 // let db = SQLite.openDatabase({ name: "client.db", createFromLocation: 1 }, ()=>{console.log('db open success')});
+
+const channelListener = channel()
 
 function * initDB(){
 
@@ -61,12 +65,37 @@ function * initDB(){
 
   scclient = new SCClient(web3, dbhelper, address, privateKey);
   scclient.initMessageHandler(socket);
-  console.log('scclient', scclient);
   global.scclient = scclient;
   global.dbInitializing = dbInitializing;
 
-  let all = yield scclient.getAllChannels()
-  console.log(all)
+  // let all = yield scclient.getAllChannels()
+  // console.log(all)
+
+  yield listenerInit(scclient)
+}
+
+function listenerInit(client) {
+  client.on('BetSettled', (channel, bet)=>{
+    let result = 'lose'
+    if(bet.winner == 1) {
+      result = 'win'
+    }
+    // console.log(channel)
+    channelListener.put(ChannelActions.setChannel(channel));
+    channelListener.put(GameActions.updateStatus({status:{[bet.modulo]: result}}))
+  }).on('ChannelOpen', (channel)=>{
+    this.channelIdentifier = channel.channelId;
+    
+  }).on('CooperativeSettled', (channel)=>{
+    
+  })
+}
+
+export function * watchChannelListener() {
+  while(true){
+    const action = yield take(channelListener)
+    yield put(action)
+  }
 }
 
 /**
@@ -93,6 +122,12 @@ export function * openChannel (api, action) {
     try {
       yield scclient.openChannel(partnerAddress, depositAmount);
       yield put(MessageBoxActions.openMessageBox({ title: 'Message', message: 'The request has been submitted. Please wait.' }));
+
+      // 监听通道开启事件
+    scclient.on('ChannelOpen', (channel) => {
+      put(ChannelActions.setChannel({ channel }));
+    })
+
     } catch(err) {
       console.log(err)
       yield put(MessageBoxActions.openMessageBox({ title: 'Error', message: 'Opreation Faild.' }));
@@ -113,14 +148,12 @@ export function * closeChannel (api, action) {
   let sysConfig = yield select(ConfigSelectors.getConfig)
   let partnerAddress = sysConfig.partnerAddress
   
-  
   try {
-    // let close = yield scclient.closeChannel(partnerAddress);
-    let close = yield scclient.closeChannelCooperative(partnerAddress);
+    // yield scclient.closeChannel(partnerAddress);
+    yield scclient.closeChannelCooperative(partnerAddress);
     
     yield put(MessageBoxActions.openMessageBox({ title: 'Message', message: 'The request has been submitted. Please wait.' }));
   } catch(err) {
-    console.log(err)
     yield put(MessageBoxActions.openMessageBox({ title: 'Error', message: 'Opreation Faild.' }));
   }
   
@@ -159,14 +192,16 @@ export function * startBet (api, action) {
 
   let randomSeed = yield select(ConfirmModalSelectors.getGas)
 
+  // 转换成 BN
+  let amount = web3.utils.toWei(value.toString(), 'ether')
+
   try {
-    let betInfo = yield scclient.startBet('0xbe6d5ee53365506a8facb1ab35448ec3325545947d8451ac31e2c3da37af2db1', partnerAddress, betMask, modulo, value, randomSeed);
-    console.log(betInfo);
+    let betInfo = yield scclient.startBet('0x08b2f4a26bb6d160013ea88404467d864c041a8a52d74e468a046d1cebc1dafe', partnerAddress, betMask, modulo, amount, randomSeed);
+    
     if(betInfo == false) {
       yield put(MessageBoxActions.openMessageBox({ title: 'Warning', message: '交易请求次数过多' }))
-    } else {
-      yield put(GameActions.updateStatus({status:{[modulo]: 'drawn'}}))
     }
+
   } catch(err) {
     yield put(MessageBoxActions.openMessageBox({ title: 'Warning', message: '交易请求次数过多' }))
   }
@@ -185,13 +220,21 @@ export function * getChannel (api, action) {
 
   // let channelIdentifier = channel.channelId;
   // let channelIdentifier = yield scclient.dbhelper.getChannelIdentifier();
-  let channelIdentifier = '0xbe6d5ee53365506a8facb1ab35448ec3325545947d8451ac31e2c3da37af2db1';
+  let channelIdentifier = '0x08b2f4a26bb6d160013ea88404467d864c041a8a52d74e468a046d1cebc1dafe';
   
   if(!channelIdentifier) 
     return ;
   
   try {
     let channelInfo = yield scclient.dbhelper.getChannel(channelIdentifier);
+    
+    // 初始化默认值
+    if(!channelInfo) {
+      channelInfo = {
+        status: 6
+      }
+    }
+    
     yield put(ChannelActions.setChannel(channelInfo));
   } catch (err) {
     yield put(ChannelActions.channelFailure())
@@ -233,7 +276,7 @@ export function * getAllBets (api, action) {
     if(page > 1) { // load more, use append mode
       data = [...oldData, ...data]
     } else {
-      type==='global' && (data = {...oldData, [gameId]: data}) 
+      type==='global' && (data = {...oldData, [gameId]: data})
     }
 
     yield put(RecordActions.recordSuccess({[type]:data}))

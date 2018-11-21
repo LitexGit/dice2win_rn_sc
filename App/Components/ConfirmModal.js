@@ -96,8 +96,8 @@ class ConfirmModal extends Component {
           <TouchableOpacity style={styles.cancelButton} onPress={this._cancel.bind(this)}>
             <Text style={styles.label}> {I18n.t('Cancel')} </Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.confirmButton} disabled={loading} onPress={this._confirm.bind(this)}>
-            <Text style={styles.label}> {loading?I18n.t('Loading')+'...':I18n.t('Confirm')} </Text>
+          <TouchableOpacity style={styles.confirmButton} onPress={this._confirm.bind(this)}>
+            <Text style={styles.label}> {I18n.t('Confirm')} </Text>
           </TouchableOpacity>
         </View>
       </Overlay>

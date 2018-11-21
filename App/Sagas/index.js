@@ -27,7 +27,7 @@ import { setStake, refreshStatus } from './GameSagas'
 import { getSetting } from './SettingSagas'
 import { getNotification, initNotification, watchNotificationStatusChannel } from './NotificationSagas'
 import { register, getUser, fetchInviteCode } from './UserSagas'
-import { getChannel, openChannel, closeChannel, deposit, startBet, getAllChannels, getAllBets, getBetById } from './ChannelSagas'
+import { getChannel, openChannel, closeChannel, deposit, startBet, getAllChannels, getAllBets, getBetById, watchChannelListener } from './ChannelSagas'
 
 /* ------------- API ------------- */
 
@@ -41,6 +41,8 @@ export default function * root () {
   yield all([
     call(watchSocketStatusChannel),
     call(watchNotificationStatusChannel),
+    // 监听 Channel 开通、下注
+    call(watchChannelListener),
     // some sagas only receive an action
     // takeLatest(StartupTypes.STARTUP, startup),
 

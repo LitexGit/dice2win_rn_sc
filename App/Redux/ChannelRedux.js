@@ -14,6 +14,7 @@ const { Types, Creators } = createActions({
   getBetById: ["data"],
 
   setChannel: ["channel"],
+  setTimer: ["timer"],
 
   channelRequest: ['data'],
   channelSuccess: ['payload'],
@@ -26,7 +27,7 @@ export default Creators
 /* ------------- Initial State ------------- */
 
 export const INITIAL_STATE = Immutable({
-  channel: { status: 6 },
+  channel: { status: 6, channelIdentifier: 0 },
 
   bonus: {},
   record: {},
@@ -36,6 +37,8 @@ export const INITIAL_STATE = Immutable({
     36:[],
     100:[],
   },
+
+  timer: null,
 
   data: null,
   fetching: null,
@@ -49,14 +52,16 @@ export const ChannelSelectors = {
   getChannel: state => state.channel,
   getRecords: state => state.channel.record,
   getGlobalRecords: state => state.channel.global,
+  getTimer: state => state.channel.timer
 }
 
 /* ------------- Reducers ------------- */
 
 export const setChannel = (state, {channel}) =>
-  // console.tron.log('setWallet', wallet)
-  state.merge({channel})
-  // console.log(state.wallet)
+  state.merge({ channel })
+
+export const setTimer = (state, { timer }) =>
+  state.merge({ timer })
 
 // request the data from an api
 export const request = (state, { data }) =>
@@ -76,6 +81,7 @@ export const failure = state =>
 
 export const reducer = createReducer(INITIAL_STATE, {
   [Types.SET_CHANNEL]: setChannel,
+  [Types.SET_TIMER]: setTimer,
 
   [Types.CHANNEL_REQUEST]: request,
   [Types.CHANNEL_SUCCESS]: success,

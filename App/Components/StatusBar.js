@@ -27,6 +27,10 @@ class StatusBar extends Component {
   render () {
     let { channel } = this.props
 
+    console.log('================channel=============')
+    console.log(channel)
+    console.log('================channel=============')
+
     return (
       <View style={styles.container}>
         <TouchableOpacity onPress={_ => this.props.navigate('ChannelScreen')}>
