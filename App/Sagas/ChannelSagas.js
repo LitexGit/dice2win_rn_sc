@@ -316,13 +316,10 @@ export function * getAllBets (api, action) {
   })
 
   if(result) {
-    // if(page > 1) {
-    //   let oldData = yield select(ChannelSelectors.getRecords);
-    //   console.log('=========oldData===========================');
-    //   console.log(oldData);
-    //   console.log('==========oldData==========================');
-    //   // result = [...oldData, ...result];
-    // }
+    if(page > 1) {
+      let oldData = yield select(ChannelSelectors.getRecords);
+      result = [...oldData, ...result];
+    }
     yield put(ChannelActions.channelSuccess({[type]:result}))
   } else {
     yield put(ChannelActions.channelFailure())

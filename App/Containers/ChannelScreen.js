@@ -54,7 +54,6 @@ class ChannelScreen extends Component {
 
   _loadMore=()=>{
     // if (this.props.loading) return;
-
     const {type} = this.state;
     let {page} = this.state;
     page = page + 1
@@ -62,6 +61,8 @@ class ChannelScreen extends Component {
     this.setState({
       page
     })
+
+
     console.tron.log(`loading page ${page} of ${type}`)
     this.props.getPayments(type, {page})
   }
@@ -91,7 +92,7 @@ class ChannelScreen extends Component {
 
         openChannelConfirmModal({
           channelConfirmedActions
-        })  
+        })
       } else {
         unlockWallet()
       }

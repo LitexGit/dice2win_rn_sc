@@ -61,7 +61,6 @@ class RecordScreen extends Component {
 
   _refresh = () => {
     let {type} = this.state
-
     this.setState({[type]:{page:1}})
     if(type == 'tx') {
       this.props.loadTxRecords('tx', {page:1})

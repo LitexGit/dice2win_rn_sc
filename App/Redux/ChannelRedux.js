@@ -57,8 +57,7 @@ export const ChannelSelectors = {
   getChannel: state => state.channel,
   getGlobalRecords: state => state.channel.global,
   getPayments: state => state.channel.payments,
-
-  getRecords: state => state.channel.records, // game ??
+  getRecords: state => state.channel.game,
 }
 
 /* ------------- Reducers ------------- */
@@ -97,8 +96,8 @@ export const setTimer = (state, { timer }) =>
 
 // request the data from an api
 export const request = (state, {data} ) =>{
-
-  let {page=1} = data
+  const {type='', data:params} = data;
+  const {page=1} = params||{};
   if(page > 1){
     return state.merge({loading: true, data, payload: null})
   } else {
@@ -108,9 +107,9 @@ export const request = (state, {data} ) =>{
 
 // successful api lookup
 export const success = (state, { payload }) => {
-  console.log('============success========================');
-  console.log(payload);
-  console.log('============success========================');
+  console.log('==================refreshing==================');
+  console.log(state.merge({ refreshing: false, loading: false, error: null, ...payload }));
+  console.log('=================refreshing===================');
   return state.merge({ refreshing: false, loading: false, error: null, ...payload })
 }
 
