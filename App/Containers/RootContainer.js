@@ -45,6 +45,7 @@ class RootContainer extends Component {
 
     // init wallet even network disconnect
     this.props.initWallet();
+
   }
 
   render () {

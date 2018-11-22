@@ -36,6 +36,7 @@ var SCClient = require("statechannelnode");
 var io = require("socket.io-client");
 let SQLite = require('react-native-sqlite-storage');
 let dbfactory = require('../../db/dbfactory');
+let cryptoHelper = require('../../crypto/cryptoHelper');
 
 // 获取客户端
 let address = '0x56d77fcb5e4Fd52193805EbaDeF7a9D75325bdC0';
@@ -68,7 +69,7 @@ function * initDB(){
   let dbprovider = { type: 'react-native', config: { db: db } };
   let dbhelper = dbfactory.initDBHelper(dbprovider);
 
-  scclient = new SCClient(web3, dbhelper, address, privateKey);
+  scclient = new SCClient(web3, dbhelper, cryptoHelper, address, privateKey);
   scclient.initMessageHandler(socket);
   global.scclient = scclient;
   global.dbInitializing = dbInitializing;
