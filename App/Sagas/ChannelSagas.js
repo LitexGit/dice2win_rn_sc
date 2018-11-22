@@ -289,7 +289,7 @@ export function * getAllBets (api, action) {
     time = new Date(`${date}T${time}`)
       .toLocaleTimeString('zh-CN', {timeZone, hour12: false})
 
-    return {...item, time, date}
+    return {...item, time, date, isOpen:false}
   })
 
   if(result) {

@@ -102,11 +102,18 @@ class RecordScreen extends Component {
     this.props.checkGameDetail({item, checkType});
   }
 
+  _onMomentumScrollBegin=()=>{
+    checkType='scrollBegin';
+    const item={};
+    this.props.checkGameDetail({item, checkType});
+  }
+
   _renderGameItem = ({item}) => {
 
-    let {modulo, value:inValue, winAmount:outValue, time, winner: status} = item;
+    let {modulo, value:inValue, winAmount:outValue, time, winner: status, isOpen} = item;
     let icon = Images[GAME_NAMES[modulo]];
-    // const isShow = true;
+
+
 
     return (
       <View>
@@ -125,7 +132,7 @@ class RecordScreen extends Component {
             <Text style={styles.outValue}>{displayETH(outValue, 4)}</Text>
           </View>
         </TouchableOpacity>
-        {isShow && <GameDetailsView/>}
+        {isOpen && <GameDetailsView/>}
       </View>
     )
 
@@ -180,7 +187,7 @@ class RecordScreen extends Component {
   }
 
   render () {
-    let {gameSections, txSections, refreshing, loading} = this.props;
+    let {gameSections=[], txSections, refreshing, loading} = this.props;
 
     return (
       <View style={styles.container}>
@@ -208,6 +215,7 @@ class RecordScreen extends Component {
               ListFooterComponent={gameSections.length && <ListFooterComponent
                 loading={loading}
                 onPress={this._loadMore}/>}
+              onMomentumScrollBegin={this._onMomentumScrollBegin}
             />
           </View>
           <View tabLabel={I18n.t('Transactions')} style={styles.container}>
@@ -236,7 +244,7 @@ class RecordScreen extends Component {
 
 const mapStateToProps = (state) => {
   const {tx} = state.record;
-  const {refreshing, loading, game} = state.channel;
+  const {refreshing, loading, game=[]} = state.channel;
   const {base_etherscan} = state.config
   const {address} = state.wallet
 

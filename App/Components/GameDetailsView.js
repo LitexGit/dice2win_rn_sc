@@ -23,7 +23,7 @@ export default class GameDetailsView extends Component {
     const betMask=0;
     const ra='388f1813ca873902d51f814';
     const rb='966e94e50f403abcf';
-    const formula = 'winOrLose(web3, betMask, modulo, ra, rb, isPlayer）';
+    const formula = 'Hash(A,B)mod2=';
 
     // const isWin = winOrLose(betMask, modulo, ra, rb);
     const isWin = true;
@@ -47,7 +47,7 @@ export default class GameDetailsView extends Component {
       </View>
 
       <View style={styles.resultSection}>
-        <Text style={[styles.desText, {marginTop: 25}]}>{formula}</Text>
+        <Text style={[styles.desText, {marginTop: 25}]}>{formula}{0/1}</Text>
         <Text style={[styles.titleText, {marginTop: 10}]}>{winDes}</Text>
       </View>
 

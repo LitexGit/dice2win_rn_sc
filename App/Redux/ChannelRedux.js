@@ -66,35 +66,25 @@ export const getAllBets = (state, {records}) => state.merge({records})
 export const getPayments = (state, { payments }) => state.merge({ payments })
 
 export const checkGameDetail = (state, {data}) => {
-  // const betId = data.item.item.betId;
-  // const checkType = data.item.checkType;
-  // console.log('===============checkGameDetail=====================');
-  // console.log(betId);
-  // console.log(checkType);
-  // console.log('===============checkGameDetail=====================');
-
-  // let gameArray = state.game;
-  // if (checkType == 'selected') { // 点击查看详情
-  //   gameArray = gameArray.map((item) => {
-  //     console.log('============item========================');
-  //     console.log(item);
-  //     console.log('============item========================');
-  //     const {betId:itemId} = item;
-  //     const isOpen = false;
-  //     if (itemId == betId) {
-  //       isOpen = true;
-  //     } else {
-  //       isOpen = false;
-  //     }
-  //     return {...item, isOpen}
-  //   })
-  // } else { // 开始滚动
-  //   gameArray = gameArray.map((item) => {
-  //     return {...item, isOpen:false}
-  //   })
-  // }
-  // return state.merge({game:gameArray})
-  return state.merge({})
+  const betId = data.item.item.betId;
+  const checkType = data.item.checkType;
+  let gameArray = state.game;
+  if (checkType == 'selected') { // 点击查看详情
+    gameArray = gameArray.map((item) => {
+      let isOpen = true;
+      if (item.betId === betId) {
+        isOpen = true;
+      } else {
+        isOpen = false;
+      }
+      return {...item, isOpen}
+    })
+  } else { // 开始滚动
+    gameArray = gameArray.map((item) => {
+      return {...item, isOpen:false}
+    })
+  }
+  return state.merge({game:gameArray})
 }
 
 
