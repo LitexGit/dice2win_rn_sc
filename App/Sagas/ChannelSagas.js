@@ -69,8 +69,9 @@ function * initDB(){
   let dbprovider = { type: 'react-native', config: { db: db } };
   let dbhelper = dbfactory.initDBHelper(dbprovider);
 
-  scclient = new SCClient(web3, dbhelper, cryptoHelper, address, privateKey);
+  scclient = new SCClient(web3, dbhelper, cryptoHelper, address);
   scclient.initMessageHandler(socket);
+  scclient.unlockWallet(privateKey);
   global.scclient = scclient;
   global.dbInitializing = dbInitializing;
 
