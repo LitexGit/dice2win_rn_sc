@@ -66,7 +66,7 @@ function * initDB(){
   scclient = new SCClient(web3, dbhelper, cryptoHelper, W.address);
 
   scclient.initMessageHandler(socket);
-  scclient.unlockWallet(privateKey);
+  // scclient.unlockWallet(privateKey);
   global.scclient = scclient;
   global.dbInitializing = dbInitializing;
 
