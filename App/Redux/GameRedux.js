@@ -58,7 +58,7 @@ export const updateBet = (state, action) => {
 
 export const updateStatus = (state, action) => {
   let {status, hash} = action.data
-  
+
   let modulo = Object.keys(status)[0]
   if (!!hash && hash != state.bet[modulo]) return state
 
@@ -66,11 +66,16 @@ export const updateStatus = (state, action) => {
   return state.merge({status, fetching: false})
 }
 
-export const refreshStatus = (state, action) => 
+export const refreshStatus = (state, action) =>
   state.merge({fetching: true})
 
 
 export const updateResult = (state, action) => {
+
+  console.log('====================================');
+  console.log(action);
+  console.log('====================================');
+
   let result = {...state.result, ...action.result}
   return state.merge({result})
 }

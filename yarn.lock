@@ -2613,7 +2613,7 @@ buffer@^3.0.1:
     ieee754 "^1.1.4"
     isarray "^1.0.0"
 
-buffer@^4.3.0:
+buffer@^4.3.0, buffer@^4.9.1:
   version "4.9.1"
   resolved "http://registry.npm.taobao.org/buffer/download/buffer-4.9.1.tgz#6d1bb601b07a4efced97094132093027c95bc298"
   dependencies:
@@ -7311,6 +7311,11 @@ mockery@^2.1.0:
   version "2.1.0"
   resolved "http://registry.npm.taobao.org/mockery/download/mockery-2.1.0.tgz#5b0aef1ff564f0f8139445e165536c7909713470"
 
+moment@^2.22.2:
+  version "2.22.2"
+  resolved "http://registry.npm.taobao.org/moment/download/moment-2.22.2.tgz#3c257f9839fc0e93ff53149632239eb90783ff66"
+  integrity sha1-PCV/mDn8DpP/UxSWMiOeuQeD/2Y=
+
 moo@^0.4.3:
   version "0.4.3"
   resolved "http://registry.npm.taobao.org/moo/download/moo-0.4.3.tgz#3f847a26f31cf625a956a87f2b10fbc013bfd10e"
@@ -8919,6 +8924,14 @@ react-native-qrcode-svg@^5.1.1:
     prop-types "^15.5.10"
     qrcode "^1.2.0"
 
+react-native-randombytes@^3.5.1:
+  version "3.5.1"
+  resolved "http://registry.npm.taobao.org/react-native-randombytes/download/react-native-randombytes-3.5.1.tgz#7e4518204460079c8b3b533c701746c86b809c89"
+  integrity sha1-fkUYIERgB5yLO1M8cBdGyGuAnIk=
+  dependencies:
+    buffer "^4.9.1"
+    sjcl "^1.0.3"
+
 react-native-root-siblings@^3.0.0:
   version "3.1.4"
   resolved "http://registry.npm.taobao.org/react-native-root-siblings/download/react-native-root-siblings-3.1.4.tgz#ff155c5f7a3f84465b700b1995bd4cb62b0f0695"
@@ -9976,6 +9989,11 @@ simple-swizzle@^0.2.2:
 sisteransi@^0.1.1:
   version "0.1.1"
   resolved "http://registry.npm.taobao.org/sisteransi/download/sisteransi-0.1.1.tgz#5431447d5f7d1675aac667ccd0b865a4994cb3ce"
+
+sjcl@^1.0.3:
+  version "1.0.8"
+  resolved "http://registry.npm.taobao.org/sjcl/download/sjcl-1.0.8.tgz#f2ec8d7dc1f0f21b069b8914a41a8f236b0e252a"
+  integrity sha1-8uyNfcHw8hsGm4kUpBqPI2sOJSo=
 
 slash@^1.0.0:
   version "1.0.0"

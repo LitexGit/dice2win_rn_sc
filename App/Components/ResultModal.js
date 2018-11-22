@@ -36,7 +36,7 @@ class ResultModal extends Component {
     console.log('===============this.props=====================');
 
     const {betMask=0, ra='388f1813ca873902d51f814', rb='966e94e50f403abcf'} = result.betDetail||{};
-    const formula = 'winOrLose(web3, betMask, modulo, ra, rb, isPlayer）';
+    const formula = 'Hash(A,B)mod2=';
 
     const isWin = winOrLose(betMask, modulo, ra, rb);
     const winDes = isWin ? 'WIN：玩家P' : '庄家B';
@@ -87,6 +87,8 @@ class ResultModal extends Component {
 }
 
 const mapStateToProps = (state) => {
+
+
   return {
 
   }
