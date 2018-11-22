@@ -76,8 +76,6 @@ class GameContainerScreen extends Component {
     } else if (channel.status != 2) {
       alert('通道尚未激活, 无法进行游戏')
     } else {
-      // getRandom({address: W.address})
-      
       // callback action 
       let confirmedActions = [{
         action: ChannelActions.startBet,
@@ -116,7 +114,7 @@ class GameContainerScreen extends Component {
 
     return (
       <ScrollView style={styles.container}>
-        <StatusBar />
+        { W.address && <StatusBar /> }
         <View style={styles.GameContainerScreen}>
           {status[index]!='idle' && (
             <ResultModal modulo={index} status={status[index]} result={result[index]} />
@@ -167,8 +165,10 @@ class GameContainerScreen extends Component {
               </TouchableOpacity>
             </View>
             </KeyboardAvoidingView>
-            <Text style={[styles.darkLabel, {alignSelf:'center', margin: 5}]}>{I18n.t('ChannelMyBalance')}:  <Text style={styles.balanceText}>{displayETH(channel.localBalance)}</Text> ETH</Text>
-            <Text style={[styles.darkLabel, {alignSelf:'center', margin: 5}]}>{I18n.t('ChannelRivalBalance')}:  <Text style={styles.balanceText}>{displayETH(channel.remoteBalance)}</Text> ETH</Text>
+            
+            {!!W.address && channel.status == 2 && <Text style={[styles.darkLabel, {alignSelf:'center', margin: 5}]}>{I18n.t('ChannelMyBalance')}:  <Text style={styles.balanceText}>{displayETH(channel.localBalance)}</Text> ETH</Text>}
+            {!!W.address && channel.status == 2 && <Text style={[styles.darkLabel, {alignSelf:'center', margin: 5}]}>{I18n.t('ChannelRivalBalance')}:  <Text style={styles.balanceText}>{displayETH(channel.remoteBalance)}</Text> ETH</Text>}
+
             <View style={styles.rewardWrapper}>
               <View style={styles.infoWrapper}>
                 <View style={styles.info}>

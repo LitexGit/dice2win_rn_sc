@@ -120,7 +120,7 @@ class WalletScreen extends Component {
   render () {
     let {fetching, balance, address, bonus, code} = this.props
     return <ScrollView style={styles.container} refreshControl={<RefreshControl refreshing={fetching} onRefresh={this._onRefresh} tintColor={Colors.tintColor} title={I18n.t('Refreshing')+'...'} titleColor={Colors.text} />}>
-        <StatusBar />
+        { W.address && <StatusBar /> }
         <View style={styles.walletWrapper}>
           <View style={styles.walletEditWrapper}>
             <TouchableOpacity style={styles.walletButton} onPress={_ => this._goto("wallet")}>
