@@ -67,53 +67,61 @@ class ChannelScreen extends Component {
   }
 
   _recharge = () => {
-    let { openChannelConfirmModal, navigate, channel} = this.props
+    let { openChannelConfirmModal, navigate, channel, unlockWallet } = this.props
 
     if(!W.address) {
       navigate('WalletManageScreen')
     } /*else if (balance <= 0) {
       alert(I18n.t('InsufficientBalance'))
     }*/ else {
-      // callback action
-      let channelConfirmedActions = [{
-        action: ChannelActions.openChannel,
-        data: {}
-      }]
-
-      if(channel.status == 2) {
+      if(!!W.wallet) {
         // callback action
-        channelConfirmedActions = [{
-          action: ChannelActions.deposit,
+        let channelConfirmedActions = [{
+          action: ChannelActions.openChannel,
           data: {}
         }]
-      }
 
-      openChannelConfirmModal({
-        channelConfirmedActions
-      })
+        if(channel.status == 2) {
+          // callback action
+          channelConfirmedActions = [{
+            action: ChannelActions.deposit,
+            data: {}
+          }]
+        }
+
+        openChannelConfirmModal({
+          channelConfirmedActions
+        })  
+      } else {
+        unlockWallet()
+      }
     }
   }
 
   _withdraw = () => {
-    let { openChannelWithdrawModal, navigate, channel } = this.props
+    let { openChannelWithdrawModal, navigate, channel, unlockWallet } = this.props
 
     if(!W.address) {
       navigate('WalletManageScreen')
     } /*else if (balance <= 0) {
       alert(I18n.t('InsufficientBalance'))
     }*/ else {
-      if(channel.status == 2) {
-        // callback action
-        let withdrawConfirmedActions = [{
-          action: ChannelActions.closeChannel,
-          data: {}
-        }]
+      if(!!W.wallet) {
+        if(channel.status == 2) {
+          // callback action
+          let withdrawConfirmedActions = [{
+            action: ChannelActions.closeChannel,
+            data: {}
+          }]
 
-        openChannelWithdrawModal({
-          withdrawConfirmedActions
-        })
+          openChannelWithdrawModal({
+            withdrawConfirmedActions
+          })
+        } else {
+          alert('通道已关闭, 无法提现');
+        }
       } else {
-        alert('通道已关闭, 无法提现');
+        unlockWallet()
       }
     }
   }
@@ -175,7 +183,7 @@ class ChannelScreen extends Component {
 
     return (
       <View style={styles.container}>
-        <StatusBar />
+        { W.address && <StatusBar /> }
         <View style={styles.channelInfo}>
           <Text style={[styles.myBalance]}>{I18n.t('ChannelMyBalance')}: {displayETH(channel.localBalance)} ETH</Text>
           <Text style={[styles.rivalBalance]}>{I18n.t('ChannelRivalBalance')}: {displayETH(channel.remoteBalance)} ETH</Text>
@@ -239,6 +247,7 @@ const mapDispatchToProps = (dispatch) => {
     openChannelConfirmModal: (data) => dispatch(ChannelConfirmModalActions.openChannelConfirmModal(data)),
     openChannelWithdrawModal: (data) => dispatch(ChannelWithdrawModalActions.openChannelWithdrawModal(data)),
     alert: (message) => dispatch(MessageBoxActions.openMessageBox({ title: 'Warning', message })),
+    unlockWallet: () => dispatch(ChannelActions.openChannel()),
     getPayments: (type, data) => dispatch(ChannelActions.getPayments({type, data})),
   }
 }

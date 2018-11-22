@@ -38,17 +38,11 @@ let SQLite = require('react-native-sqlite-storage');
 let dbfactory = require('../../db/dbfactory');
 let cryptoHelper = require('../../crypto/cryptoHelper');
 
-// 获取客户端
-let address = '0xb5538753F2641A83409D2786790b42aC857C5340';
-// let address = W.address;
-let privateKey = '1e1066173a1cf3467ec087577d2eca919cabef5cd7db5d004fb9945cc090abce';
-
 let socket = io("http://13.113.50.143:9527");
 
 // let db = SQLite.openDatabase({ name: "client.db", createFromLocation: 1 }, ()=>{console.log('db open success')});
 
 const channelListener = channel()
-
 function * initDB(){
   console.tron.log('initDB start');
   let db = null;
@@ -69,15 +63,20 @@ function * initDB(){
   let dbprovider = { type: 'react-native', config: { db: db } };
   let dbhelper = dbfactory.initDBHelper(dbprovider);
 
-  scclient = new SCClient(web3, dbhelper, cryptoHelper, address);
+  scclient = new SCClient(web3, dbhelper, cryptoHelper, W.address);
+
   scclient.initMessageHandler(socket);
-  scclient.unlockWallet(privateKey);
+  // scclient.unlockWallet(privateKey);
   global.scclient = scclient;
   global.dbInitializing = dbInitializing;
 
   yield listenerInit(scclient)
 }
 
+/**
+ * 监听事件
+ * @param {SCClient} client  状态通道客户端
+ */
 function listenerInit(client) {
   client.on('BetSettled', (channel, bet) => {
     let status = 'lose'
@@ -99,10 +98,42 @@ function listenerInit(client) {
   })
 }
 
+// 循环监听通道事件
 export function * watchChannelListener() {
   while(true) {
     const action = yield take(channelListener)
     yield put(action)
+  }
+}
+
+function * unlockWallet(redirectAction, redirectData) {
+  let password = yield select(PwdModalSelectors.getPassword)
+  if (!W.wallet) {
+    let result = yield call(walletLib.unlockWallet, password)
+
+    // 解锁失败
+    if (!result) {
+      yield put(PwdModalActions.openPwdModal({
+        submitedActions: [
+          {
+            action: redirectAction,
+            data: redirectData
+          }
+        ]
+      }))
+
+      if (!!password) {
+        yield put(PwdModalActions.setErrInfo({errInfo: 'wrong password'}))
+      }
+      return ;
+    }
+
+    // 解锁库
+    if(!scclient.walletUnlocked) {
+      scclient.unlockWallet( (W.wallet.privateKey).substr(2) );
+    }
+
+    yield put(PwdModalActions.closePwdModal())
   }
 }
 
@@ -116,6 +147,10 @@ export function * watchChannelListener() {
  * ]
  */
 export function * openChannel (api, action) {
+  if(!scclient.walletUnlocked || !W.wallet) {
+    yield unlockWallet(ChannelActions.openChannel);
+  }
+
   // 读取配置信息
   let sysConfig = yield select(ConfigSelectors.getConfig)
   let partnerAddress = sysConfig.partnerAddress
@@ -149,6 +184,10 @@ export function * openChannel (api, action) {
  * ]
  */
 export function * closeChannel (api, action) {
+  if(!scclient.walletUnlocked || !W.wallet) {
+    yield unlockWallet(ChannelActions.closeChannel);
+  }
+
   // 读取配置信息
   let sysConfig = yield select(ConfigSelectors.getConfig)
   let partnerAddress = sysConfig.partnerAddress
@@ -166,6 +205,10 @@ export function * closeChannel (api, action) {
 
 // 向通道存钱
 export function * deposit (api, action) {
+  if(!scclient.walletUnlocked || !W.wallet) {
+    yield unlockWallet(ChannelActions.deposit);
+  }
+
   // 读取配置信息
   let sysConfig = yield select(ConfigSelectors.getConfig)
   let partnerAddress = sysConfig.partnerAddress
@@ -196,32 +239,11 @@ export function * startBet (api, action) {
   let randomSeed = yield select(ConfirmModalSelectors.getGas)
 
   let channelObject = yield select(ChannelSelectors.getChannel)
-
   let channelId = channelObject.channel.channelId;
-  /*
-  if (!W.wallet) {
-    let result = yield call(walletLib.unlockWallet, password)
 
-    if (!result) {
-      yield put(PwdModalActions.openPwdModal({
-        submitedActions: [
-          {
-            action: ChannelActions.startBet,
-            data: {betMask, modulo, value}
-          }
-        ]
-      }))
-
-      password = yield select(PwdModalSelectors.getPassword)
-      if (!!password) {
-        yield put(PwdModalActions.setErrInfo({errInfo: 'wrong password'}))
-      }
-      return ;
-    }
-
-    yield put(PwdModalActions.closePwdModal())
+  if(!scclient.walletUnlocked || !W.wallet) {
+    yield unlockWallet(ChannelActions.startBet, {betMask, modulo, value});
   }
-  */
 
   // 转换成 BN
   let amount = web3.utils.toWei(value.toString(), 'ether')
@@ -236,7 +258,6 @@ export function * startBet (api, action) {
     console.log(err)
     yield put(MessageBoxActions.openMessageBox({ title: 'Warning', message: '交易太频繁' }))
   }
-
 }
 
 // 获取所有通道

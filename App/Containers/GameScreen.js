@@ -103,7 +103,7 @@ class GameScreen extends Component {
     return (
       <View style={styles.container}>
         <View style={styles.swiper}>
-          <StatusBar />
+          { W.address && <StatusBar /> }
           <Swiper autoplay={true} showsPagination={false}>
             { !!banners && banners.map((item, i) => this.Slide(item)) }
           </Swiper>
