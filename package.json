@@ -65,6 +65,7 @@
     "react-native-marquee": "git+ssh://git@gitlab.f3m.club:zhixian/react-native-marquee.git",
     "react-native-modal-overlay": "^1.2.3",
     "react-native-qrcode-svg": "^5.1.1",
+    "react-native-randombytes": "^3.5.1",
     "react-native-root-toast": "^3.0.1",
     "react-native-scrollable-tab-view": "^0.8.0",
     "react-native-scrypt": "^1.0.0",

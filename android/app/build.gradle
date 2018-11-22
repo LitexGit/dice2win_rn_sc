@@ -178,6 +178,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-randombytes')
     compile project(':react-native-google-analytics-bridge')
     compile project(':react-native-haptic-feedback')
     compile project(':react-native-fs')
