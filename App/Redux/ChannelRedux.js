@@ -16,8 +16,9 @@ const { Types, Creators } = createActions({
   channelRequest: ['data'],
   channelSuccess: ['payload'],
   channelFailure: null,
-
   getPayments: ["data"],
+  checkGameDetail: ["data"],
+
 })
 
 export const ChannelTypes = Types
@@ -29,7 +30,6 @@ export default Creators
 
 export const INITIAL_STATE = Immutable({
   channel: { status: 6, channelIdentifier: 0 },
-
   bonus: {},
   records: [],
   global: {
@@ -48,6 +48,7 @@ export const INITIAL_STATE = Immutable({
   payments: [],
   loading: false,
   refreshing: false,
+  checkType:'selected',
 })
 
 /* ------------- Selectors ------------- */
@@ -55,15 +56,37 @@ export const INITIAL_STATE = Immutable({
 export const ChannelSelectors = {
   getChannel: state => state.channel,
   getGlobalRecords: state => state.channel.global,
-  getRecords: state => state.channel.records,
   getPayments: state => state.channel.payments,
+
+  getRecords: state => state.channel.records, // game ??
 }
 
 /* ------------- Reducers ------------- */
-
 export const getAllBets = (state, {records}) => state.merge({records})
-
 export const getPayments = (state, { payments }) => state.merge({ payments })
+
+export const checkGameDetail = (state, {data}) => {
+  const betId = data.item.item.betId;
+  const checkType = data.item.checkType;
+  let gameArray = state.game;
+  if (checkType == 'selected') { // 点击查看详情
+    gameArray = gameArray.map((item) => {
+      let isOpen = true;
+      if (item.betId === betId) {
+        isOpen = true;
+      } else {
+        isOpen = false;
+      }
+      return {...item, isOpen}
+    })
+  } else { // 开始滚动
+    gameArray = gameArray.map((item) => {
+      return {...item, isOpen:false}
+    })
+  }
+  return state.merge({game:gameArray})
+}
+
 
 
 export const setChannel = (state, {channel}) =>
@@ -85,6 +108,9 @@ export const request = (state, {data} ) =>{
 
 // successful api lookup
 export const success = (state, { payload }) => {
+  console.log('============success========================');
+  console.log(payload);
+  console.log('============success========================');
   return state.merge({ refreshing: false, loading: false, error: null, ...payload })
 }
 
@@ -101,5 +127,5 @@ export const reducer = createReducer(INITIAL_STATE, {
 
   [Types.GET_PAYMENTS]: request,
   [Types.GET_ALL_BETS]: request,
-
+  [Types.CHECK_GAME_DETAIL]: checkGameDetail,
 })

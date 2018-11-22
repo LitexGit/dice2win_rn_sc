@@ -41,7 +41,7 @@ class GameContainerScreen extends Component {
       headerRight: (
         <TouchableOpacity style={{padding: 10, flexDirection:'row', alignItems:'center'}} onPress={navigation.getParam('gotoRecords')}>
           <Text style={{color:'lightsteelblue'}}>
-            {I18n.t('GlobalRecords')}  
+            {I18n.t('GlobalRecords')}
           </Text>
           <Entypo name={"chevron-thin-right"} size={20} color={Colors.cloud} />
         </TouchableOpacity>
@@ -70,13 +70,12 @@ class GameContainerScreen extends Component {
       label: `uid:${uid},modulo:${index},stake:${stake}`,
       value: uid
     })
-    
+
     if(!W.address) {
       navigate('WalletManageScreen')
     } else if (channel.status != 2) {
       alert('通道尚未激活, 无法进行游戏')
     } else {
-      // callback action 
       let confirmedActions = [{
         action: ChannelActions.startBet,
         data: { address, value: stake, betMask, modulo: index, password: '' }

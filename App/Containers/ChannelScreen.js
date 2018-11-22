@@ -248,12 +248,7 @@ const mapDispatchToProps = (dispatch) => {
     openChannelWithdrawModal: (data) => dispatch(ChannelWithdrawModalActions.openChannelWithdrawModal(data)),
     alert: (message) => dispatch(MessageBoxActions.openMessageBox({ title: 'Warning', message })),
     unlockWallet: () => dispatch(ChannelActions.openChannel()),
-    getPayments: (type, data) => {
-      console.log('=====type======data=========================');
-      console.log(data);
-      console.log('=====type==========data=====================');
-      dispatch(ChannelActions.getPayments({type, data}))
-    },
+    getPayments: (type, data) => dispatch(ChannelActions.getPayments({type, data})),
   }
 }
 

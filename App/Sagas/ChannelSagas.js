@@ -38,13 +38,6 @@ let SQLite = require('react-native-sqlite-storage');
 let dbfactory = require('../../db/dbfactory');
 let cryptoHelper = require('../../crypto/cryptoHelper');
 
-// 获取客户端
-// let address = '0x56d77fcb5e4Fd52193805EbaDeF7a9D75325bdC0';
-// let address = '0xb5538753F2641A83409D2786790b42aC857C5340';
-// let address = W.address;
-// let privateKey = '118538D2E2B08396D49AB77565F3038510B033A74C7D920C1C9C7E457276A3FB';
-// let privateKey = '1e1066173a1cf3467ec087577d2eca919cabef5cd7db5d004fb9945cc090abce';
-
 let socket = io("http://13.113.50.143:9527");
 
 // let db = SQLite.openDatabase({ name: "client.db", createFromLocation: 1 }, ()=>{console.log('db open success')});
@@ -71,7 +64,9 @@ function * initDB(){
   let dbhelper = dbfactory.initDBHelper(dbprovider);
 
   scclient = new SCClient(web3, dbhelper, cryptoHelper, W.address);
+
   scclient.initMessageHandler(socket);
+  scclient.unlockWallet(privateKey);
   global.scclient = scclient;
   global.dbInitializing = dbInitializing;
 
@@ -92,7 +87,7 @@ function listenerInit(client) {
     }
     // console.log(channel)
     channelListener.put(ChannelActions.setChannel(channel));
-    channelListener.put(GameActions.updateResult({[bet.modulo]: { amount: winAmount } }));
+    channelListener.put(GameActions.updateResult({[bet.modulo]: { amount: winAmount, betDetail: bet} }));
     channelListener.put(GameActions.updateStatus({ status: {[bet.modulo]: status}}));
   }).on('ChannelOpen', (channel) => {
     channelListener.put(ChannelActions.setChannel(channel));
@@ -316,13 +311,15 @@ export function * getAllBets (api, action) {
     let { timeZone } = require('../Themes/Metrics')
     time = new Date(`${date}T${time}`)
       .toLocaleTimeString('zh-CN', {timeZone, hour12: false})
-    return {...item, time, date}
+
+    return {...item, time, date, isOpen:false}
   })
 
   if(result) {
     if(page > 1) {
       let oldData = yield select(ChannelSelectors.getRecords);
-      result = [...oldData, ...result];
+
+      // result = [...oldData, ...result];
     }
     yield put(ChannelActions.channelSuccess({[type]:result}))
   } else {
