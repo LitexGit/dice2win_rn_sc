@@ -239,12 +239,7 @@ const mapDispatchToProps = (dispatch) => {
     openChannelConfirmModal: (data) => dispatch(ChannelConfirmModalActions.openChannelConfirmModal(data)),
     openChannelWithdrawModal: (data) => dispatch(ChannelWithdrawModalActions.openChannelWithdrawModal(data)),
     alert: (message) => dispatch(MessageBoxActions.openMessageBox({ title: 'Warning', message })),
-    getPayments: (type, data) => {
-      console.log('=====type======data=========================');
-      console.log(data);
-      console.log('=====type==========data=====================');
-      dispatch(ChannelActions.getPayments({type, data}))
-    },
+    getPayments: (type, data) => dispatch(ChannelActions.getPayments({type, data})),
   }
 }
 

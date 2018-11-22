@@ -86,7 +86,7 @@ function listenerInit(client) {
     }
     // console.log(channel)
     channelListener.put(ChannelActions.setChannel(channel));
-    channelListener.put(GameActions.updateResult({[bet.modulo]: { amount: winAmount } }));
+    channelListener.put(GameActions.updateResult({[bet.modulo]: { amount: winAmount, betDetail: bet} }));
     channelListener.put(GameActions.updateStatus({ status: {[bet.modulo]: status}}));
   }).on('ChannelOpen', (channel) => {
     channelListener.put(ChannelActions.setChannel(channel));

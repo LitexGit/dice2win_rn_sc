@@ -27,23 +27,54 @@ const GAME_ENDED = (status) => {
 class ResultModal extends Component {
 
   render () {
-    let {modulo, status, result} = this.props
-    console.log(result)
+    const {modulo={}, status={}, result={}} = this.props||{}
+    console.log('===============this.props=====================');
+    console.log(result);
+    console.log(result.betDetail);
+    console.log('===============this.props=====================');
+
+    const {betMask=0, ra='388f1813ca873902d51f814', rb='966e94e50f403abcf'} = result.betDetail||{};
+
     return (
-      <View style={[styles.container, styles['container_'+status]]}>
-        <View style={styles.content}>
-          <Text style={styles.statusText}>{STATUS_TEXT[status]}</Text>
-          {status==='win' && result.amount && <Text style={styles.amountText}>{displayETH(result.amount)} ETH!</Text>}
+      <View style={styles.detailSection}>
+        <View style={[styles.container, styles['container_'+status]]}>
+          <View style={styles.content}>
+            <Text style={styles.statusText}>{STATUS_TEXT[status]}</Text>
+            {status==='win' && result.amount && <Text style={styles.amountText}>{displayETH(result.amount)} ETH!</Text>}
+          </View>
+          <View style={styles.buttonPanel}>
+            {GAME_ENDED(status) && <TouchableOpacity style={styles.buttonWrapper} onPress={_=>this.props.close(modulo, status)}>
+              <Text style={styles.buttonText}>{I18n.t('Close')}</Text>
+            </TouchableOpacity>}
+            {!GAME_ENDED(status) && <TouchableOpacity style={styles.buttonWrapper} onPress={_=>this.props.refresh(modulo, status)}>
+              <Icon name={'refresh'} style={styles.refreshIcon} />
+              <Text style={styles.buttonText}>{I18n.t('Refresh')}</Text>
+            </TouchableOpacity>}
         </View>
-        <View style={styles.buttonPanel}>
-          {GAME_ENDED(status) && <TouchableOpacity style={styles.buttonWrapper} onPress={_=>this.props.close(modulo, status)}>
-            <Text style={styles.buttonText}>{I18n.t('Close')}</Text>
-          </TouchableOpacity>}
-          {!GAME_ENDED(status) && <TouchableOpacity style={styles.buttonWrapper} onPress={_=>this.props.refresh(modulo, status)}>
-            <Icon name={'refresh'} style={styles.refreshIcon} />
-            <Text style={styles.buttonText}>{I18n.t('Refresh')}</Text>
-          </TouchableOpacity>}
         </View>
+
+        <View style={styles.bottomSection}>
+          <Text style={styles.titleText}>链下开奖过程</Text>
+          <View style={styles.paramSection}>
+            <View style={[styles.playerSection, {marginRight: 10}]}>
+                <Text style={[styles.titleText, {fontSize: 20}]}>玩家P</Text>
+                <Text  numberOfLines={1} ellipsizeMode='tail' style={styles.desText}>Bet(P):{betMask}</Text>
+                <Text  numberOfLines={1} ellipsizeMode='tail' style={styles.desText}>Random(P):{ra}</Text>
+            </View>
+            <View style={[styles.playerSection, {marginRight: 10,}]}>
+                <Text style={[styles.titleText, {fontSize: 20}]}>庄家B</Text>
+                <Text  numberOfLines={1} ellipsizeMode='tail' style={styles.desText}>Bet(B):{!betMask}</Text>
+                <Text  numberOfLines={1} ellipsizeMode='tail' style={styles.desText}>Random(b):{rb}</Text>
+            </View>
+          </View>
+
+          <View style={styles.resultSection}>
+            <Text style={[styles.desText, {marginTop: 25}]}>winOrLose(web3, betMask, modulo, ra, rb, isPlayer）</Text>
+            <Text style={[styles.titleText, {marginTop: 10}]}>WIN：玩家P</Text>
+          </View>
+
+        </View>
+
       </View>
     )
   }

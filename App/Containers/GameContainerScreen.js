@@ -41,7 +41,7 @@ class GameContainerScreen extends Component {
       headerRight: (
         <TouchableOpacity style={{padding: 10, flexDirection:'row', alignItems:'center'}} onPress={navigation.getParam('gotoRecords')}>
           <Text style={{color:'lightsteelblue'}}>
-            {I18n.t('GlobalRecords')}  
+            {I18n.t('GlobalRecords')}
           </Text>
           <Entypo name={"chevron-thin-right"} size={20} color={Colors.cloud} />
         </TouchableOpacity>
@@ -70,15 +70,15 @@ class GameContainerScreen extends Component {
       label: `uid:${uid},modulo:${index},stake:${stake}`,
       value: uid
     })
-    
+
     if(!W.address) {
       navigate('WalletManageScreen')
     } else if (channel.status != 2) {
       alert('通道尚未激活, 无法进行游戏')
     } else {
       // getRandom({address: W.address})
-      
-      // callback action 
+
+      // callback action
       let confirmedActions = [{
         action: ChannelActions.startBet,
         data: { address, value: stake, betMask, modulo: index, password: '' }
@@ -118,11 +118,11 @@ class GameContainerScreen extends Component {
       <ScrollView style={styles.container}>
         <StatusBar />
         <View style={styles.GameContainerScreen}>
-          {status[index]!='idle' && (
+          {status[index]=='idle' && (
             <ResultModal modulo={index} status={status[index]} result={result[index]} />
           )}
 
-          {status[index] === 'idle' && <View style={styles.gameConetent}>
+          {status[index] !== 'idle' && <View style={styles.gameConetent}>
             <KeyboardAvoidingView behavior='position' keyboardVerticalOffset={100} >
             {GAME_COMS[index]}
             <View style={styles.stakeBox}>
