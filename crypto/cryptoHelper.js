@@ -9,7 +9,7 @@ function generateRandomHex() {
       if(err){
         reject(err)
       }else{
-        resolve(bytes.toString("hex"));
+        resolve('0x' + bytes.toString("hex"));
       }
     })
   })
