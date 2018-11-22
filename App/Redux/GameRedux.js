@@ -71,12 +71,10 @@ export const refreshStatus = (state, action) =>
 
 
 export const updateResult = (state, action) => {
-
-  console.log('====================================');
-  console.log(action);
-  console.log('====================================');
-
   let result = {...state.result, ...action.result}
+  console.log('===========state.merge({result})=========================');
+  console.log(state.result[2]);
+  console.log('===========state.merge({result})=========================');
   return state.merge({result})
 }
 

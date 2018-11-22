@@ -132,11 +132,9 @@ class RecordScreen extends Component {
             <Text style={styles.outValue}>{displayETH(outValue, 4)}</Text>
           </View>
         </TouchableOpacity>
-        {isOpen && <GameDetailsView/>}
+        {isOpen && <GameDetailsView item={item}/>}
       </View>
     )
-
-
 
     /*
     return <TouchableOpacity style={styles.gameItem} onPress={_=>this._itemPressed(item)}>

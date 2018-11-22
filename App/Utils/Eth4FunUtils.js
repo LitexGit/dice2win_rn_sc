@@ -7,7 +7,7 @@
  * @param isPlayer 调用者是否为玩家
  * @returns {Boolean} 返回输赢结果
  */
-function winOrLose(betMask, modulo, ra, rb, isPlayer=true){
+export default function winOrLose(betMask, modulo, ra, rb, isPlayer=true){
 
   let hash = global.web3.utils.soliditySha3(ra, rb);
   let dice = global.web3.utils.toBN(hash).umod(global.web3.utils.toBN(modulo)).toNumber();
@@ -29,9 +29,6 @@ function winOrLose(betMask, modulo, ra, rb, isPlayer=true){
       return playerWin;
   else
       return !playerWin;
+
 }
 
-
-export default {
-  winOrLose
-};

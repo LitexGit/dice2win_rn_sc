@@ -73,7 +73,7 @@ export const checkGameDetail = (state, {data}) => {
     gameArray = gameArray.map((item) => {
       let isOpen = true;
       if (item.betId === betId) {
-        isOpen = true;
+        isOpen = !item.isOpen;
       } else {
         isOpen = false;
       }
