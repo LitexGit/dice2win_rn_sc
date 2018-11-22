@@ -1,55 +1,67 @@
 import React, { Component } from 'react'
-// import PropTypes from 'prop-types';
-import { View, Text, TouchableOpacity, Picker } from 'react-native'
-import SettingActions from '../Redux/SettingRedux'
+import { View, Text} from 'react-native'
 import { connect } from 'react-redux'
-import I18n from '../I18n'
-import styles from './Styles/LangPickerStyle'
+import styles from './Styles/GameDetailsStyles';
+import {winOrLose} from '../Utils/Eth4FunUtils';
 
-const LANGS = {
-  'en': 'English',
-  'zh': '简体中文',
-}
+export default class GameDetailsView extends Component {
 
-class LangPicker extends Component {
-  
   constructor(props) {
     super(props)
     this.state = {
-      showPicker: false,
     }
   }
 
   render () {
-    let {style=styles.container, textStyle=styles.titleText, pickerStyle=styles.picker,
-      language, updateLanguage} = this.props
+    // const {modulo={}, result={}} = this.props||{}
+    // const {betMask=0, ra='388f1813ca873902d51f814', rb='966e94e50f403abcf'} = result.betDetail||{};
+    // console.log('===============this.props=====================');
+    // console.log(result);
+    // console.log(result.betDetail);
+    // console.log('===============this.props=====================');
 
-    I18n.locale = language
+    const betMask=0;
+    const ra='388f1813ca873902d51f814';
+    const rb='966e94e50f403abcf';
+    const formula = 'winOrLose(web3, betMask, modulo, ra, rb, isPlayer）';
 
-    console.tron.log('i18n', I18n)
+    // const isWin = winOrLose(betMask, modulo, ra, rb);
+    const isWin = true;
+    const winDes = isWin ? 'WIN：玩家P' : '庄家B';
+
 
     return (
-      <View style={style}>
-        <TouchableOpacity style={{alignItems: 'center', justifyContent: 'center'}} onPress={_=>this.setState({showPicker: true})}>
-          <Text style={textStyle}>{LANGS[language]}</Text>
-        </TouchableOpacity>
-        { this.state.showPicker && <Picker
-          style={pickerStyle}
-          selectedValue={language}
-          onValueChange={ (value, index) => updateLanguage({ language: value })}>
-          {Object.keys(LANGS).map(k => <Picker.Item label={LANGS[k]} value={k} />)}
-        </Picker>}
+      <View style={styles.container}>
+      <Text style={styles.titleText}>链下开奖过程</Text>
+      <View style={styles.paramSection}>
+        <View style={[styles.playerSection, {marginRight: 10}]}>
+            <Text style={[styles.titleText, {fontSize: 20}]}>玩家P</Text>
+            <Text  numberOfLines={1} ellipsizeMode='tail' style={styles.desText}>Bet(P):{betMask}</Text>
+            <Text  numberOfLines={1} ellipsizeMode='tail' style={styles.desText}>Random(P):{ra}</Text>
+        </View>
+        <View style={[styles.playerSection, {marginRight: 10,}]}>
+            <Text style={[styles.titleText, {fontSize: 20}]}>庄家B</Text>
+            <Text  numberOfLines={1} ellipsizeMode='tail' style={styles.desText}>Bet(B):{!betMask}</Text>
+            <Text  numberOfLines={1} ellipsizeMode='tail' style={styles.desText}>Random(b):{rb}</Text>
+        </View>
       </View>
+
+      <View style={styles.resultSection}>
+        <Text style={[styles.desText, {marginTop: 25}]}>{formula}</Text>
+        <Text style={[styles.titleText, {marginTop: 10}]}>{winDes}</Text>
+      </View>
+
+    </View>
     )
   }
 }
 
-const mapStateToProps = (state) => ({
-  ...{language} = state.setting,
-})
+// const mapStateToProps = (state) => ({
 
-const mapDispatchToProps = (dispatch) => ({
-  updateLanguage: (language) => dispatch(SettingActions.settingSuccess(language))
-})
+// })
 
-export default connect(mapStateToProps, mapDispatchToProps)(LangPicker)
+// const mapDispatchToProps = (dispatch) => ({
+
+// })
+
+// export default connect(mapStateToProps, mapDispatchToProps)(GameDetailsView)
