@@ -39,7 +39,7 @@ export default StyleSheet.create({
     paddingTop: 10
   },
 
-  
+
 
   channelStatusClosed: {
     color: 'red',
@@ -96,19 +96,19 @@ export default StyleSheet.create({
   },
   leftSection:{
     flexDirection:"column",
-    flex:1,
     alignItems:'center',
+    width:80,
   },
   centerSection:{
     flexDirection:"row",
-    flex:2,
+    flex:1,
     paddingLeft: 10,
-    paddingRight:30,
+    paddingRight:20,
     alignItems: 'center',
   },
   rightSection:{
     flexDirection:"row",
-    flex:1,
+    width:100,
     alignItems: 'center',
     justifyContent: 'flex-end',
   },
