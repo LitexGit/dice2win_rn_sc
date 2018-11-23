@@ -16,7 +16,6 @@ class StatusBar extends Component {
   }
 
   componentDidMount() {
-    console.log('aaaaaaaaaaa', W.address)
     if(!dbInitializing && scclient == null) {
       this.props.loadChannel(true)
     } else {

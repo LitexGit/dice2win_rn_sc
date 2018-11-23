@@ -16,9 +16,9 @@ import GameActions from '../Redux/GameRedux'
 import { ChannelConfirmModalSelectors } from '../Redux/ChannelConfirmModalRedux'
 import { ConfigSelectors } from '../Redux/ConfigRedux'
 import { WalletSelectors } from '../Redux/WalletRedux'
-import { GameSelectors } from '../Redux/GameRedux'
+// import { GameSelectors } from '../Redux/GameRedux'
 import MessageBoxActions from '../Redux/MessageBoxRedux'
-import RecordActions from '../Redux/RecordRedux'
+// import RecordActions from '../Redux/RecordRedux'
 
 import walletLib from '../Lib/Wallet/wallet'
 import PwdModalActions, { PwdModalSelectors } from '../Redux/PwdModalRedux'
@@ -66,7 +66,12 @@ function * initDB(){
   scclient = new SCClient(web3, dbhelper, cryptoHelper, W.address);
 
   scclient.initMessageHandler(socket);
-  // scclient.unlockWallet(privateKey);
+
+  // 新建钱包时 逻辑处理。
+  if(!scclient.walletUnlocked && !!W.wallet) {
+    scclient.unlockWallet( (W.wallet.privateKey).substr(2) );
+  }
+
   global.scclient = scclient;
   global.dbInitializing = dbInitializing;
 
@@ -91,11 +96,17 @@ function listenerInit(client) {
     channelListener.put(GameActions.updateStatus({ status: {[bet.modulo]: status}}));
   }).on('ChannelOpen', (channel) => {
     channelListener.put(ChannelActions.setChannel(channel));
-  }).on('ChannelClose', (channel) => {
+  }).on('ChannelClosed', (channel) => {
     console.log('LISTEN CHANNEL CLOSE');
-    console.log(channel);
     channelListener.put(ChannelActions.setChannel(channel));
-  })
+  }).on('BalanceProofUpdated', (channel) => {
+    console.log('LISTEN Balance Proof Updated');
+    channelListener.put(ChannelActions.setChannel(channel));
+  }).on('CooperativeSettled', function(channel){
+    console.log('LISTEN Cooperative Settled');
+    channelListener.put(ChannelActions.setChannel(channel));
+  });
+
 }
 
 // 循环监听通道事件
@@ -149,28 +160,39 @@ function * unlockWallet(redirectAction, redirectData) {
 export function * openChannel (api, action) {
   if(!scclient.walletUnlocked || !W.wallet) {
     yield unlockWallet(ChannelActions.openChannel);
-  }
-
-  // 读取配置信息
-  let sysConfig = yield select(ConfigSelectors.getConfig)
-  let partnerAddress = sysConfig.partnerAddress
-
-  let depositAmount = yield select(ChannelConfirmModalSelectors.getChannelAmount);
-  if(isNaN(depositAmount) || depositAmount <= 0) {
-    yield put(MessageBoxActions.openMessageBox({ title: 'Error', message: 'Amount Faild.' }));
+    return ;
   } else {
-    depositAmount = depositAmount * 1e18;
+    let wallet = yield select(WalletSelectors.getWallet);
+    let depositAmount = yield select(ChannelConfirmModalSelectors.getChannelAmount);
+    // console.log(W.wallet)
+    if(isNaN(depositAmount) || depositAmount <= 0) {
+      yield put(MessageBoxActions.openMessageBox({ title: 'Error', message: 'Amount Faild.' }));
+      return ;
+    } else if(wallet.balance < depositAmount) {
+      yield put(MessageBoxActions.openMessageBox({ title: 'Error', message: 'Not sufficient funds.' }));
+      return ;
+    } else {
+      // 读取配置信息
+      let sysConfig = yield select(ConfigSelectors.getConfig)
+      let partnerAddress = sysConfig.partnerAddress
 
-    try {
-      yield scclient.openChannel(partnerAddress, depositAmount);
-      yield put(MessageBoxActions.openMessageBox({ title: 'Message', message: 'The request has been submitted. Please wait.' }));
-      // 改为 Pending 状态
-      yield put(ChannelActions.setChannel({
-        status: 0
-      }));
-    } catch(err) {
-      console.log(err)
-      yield put(MessageBoxActions.openMessageBox({ title: 'Error', message: 'Opreation Faild.' }));
+      let depositAmount = yield select(ChannelConfirmModalSelectors.getChannelAmount);
+      if(isNaN(depositAmount) || depositAmount <= 0) {
+        yield put(MessageBoxActions.openMessageBox({ title: 'Error', message: 'Amount Faild.' }));
+      } else {
+        depositAmount = depositAmount * 1e18;
+        try {
+          yield scclient.openChannel(partnerAddress, depositAmount);
+          yield put(MessageBoxActions.openMessageBox({ title: 'Message', message: 'The request has been submitted. Please wait.' }));
+          // 改为 Pending 状态
+          yield put(ChannelActions.setChannel({
+            status: 0
+          }));
+        } catch(err) {
+          console.log(err)
+          yield put(MessageBoxActions.openMessageBox({ title: 'Error', message: 'Opreation Faild.' }));
+        }
+      }
     }
   }
 }
@@ -253,6 +275,8 @@ export function * startBet (api, action) {
     // console.log(betInfo);
     if(betInfo == false) {
       yield put(MessageBoxActions.openMessageBox({ title: 'Warning', message: '交易太频繁' }))
+    } else {
+
     }
   } catch(err) {
     console.log(err)
