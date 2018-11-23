@@ -89,11 +89,11 @@ export default StyleSheet.create({
 
   actionWrapper: {
     height: 50,
-    marginTop: 10,    
+    marginTop: 10,
     flexDirection: 'row',
     alignItems: 'center',
   },
-  
+
   confirmButton: {
     flex: 3,
     padding: 10,
@@ -106,5 +106,9 @@ export default StyleSheet.create({
     padding: 10,
     alignItems: 'center',
     backgroundColor: Colors.ember,
-  }
+  },
+  inputText: {
+    ...Fonts.style.h5,
+    color: Colors.text,
+  },
 })
