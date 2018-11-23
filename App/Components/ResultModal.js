@@ -30,11 +30,6 @@ class ResultModal extends Component {
 
   render () {
     const {modulo={}, status={}, result={}} = this.props||{}
-    console.log('===============this.props=====================');
-    console.log(result);
-    console.log(result.betDetail);
-    console.log('===============this.props=====================');
-
     const {betMask=0, ra='', rb=''} = result.betDetail||{};
     const formula = 'Hash(A,B)mod2=';
 
