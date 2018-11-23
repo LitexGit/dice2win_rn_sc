@@ -111,6 +111,7 @@ export default StyleSheet.create({
     width:100,
     alignItems: 'center',
     justifyContent: 'flex-end',
+
   },
 
   sectionHeader:{
@@ -137,7 +138,6 @@ export default StyleSheet.create({
   timeText:{
     color:'#f3f3f3',
     fontSize: 12,
-    paddingTop: 5,
   },
   fromText:{
     color:'#f3f3f3',

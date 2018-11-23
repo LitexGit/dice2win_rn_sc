@@ -156,19 +156,19 @@ class ChannelScreen extends Component {
     } else {
       winner = W.address == toAddr ? 1 : 0;
     }
-    
+
     return <TouchableOpacity style={styles.gameItem} onPress={_=>this._itemPressed(item)}>
        <View style={styles.item}>
          <View style={styles.leftSection}>
-           <Text style={styles.winnerText}>{winner == 1 ? '赢了' : '亏了' }</Text>
-           <Text numberOfLines={1} ellipsizeMode='tail' style={styles.timeText}>{time}</Text>
+           <Text style={styles.winnerText}>{winner == 1 ? '赢了' : '输了' }</Text>
+           <Text numberOfLines={1} ellipsizeMode='tail' style={[styles.timeText, {marginTop: 5}]}>{time}</Text>
          </View>
          <View style={styles.centerSection}>
            <Text style={styles.fromText}>{winner == 1 ? 'from: ' : 'to: '}</Text>
            <Text numberOfLines={1} ellipsizeMode='middle' style={styles.fromAddrText}>{fromAddr}</Text>
          </View>
          <View style={styles.rightSection}>
-           <Text style={styles.timeText}>{winner == 1 ? '+' : '-'}</Text>
+           <Text style={styles.timeText}>{winner == 1 ? '+ ' : '- '}</Text>
            <Text numberOfLines={1} ellipsizeMode='tail' style={styles.valueText}>{displayETH(value)}</Text>
          </View>
        </View>
