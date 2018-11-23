@@ -181,7 +181,7 @@
 
   "ChannelClosed": "已关闭",
   "ChannelActive": "已激活",
-  "ChannelPending": "通道开启中"
+  "ChannelPending": "通道等待中"
 
 
 }

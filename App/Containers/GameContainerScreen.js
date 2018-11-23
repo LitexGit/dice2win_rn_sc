@@ -70,7 +70,7 @@ class GameContainerScreen extends Component {
       label: `uid:${uid},modulo:${index},stake:${stake}`,
       value: uid
     })
-    
+
     if(!W.address) {
       navigate('WalletManageScreen')
     } else if (channel.status != 2) {
@@ -82,8 +82,10 @@ class GameContainerScreen extends Component {
         ],
         { cancelable: false }
       )
-    } else if(web3.utils.fromWei(channel.localBalance, 'ether') < stake || web3.utils.fromWei(channel.remoteBalance, 'ether') < stake) {
+    } else if(web3.utils.fromWei(channel.localBalance, 'ether') < stake) {
       alert('通道金额无法满足本次下注')
+    } else if(web3.utils.fromWei(channel.remoteBalance, 'ether') < stake) {
+      alert('对手方余额不足，等待对方追加资金')
     } else {
       let confirmedActions = [{
         action: ChannelActions.startBet,
@@ -96,6 +98,20 @@ class GameContainerScreen extends Component {
         to: contract_address,
         confirmedActions
       })
+    }
+  }
+
+  // 校验输入stake是否有效
+  _verifyStakeIsValid=(text)=>{
+    this.setState({stake:text})
+    if(/^\d+(\.\d{1,2})?$/.test(text)){
+      let stake = parseFloat(text)
+      if(!!stake){
+      this.setState({valid:true});
+      this.props.setStake(stake);
+      }
+    } else {
+      this.setState({valid:false})
     }
   }
 
@@ -132,16 +148,16 @@ class GameContainerScreen extends Component {
             <KeyboardAvoidingView behavior='position' keyboardVerticalOffset={100} >
             {GAME_COMS[index]}
             <View style={styles.stakeBox}>
-              <TouchableOpacity style={styles.stakeButton} onPress={() => setStake(0.05)}>
+              <TouchableOpacity style={styles.stakeButton} onPress={() => this._verifyStakeIsValid(0.05)}>
                 <Text style={styles.stakeButtonText}>0.05</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.stakeButton} onPress={() => setStake(0.10)}>
+              <TouchableOpacity style={styles.stakeButton} onPress={() => this._verifyStakeIsValid(0.10)}>
                 <Text style={styles.stakeButtonText}>0.10</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.stakeButton} onPress={() => setStake(0.15)}>
+              <TouchableOpacity style={styles.stakeButton} onPress={() => this._verifyStakeIsValid(0.15)}>
                 <Text style={styles.stakeButtonText}>0.15</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.stakeButton} onPress={() => setStake(10000.0)}>
+              <TouchableOpacity style={styles.stakeButton} onPress={() => this._verifyStakeIsValid(10000.0)}>
                 <Text style={styles.stakeButtonText}>Max</Text>
               </TouchableOpacity>
             </View>
@@ -160,7 +176,7 @@ class GameContainerScreen extends Component {
                     let stake = parseFloat(text)
                     if(!!stake){
                     this.setState({valid:true})
-                      setStake(stake)
+                    setStake(stake)
                     }
                   } else {
                     this.setState({valid:false})
@@ -189,7 +205,7 @@ class GameContainerScreen extends Component {
                 </View>
               </View>
               <Text style={styles.rewardText}>{I18n.t('YouWillWin')}  <Text style={styles.keyText}>{(rewardTime * stake).toFixed(DECIMAL)}</Text> ETH</Text>
-              <Text style={[styles.darkLabel, {fontSize: 11}]}>{feeRate*100}% {I18n.t('fee')}, 5% {I18n.t('OfWinningsToYourInviter')}</Text>
+              {/* <Text style={[styles.darkLabel, {fontSize: 11}]}>{feeRate*100}% {I18n.t('fee')}, 5% {I18n.t('OfWinningsToYourInviter')}</Text> */}
             </View>
             <View style={styles.startButtonWrapper}>
               <TouchableOpacity style={styles.startButton} onPress={this._placeBet}>

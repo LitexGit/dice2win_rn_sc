@@ -43,5 +43,32 @@ export function getWinAmount({winner=0, inValue=0, outValue=0}){
     return outValue;
   }
   return 0;
-
 }
+
+/**
+* 校验只要是数字（包含正负整数，0以及正负浮点数）就返回true
+**/
+export function isNumber(amount) {
+    const regPos = /^\d+(\.\d+)?$/; //非负浮点数
+    if(regPos.test(amount)){
+        return true;
+    }else{
+        return false;
+    }
+}
+
+/**
+ *
+ *
+ * @export
+ * @param {*} amount
+ * @returns
+ */
+export function getEffectiveNum(amount){
+  const reg = /([0-9]+\.[0-9]{2})[0-9]*/;
+  const num = amount.replace(reg,"$1");
+  let floatNum = parseFloat(num);
+  floatNum = floatNum <= 0.01 ? 0.01 : floatNum;
+  return floatNum;
+}
+

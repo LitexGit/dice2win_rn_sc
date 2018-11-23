@@ -45,6 +45,7 @@ class ChannelScreen extends Component {
   }
 
   _refresh=()=>{
+    if (!W.address) return;
     let {type} = this.state
     this.setState({
       page:1
@@ -53,6 +54,7 @@ class ChannelScreen extends Component {
   }
 
   _loadMore=()=>{
+    if (!W.address) return;
     // if (this.props.loading) return;
     const {type} = this.state;
     let {page} = this.state;

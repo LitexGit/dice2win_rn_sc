@@ -62,6 +62,7 @@ class RecordScreen extends Component {
   }
 
   _refresh = () => {
+    if (!W.address) return;
     let {type} = this.state
     this.setState({[type]:{page:1}})
     if(type == 'tx') {
@@ -72,6 +73,7 @@ class RecordScreen extends Component {
   }
 
   _loadMore = () => {
+    if (!W.address) return;
     if(this.props.loading) {
       return
     }

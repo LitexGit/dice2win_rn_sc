@@ -23,16 +23,18 @@ export function * setStake (api, action) {
   let [maxWin, minBet, edge, winRate] = yield all([
     select(ConfigSelectors.getMaxWin),
     select(ConfigSelectors.getMinBet),
-    select(ConfigSelectors.getEdge), 
+    select(ConfigSelectors.getEdge),
     select(BetSelectors.getWinRate),
   ])
-  let maxBet = parseFloat(toFixed(getMaxBet(maxWin, winRate, edge), 2))
+  let maxBet = parseFloat(toFixed(getMaxBet(maxWin, winRate, edge), 2));
+
   stake > maxBet && (stake = maxBet)
   stake < minBet && (stake = minBet)
   stake = parseFloat(stake.toFixed(2))
   let feeRate = 0.01
   stake <= 0.02 && (feeRate = 0.015)
   stake <= 0.01 && (feeRate = 0.03)
+
   yield put(GameActions.gameSuccess({stake, rand: Math.random()}))
   yield put(BetActions.betSuccess({feeRate}))
   yield put(BetActions.updateRewardTime({winRate, feeRate}))
