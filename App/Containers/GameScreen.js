@@ -55,11 +55,13 @@ class GameScreen extends Component {
     console.tron.log('navigation', this.props.navigation)
   }
 
+  // onPress={_=>{
+  //   this.props.navigate('WebviewScreen', {url:item.img_href, title:item.title})
+  // }}
+  
   Slide = (item) => {
     return (
-      <TouchableWithoutFeedback onPress={_=>{
-        this.props.navigate('WebviewScreen', {url:item.img_href, title:item.title})
-      }} style={styles.slide} >
+      <TouchableWithoutFeedback  style={styles.slide} >
         <Image style={styles.image} source={{ uri: item.img_url }} />
       </TouchableWithoutFeedback>)
   }
