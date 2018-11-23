@@ -108,7 +108,7 @@ class GameScreen extends Component {
             { !!banners && banners.map((item, i) => this.Slide(item)) }
           </Swiper>
         </View>
-        {!!notice && <View style={styles.noticeBar}>
+        {/* {!!notice && <View style={styles.noticeBar}>
           <Image style={styles.noticeIcon} source={Images.bullhorn} />
           <TouchableWithoutFeedback  onPress={_=>
             this.props.navigate('WebviewScreen', {url:notice.url, title:notice.title})
@@ -125,7 +125,7 @@ class GameScreen extends Component {
               </MarqueeText>
             </View>
           </TouchableWithoutFeedback>
-        </View>}
+        </View>} */}
         <FlatList
           style={styles.entryList}
           data={entryData}
