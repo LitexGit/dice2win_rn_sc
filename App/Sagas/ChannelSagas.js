@@ -85,7 +85,8 @@ function * initDB(){
 function listenerInit(client) {
   client.on('BetSettled', (channel, bet) => {
     let status = 'lose'
-    let winAmount = web3.utils.fromWei(bet.winAmount, 'ether');
+    // console.log(bet)
+    let winAmount = web3.utils.fromWei(web3.utils.toBN(bet.winAmount).add(web3.utils.toBN(bet.value)).toString(10), 'ether');
 
     if(bet.winner == 1) {
       status = 'win'
@@ -98,12 +99,19 @@ function listenerInit(client) {
     channelListener.put(ChannelActions.setChannel(channel));
   }).on('ChannelClosed', (channel) => {
     console.log('LISTEN CHANNEL CLOSE');
+    console.log(channel);
     channelListener.put(ChannelActions.setChannel(channel));
   }).on('BalanceProofUpdated', (channel) => {
     console.log('LISTEN Balance Proof Updated');
+    console.log(channel);
     channelListener.put(ChannelActions.setChannel(channel));
   }).on('CooperativeSettled', function(channel){
     console.log('LISTEN Cooperative Settled');
+    console.log(channel);
+    channelListener.put(ChannelActions.setChannel(channel));
+  }).on('ChannelDeposit', function(channel){
+    console.log('LISTEN Channel Deposit');
+    console.log(channel);
     channelListener.put(ChannelActions.setChannel(channel));
   });
 
@@ -176,22 +184,17 @@ export function * openChannel (api, action) {
       let sysConfig = yield select(ConfigSelectors.getConfig)
       let partnerAddress = sysConfig.partnerAddress
 
-      let depositAmount = yield select(ChannelConfirmModalSelectors.getChannelAmount);
-      if(isNaN(depositAmount) || depositAmount <= 0) {
-        yield put(MessageBoxActions.openMessageBox({ title: 'Error', message: 'Amount Faild.' }));
-      } else {
-        depositAmount = depositAmount * 1e18;
-        try {
-          yield scclient.openChannel(partnerAddress, depositAmount);
-          yield put(MessageBoxActions.openMessageBox({ title: 'Message', message: 'The request has been submitted. Please wait.' }));
-          // 改为 Pending 状态
-          yield put(ChannelActions.setChannel({
-            status: 0
-          }));
-        } catch(err) {
-          console.log(err)
-          yield put(MessageBoxActions.openMessageBox({ title: 'Error', message: 'Opreation Faild.' }));
-        }
+      depositAmount = depositAmount * 1e18;
+      try {
+        yield scclient.openChannel(partnerAddress, depositAmount);
+        yield put(MessageBoxActions.openMessageBox({ title: 'Message', message: 'The request has been submitted. Please wait.' }));
+        // 改为 Pending 状态
+        yield put(ChannelActions.setChannel({
+          status: 0
+        }));
+      } catch(err) {
+        console.log(err)
+        yield put(MessageBoxActions.openMessageBox({ title: 'Error', message: 'Opreation Faild.' }));
       }
     }
   }
@@ -236,9 +239,12 @@ export function * deposit (api, action) {
   let partnerAddress = sysConfig.partnerAddress
 
   let depositAmount = parseFloat(yield select(ChannelConfirmModalSelectors.getChannelAmount));
+  let wallet = yield select(WalletSelectors.getWallet);
 
   if(isNaN(depositAmount) || depositAmount <= 0) {
     yield put(MessageBoxActions.openMessageBox({ title: 'Error', message: 'Amount Faild.' }));
+  } else if (wallet.balance < depositAmount) {
+    yield put(MessageBoxActions.openMessageBox({ title: 'Error', message: 'Not sufficient funds.' }));
   } else {
     depositAmount = depositAmount * 1e18;
 
@@ -291,28 +297,32 @@ export function * getAllChannels (api, action) {
 
 // 获取单个通道信息
 export function * getChannel (api, action) {
+  console.log(W.wallet);
   if(scclient == null && dbInitializing == false) {
     yield initDB();
   }
 
-  // 读取配置信息
-  let sysConfig = yield select(ConfigSelectors.getConfig)
-  let partnerAddress = sysConfig.partnerAddress
+  let channelObject = yield select(ChannelSelectors.getChannel)
+  if(channelObject.channel.status !== 0) {
+    // 读取配置信息
+    let sysConfig = yield select(ConfigSelectors.getConfig)
+    let partnerAddress = sysConfig.partnerAddress
 
-  try {
-    let channelInfo = yield scclient.getChannel(partnerAddress);
+    try {
+      let channelInfo = yield scclient.getChannel(partnerAddress);
 
-    // 初始化默认值
-    if(!channelInfo) {
-      channelInfo = {
-        status: 6
+      // 初始化默认值
+      if(!channelInfo) {
+        channelInfo = {
+          status: 6
+        }
       }
-    }
 
-    yield put(ChannelActions.setChannel(channelInfo));
-  } catch (err) {
-    console.log(err)
-    yield put(ChannelActions.channelFailure())
+      yield put(ChannelActions.setChannel(channelInfo));
+    } catch (err) {
+      console.log(err)
+      yield put(ChannelActions.channelFailure())
+    }
   }
 }
 

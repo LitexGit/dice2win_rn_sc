@@ -196,8 +196,8 @@ class ChannelScreen extends Component {
         </View>
 
         <View style={styles.buttonInfo}>
-          <TouchableOpacity style={styles.rechargeButton} onPress={() => this._recharge()}>
-            <Text style={styles.buttonText}>{I18n.t('ChannelRecharge')}</Text>
+          <TouchableOpacity style={styles.rechargeButton} disabled={channel.status == 0 ? true : false} onPress={() => this._recharge()}>
+            <Text style={styles.buttonText}>{channel.status == 2 ? I18n.t('ChannelRecharge') : I18n.t('ChannelOpen')}</Text>
           </TouchableOpacity>
 
           {channel.status == 2 && <TouchableOpacity style={styles.depositButton} onPress={() => this._withdraw()}>
