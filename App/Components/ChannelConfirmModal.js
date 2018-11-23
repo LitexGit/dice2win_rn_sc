@@ -9,7 +9,7 @@ import styles from './Styles/ConfirmModalStyle'
 // import { displayETH } from '../Lib/Utils/format'
 // import ReactNativeHapticFeedback from 'react-native-haptic-feedback'
 import I18n from '../I18n';
-import {isNumber, getEffectiveNum} from '../Utils/Eth4FunUtils';
+// import {isNumber, getEffectiveNum} from '../Utils/Eth4FunUtils';
 
 class ChannelConfirmModal extends Component {
 
@@ -21,24 +21,11 @@ class ChannelConfirmModal extends Component {
   }
 
   _onChangeText=(text)=>{
-    console.log('===========this.textInput=========================');
-    console.log(this.textInput);
-    console.log('===========this.textInput=========================');
-    this.textInput.value = '00000';
-    this.props.confirmChangeText(getEffectiveNum(text));
-    
-    this.setState({
-      channelAmount: getEffectiveNum(text),
-    });
-
+    this.setState({channelAmount: text});
   }
 
   render () {
     let { modalIsOpen, loading, amount} = this.props;
-    console.log('=========render===========================');
-    console.log(amount);
-    console.log('=========render===========================');
-
     return (
       <Overlay
         containerStyle={styles.modal}
@@ -53,9 +40,7 @@ class ChannelConfirmModal extends Component {
 
         <View style={styles.fromToWrapper}>
           <Text style={styles.label}>Amount: </Text>
-          <TextInput
-            value={amount}
-            ref={(ref) => { this.textInput = ref }}
+          <TextInput style={styles.inputText}
             autoFocus={true}
             multiline={false}
             textAlign='center'
@@ -79,7 +64,7 @@ class ChannelConfirmModal extends Component {
   }
 
   _confirm = () => {
-    let { closeChannelConfirmModal, dispatch, channelConfirmedActions, setChannelAmount } = this.props
+    let { closeChannelConfirmModal, dispatch, channelConfirmedActions, setChannelAmount } = this.props;
     setChannelAmount(this.state.channelAmount)
     channelConfirmedActions && channelConfirmedActions.forEach(a => dispatch(a));
     closeChannelConfirmModal()
@@ -104,9 +89,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     closeChannelConfirmModal: () => dispatch(ChannelConfirmModalActions.closeChannelConfirmModal()),
     setChannelAmount: (amount) => dispatch(ChannelConfirmModalActions.setChannelAmount(amount)),
-    dispatch: ({action, data}) => dispatch(action(data)),
-    confirmChangeText: (amount) => dispatch(ChannelConfirmModalActions.confirmChangeText(amount)),
-
+    dispatch: ({action, data}) => dispatch(action(data))
   }
 }
 
