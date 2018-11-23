@@ -70,7 +70,7 @@ class GameContainerScreen extends Component {
       label: `uid:${uid},modulo:${index},stake:${stake}`,
       value: uid
     })
-    
+
     if(!W.address) {
       navigate('WalletManageScreen')
     } else if (channel.status != 2) {
@@ -189,7 +189,7 @@ class GameContainerScreen extends Component {
                 </View>
               </View>
               <Text style={styles.rewardText}>{I18n.t('YouWillWin')}  <Text style={styles.keyText}>{(rewardTime * stake).toFixed(DECIMAL)}</Text> ETH</Text>
-              <Text style={[styles.darkLabel, {fontSize: 11}]}>{feeRate*100}% {I18n.t('fee')}, 5% {I18n.t('OfWinningsToYourInviter')}</Text>
+              {/* <Text style={[styles.darkLabel, {fontSize: 11}]}>{feeRate*100}% {I18n.t('fee')}, 5% {I18n.t('OfWinningsToYourInviter')}</Text> */}
             </View>
             <View style={styles.startButtonWrapper}>
               <TouchableOpacity style={styles.startButton} onPress={this._placeBet}>
