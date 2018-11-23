@@ -28,10 +28,10 @@
 
 
 
-  "RecordTabTitle": "记录", 
-  "RecordTabLabel": "记录", 
-  "GameHistory": "游戏记录", 
-  "Transactions": "转账记录", 
+  "RecordTabTitle": "记录",
+  "RecordTabLabel": "记录",
+  "GameHistory": "游戏记录",
+  "Transactions": "转账记录",
 
   "AccountTabTitle": "账户",
   "AccountTabLabel": "账户",
@@ -47,7 +47,7 @@
 
   "NewWallet": "新建钱包",
   "ImportWallet": "导入钱包",
-  "Channel": "充值提现",
+  "Channel": "通道管理",
   "BackupWallet": "备份钱包",
   "Transfer": "转账",
 
@@ -176,7 +176,7 @@
   "ChannelActiveDesc": "可以进行游戏了",
   "ChannelClosed": "已关闭",
   "ChannelActive": "已激活",
-  "ChannelPending": "挂起中"
+  "ChannelPending": "通道开启中"
 
 
 }

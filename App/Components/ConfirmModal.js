@@ -71,7 +71,7 @@ class ConfirmModal extends Component {
         <View style={styles.gasWrapper}>
           <View style={styles.gasStatus}>
             <View style={[styles.hContainer, {justifyContent:'flex-start'}]}>
-              <Text style={styles.label}>Random: </Text>
+              <Text style={styles.label}>选择随机数: </Text>
               <Text style={styles.gasText}><Text style={{fontWeight:'900'}}>{displayGas}</Text> </Text>
             </View>
           </View>
