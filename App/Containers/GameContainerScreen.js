@@ -99,6 +99,20 @@ class GameContainerScreen extends Component {
     }
   }
 
+  // 校验输入stake是否有效
+  _verifyStakeIsValid=(text)=>{
+    this.setState({stake:text})
+    if(/^\d+(\.\d{1,2})?$/.test(text)){
+      let stake = parseFloat(text)
+      if(!!stake){
+      this.setState({valid:true});
+      this.props.setStake(stake);
+      }
+    } else {
+      this.setState({valid:false})
+    }
+  }
+
   componentDidMount(){
     this.props.navigation.setParams({ gotoRecords: _=>this.props.navigate('GameRecordScreen')})
     this.props.navigation.setParams({ title: GAME_TITLES[this.props.index]})
@@ -132,16 +146,16 @@ class GameContainerScreen extends Component {
             <KeyboardAvoidingView behavior='position' keyboardVerticalOffset={100} >
             {GAME_COMS[index]}
             <View style={styles.stakeBox}>
-              <TouchableOpacity style={styles.stakeButton} onPress={() => setStake(0.05)}>
+              <TouchableOpacity style={styles.stakeButton} onPress={() => this._verifyStakeIsValid(0.05)}>
                 <Text style={styles.stakeButtonText}>0.05</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.stakeButton} onPress={() => setStake(0.10)}>
+              <TouchableOpacity style={styles.stakeButton} onPress={() => this._verifyStakeIsValid(0.10)}>
                 <Text style={styles.stakeButtonText}>0.10</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.stakeButton} onPress={() => setStake(0.15)}>
+              <TouchableOpacity style={styles.stakeButton} onPress={() => this._verifyStakeIsValid(0.15)}>
                 <Text style={styles.stakeButtonText}>0.15</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.stakeButton} onPress={() => setStake(10000.0)}>
+              <TouchableOpacity style={styles.stakeButton} onPress={() => this._verifyStakeIsValid(10000.0)}>
                 <Text style={styles.stakeButtonText}>Max</Text>
               </TouchableOpacity>
             </View>
@@ -160,7 +174,7 @@ class GameContainerScreen extends Component {
                     let stake = parseFloat(text)
                     if(!!stake){
                     this.setState({valid:true})
-                      setStake(stake)
+                    setStake(stake)
                     }
                   } else {
                     this.setState({valid:false})
