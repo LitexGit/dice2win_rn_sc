@@ -11,7 +11,8 @@ const { Types, Creators } = createActions({
 
   channelConfirmModalRequest: ['data'],
   channelConfirmModalSuccess: ['payload'],
-  channelConfirmModalFailure: null
+  channelConfirmModalFailure: null,
+  confirmChangeText:["data"],
 })
 
 export const ChannelConfirmModalTypes = Types
@@ -29,7 +30,8 @@ export const INITIAL_STATE = Immutable({
   data: null,
   fetching: null,
   payload: null,
-  error: null
+  error: null,
+  amount:0.01,
 })
 
 /* ------------- Selectors ------------- */
@@ -41,13 +43,17 @@ export const ChannelConfirmModalSelectors = {
 
 /* ------------- Reducers ------------- */
 
-export const setChannelAmount = (state, { channelAmount }) => 
+export const confirmChangeText = (state, {data}) => {
+  return state.merge({amount:data});
+  }
+
+export const setChannelAmount = (state, { channelAmount }) =>
   state.merge({ channelAmount })
 
 export const openChannelConfirmModal = (state, action) =>
   state.merge({modalIsOpen: true, ...action.data})
 
-export const closeChannelConfirmModal = (state) => 
+export const closeChannelConfirmModal = (state) =>
   state.merge({...INITIAL_STATE})
 
 // request the data from an api
@@ -73,5 +79,6 @@ export const reducer = createReducer(INITIAL_STATE, {
 
   [Types.CHANNEL_CONFIRM_MODAL_REQUEST]: request,
   [Types.CHANNEL_CONFIRM_MODAL_SUCCESS]: success,
-  [Types.CHANNEL_CONFIRM_MODAL_FAILURE]: failure
+  [Types.CHANNEL_CONFIRM_MODAL_FAILURE]: failure,
+  [Types.CONFIRM_CHANGE_TEXT]: confirmChangeText,
 })

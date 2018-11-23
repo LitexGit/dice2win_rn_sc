@@ -82,8 +82,10 @@ class GameContainerScreen extends Component {
         ],
         { cancelable: false }
       )
-    } else if(web3.utils.fromWei(channel.localBalance, 'ether') < stake || web3.utils.fromWei(channel.remoteBalance, 'ether') < stake) {
+    } else if(web3.utils.fromWei(channel.localBalance, 'ether') < stake) {
       alert('通道金额无法满足本次下注')
+    } else if(web3.utils.fromWei(channel.remoteBalance, 'ether') < stake) {
+      alert('对手方余额不足，等待对方追加资金')
     } else {
       let confirmedActions = [{
         action: ChannelActions.startBet,

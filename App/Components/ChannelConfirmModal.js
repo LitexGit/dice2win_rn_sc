@@ -8,16 +8,36 @@ import Overlay from 'react-native-modal-overlay'
 import styles from './Styles/ConfirmModalStyle'
 // import { displayETH } from '../Lib/Utils/format'
 // import ReactNativeHapticFeedback from 'react-native-haptic-feedback'
-import I18n from '../I18n'
+import I18n from '../I18n';
+import {isNumber, getEffectiveNum} from '../Utils/Eth4FunUtils';
 
 class ChannelConfirmModal extends Component {
 
-  state = {
-    channelAmount: '',
+  constructor(props) {
+    super(props)
+    this.state = {
+      channelAmount: '',
+    }
+  }
+
+  _onChangeText=(text)=>{
+    console.log('===========this.textInput=========================');
+    console.log(this.textInput);
+    console.log('===========this.textInput=========================');
+    this.textInput.value = '00000';
+    this.props.confirmChangeText(getEffectiveNum(text));
+    
+    this.setState({
+      channelAmount: getEffectiveNum(text),
+    });
+
   }
 
   render () {
-    let { modalIsOpen, loading } = this.props
+    let { modalIsOpen, loading, amount} = this.props;
+    console.log('=========render===========================');
+    console.log(amount);
+    console.log('=========render===========================');
 
     return (
       <Overlay
@@ -30,10 +50,12 @@ class ChannelConfirmModal extends Component {
         <View style={styles.header}>
           <Text style={styles.headerText}>{I18n.t('Confirm')}</Text>
         </View>
-        
+
         <View style={styles.fromToWrapper}>
           <Text style={styles.label}>Amount: </Text>
-          <TextInput 
+          <TextInput
+            value={amount}
+            ref={(ref) => { this.textInput = ref }}
             autoFocus={true}
             multiline={false}
             textAlign='center'
@@ -41,9 +63,7 @@ class ChannelConfirmModal extends Component {
             placeholderTextColor={'gray'}
             underlineColorAndroid={'transparent'}
             keyboardType='numeric'
-            onChangeText={val => {
-              this.setState({channelAmount: val})
-            }}></TextInput>
+            onChangeText={this._onChangeText}/>
         </View>
 
         <View style={styles.actionWrapper}>
@@ -74,17 +94,19 @@ class ChannelConfirmModal extends Component {
 
 const mapStateToProps = (state) => {
   let {
-    channelConfirmModal: { modalIsOpen, channelAmount, channelConfirmedActions, channelCanceledActions }
+    channelConfirmModal: { modalIsOpen, channelAmount, channelConfirmedActions, channelCanceledActions, amount},
   } = state
 
-  return { modalIsOpen, channelAmount, channelConfirmedActions, channelCanceledActions }
+  return { modalIsOpen, channelAmount, channelConfirmedActions, channelCanceledActions, amount}
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
     closeChannelConfirmModal: () => dispatch(ChannelConfirmModalActions.closeChannelConfirmModal()),
     setChannelAmount: (amount) => dispatch(ChannelConfirmModalActions.setChannelAmount(amount)),
-    dispatch: ({action, data}) => dispatch(action(data))
+    dispatch: ({action, data}) => dispatch(action(data)),
+    confirmChangeText: (amount) => dispatch(ChannelConfirmModalActions.confirmChangeText(amount)),
+
   }
 }
 

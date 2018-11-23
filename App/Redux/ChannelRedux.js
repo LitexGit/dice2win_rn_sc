@@ -49,6 +49,7 @@ export const INITIAL_STATE = Immutable({
   loading: false,
   refreshing: false,
   checkType:'selected',
+
 })
 
 /* ------------- Selectors ------------- */
@@ -62,7 +63,10 @@ export const ChannelSelectors = {
 
 /* ------------- Reducers ------------- */
 export const getAllBets = (state, {records}) => state.merge({records})
-export const getPayments = (state, { payments }) => state.merge({ payments })
+export const getPayments = (state, { payments }) => state.merge({ payments });
+
+
+
 
 export const checkGameDetail = (state, {data}) => {
   const betId = data.item.item.betId;
@@ -124,4 +128,6 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.GET_PAYMENTS]: request,
   [Types.GET_ALL_BETS]: request,
   [Types.CHECK_GAME_DETAIL]: checkGameDetail,
+
+
 })
