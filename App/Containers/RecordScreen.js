@@ -34,9 +34,9 @@ const TX_STATUS = [
   {},
   {text: I18n.t('stake')},
   {text: I18n.t('transfer')},
+  {text: I18n.t('recharge')},
   {text: I18n.t('bonus')},
-  {text: I18n.t('bonus')},
-  {text: I18n.t('winning')}
+  {text: I18n.t('withdrawal')}
 ]
 
 class RecordScreen extends Component {
