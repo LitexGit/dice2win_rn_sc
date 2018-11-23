@@ -38,14 +38,14 @@ class GameContainerScreen extends Component {
   static navigationOptions = ({navigation}) => {
     return{
       title: navigation.getParam('title'),
-      headerRight: (
-        <TouchableOpacity style={{padding: 10, flexDirection:'row', alignItems:'center'}} onPress={navigation.getParam('gotoRecords')}>
-          <Text style={{color:'lightsteelblue'}}>
-            {I18n.t('GlobalRecords')}
-          </Text>
-          <Entypo name={"chevron-thin-right"} size={20} color={Colors.cloud} />
-        </TouchableOpacity>
-      )
+      // headerRight: (
+      //   <TouchableOpacity style={{padding: 10, flexDirection:'row', alignItems:'center'}} onPress={navigation.getParam('gotoRecords')}>
+      //     <Text style={{color:'lightsteelblue'}}>
+      //       {I18n.t('GlobalRecords')}
+      //     </Text>
+      //     <Entypo name={"chevron-thin-right"} size={20} color={Colors.cloud} />
+      //   </TouchableOpacity>
+      // )
     }
   }
 
@@ -164,7 +164,7 @@ class GameContainerScreen extends Component {
               </TouchableOpacity>
             </View>
             </KeyboardAvoidingView>
-            
+
             {!!W.address && channel.status == 2 && <Text style={[styles.darkLabel, {alignSelf:'center', margin: 5}]}>{I18n.t('ChannelMyBalance')}:  <Text style={styles.balanceText}>{displayETH(channel.localBalance)}</Text> ETH</Text>}
             {!!W.address && channel.status == 2 && <Text style={[styles.darkLabel, {alignSelf:'center', margin: 5}]}>{I18n.t('ChannelRivalBalance')}:  <Text style={styles.balanceText}>{displayETH(channel.remoteBalance)}</Text> ETH</Text>}
 
