@@ -297,13 +297,13 @@ export function * getAllChannels (api, action) {
 
 // 获取单个通道信息
 export function * getChannel (api, action) {
-  console.log(W.wallet);
+  // console.log(W.wallet);
   if(scclient == null && dbInitializing == false) {
     yield initDB();
   }
 
   let channelObject = yield select(ChannelSelectors.getChannel)
-  if(channelObject.channel.status !== 0) {
+  // if(channelObject.channel.status !== 0) {
     // 读取配置信息
     let sysConfig = yield select(ConfigSelectors.getConfig)
     let partnerAddress = sysConfig.partnerAddress
@@ -320,10 +320,10 @@ export function * getChannel (api, action) {
 
       yield put(ChannelActions.setChannel(channelInfo));
     } catch (err) {
-      console.log(err)
+      // console.log(err)
       yield put(ChannelActions.channelFailure())
     }
-  }
+  // }
 }
 
 // 获取所有下注信息
