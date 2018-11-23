@@ -63,7 +63,7 @@ export const loadCoin = (state) =>
     diceCount: 1,
     diceWeights: [1, 1],
     winRate: 0.5,
-    rewardTime: 1.931,
+    rewardTime: 2.00,
     modulo: 2,
     betMask: 1,
     betMaskArr: [
@@ -79,7 +79,7 @@ export const loadOneDice = (state) =>
     diceCount: 3,
     diceWeights: [1, 1, 1, 1, 1, 1],
     winRate: 0.5,
-    rewardTime: 1.931,
+    rewardTime: 2.00,
     betMask: 21,
     modulo: 6,
     betMaskArr: [
@@ -99,7 +99,7 @@ export const loadTwoDice = (state) =>
     diceCount: 18,
     diceWeights: [1, 2, 3, 4, 5, 6, 5, 4, 3, 2, 1],
     winRate: 0.5,
-    rewardTime: 1.931,
+    rewardTime: 2.00,
     betMask: 45460576917,
     modulo: 36,
     betMaskArr: [
@@ -120,7 +120,7 @@ export const loadEtheroll = (state) => state.merge({
   betMask: 50,
   modulo: 100,
   winRate: 0.5,
-  rewardTime: 1.931,
+  rewardTime: 2.00,
 })
 
 export const clickCoin = (state) => {
