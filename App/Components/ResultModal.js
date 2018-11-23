@@ -8,7 +8,7 @@ import styles from './Styles/ResultModalStyle'
 import { connect } from 'react-redux'
 import I18n from '../I18n';
 
-import winOrLose from '../Utils/Eth4FunUtils'
+import {winOrLose} from '../Utils/Eth4FunUtils'
 
 // i18n
 const STATUS_TEXT = {

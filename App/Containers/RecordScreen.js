@@ -22,6 +22,8 @@ import styles from './Styles/RecordScreenStyle'
 import NavigationActions from 'react-navigation/src/NavigationActions';
 import I18n from '../I18n';
 
+import {getWinAmount} from '../Utils/Eth4FunUtils'
+
 const GAME_STATUS = [
   {text: I18n.t('wait'), style:{color:'gray'}},
   {text: I18n.t('win'), style:{color:'darkorange'}},
@@ -112,13 +114,11 @@ class RecordScreen extends Component {
     let {modulo, value:inValue, winAmount:outValue, time, winner: status, isOpen} = item;
     let icon = Images[GAME_NAMES[modulo]];
 
-
-
     return (
       <View>
         <TouchableOpacity style={styles.gameItem} onPress={_=>this._itemPressed(item)}>
           <View style={styles.timeWrapper}>
-            <Text style={[styles.statusText]}>{status==0?'输了':'赢了'}</Text>
+            <Text style={[styles.statusText]}>{status==1?'赢了':'输了'}</Text>
             <Text style={styles.timeText}>{time}</Text>
           </View>
           <View style={styles.iconWrapper}><Image style={styles.icon} resizeMode='contain' source={icon}/></View>
@@ -128,7 +128,7 @@ class RecordScreen extends Component {
           </View>
           <View style={styles.outWrapper}>
             <Text style={styles.darkLabel}>out: </Text>
-            <Text style={styles.outValue}>{displayETH(outValue, 4)}</Text>
+            <Text style={styles.outValue}>{displayETH(getWinAmount({winner:status, outValue}), 4)}</Text>
           </View>
         </TouchableOpacity>
         {isOpen && <GameDetailsView item={item}/>}

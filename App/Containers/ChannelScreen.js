@@ -156,7 +156,7 @@ class ChannelScreen extends Component {
     } else {
       winner = W.address == toAddr ? 1 : 0;
     }
-
+    
     return <TouchableOpacity style={styles.gameItem} onPress={_=>this._itemPressed(item)}>
        <View style={styles.item}>
          <View style={styles.leftSection}>

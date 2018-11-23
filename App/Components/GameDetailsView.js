@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { View, Text} from 'react-native'
 import { connect } from 'react-redux'
 import styles from './Styles/GameDetailsStyles';
-import winOrLose from '../Utils/Eth4FunUtils';
+import {winOrLose} from '../Utils/Eth4FunUtils';
 
 class GameDetailsView extends Component {
 
