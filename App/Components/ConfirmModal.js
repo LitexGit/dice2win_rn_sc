@@ -60,14 +60,14 @@ class ConfirmModal extends Component {
         <View style={styles.ethWrapper}>
           <Text style={styles.ethText}><Text style={{fontWeight:'900'}}>{displayETH(amount)}</Text> ETH</Text>
         </View>
-        <View style={styles.fromToWrapper}>
+        {/* <View style={styles.fromToWrapper}>
           <Text style={styles.label}>From: </Text>
           <Text style={styles.fromToText}>{from}</Text>
         </View>
         <View style={styles.fromToWrapper}>
           <Text style={styles.label}>To: </Text>
           <Text style={styles.fromToText}>{to}</Text>
-        </View>
+        </View> */}
         <View style={styles.gasWrapper}>
           <View style={styles.gasStatus}>
             <View style={[styles.hContainer, {justifyContent:'flex-start'}]}>
