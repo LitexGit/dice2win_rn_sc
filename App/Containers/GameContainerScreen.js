@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { ScrollView, Text, View, Button, TouchableOpacity, TextInput, KeyboardAvoidingView} from 'react-native'
+import { ScrollView, Text, View, Alert, TouchableOpacity, TextInput, KeyboardAvoidingView} from 'react-native'
 import { connect } from 'react-redux'
 
 import NavigationActions from 'react-navigation/src/NavigationActions'
@@ -70,11 +70,20 @@ class GameContainerScreen extends Component {
       label: `uid:${uid},modulo:${index},stake:${stake}`,
       value: uid
     })
-
+    
     if(!W.address) {
       navigate('WalletManageScreen')
     } else if (channel.status != 2) {
-      alert('通道尚未激活, 无法进行游戏')
+      Alert.alert(
+        I18n.t('Attention'),
+        I18n.t('ChannelStatusException'),
+        [
+          {text: I18n.t('ChannelImmediatelyTo'), onPress: this.props.goChannel, style: 'cancel'},
+        ],
+        { cancelable: false }
+      )
+    } else if(web3.utils.fromWei(channel.localBalance, 'ether') < stake || web3.utils.fromWei(channel.remoteBalance, 'ether') < stake) {
+      alert('通道金额无法满足本次下注')
     } else {
       let confirmedActions = [{
         action: ChannelActions.startBet,
@@ -179,7 +188,7 @@ class GameContainerScreen extends Component {
                   <Text style={styles.keyText}>{(winRate * 100).toFixed(2)}%</Text>
                 </View>
               </View>
-              <Text style={styles.rewardText}>{I18n.t('YouWillWin')}  <Text style={styles.keyText}>{(rewardTime * stake).toFixed(DECIMAL)}</Text>  ETH</Text>
+              <Text style={styles.rewardText}>{I18n.t('YouWillWin')}  <Text style={styles.keyText}>{(rewardTime * stake).toFixed(DECIMAL)}</Text> ETH</Text>
               <Text style={[styles.darkLabel, {fontSize: 11}]}>{feeRate*100}% {I18n.t('fee')}, 5% {I18n.t('OfWinningsToYourInviter')}</Text>
             </View>
             <View style={styles.startButtonWrapper}>
@@ -228,6 +237,8 @@ const mapDispatchToProps = (dispatch) => {
     loadWallet: () => dispatch(WalletActions.walletRequest()),
     getRandom: (data) => dispatch(WalletActions.getRandom(data)),
     placeBet: (data) => dispatch(WalletActions.placeBet(data)),
+
+    goChannel: () => dispatch(NavigationActions.navigate({routeName: 'ChannelScreen'})),
 
     navigate: (target) => dispatch(NavigationActions.navigate({routeName:target}))
   }

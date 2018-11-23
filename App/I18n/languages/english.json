@@ -175,6 +175,10 @@
   "ChannelStatus": "Channel Status",
   "ChannelDesc": "Can't play",
   "ChannelActiveDesc": "Ready to play",
+
+  "ChannelImmediatelyTo": "Go",
+  "ChannelStatusException": "Channel state is not active, game cannot be played",
+
   "ChannelClosed": "Closed",
   "ChannelActive": "Active",
   "ChannelPending": "Pending"

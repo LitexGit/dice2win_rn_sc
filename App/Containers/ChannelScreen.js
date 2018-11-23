@@ -68,13 +68,12 @@ class ChannelScreen extends Component {
   }
 
   _recharge = () => {
-    let { openChannelConfirmModal, navigate, channel, unlockWallet } = this.props
-
+    let { openChannelConfirmModal, navigate, channel, unlockWallet, balance } = this.props
     if(!W.address) {
       navigate('WalletManageScreen')
-    } /*else if (balance <= 0) {
+    } else if (balance <= 0) {
       alert(I18n.t('InsufficientBalance'))
-    }*/ else {
+    } else {
       if(!!W.wallet) {
         // callback action
         let channelConfirmedActions = [{
@@ -232,13 +231,16 @@ class ChannelScreen extends Component {
 
 const mapStateToProps = (state) => {
   let {
-    channel: { channel,  payments, refreshing, loading}
+    channel: { channel,  payments, refreshing, loading},
+    wallet: { balance, address }
   } = state
+
   return {
     channel,
     payments:sectionlize(payments),
     refreshing,
-    loading
+    loading,
+    balance
   }
 }
 
