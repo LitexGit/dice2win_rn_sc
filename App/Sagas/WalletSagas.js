@@ -64,7 +64,7 @@ function * postNewWallet () {
       message: I18n.t('WalletCreateSuccess'),
       submitedActions: [{ action: WalletActions.navigateToBottomTab, data: { routeName: 'Wallet' } }]
     }))
-    yield setAlias(W.address.substr(2))
+    // yield setAlias(W.address.substr(2))
   } catch (err) {
 
     console.tron.log("Wallet create failed due to register or setAlias fail");
@@ -144,7 +144,7 @@ export function * importFromMnemonic (api, action) {
   yield put(WalletActions.setLoading(true))
   let wallet = yield call(walletLib.importMnemonic, mnemonic, password)
   yield put(WalletActions.setLoading(false))
-  
+
   if (!!wallet) {
     yield postNewWallet()
   } else {
