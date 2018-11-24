@@ -122,7 +122,7 @@
     "reactotron-redux-saga": "^2.0.0-alpha.3",
     "snazzy": "^8.0.0",
     "standard": "^10.0.3",
-    "statechannelnode": "file:node_modules/statechannelnode"
+    "statechannelnode": "git+ssh://git@gitlab.f3m.club:dice/scnode.git"
   },
   "jest": {
     "testMatch": [

@@ -40,6 +40,23 @@ let cryptoHelper = require('../../crypto/cryptoHelper');
 
 let socket = io("http://13.113.50.143:9527");
 
+
+import Toast from 'react-native-root-toast'
+
+// socket.on('connect', ()=>{
+//   Toast.show('L2SOCKET connect ');
+
+// }).on('connect_error', ()=>{
+//   Toast.show('L2SOCKET connect_erro');
+// }).on('connect_timeout', (timeout)=>{
+//   Toast.show('L2SOCKET connect_timeout');
+// }).on('disconnect', (reason)=>{
+//   Toast.show('L2SOCKET disconnect');
+// }).on('reconnect', ()=>{
+//   Toast.show('L2SOCKET reconnect');
+// })
+
+
 // let db = SQLite.openDatabase({ name: "client.db", createFromLocation: 1 }, ()=>{console.log('db open success')});
 
 const channelListener = channel()
@@ -76,6 +93,10 @@ function * initDB(){
   global.dbInitializing = dbInitializing;
 
   yield listenerInit(scclient)
+      // 读取配置信息
+  let sysConfig = yield select(ConfigSelectors.getConfig)
+  let partnerAddress = sysConfig.partnerAddress
+  yield scclient.sync(partnerAddress)
 }
 
 /**
@@ -293,6 +314,49 @@ export function * startBet (api, action) {
 // 获取所有通道
 export function * getAllChannels (api, action) {
   yield scclient.getAllChannels();
+}
+
+/**
+ * 与本地同步链上通道状态
+ * @param api
+ * @param action
+ */
+export function* syncChannel(api, action) {
+
+  try{
+    let result = yield web3.eth.net.isListening();
+    console.log('web3 listening is ok', result);
+  }catch(err){
+    const Web3 = require('web3');
+    let ethWSUrl = 'ws://54.250.21.165:8546';
+    let web3 = new Web3(Web3.givenProvider || ethWSUrl);
+    global.web3 = web3;
+
+    if (global.scclient != null) {
+      console.log('init web3 here');
+      global.scclient.initWeb3(web3);
+    }
+  }
+
+  let sysConfig = yield select(ConfigSelectors.getConfig)
+  let partnerAddress = sysConfig.partnerAddress
+  yield scclient.sync(partnerAddress)
+
+  try {
+    let channelInfo = yield scclient.getChannel(partnerAddress);
+
+    // 初始化默认值
+    if (!channelInfo) {
+      channelInfo = {
+        status: 6
+      }
+    }
+
+    yield put(ChannelActions.setChannel(channelInfo));
+  } catch (err) {
+    // console.log(err)
+    yield put(ChannelActions.channelFailure())
+  }
 }
 
 // 获取单个通道信息

@@ -6,6 +6,7 @@ import Immutable from 'seamless-immutable'
 const { Types, Creators } = createActions({
   openChannel: ["data"],
   closeChannel: ["data"],
+  syncChannel: ["data"],
   deposit: ["data"],
   startBet: ["data"],
   getAllChannels: ["data"],
