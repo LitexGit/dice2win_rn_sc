@@ -16,7 +16,11 @@ class GameDetailsView extends Component {
     const {item} = this.props;
     const {betMask=0, ra='', rb='', modulo=0} = item;
     const formula = 'Hash(A,B)mod2=';
-    const isWin = winOrLose(betMask||0, modulo||0, ra, rb);
+    let isWin = false;
+    if (ra && rb) {
+      isWin = winOrLose(betMask||0, modulo||0, ra, rb);
+    }
+
     const winDes = isWin ? 'WIN：玩家P' : '庄家B';
 
     return (

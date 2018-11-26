@@ -33,7 +33,10 @@ class ResultModal extends Component {
     const {betMask=0, ra='', rb=''} = result.betDetail||{};
     const formula = 'Hash(A,B)mod2=';
 
-    const isWin = winOrLose(betMask, modulo, ra, rb);
+    let isWin = false;
+    if (ra && rb) {
+      isWin = winOrLose(betMask||0, modulo||0, ra, rb);
+    }
 
     const winDes = isWin ? 'WIN：玩家P' : '庄家B';
 
