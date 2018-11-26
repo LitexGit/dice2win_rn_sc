@@ -3,7 +3,7 @@
   "GamesTabLabel": "游戏",
 
   "GameCoinTitle": "抛硬币",
-  "GameCoinDesc": "猜正反，赢得最高1.98倍投注",
+  "GameCoinDesc": "猜正反，赢得最高2.00倍投注",
   "GameCoin": "选择硬币的一面来进行投注",
 
   "GameDice1Title": "掷骰子",
@@ -145,6 +145,8 @@
   "transfer": "转账",
   "stake": "下注",
   "bonus": "奖励",
+  "recharge": "充值",
+  "withdrawal": "提现",
   "winning": "奖金",
   "today": "今天",
   "yesterday": "昨天",

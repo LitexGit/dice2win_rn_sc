@@ -3,7 +3,7 @@
   "GamesTabLabel": "Games",
 
   "GameCoinTitle": "Coin Flip",
-  "GameCoinDesc": "Fifty-fifty Winning bet pays 1.98×",
+  "GameCoinDesc": "Fifty-fifty Winning bet pays 2.00×",
   "GameCoin": "Choose coin side to bet on",
 
   "GameDice1Title": "Roll a Dice",
@@ -145,6 +145,8 @@
   "transfer": "transfer",
   "stake": "stake",
   "bonus": "bonus",
+  "recharge": "recharge",
+  "withdrawal": "withdrawal",
   "winning": "winning",
   "today": "today",
   "yesterday": "yesterday",

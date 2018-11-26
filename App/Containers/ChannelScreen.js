@@ -42,6 +42,7 @@ class ChannelScreen extends Component {
 
   componentDidMount (){
     this._refresh();
+    this.props.syncChannel();
   }
 
   _refresh=()=>{
@@ -253,6 +254,7 @@ const mapDispatchToProps = (dispatch) => {
     openChannelWithdrawModal: (data) => dispatch(ChannelWithdrawModalActions.openChannelWithdrawModal(data)),
     alert: (message) => dispatch(MessageBoxActions.openMessageBox({ title: 'Warning', message })),
     unlockWallet: () => dispatch(ChannelActions.openChannel()),
+    syncChannel: () => dispatch(ChannelActions.syncChannel()),
     getPayments: (type, data) => dispatch(ChannelActions.getPayments({type, data})),
   }
 }
