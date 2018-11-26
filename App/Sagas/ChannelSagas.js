@@ -27,6 +27,8 @@ import { ConfirmModalSelectors } from '../Redux/ConfirmModalRedux';
 
 import { channel } from 'redux-saga'
 
+import Provider from "../Lib/Provider/provider";
+
 import Moment from 'moment';
 import cn from 'moment/locale/zh-cn';
 Moment.locale('zh-cn');
@@ -43,18 +45,16 @@ let socket = io("http://13.113.50.143:9527");
 
 import Toast from 'react-native-root-toast'
 
-// socket.on('connect', ()=>{
-//   Toast.show('L2SOCKET connect ');
+socket.on('connect', async () => {
+  Toast.show('SOCKET connect ');
+  await Provider.checkWeb3Status();
 
-// }).on('connect_error', ()=>{
-//   Toast.show('L2SOCKET connect_erro');
-// }).on('connect_timeout', (timeout)=>{
-//   Toast.show('L2SOCKET connect_timeout');
-// }).on('disconnect', (reason)=>{
-//   Toast.show('L2SOCKET disconnect');
-// }).on('reconnect', ()=>{
-//   Toast.show('L2SOCKET reconnect');
-// })
+}).on('disconnect', async ()=>{
+  Toast.show('SOCKET disconnect');
+}).on('reconnect', async ()=>{
+  // Toast.show('SOCKET reconnect');
+  await Provider.checkWeb3Status();
+})
 
 
 // let db = SQLite.openDatabase({ name: "client.db", createFromLocation: 1 }, ()=>{console.log('db open success')});
@@ -215,7 +215,8 @@ export function * openChannel (api, action) {
         }));
       } catch(err) {
         console.log(err)
-        yield put(MessageBoxActions.openMessageBox({ title: 'Error', message: 'Opreation Faild.' }));
+        // yield put(MessageBoxActions.openMessageBox({ title: 'Error', message: 'Opreation Faild.' }));
+        yield put(MessageBoxActions.openMessageBox({ title: 'Error', message: err + '' }));
       }
     }
   }
@@ -323,24 +324,12 @@ export function * getAllChannels (api, action) {
  */
 export function* syncChannel(api, action) {
 
-  try{
-    let result = yield web3.eth.net.isListening();
-    console.log('web3 listening is ok', result);
-  }catch(err){
-    const Web3 = require('web3');
-    let ethWSUrl = 'ws://54.250.21.165:8546';
-    let web3 = new Web3(Web3.givenProvider || ethWSUrl);
-    global.web3 = web3;
-
-    if (global.scclient != null) {
-      console.log('init web3 here');
-      global.scclient.initWeb3(web3);
-    }
-  }
-
+  yield Provider.checkWeb3Status();
   let sysConfig = yield select(ConfigSelectors.getConfig)
   let partnerAddress = sysConfig.partnerAddress
   yield scclient.sync(partnerAddress)
+
+  // Toast.show('sync finish');
 
   try {
     let channelInfo = yield scclient.getChannel(partnerAddress);
