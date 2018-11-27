@@ -37,7 +37,7 @@ export default StyleSheet.create({
   },
 
   fromToWrapper: {
-    height: 50,
+    // height: 50,
     alignItems: 'flex-start',
     justifyContent: 'space-evenly',
     borderBottomWidth: 1,
@@ -110,5 +110,6 @@ export default StyleSheet.create({
   inputText: {
     ...Fonts.style.h5,
     color: Colors.text,
+    width: '100%',
   },
 })
