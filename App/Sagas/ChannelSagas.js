@@ -28,6 +28,7 @@ import { ConfirmModalSelectors } from '../Redux/ConfirmModalRedux';
 import { channel } from 'redux-saga'
 
 import Provider from "../Lib/Provider/provider";
+import Config from 'react-native-config';
 
 import Moment from 'moment';
 import cn from 'moment/locale/zh-cn';
