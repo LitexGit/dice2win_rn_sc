@@ -11,7 +11,7 @@ async function checkWeb3Status() {
   }catch(err){
     web3.setProvider(new Web3.providers.WebsocketProvider(ethWSUrl));
     if (global.scclient != null) {
-      Toast.show('init web3 here' + err);
+      Toast.show('init web3 here' );
       global.scclient.initWeb3(web3);
     }
   }

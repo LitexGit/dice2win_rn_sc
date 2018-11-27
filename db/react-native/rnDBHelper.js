@@ -6,6 +6,8 @@
  * 4. bet
  *
  */
+
+require('es5-ext/array/#/@@iterator/implement');
 const squel = require("squel");
 class rnDBHelper {
     constructor(config) {
@@ -86,9 +88,11 @@ class rnDBHelper {
         let sql = squel
             .select()
             .from(this.TABLE_CHANNEL);
-      let keys = Object.keys(condition);
-      for (var key of keys) {
-        sql = sql.where(key + "=?", condition[key]);
+      if (condition != null && typeof (condition) == 'object') {
+        let keys = Object.keys(condition);
+        for (var key of keys) {
+          sql = sql.where(key + "=?", condition[key]);
+        }
       }
       sql = sql
         .offset(offset)
@@ -149,13 +153,16 @@ class rnDBHelper {
     }
 
     async getPayments(condition, offset, limit) {
+      console.log('start getPayments in rnDBHelper');
       let sql = squel
             .select()
             .from(this.TABLE_PAYMENT);
 
-      let keys = Object.keys(condition);
-      for(var key of keys){
+      if (condition != null && typeof condition == "object") {
+        let keys = Object.keys(condition);
+        for (var key of keys) {
           sql = sql.where(key + "=?", condition[key]);
+        }
       }
       sql = sql
         .offset(offset)
@@ -255,10 +262,12 @@ class rnDBHelper {
 
     async getLatestTransfer(where) {
         let sql = squel.select().from(this.TABLE_TRANSFER);
+      if (where != null && typeof where == "object") {
         let keys = Object.keys(where);
-        for(var key of keys){
-            sql = sql.where(key + "=?", where[key]);
+        for (var key of keys) {
+          sql = sql.where(key + "=?", where[key]);
         }
+      }
         sql = sql.order("nonce", false).toString();
 
         console.log('getLatestTransfer sql', sql);
@@ -294,6 +303,7 @@ class rnDBHelper {
     }
 
     async updateBet(betId, newAttr) {
+
         let sql = squel
             .update()
             .table(this.TABLE_BET)
@@ -314,18 +324,23 @@ class rnDBHelper {
 
     async getBets(condition, offset, limit) {
 
+      console.log('start getBets in rnDBHelper', condition, offset, limit);
       let sql = squel
             .select()
             .from(this.TABLE_BET);
-      let keys = Object.keys(condition);
-      for(var key of keys){
-          sql = sql.where(key + "=?", condition[key]);
+      if (condition != null && typeof (condition) == 'object') {
+        let keys = Object.keys(condition);
+        for(var key of keys){
+            sql = sql.where(key + "=?", condition[key]);
+        }
       }
       sql = sql
         .offset(offset)
         .limit(limit)
         .order("betId", false)
         .toString();
+
+      console.log('getBets sql is ', sql);
 
         return new Promise((resolve, reject) => {
             this.db.transaction(tx => {
@@ -359,9 +374,11 @@ class rnDBHelper {
 
     async getBetByChannel(where) {
         let sql = squel.select().from(this.TABLE_BET);
-        let keys = Object.keys(where);
-        for(var key of keys){
-            sql = sql.where(key + "=?", where[key]);
+        if(where != null && typeof(where) == 'object'){
+          let keys = Object.keys(where);
+          for(var key of keys){
+              sql = sql.where(key + "=?", where[key]);
+          }
         }
         sql = sql.order("round", false).toString();
 

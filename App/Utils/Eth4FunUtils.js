@@ -16,7 +16,7 @@ export function winOrLose(betMask, modulo, ra, rb, isPlayer=true){
 
 
   if(parseInt(modulo) < 40){
-      if (((2 ** dice) & betMaskNumber) != 0) {
+      if ((Math.pow(2, dice) & betMaskNumber) != 0) {
           playerWin = true;
       }
   }else{
