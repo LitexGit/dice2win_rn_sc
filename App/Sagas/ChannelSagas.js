@@ -40,7 +40,7 @@ let SQLite = require('react-native-sqlite-storage');
 let dbfactory = require('../../db/dbfactory');
 let cryptoHelper = require('../../crypto/cryptoHelper');
 
-let socket = io("http://13.113.50.143:9527");
+let socket = io(Config.SOCKET_URL);
 
 
 import Toast from 'react-native-root-toast'

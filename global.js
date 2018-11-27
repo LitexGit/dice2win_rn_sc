@@ -23,7 +23,7 @@ global.btoa = require('btoa');
 var URI = require('urijs');
 global.URL = URI;
 const Web3 = require('web3');
-let ethWSUrl = 'ws://54.250.21.165:8546';
+global.ethWSUrl = Config.ETH_WS_URL;
 let web3 = new Web3(Web3.givenProvider || ethWSUrl);
 
 global.web3 = web3;
