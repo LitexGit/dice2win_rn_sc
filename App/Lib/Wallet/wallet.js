@@ -167,10 +167,10 @@ async function getBalance(address) {
   let balance = 0
   // let provider = providers.getDefaultProvider(W.network)
 
-  let provider = getFallbackProvider(W.network)
+  // let provider = getFallbackProvider(W.network)
 
 
-  let balanceRaw = await provider.getBalance(address)
+  let balanceRaw = await web3.eth.getBalance(address)
   balance = parseInt(balanceRaw) / 1e18
   return balance
 }
