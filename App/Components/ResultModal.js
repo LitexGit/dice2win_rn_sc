@@ -11,6 +11,7 @@ import I18n from '../I18n';
 
 import {winOrLose} from '../Utils/Eth4FunUtils';
 import ProgressConfig from '../Config/ProgressConfig';
+import ChannelActions from '../Redux/ChannelRedux';
 
 
 // i18n
@@ -94,8 +95,10 @@ const mapStateToProps = ({channel}) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     close: (modulo, status)=>{
-      dispatch(GameActions.updateStatus({status:{[modulo]:'idle'}}))
-      dispatch(WalletActions.walletRequest())
+      dispatch(GameActions.updateStatus({status:{[modulo]:'idle'}}));
+      dispatch(WalletActions.walletRequest());
+      dispatch(ChannelActions.updateProgress({progress:0}));
+
     },
     refresh: (modulo, status) => {
       // dispatch(GameActions.refreshStatus())
