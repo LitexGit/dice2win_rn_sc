@@ -125,7 +125,7 @@ function listenerInit(client) {
   }).on('ChannelClosed', (channel) => {
     console.log('LISTEN CHANNEL CLOSE');
     console.log(channel);
-    channelListener.put(ChannelActions.setConnectStatus({web3Status:0}));
+    channelListener.put(ChannelActions.setConnectStatus({web3Status:1}));
     channelListener.put (WalletActions.walletRequest());
     channelListener.put(ChannelActions.setChannel(channel));
   }).on('BalanceProofUpdated', (channel) => {

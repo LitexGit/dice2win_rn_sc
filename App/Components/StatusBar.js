@@ -79,11 +79,6 @@ const mapStateToProps = (state) => {
   const {
     channel: { channel, web3Status, socketStatus}
   } = state
-
-  console.log('=================socketStatus===================');
-  console.log(web3Status);
-  console.log(socketStatus);
-  console.log('==================socketStatus==================');
   return { channel, web3Status, socketStatus}
 }
 
