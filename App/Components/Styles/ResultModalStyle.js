@@ -89,11 +89,31 @@ export default StyleSheet.create({
     fontSize: 14,
 
   },
-  itemSeparator:{
-    width: 1 / PixelRatio.get(),
-    backgroundColor:Colors.separate_line_color,
-  },
+
   flatList:{
-    backgroundColor: 'red',
+  },
+  itemStyle:{
+    height: 40,
+    alignItems:'center',
+    paddingHorizontal: 30,
+    flexDirection: 'row',
+
+  },
+  itemSeparator:{
+    height: 1 / PixelRatio.get(),
+    backgroundColor:'#666666',
+  },
+  progressText:{
+    ...Fonts.style.regular,
+    color: '#FFFFFF',
+    flex:1,
+  },
+  commonText:{
+    ...Fonts.style.regular,
+    color: '#FFFFFF',
+    width: 30,
+  },
+  icon: {
+    marginLeft: 10,
   }
 })

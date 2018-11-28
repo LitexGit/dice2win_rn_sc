@@ -132,7 +132,7 @@ class GameContainerScreen extends Component {
         { W.address && <StatusBar /> }
         <ScrollView style={styles.container}>
         <View style={styles.GameContainerScreen}>
-          {status[index]!='idle' && (
+          {status[index] != 'idle' && (
             <ResultModal modulo={index} status={status[index]} result={result[index]} />
           )}
 

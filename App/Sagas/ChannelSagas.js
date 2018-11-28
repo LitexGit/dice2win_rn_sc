@@ -106,16 +106,13 @@ function * initDB(){
  */
 function listenerInit(client) {
   client.on('BetSettled', (channel, bet) => {
-    console.log('==============betSettle======================');
-    console.log(channel);
-    console.log(bet);
     let status = 'lose'
     // console.log(bet)
     let winAmount = web3.utils.fromWei(web3.utils.toBN(bet.winAmount).add(web3.utils.toBN(bet.value)).toString(10), 'ether');
     if(bet.winner == 1) {
       status = 'win'
     }
-    // console.log(channel)
+    channelListener.put(ChannelActions.updateProgress({progress:8}));
     channelListener.put(ChannelActions.setChannel(channel));
     channelListener.put(GameActions.updateResult({[bet.modulo]: { amount: winAmount, betDetail: bet} }));
     channelListener.put(GameActions.updateStatus({ status: {[bet.modulo]: status}}));
@@ -144,6 +141,7 @@ function listenerInit(client) {
     .on('Preimage', preimage)
     .on('DirectTransfer', directTransfer)
     .on('DirectTransferR', directTransferR)
+    // .on('BetSettled', betSettled)
 
 
 
@@ -307,6 +305,8 @@ export function * startBet (api, action) {
     yield unlockWallet(ChannelActions.startBet, {betMask, modulo, value});
     return;
   }
+  // const betModulo = 2;
+  yield put(GameActions.updateStatus({ status: { 2 : 'placed' }}));
 
   // 转换成 BN
   let amount = web3.utils.toWei(value.toString(), 'ether')
@@ -315,16 +315,15 @@ export function * startBet (api, action) {
     let betInfo = yield scclient.startBet(channelId, partnerAddress, betMask, modulo, amount, randomSeed);
     // console.log(betInfo);
     if(betInfo == false) {
-      yield put(MessageBoxActions.openMessageBox({ title: 'Warning', message: '交易太频繁' }))
+      yield put(MessageBoxActions.openMessageBox({ title: 'Warning', message: '交易太频繁' }));
+      yield put(GameActions.updateStatus({ status: { 2 : 'idle' }}));
     }
     return;
   } catch(err) {
     console.log(err)
-    yield put(MessageBoxActions.openMessageBox({ title: 'Warning', message: '交易太频繁' }))
+    yield put(MessageBoxActions.openMessageBox({ title: 'Warning', message: '交易太频繁' }));
+    yield put(GameActions.updateStatus({ status: { 2 : 'idle' }}));
   }
-
-  // const betModulo = 2;
-  yield put(GameActions.updateStatus({ status: { 2 : 'placed' }}));
 }
 
 // 获取所有通道
@@ -474,46 +473,32 @@ export function * getBetById (api, action) {
 
 
 const betRequest = (channel, bet)=>{
-  console.log('==============betRequest======================');
-  console.log(channel);
-  console.log(bet);
+  channelListener.put(ChannelActions.updateProgress({progress:1}));
 }
-
 const lockedTransfer = (channel, bet)=>{
-  console.log('============lockedTransfer========================');
-  console.log(channel);
-  console.log(bet);
+  channelListener.put(ChannelActions.updateProgress({progress:2}));
 }
 const lockedTransferR = (channel, bet)=>{
-  console.log('===========lockedTransferR=========================');
-  console.log(channel);
-  console.log(bet);
+  channelListener.put(ChannelActions.updateProgress({progress:3}));
 }
 const betResponse = (channel, bet)=>{
-  console.log('===============betResponse=====================');
-  console.log(channel);
-  console.log(bet);
+  channelListener.put(ChannelActions.updateProgress({progress:4}));
 }
 const preimage = (channel, bet)=>{
-  console.log('===============preimage=====================');
-  console.log(channel);
-  console.log(bet);
+  channelListener.put(ChannelActions.updateProgress({progress:5}));
 }
 const directTransfer = (channel, bet)=>{
-  console.log('==============directTransfer======================');
-  console.log(channel);
-  console.log(bet);
+  channelListener.put(ChannelActions.updateProgress({progress:6}));
 }
 const directTransferR = (channel, bet)=>{
-  console.log('===============DirectTransferR=====================');
-  console.log(channel);
-  console.log(bet);
+  channelListener.put(ChannelActions.updateProgress({progress:7}));
 }
-const betSettle = (channel, bet)=>{
-  console.log('==============betSettle======================');
-  console.log(channel);
-  console.log(bet);
-}
+
+// const betSettle = (channel, bet)=>{
+//   console.log('==============betSettle======================');
+//   console.log(channel);
+//   console.log(bet);
+// }
 
 
 

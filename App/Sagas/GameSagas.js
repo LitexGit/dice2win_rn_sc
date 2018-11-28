@@ -58,8 +58,10 @@ export function * getGame (api, action) {
 }
 
 export function * refreshStatus (api, action) {
+  console.log('==============action======================');
+  console.log(action);
   const { data } = action
-  const {ok, data: {modulo, hash, status}} = yield call(api.refreshStatus, data)
+  const {ok, data: {modulo, hash, status}} = yield call(api.refreshStatus, data);
   if (ok) {
     yield put(GameActions.updateStatus({status:{[modulo]:status}, hash}))
   } else {

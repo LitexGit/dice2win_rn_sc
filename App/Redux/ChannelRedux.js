@@ -1,5 +1,6 @@
 import { createReducer, createActions } from 'reduxsauce'
-import Immutable from 'seamless-immutable'
+import Immutable from 'seamless-immutable';
+import ProgressConfig from '../Config/ProgressConfig';
 
 /* ------------- Types and Action Creators ------------- */
 
@@ -19,7 +20,7 @@ const { Types, Creators } = createActions({
   channelFailure: null,
   getPayments: ["data"],
   checkGameDetail: ["data"],
-
+  updateProgress: ["data"],
 })
 
 export const ChannelTypes = Types
@@ -50,7 +51,8 @@ export const INITIAL_STATE = Immutable({
   loading: false,
   refreshing: false,
   checkType:'selected',
-
+  progress: 0,
+  progressArray:Object.values(ProgressConfig),
 })
 
 /* ------------- Selectors ------------- */
@@ -67,7 +69,22 @@ export const getAllBets = (state, {records}) => state.merge({records})
 export const getPayments = (state, { payments }) => state.merge({ payments });
 
 
+export const updateProgress = (state, {data}) =>{
+  const {progress} = data;
+  let progressArray = Object.values(ProgressConfig);
 
+  progressArray = progressArray.map((item)=>{
+    const {progress:index} = item;
+
+    if (index <= progress) {
+      item.completed = true;
+    } else {
+      item.completed = false;
+    }
+    return item;
+  });
+  return state.merge({progress, progressArray});
+}
 
 export const checkGameDetail = (state, {data}) => {
   const betId = data.item.item.betId;
@@ -129,6 +146,5 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.GET_PAYMENTS]: request,
   [Types.GET_ALL_BETS]: request,
   [Types.CHECK_GAME_DETAIL]: checkGameDetail,
-
-
+  [Types.UPDATE_PROGRESS]:updateProgress,
 })

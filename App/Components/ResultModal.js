@@ -3,13 +3,15 @@ import { View, Text, TouchableOpacity, FlatList} from 'react-native'
 import GameActions from '../Redux/GameRedux'
 import WalletActions from '../Redux/WalletRedux'
 import { displayETH } from '../Lib/Utils/format'
-import Icon from 'react-native-vector-icons/SimpleLineIcons'
+import Icon from 'react-native-vector-icons/SimpleLineIcons';
+import Feather from 'react-native-vector-icons/Feather'
 import styles from './Styles/ResultModalStyle'
 import { connect } from 'react-redux'
 import I18n from '../I18n';
 
 import {winOrLose} from '../Utils/Eth4FunUtils';
 import ProgressConfig from '../Config/ProgressConfig';
+
 
 // i18n
 const STATUS_TEXT = {
@@ -33,22 +35,26 @@ class ResultModal extends Component {
   }
 
   _renderItem=({item})=>{
-    console.log('========item============================');
-    console.log(item);
-    const {des=''} = item;
+    const {des='', completed=true, index, key} = item;
+    const completedStyle = completed ? {color: 'green'} : {color: '#FFFFFF'}
     return (
-      <View>
-        <Text>{des}</Text>
+      <View style={styles.itemStyle}>
+        <Text style={[styles.commonText, completedStyle]}>{index}</Text>
+        <Text style={[styles.commonText, completedStyle]}>{key}</Text>
+        <Text style={[styles.progressText, completedStyle]} numberOfLines={1} ellipsizeMode='middle'>{des}</Text>
+        <Feather style={[styles.icon, completedStyle ]}
+              name='check'
+              size={22}/>
       </View>
     )
   }
 
+
+
   _renderItemSeparatorComponent = ()=><View style={styles.itemSeparator}/>
 
   render () {
-    const data = Object.values(ProgressConfig);
-    const {modulo={}, status={}, result={}} = this.props||{}
-
+    const {modulo={}, status={}, result={}, progressArray} = this.props||{}
     return (
       <View style={styles.detailSection}>
         <View style={[styles.container, styles['container_'+status]]}>
@@ -69,7 +75,7 @@ class ResultModal extends Component {
 
         <FlatList
           style={styles.flatList}
-          data={data}
+          data={progressArray}
           keyExtractor={(item,index) => ''+index}
           renderItem={this._renderItem}
           ItemSeparatorComponent = {this._renderItemSeparatorComponent}
@@ -80,10 +86,9 @@ class ResultModal extends Component {
 }
 // item.title
 
-const mapStateToProps = (state) => {
-  return {
-
-  }
+const mapStateToProps = ({channel}) => {
+  const {progressArray=[]} = channel;
+  return { progressArray }
 }
 
 const mapDispatchToProps = (dispatch) => {
@@ -92,7 +97,10 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(GameActions.updateStatus({status:{[modulo]:'idle'}}))
       dispatch(WalletActions.walletRequest())
     },
-    refresh: () => dispatch(GameActions.refreshStatus())
+    refresh: (modulo, status) => {
+      // dispatch(GameActions.refreshStatus())
+      // dispatch(GameActions.updateStatus({ status: { 2 : 'idle' }}))
+    }
   }
 }
 
