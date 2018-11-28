@@ -19,6 +19,7 @@ import NotificationActions from '../Redux/NotificationRedux'
 import WalletActions from '../Redux/WalletRedux'
 import SocketIOClient from 'socket.io-client'
 // import { ConfigSelectors } from '../Redux/ConfigRedux'
+import ChannelActions from '../Redux/ChannelRedux'
 
 export function * getConfig (api, action) {
   const { data } = action
@@ -82,6 +83,7 @@ export function * watchSocketStatusChannel(){
 }
 
 function socketConnected() {
+  socketStatusChannel.put(ChannelActions.setConnectStatus({socketStatus:1}))
   socketStatusChannel.put(ConfigActions.socketStatus('on'))
   console.tron.log('Socket Connected', socket.id)
 
@@ -95,8 +97,8 @@ const socketMessage = (msg) => {
 
   socket.emit('ack', _msgId)
 
-  if(!status 
-    || status==='won' 
+  if(!status
+    || status==='won'
     || status==='lost') return
 
   !!status && socketStatusChannel.put(GameActions.updateStatus({status:{[modulo]:status}, hash}))
@@ -127,15 +129,18 @@ const socketHistoryMessage = (msg) => {
 }
 
 function socketError (err) {
+  socketStatusChannel.put(ChannelActions.setConnectStatus({socketStatus:0}))
   console.tron.log('Socket ERROR:', err.message)
 }
 
 function socketClosed (e) {
+  socketStatusChannel.put(ChannelActions.setConnectStatus({socketStatus:0}))
   socketStatusChannel.put(ConfigActions.socketStatus('off'))
   console.tron.log('Socket CLOSE', e)
 }
 
 function socketReconnect(e) {
+  socketStatusChannel.put(ChannelActions.setConnectStatus({socketStatus:1}))
   socketStatusChannel.put(ConfigActions.socketStatus('on'))
   console.tron.log('Socket Reconnect', e)
 

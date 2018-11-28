@@ -94,12 +94,18 @@ class WalletScreen extends Component {
   }
 
   _openTelegram = () => {
-    this._trackClick('Telegram')
+    // this._trackClick('Telegram')
     let {telegroup} = this.props
     Linking.canOpenURL(telegroup).then(supported => {
-      return Linking.openURL(telegroup)
+      if (supported) {
+        return Linking.openURL(telegroup)
+      } else {
+        console.log('==============supported======================');
+        console.log(supported);
+      }
     }).catch(err => console.tron.log('error open telegram', err))
   }
+
 
   _openFAQ = () => {
     this._trackClick('FAQ')
@@ -150,6 +156,13 @@ class WalletScreen extends Component {
             </TouchableOpacity>
           </View>
         </ScrollView>
+        <View style={styles.bottomView}>
+          <TouchableOpacity onPress={_ => this._goto("telegram")}>
+            <Text style={styles.buttonText}>Telegram@</Text>
+          </TouchableOpacity>
+        </View>
+
+
       </View>
     )
   }
@@ -187,55 +200,55 @@ export default connect(mapStateToProps, mapDispatchToProps)(WalletScreen);
 
 
 
-        {/* <View style={styles.shareWrapper}>
-          <TouchableOpacity style={styles.shareUp} onPress={_ => this._goto("promotion")}>
-            <Text style={styles.label}>{I18n.t('ReferralBonus')}</Text>
-            <View style={[styles.balanceWrapper, styles.bonusBalanceWrapper]}>
-              <Text style={styles.bonus}>{ displayETH(bonus) }</Text>
-              <Text style={styles.unit}> ETH</Text>
-            </View>
-            <View style={styles.bonusDetailWrapper}>
-              <Text style={styles.bonusDetailText}>
-                <Entypo name={"chevron-thin-right"} size={28} color={Colors.cloud} />
-              </Text>
-            </View>
-          </TouchableOpacity>
-          <View style={styles.shareDown}>
-            <View style={styles.codeWrapper}>
-              <Text style={styles.label}>{I18n.t('ReferralCode')+':'} </Text>
-              <Text style={styles.code}>{code}</Text>
-            </View>
-            <View style={styles.actionsWrapper}>
-              <TouchableOpacity onPress={_ => this._copyCode()} style={styles.actionWrapper}>
-                <Text style={styles.action}>{I18n.t('CopyCode')}</Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={_ => this._shareLink()} style={styles.actionWrapper}>
-                <Text style={styles.action}>{I18n.t('ShareLink')}</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View> */}
+  {/* <View style={styles.shareWrapper}>
+    <TouchableOpacity style={styles.shareUp} onPress={_ => this._goto("promotion")}>
+      <Text style={styles.label}>{I18n.t('ReferralBonus')}</Text>
+      <View style={[styles.balanceWrapper, styles.bonusBalanceWrapper]}>
+        <Text style={styles.bonus}>{ displayETH(bonus) }</Text>
+        <Text style={styles.unit}> ETH</Text>
+      </View>
+      <View style={styles.bonusDetailWrapper}>
+        <Text style={styles.bonusDetailText}>
+          <Entypo name={"chevron-thin-right"} size={28} color={Colors.cloud} />
+        </Text>
+      </View>
+    </TouchableOpacity>
+    <View style={styles.shareDown}>
+      <View style={styles.codeWrapper}>
+        <Text style={styles.label}>{I18n.t('ReferralCode')+':'} </Text>
+        <Text style={styles.code}>{code}</Text>
+      </View>
+      <View style={styles.actionsWrapper}>
+        <TouchableOpacity onPress={_ => this._copyCode()} style={styles.actionWrapper}>
+          <Text style={styles.action}>{I18n.t('CopyCode')}</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={_ => this._shareLink()} style={styles.actionWrapper}>
+          <Text style={styles.action}>{I18n.t('ShareLink')}</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
+  </View> */}
 
-        {/* <View style={styles.buttons}>
-          <View style={styles.button}>
-            <TouchableOpacity style={[styles.button, { borderWidth: 0 }]} onPress={_ => this._checkUpdate()}>
-              <Text style={styles.buttonText}>{I18n.t('Version')}</Text>
-              <Text style={styles.buttonText}>1.0.0</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.button}>
-            <TouchableOpacity style={[styles.button, { borderWidth: 0 }]} onPress={_ => this._goto("faq")}>
-              <Text style={styles.buttonText}>FAQ</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.button}>
-            <TouchableOpacity style={[styles.button, { borderWidth: 0 }]} onPress={_ => this._goto("telegram")}>
-              <Text style={styles.buttonText}>Telegram</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.button}>
-            <TouchableOpacity style={[styles.button, { borderWidth: 0 }]} onPress={_ => this._goto("settings")}>
-              <Text style={styles.buttonText}>{I18n.t('SettingScreenLabel')}</Text>
-            </TouchableOpacity>
-          </View>
-        </View> */}
+  {/* <View style={styles.buttons}>
+    <View style={styles.button}>
+      <TouchableOpacity style={[styles.button, { borderWidth: 0 }]} onPress={_ => this._checkUpdate()}>
+        <Text style={styles.buttonText}>{I18n.t('Version')}</Text>
+        <Text style={styles.buttonText}>1.0.0</Text>
+      </TouchableOpacity>
+    </View>
+    <View style={styles.button}>
+      <TouchableOpacity style={[styles.button, { borderWidth: 0 }]} onPress={_ => this._goto("faq")}>
+        <Text style={styles.buttonText}>FAQ</Text>
+      </TouchableOpacity>
+    </View>
+    <View style={styles.button}>
+      <TouchableOpacity style={[styles.button, { borderWidth: 0 }]} onPress={_ => this._goto("telegram")}>
+        <Text style={styles.buttonText}>Telegram</Text>
+      </TouchableOpacity>
+    </View>
+    <View style={styles.button}>
+      <TouchableOpacity style={[styles.button, { borderWidth: 0 }]} onPress={_ => this._goto("settings")}>
+        <Text style={styles.buttonText}>{I18n.t('SettingScreenLabel')}</Text>
+      </TouchableOpacity>
+    </View>
+  </View> */}

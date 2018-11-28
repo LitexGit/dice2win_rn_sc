@@ -20,6 +20,7 @@ const { Types, Creators } = createActions({
   channelFailure: null,
   getPayments: ["data"],
   checkGameDetail: ["data"],
+  setConnectStatus: ["data"],
   updateProgress: ["data"],
 })
 
@@ -51,6 +52,8 @@ export const INITIAL_STATE = Immutable({
   loading: false,
   refreshing: false,
   checkType:'selected',
+  web3Status:0,
+  socketStatus:0,
   progress: 0,
   progressArray:Object.values(ProgressConfig),
 })
@@ -109,9 +112,14 @@ export const checkGameDetail = (state, {data}) => {
 }
 
 
+export const setConnectStatus = (state, {data}) =>  {
+  return state.merge(data);
+}
 
-export const setChannel = (state, {channel}) =>
-  state.merge({ channel })
+export const setChannel = (state, {channel}) =>  {
+  return state.merge({ channel })
+}
+
 
 export const setTimer = (state, { timer }) =>
   state.merge({ timer })
@@ -139,10 +147,10 @@ export const failure = state => state.merge({ refreshing: false, loading: false,
 
 export const reducer = createReducer(INITIAL_STATE, {
   [Types.SET_CHANNEL]: setChannel,
+  [Types.SET_CONNECT_STATUS]: setConnectStatus,
   [Types.CHANNEL_REQUEST]: request,
   [Types.CHANNEL_SUCCESS]: success,
   [Types.CHANNEL_FAILURE]: failure,
-
   [Types.GET_PAYMENTS]: request,
   [Types.GET_ALL_BETS]: request,
   [Types.CHECK_GAME_DETAIL]: checkGameDetail,

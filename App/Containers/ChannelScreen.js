@@ -20,7 +20,7 @@ import I18n from '../I18n'
 
 // Styles
 import styles from './Styles/ChannelScreenStyle'
-import { Colors, Images, Metrics } from '../Themes'
+import { Colors, Images, Metrics, Fonts} from '../Themes';
 
 class ChannelScreen extends Component {
 
@@ -182,14 +182,18 @@ class ChannelScreen extends Component {
   }
 
   render () {
-    let { channel, payments, refreshing, loading} = this.props
+    const { channel, payments, refreshing, loading} = this.props;
+    const isTopUp = displayETH(channel.remoteBalance) > 1 ? false : true;
 
     return (
       <View style={styles.container}>
         { W.address && <StatusBar /> }
         <View style={styles.channelInfo}>
           <Text style={[styles.myBalance]}>{I18n.t('ChannelMyBalance')}: {displayETH(channel.localBalance)} ETH</Text>
-          <Text style={[styles.rivalBalance]}>{I18n.t('ChannelRivalBalance')}: {displayETH(channel.remoteBalance)} ETH</Text>
+          <View style={styles.rivalSection}>
+            <Text style={styles.rivalBalance}>{I18n.t('ChannelRivalBalance')}: {displayETH(channel.remoteBalance)} ETH</Text>
+            {isTopUp ? <Text style={[styles.rivalBalance, {fontSize: Fonts.size.small}]}>正在充值中</Text> : null}
+          </View>
         </View>
 
         <View style={styles.statusInfo}>

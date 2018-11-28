@@ -24,6 +24,11 @@ import { displayETH, DECIMAL } from '../Lib/Utils/format'
 import I18n from '../I18n'
 import StatusBar from '../Components/StatusBar';
 
+import { ConfigSelectors } from '../Redux/ConfigRedux';
+import { getMaxBet } from '../Lib/Utils/calculate';
+import { toFixed } from '../Lib/Utils/format';
+
+
 const GAME_COMS = {2:<Coin />, 6:<OneDice />, 36:<TwoDice />, 100:<Etheroll />}
 
 const GAME_TITLES = {
@@ -106,6 +111,31 @@ class GameContainerScreen extends Component {
     }
   }
 
+  _onChangeText=(text)=>{
+    const maxWin = ConfigSelectors.getMaxWin;
+    const winRate = ConfigSelectors.getWinRate;
+    const edge = ConfigSelectors.getEdge;
+    const maxBet = parseFloat(toFixed(getMaxBet(maxWin, winRate, edge), 2));
+    // TODO 获取 minBet 异常
+    // const minBet = ConfigSelectors.getMinBet;
+    this.setState({stake:text})
+
+    if(/^\d+(\.\d{1,2})?$/.test(text)){
+      const stake = parseFloat(text);
+    if(!!stake){
+      if (stake < 0.01 || stake > maxBet) {
+        this.setState({valid:false})
+      } else {
+        this.setState({valid:true});
+        this.props.setStake(stake);
+        }
+      }
+    } else {
+      this.setState({valid:false})
+    }
+  }
+
+
   componentDidMount(){
     this.props.navigation.setParams({ gotoRecords: _=>this.props.navigate('GameRecordScreen')})
     this.props.navigation.setParams({ title: GAME_TITLES[this.props.index]})
@@ -123,9 +153,7 @@ class GameContainerScreen extends Component {
   }
 
   render () {
-    let { index, stake, balance, status, result, rewardTime, winRate, feeRate, balanceFetching,
-      setStake, channel
-    } = this.props
+    const { index=2, stake, status={}, result={}, rewardTime, winRate, setStake, channel} = this.props;
 
     return (
       <View style={styles.container}>
@@ -162,19 +190,7 @@ class GameContainerScreen extends Component {
                 underlineColorAndroid={'transparent'}
                 keyboardType='decimal-pad'
                 numberOfLines={1}
-                onChangeText={text => {
-                  this.setState({stake:text})
-                  if(/^\d+(\.\d{1,2})?$/.test(text)){
-                    let stake = parseFloat(text)
-                    if(!!stake){
-                    this.setState({valid:true})
-                    setStake(stake)
-                    }
-                  } else {
-                    this.setState({valid:false})
-                  }
-                }}
-                />
+                onChangeText={(text)=>this._onChangeText(text)}/>
 
               <TouchableOpacity style={styles.stakeButton} onPress={_=>setStake(stake + 0.01)}>
                 <Text style={[styles.stakeButtonText, {fontSize: 28}]}>+</Text>

@@ -19,6 +19,7 @@ import { WalletSelectors } from '../Redux/WalletRedux'
 // import { GameSelectors } from '../Redux/GameRedux'
 import MessageBoxActions from '../Redux/MessageBoxRedux'
 // import RecordActions from '../Redux/RecordRedux'
+import WalletActions from '../Redux/WalletRedux'
 
 import walletLib from '../Lib/Wallet/wallet'
 import PwdModalActions, { PwdModalSelectors } from '../Redux/PwdModalRedux'
@@ -112,27 +113,38 @@ function listenerInit(client) {
     if(bet.winner == 1) {
       status = 'win'
     }
+    channelListener.put(ChannelActions.setConnectStatus({web3Status:1}));
     channelListener.put(ChannelActions.updateProgress({progress:8}));
     channelListener.put(ChannelActions.setChannel(channel));
     channelListener.put(GameActions.updateResult({[bet.modulo]: { amount: winAmount, betDetail: bet} }));
     channelListener.put(GameActions.updateStatus({ status: {[bet.modulo]: status}}));
   }).on('ChannelOpen', (channel) => {
+    channelListener.put(ChannelActions.setConnectStatus({web3Status:1}));
+    channelListener.put (WalletActions.walletRequest());
     channelListener.put(ChannelActions.setChannel(channel));
   }).on('ChannelClosed', (channel) => {
     console.log('LISTEN CHANNEL CLOSE');
     console.log(channel);
+    channelListener.put(ChannelActions.setConnectStatus({web3Status:0}));
+    channelListener.put (WalletActions.walletRequest());
     channelListener.put(ChannelActions.setChannel(channel));
   }).on('BalanceProofUpdated', (channel) => {
     console.log('LISTEN Balance Proof Updated');
     console.log(channel);
+    channelListener.put(ChannelActions.setConnectStatus({web3Status:1}));
+    channelListener.put (WalletActions.walletRequest());
     channelListener.put(ChannelActions.setChannel(channel));
   }).on('CooperativeSettled', function(channel){
     console.log('LISTEN Cooperative Settled');
     console.log(channel);
+    channelListener.put(ChannelActions.setConnectStatus({web3Status:1}));
+    channelListener.put (WalletActions.walletRequest());
     channelListener.put(ChannelActions.setChannel(channel));
   }).on('ChannelDeposit', function(channel){
     console.log('LISTEN Channel Deposit');
     console.log(channel);
+    channelListener.put(ChannelActions.setConnectStatus({web3Status:1}));
+    channelListener.put (WalletActions.walletRequest());
     channelListener.put(ChannelActions.setChannel(channel));
   }).on('BetRequest', betRequest)
     .on('LockedTransfer', lockedTransfer)
@@ -172,7 +184,7 @@ function * unlockWallet(redirectAction, redirectData) {
       }))
 
       if (!!password) {
-        yield put(PwdModalActions.setErrInfo({errInfo: 'wrong password'}))
+        yield put(PwdModalActions.setErrInfo({errInfo: '密码错误'}))
       }
       return ;
     }
@@ -204,10 +216,10 @@ export function * openChannel (api, action) {
     let depositAmount = yield select(ChannelConfirmModalSelectors.getChannelAmount);
     // console.log(W.wallet)
     if(isNaN(depositAmount) || depositAmount <= 0) {
-      yield put(MessageBoxActions.openMessageBox({ title: 'Error', message: 'Amount Faild.' }));
+      yield put(MessageBoxActions.openMessageBox({ title: '错误', message: '金额格式异常.' }));
       return ;
     } else if(wallet.balance < depositAmount) {
-      yield put(MessageBoxActions.openMessageBox({ title: 'Error', message: 'Not sufficient funds.' }));
+      yield put(MessageBoxActions.openMessageBox({ title: '错误', message: '金额不足.' }));
       return ;
     } else {
       // 读取配置信息
@@ -217,7 +229,7 @@ export function * openChannel (api, action) {
       depositAmount = depositAmount * 1e18;
       try {
         yield scclient.openChannel(partnerAddress, depositAmount);
-        yield put(MessageBoxActions.openMessageBox({ title: 'Message', message: 'The request has been submitted. Please wait.' }));
+        yield put(MessageBoxActions.openMessageBox({ title: '成功', message: '请求已提交，请等待.' }));
         // 改为 Pending 状态
         yield put(ChannelActions.setChannel({
           status: 0
@@ -225,7 +237,7 @@ export function * openChannel (api, action) {
       } catch(err) {
         console.log(err)
         // yield put(MessageBoxActions.openMessageBox({ title: 'Error', message: 'Opreation Faild.' }));
-        yield put(MessageBoxActions.openMessageBox({ title: 'Error', message: err + '' }));
+        yield put(MessageBoxActions.openMessageBox({ title: '错误', message: err + '' }));
       }
     }
   }
@@ -251,10 +263,10 @@ export function * closeChannel (api, action) {
   try {
     // yield scclient.closeChannel(partnerAddress);
     yield scclient.closeChannelCooperative(partnerAddress);
-    yield put(MessageBoxActions.openMessageBox({ title: 'Message', message: 'The request has been submitted. Please wait.' }));
+    yield put(MessageBoxActions.openMessageBox({ title: '成功', message: '请求已提交，请等待.' }));
     yield put(ChannelActions.setChannel({status: 0}));
   } catch(err) {
-    yield put(MessageBoxActions.openMessageBox({ title: 'Error', message: 'Opreation Faild.' }));
+    yield put(MessageBoxActions.openMessageBox({ title: '失败', message: '操作失败.' }));
   }
 
 }
@@ -273,17 +285,17 @@ export function * deposit (api, action) {
   let wallet = yield select(WalletSelectors.getWallet);
 
   if(isNaN(depositAmount) || depositAmount <= 0) {
-    yield put(MessageBoxActions.openMessageBox({ title: 'Error', message: 'Amount Faild.' }));
+    yield put(MessageBoxActions.openMessageBox({ title: '错误', message: '金额格式异常.' }));
   } else if (wallet.balance < depositAmount) {
-    yield put(MessageBoxActions.openMessageBox({ title: 'Error', message: 'Not sufficient funds.' }));
+    yield put(MessageBoxActions.openMessageBox({ title: '错误', message: '金额不足.' }));
   } else {
     depositAmount = depositAmount * 1e18;
 
     try {
       yield scclient.deposit(partnerAddress, depositAmount);
-      yield put(MessageBoxActions.openMessageBox({ title: 'Message', message: 'The request has been submitted. Please wait.' }));
+      yield put(MessageBoxActions.openMessageBox({ title: '成功', message: '请求已提交，请等待.' }));
     } catch (err) {
-      yield put(MessageBoxActions.openMessageBox({ title: 'Error', message: 'Opreation Faild.' }));
+      yield put(MessageBoxActions.openMessageBox({ title: '失败', message: '操作失败.' }));
     }
   }
 }
@@ -315,13 +327,13 @@ export function * startBet (api, action) {
     let betInfo = yield scclient.startBet(channelId, partnerAddress, betMask, modulo, amount, randomSeed);
     // console.log(betInfo);
     if(betInfo == false) {
-      yield put(MessageBoxActions.openMessageBox({ title: 'Warning', message: '交易太频繁' }));
+      yield put(MessageBoxActions.openMessageBox({ title: '警告', message: '交易太频繁' }));
       yield put(GameActions.updateStatus({ status: { 2 : 'idle' }}));
     }
     return;
   } catch(err) {
     console.log(err)
-    yield put(MessageBoxActions.openMessageBox({ title: 'Warning', message: '交易太频繁' }));
+    yield put(MessageBoxActions.openMessageBox({ title: '警告', message: '交易太频繁' }));
     yield put(GameActions.updateStatus({ status: { 2 : 'idle' }}));
   }
 }

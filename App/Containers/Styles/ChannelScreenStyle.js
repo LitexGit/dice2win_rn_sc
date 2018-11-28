@@ -17,13 +17,13 @@ export default StyleSheet.create({
 
   channelInfo: {
     flexDirection: 'row',
-    alignItems: 'center',
+    // alignItems: 'center',
     justifyContent: 'space-between',
   },
 
   myBalance: {
     fontSize: Fonts.size.medium,
-    justifyContent: 'center',
+    // justifyContent: 'center',
     alignItems: 'center',
     color: Colors.snow,
     paddingLeft: 35,
@@ -32,14 +32,16 @@ export default StyleSheet.create({
 
   rivalBalance: {
     fontSize: Fonts.size.medium,
-    justifyContent: 'center',
+    // justifyContent: 'center',
     alignItems: 'center',
     color: Colors.snow,
     paddingRight: 35,
     paddingTop: 10
   },
 
-
+  rivalSection:{
+    alignItems: 'center',
+  },
 
   channelStatusClosed: {
     color: 'red',

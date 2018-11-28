@@ -41,7 +41,6 @@ class ChannelConfirmModal extends Component {
         <View style={styles.fromToWrapper}>
           <Text style={styles.label}>Amount: </Text>
           <TextInput style={styles.inputText}
-            value = {1}
             autoFocus={true}
             multiline={false}
             textAlign='center'

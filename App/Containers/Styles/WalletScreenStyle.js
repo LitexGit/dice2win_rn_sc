@@ -41,11 +41,17 @@ export default StyleSheet.create({
     fontSize: 16,
     color: Colors.text,
   },
-  
+
   qr:{
     margin:10,
     padding: 2,
     backgroundColor: Colors.steel,
+    paddingRight: 20,
+  },
+  bottomView:{
+    height:40,
+    alignItems:'flex-end',
+    justifyContent: 'center',
   },
 
   addressWrapper:{
@@ -155,5 +161,6 @@ export default StyleSheet.create({
     ...Fonts.style.normal,
     color: Colors.ricePaper,
     fontWeight: 'bold',
+    paddingRight: 20,
   }
 })
