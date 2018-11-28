@@ -140,11 +140,11 @@ class GameContainerScreen extends Component {
         { W.address && <StatusBar /> }
         <ScrollView style={styles.container}>
         <View style={styles.GameContainerScreen}>
-          {status[index]!='idle' && (
+          {status[index]=='idle' && (
             <ResultModal modulo={index} status={status[index]} result={result[index]} />
           )}
 
-          {status[index] === 'idle' && <View style={styles.gameConetent}>
+          {status[index] !== 'idle' && <View style={styles.gameConetent}>
             <KeyboardAvoidingView behavior='position' keyboardVerticalOffset={100} >
             {GAME_COMS[index]}
             <View style={styles.stakeBox}>

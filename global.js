@@ -9,7 +9,7 @@ if(Config.DEBUG_LOG == '0'){
   console.log = ()=>{};
 }
 
-console.log = console.tron.log;
+// console.log = console.tron.log;
 
 global.Buffer = require('buffer').Buffer;
 global.process = require('process');

@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native'
+import { StyleSheet, PixelRatio } from 'react-native'
 import { Colors, Fonts } from '../../Themes'
 
 export default StyleSheet.create({
@@ -88,5 +88,12 @@ export default StyleSheet.create({
     marginTop: 8,
     fontSize: 14,
 
+  },
+  itemSeparator:{
+    width: 1 / PixelRatio.get(),
+    backgroundColor:Colors.separate_line_color,
+  },
+  flatList:{
+    backgroundColor: 'red',
   }
 })

@@ -116,6 +116,8 @@ function listenerInit(client) {
     // console.log(channel)
     channelListener.put(ChannelActions.setChannel(channel));
     channelListener.put(GameActions.updateResult({[bet.modulo]: { amount: winAmount, betDetail: bet} }));
+
+    //bet --->  updateStatus yield put(GameActions.updateStatus({ status: {[bet.modulo]: !idle }}));
     channelListener.put(GameActions.updateStatus({ status: {[bet.modulo]: status}}));
   }).on('ChannelOpen', (channel) => {
     channelListener.put(ChannelActions.setChannel(channel));
