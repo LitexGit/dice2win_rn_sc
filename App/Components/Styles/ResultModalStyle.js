@@ -107,13 +107,17 @@ export default StyleSheet.create({
     ...Fonts.style.regular,
     color: '#FFFFFF',
     flex:1,
+    textAlign: 'center',
+    fontWeight: '800',
   },
   commonText:{
     ...Fonts.style.regular,
     color: '#FFFFFF',
     width: 30,
+    fontWeight: '800',
   },
   icon: {
     marginLeft: 10,
+    fontWeight: '800',
   }
 })

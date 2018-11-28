@@ -37,7 +37,7 @@ class ResultModal extends Component {
 
   _renderItem=({item})=>{
     const {des='', completed=true, index, key} = item;
-    const completedStyle = completed ? {color: 'green'} : {color: '#FFFFFF'}
+    const completedStyle = completed ? {color: '#7FFF00'} : {color: '#999999'}
     return (
       <View style={styles.itemStyle}>
         <Text style={[styles.commonText, completedStyle]}>{index}</Text>
