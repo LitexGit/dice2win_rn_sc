@@ -106,15 +106,12 @@ function * initDB(){
  */
 function listenerInit(client) {
   client.on('BetSettled', (channel, bet) => {
-
     console.log('==============betSettle======================');
     console.log(channel);
     console.log(bet);
-
     let status = 'lose'
     // console.log(bet)
     let winAmount = web3.utils.fromWei(web3.utils.toBN(bet.winAmount).add(web3.utils.toBN(bet.value)).toString(10), 'ether');
-
     if(bet.winner == 1) {
       status = 'win'
     }
@@ -147,6 +144,7 @@ function listenerInit(client) {
     .on('Preimage', preimage)
     .on('DirectTransfer', directTransfer)
     .on('DirectTransferR', directTransferR)
+
 
 
 }
