@@ -106,6 +106,11 @@ function * initDB(){
  */
 function listenerInit(client) {
   client.on('BetSettled', (channel, bet) => {
+
+    console.log('==============betSettle======================');
+    console.log(channel);
+    console.log(bet);
+
     let status = 'lose'
     // console.log(bet)
     let winAmount = web3.utils.fromWei(web3.utils.toBN(bet.winAmount).add(web3.utils.toBN(bet.value)).toString(10), 'ether');
@@ -135,7 +140,14 @@ function listenerInit(client) {
     console.log('LISTEN Channel Deposit');
     console.log(channel);
     channelListener.put(ChannelActions.setChannel(channel));
-  });
+  }).on('BetRequest', betRequest)
+    .on('LockedTransfer', lockedTransfer)
+    .on('LockedTransferR', lockedTransferR)
+    .on('BetResponse', betResponse)
+    .on('Preimage', preimage)
+    .on('DirectTransfer', directTransfer)
+    .on('DirectTransferR', directTransferR)
+
 
 }
 
@@ -460,6 +472,49 @@ export function * getBetById (api, action) {
   let {betId} = action.data
 
   yield scclient.getBetById(betId);
+}
+
+
+const betRequest = (channel, bet)=>{
+  console.log('==============betRequest======================');
+  console.log(channel);
+  console.log(bet);
+}
+
+const lockedTransfer = (channel, bet)=>{
+  console.log('============lockedTransfer========================');
+  console.log(channel);
+  console.log(bet);
+}
+const lockedTransferR = (channel, bet)=>{
+  console.log('===========lockedTransferR=========================');
+  console.log(channel);
+  console.log(bet);
+}
+const betResponse = (channel, bet)=>{
+  console.log('===============betResponse=====================');
+  console.log(channel);
+  console.log(bet);
+}
+const preimage = (channel, bet)=>{
+  console.log('===============preimage=====================');
+  console.log(channel);
+  console.log(bet);
+}
+const directTransfer = (channel, bet)=>{
+  console.log('==============directTransfer======================');
+  console.log(channel);
+  console.log(bet);
+}
+const directTransferR = (channel, bet)=>{
+  console.log('===============DirectTransferR=====================');
+  console.log(channel);
+  console.log(bet);
+}
+const betSettle = (channel, bet)=>{
+  console.log('==============betSettle======================');
+  console.log(channel);
+  console.log(bet);
 }
 
 
