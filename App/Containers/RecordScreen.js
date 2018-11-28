@@ -116,6 +116,8 @@ class RecordScreen extends Component {
     let {modulo, value:inValue, winAmount:outValue, time, winner: status, isOpen} = item;
     let icon = Images[GAME_NAMES[modulo]];
 
+    const winValue = 2 * displayETH(getWinAmount({winner:status, outValue}), 4);
+
     return (
       <View>
         <TouchableOpacity style={styles.gameItem} onPress={_=>this._itemPressed(item)}>
@@ -130,7 +132,7 @@ class RecordScreen extends Component {
           </View>
           <View style={styles.outWrapper}>
             <Text style={styles.darkLabel}>out: </Text>
-            <Text style={styles.outValue}>{displayETH(getWinAmount({winner:status, outValue}), 4)}</Text>
+            <Text style={styles.outValue}>{winValue}</Text>
           </View>
         </TouchableOpacity>
         {isOpen && <GameDetailsView item={item}/>}
