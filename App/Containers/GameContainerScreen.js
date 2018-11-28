@@ -136,8 +136,9 @@ class GameContainerScreen extends Component {
     } = this.props
 
     return (
-      <ScrollView style={styles.container}>
+      <View style={styles.container}>
         { W.address && <StatusBar /> }
+        <ScrollView style={styles.container}>
         <View style={styles.GameContainerScreen}>
           {status[index]!='idle' && (
             <ResultModal modulo={index} status={status[index]} result={result[index]} />
@@ -214,6 +215,8 @@ class GameContainerScreen extends Component {
           </View>}
         </View>
       </ScrollView>
+
+      </View>
     )
   }
 }

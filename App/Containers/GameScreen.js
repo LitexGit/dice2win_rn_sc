@@ -55,10 +55,8 @@ class GameScreen extends Component {
     console.tron.log('navigation', this.props.navigation)
   }
 
-  // onPress={_=>{
-  //   this.props.navigate('WebviewScreen', {url:item.img_href, title:item.title})
-  // }}
-  
+
+
   Slide = (item) => {
     return (
       <TouchableWithoutFeedback  style={styles.slide} >
@@ -104,30 +102,12 @@ class GameScreen extends Component {
     let notice = (!!notices && notices.length) ? notices[noticeIndex] : null
     return (
       <View style={styles.container}>
+        { W.address && <StatusBar /> }
         <View style={styles.swiper}>
-          { W.address && <StatusBar /> }
           <Swiper autoplay={true} showsPagination={false}>
             { !!banners && banners.map((item, i) => this.Slide(item)) }
           </Swiper>
         </View>
-        {/* {!!notice && <View style={styles.noticeBar}>
-          <Image style={styles.noticeIcon} source={Images.bullhorn} />
-          <TouchableWithoutFeedback  onPress={_=>
-            this.props.navigate('WebviewScreen', {url:notice.url, title:notice.title})
-          }>
-            <View style={styles.noticeWrapper}>
-              <MarqueeText ref='marquee'
-                marqueeOnStart
-                loop
-                duration={3000}
-                marqueeResetDelay={1000}
-                onMarqueeComplete={this._changeNotice.bind(this)}
-                style={styles.noticeText}>
-                {!!notice && notice.text}
-              </MarqueeText>
-            </View>
-          </TouchableWithoutFeedback>
-        </View>} */}
         <FlatList
           style={styles.entryList}
           data={entryData}
@@ -162,4 +142,37 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(GameScreen)
+export default connect(mapStateToProps, mapDispatchToProps)(GameScreen);
+
+
+
+
+
+
+
+
+
+        {/* {!!notice && <View style={styles.noticeBar}>
+          <Image style={styles.noticeIcon} source={Images.bullhorn} />
+          <TouchableWithoutFeedback  onPress={_=>
+            this.props.navigate('WebviewScreen', {url:notice.url, title:notice.title})
+          }>
+            <View style={styles.noticeWrapper}>
+              <MarqueeText ref='marquee'
+                marqueeOnStart
+                loop
+                duration={3000}
+                marqueeResetDelay={1000}
+                onMarqueeComplete={this._changeNotice.bind(this)}
+                style={styles.noticeText}>
+                {!!notice && notice.text}
+              </MarqueeText>
+            </View>
+          </TouchableWithoutFeedback>
+        </View>} */}
+
+
+
+          // onPress={_=>{
+          //   this.props.navigate('WebviewScreen', {url:item.img_href, title:item.title})
+          // }}

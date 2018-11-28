@@ -119,34 +119,72 @@ class WalletScreen extends Component {
 
   render () {
     let {fetching, balance, address, bonus, code} = this.props
-    return <ScrollView style={styles.container} refreshControl={<RefreshControl refreshing={fetching} onRefresh={this._onRefresh} tintColor={Colors.tintColor} title={I18n.t('Refreshing')+'...'} titleColor={Colors.text} />}>
+    return (
+      <View style={styles.container}>
         { W.address && <StatusBar /> }
-        <View style={styles.walletWrapper}>
-          <View style={styles.walletEditWrapper}>
-            <TouchableOpacity style={styles.walletButton} onPress={_ => this._goto("wallet")}>
-              <FA5 name={"wallet"} size={24} style={styles.walletIcon} />
-              <Text style={styles.walletText}>{I18n.t('wallet')}</Text>
+        <ScrollView style={styles.container} refreshControl={<RefreshControl refreshing={fetching} onRefresh={this._onRefresh} tintColor={Colors.tintColor} title={I18n.t('Refreshing')+'...'} titleColor={Colors.text} />}>
+          <View style={styles.walletWrapper}>
+            <View style={styles.walletEditWrapper}>
+              <TouchableOpacity style={styles.walletButton} onPress={_ => this._goto("wallet")}>
+                <FA5 name={"wallet"} size={24} style={styles.walletIcon} />
+                <Text style={styles.walletText}>{I18n.t('wallet')}</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.balanceWrapper}>
+              <Text style={styles.balance}>{balance}</Text>
+              <Text style={styles.unit}> ETH</Text>
+            </View>
+            <View style={styles.qr}>
+              {!!address && (
+                <QR
+                  value={address}
+                  size={100}
+                  color={Colors.neetGray}
+                  backgroundColor={Colors.steel}
+                />
+              )}
+            </View>
+            <Text style={styles.addressText}>{address}</Text>
+            <TouchableOpacity style={styles.addressWrapper} onPress={_ => this._copyAddress()}>
+              <Text style={styles.addressText}>{I18n.t('CopyAddress')}</Text>
             </TouchableOpacity>
           </View>
-          <View style={styles.balanceWrapper}>
-            <Text style={styles.balance}>{balance}</Text>
-            <Text style={styles.unit}> ETH</Text>
-          </View>
-          <View style={styles.qr}>
-            {!!address && (
-              <QR
-                value={address}
-                size={100}
-                color={Colors.neetGray}
-                backgroundColor={Colors.steel}
-              />
-            )}
-          </View>
-          <Text style={styles.addressText}>{address}</Text>
-          <TouchableOpacity style={styles.addressWrapper} onPress={_ => this._copyAddress()}>
-            <Text style={styles.addressText}>{I18n.t('CopyAddress')}</Text>
-          </TouchableOpacity>
-        </View>
+        </ScrollView>
+      </View>
+    )
+  }
+}
+
+const mapStateToProps = (state) => {
+  let {
+    wallet: {fetching, address, balance},
+    user: {uid, bonus, code, share_url},
+    config: {telegroup, shareInfo, faq},
+  } = state
+  balance && (balance = balance.toFixed(6))
+  bonus && (bonus = parseFloat(parseFloat(bonus).toFixed(6))) // TODO maybe backend can pass bonus as a number
+  return {
+    fetching, address, balance,
+    uid, bonus, code, share_url,
+    telegroup, shareInfo, faq,
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    loadWallet: () => dispatch(WalletActions.walletRequest()),
+    loadUser: (uid) => dispatch(UserActions.userRequest(uid)),
+    register: (address) => dispatch(UserActions.register({address})),
+    navigate: (target, params) => dispatch(NavigationActions.navigate({routeName: target, params: params})),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(WalletScreen);
+
+
+
+
+
 
 
         {/* <View style={styles.shareWrapper}>
@@ -201,32 +239,3 @@ class WalletScreen extends Component {
             </TouchableOpacity>
           </View>
         </View> */}
-      </ScrollView>;
-  }
-}
-
-const mapStateToProps = (state) => {
-  let {
-    wallet: {fetching, address, balance},
-    user: {uid, bonus, code, share_url},
-    config: {telegroup, shareInfo, faq},
-  } = state
-  balance && (balance = balance.toFixed(6))
-  bonus && (bonus = parseFloat(parseFloat(bonus).toFixed(6))) // TODO maybe backend can pass bonus as a number
-  return {
-    fetching, address, balance,
-    uid, bonus, code, share_url,
-    telegroup, shareInfo, faq,
-  }
-}
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    loadWallet: () => dispatch(WalletActions.walletRequest()),
-    loadUser: (uid) => dispatch(UserActions.userRequest(uid)),
-    register: (address) => dispatch(UserActions.register({address})),
-    navigate: (target, params) => dispatch(NavigationActions.navigate({routeName: target, params: params})),
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(WalletScreen)
