@@ -116,8 +116,6 @@ function listenerInit(client) {
     // console.log(channel)
     channelListener.put(ChannelActions.setChannel(channel));
     channelListener.put(GameActions.updateResult({[bet.modulo]: { amount: winAmount, betDetail: bet} }));
-
-    //bet --->  updateStatus yield put(GameActions.updateStatus({ status: {[bet.modulo]: !idle }}));
     channelListener.put(GameActions.updateStatus({ status: {[bet.modulo]: status}}));
   }).on('ChannelOpen', (channel) => {
     channelListener.put(ChannelActions.setChannel(channel));
@@ -284,6 +282,7 @@ export function * deposit (api, action) {
 
 // 下注
 export function * startBet (api, action) {
+
   // 读取配置信息
   let sysConfig = yield select(ConfigSelectors.getConfig)
   let partnerAddress = sysConfig.partnerAddress
@@ -296,6 +295,7 @@ export function * startBet (api, action) {
 
   if(!scclient.walletUnlocked || !W.wallet) {
     yield unlockWallet(ChannelActions.startBet, {betMask, modulo, value});
+    return;
   }
 
   // 转换成 BN
@@ -306,13 +306,15 @@ export function * startBet (api, action) {
     // console.log(betInfo);
     if(betInfo == false) {
       yield put(MessageBoxActions.openMessageBox({ title: 'Warning', message: '交易太频繁' }))
-    } else {
-
     }
+    return;
   } catch(err) {
     console.log(err)
     yield put(MessageBoxActions.openMessageBox({ title: 'Warning', message: '交易太频繁' }))
   }
+
+  // const betModulo = 2;
+  yield put(GameActions.updateStatus({ status: { 2 : 'placed' }}));
 }
 
 // 获取所有通道
