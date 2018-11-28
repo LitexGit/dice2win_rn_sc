@@ -186,7 +186,7 @@ class GameContainerScreen extends Component {
             {!!W.address && channel.status == 2 && <Text style={[styles.darkLabel, {alignSelf:'center', margin: 5}]}>{I18n.t('ChannelRivalBalance')}:  <Text style={styles.balanceText}>{displayETH(channel.remoteBalance)}</Text> ETH</Text>}
 
             <View style={styles.rewardWrapper}>
-              <View style={styles.infoWrapper}>
+              {/* <View style={styles.infoWrapper}>
                 <View style={styles.info}>
                   <Text style={styles.rewardText}>{I18n.t('WinningPays')}</Text>
                   <Text style={styles.keyText}>{(this.props.rewardTime).toFixed(2)}x</Text>
@@ -195,7 +195,7 @@ class GameContainerScreen extends Component {
                   <Text style={styles.rewardText}>{I18n.t('WinningChance')}</Text>
                   <Text style={styles.keyText}>{(winRate * 100).toFixed(2)}%</Text>
                 </View>
-              </View>
+              </View> */}
               <Text style={styles.rewardText}>{I18n.t('YouWillWin')}  <Text style={styles.keyText}>{(rewardTime * stake).toFixed(DECIMAL)}</Text> ETH</Text>
               {/* <Text style={[styles.darkLabel, {fontSize: 11}]}>{feeRate*100}% {I18n.t('fee')}, 5% {I18n.t('OfWinningsToYourInviter')}</Text> */}
             </View>

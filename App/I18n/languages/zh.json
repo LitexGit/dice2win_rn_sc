@@ -3,8 +3,8 @@
   "GamesTabLabel": "游戏",
 
   "GameCoinTitle": "抛硬币",
-  "GameCoinDesc": "猜正反，赢得最高2.00倍投注",
-  "GameCoin": "选择硬币的一面来进行投注",
+  "GameCoinDesc": "猜正反",
+  "GameCoin": "选择硬币的一面来进行游戏",
 
   "GameDice1Title": "掷骰子",
   "GameDice1Desc": "选择可能出现的点数，最高赢5.94倍",
@@ -23,7 +23,7 @@
   "WinningChance": "胜率",
   "YouWillWin": "你将赢得",
   "OfWinningsToYourInviter": "的奖金会返利给你的邀请者",
-  "Bet": "下注",
+  "Bet": "开始",
   "InvalidStake": "金额格式有误",
 
 
