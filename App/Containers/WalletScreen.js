@@ -52,12 +52,12 @@ class WalletScreen extends Component {
   }
 
   _copyAddress = () => {
-    this._trackClick('CopyAddress')
-    let {address} = this.props
+    // this._trackClick('CopyAddress')
+    const {address} = this.props;
     Clipboard.setString(address)
     Toast.show(I18n.t('AddressCopied'), {
       position: Toast.positions.CENTER,
-    })
+    });
   }
 
   _copyCode = () => {
@@ -113,7 +113,7 @@ class WalletScreen extends Component {
   }
 
   _trackClick = (button) => {
-    let {address, uid} = this.props
+    const {address, uid} = this.props;
     tracker.trackEvent(button, 'Click', { label:uid, value:address })
   }
 
