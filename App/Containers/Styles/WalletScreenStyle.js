@@ -46,7 +46,7 @@ export default StyleSheet.create({
     margin:10,
     padding: 2,
     backgroundColor: Colors.steel,
-    paddingRight: 20,
+    // paddingRight: 20,
   },
   bottomView:{
     height:40,
