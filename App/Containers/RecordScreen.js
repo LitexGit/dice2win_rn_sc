@@ -22,7 +22,8 @@ import styles from './Styles/RecordScreenStyle'
 import NavigationActions from 'react-navigation/src/NavigationActions';
 import I18n from '../I18n';
 
-import {getWinAmount} from '../Utils/Eth4FunUtils'
+import {getWinAmount} from '../Utils/Eth4FunUtils';
+import StatusBar from '../Components/StatusBar';
 
 const GAME_STATUS = [
   {text: I18n.t('wait'), style:{color:'gray'}},
@@ -192,6 +193,7 @@ class RecordScreen extends Component {
 
     return (
       <View style={styles.container}>
+        { W.address && <StatusBar /> }
         <ScrollableTabView
           initialPage={0}
           style={styles.tabBarStyle}
