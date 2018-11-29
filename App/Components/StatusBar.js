@@ -59,6 +59,14 @@ class StatusBar extends Component {
   }
 }
 
+_onPressNavigate=()=>{
+  const { routes, index } = this.props;
+  const route = routes[index];
+  const {routeName=''} = route;
+  if (routes &&  routeName !== 'ChannelScreen') {
+    this.props.navigate('ChannelScreen');
+  }
+}
 
   render () {
     const { channel, web3Status, socketStatus} = this.props;
@@ -67,7 +75,7 @@ class StatusBar extends Component {
 
     return (
       <View style={styles.container}>
-        <TouchableOpacity onPress={_ => this.props.navigate('ChannelScreen')}>
+        <TouchableOpacity onPress={_=>this._onPressNavigate()}>
           <Text style={[this._getChannelstyles(channel.status), connetcStyle]}>{connectDes}{I18n.t('ChannelStatus')}: {this._getChannelStatusDescribe(channel.status)}, {this._getChannelDescribe(channel.status)}.</Text>
         </TouchableOpacity>
       </View>
@@ -77,9 +85,10 @@ class StatusBar extends Component {
 
 const mapStateToProps = (state) => {
   const {
-    channel: { channel, web3Status, socketStatus}
-  } = state
-  return { channel, web3Status, socketStatus}
+    channel: { channel, web3Status, socketStatus},
+    nav:{routes=[], index=0}
+  } = state;
+  return { channel, web3Status, socketStatus, routes, index}
 }
 
 const mapDispatchToProps = (dispatch) => {
