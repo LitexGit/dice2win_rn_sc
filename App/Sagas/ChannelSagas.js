@@ -153,9 +153,6 @@ function listenerInit(client) {
     .on('DirectTransfer', directTransfer)
     .on('DirectTransferR', directTransferR)
     // .on('BetSettled', betSettled)
-
-
-
 }
 
 // 循环监听通道事件
@@ -380,7 +377,7 @@ export function * getChannel (api, action) {
     yield initDB();
   }
 
-  let channelObject = yield select(ChannelSelectors.getChannel)
+  // let channelObject = yield select(ChannelSelectors.getChannel)
   // if(channelObject.channel.status !== 0) {
     // 读取配置信息
     let sysConfig = yield select(ConfigSelectors.getConfig)
