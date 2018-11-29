@@ -27,6 +27,7 @@ import StatusBar from '../Components/StatusBar';
 import { ConfigSelectors } from '../Redux/ConfigRedux';
 import { getMaxBet } from '../Lib/Utils/calculate';
 import { toFixed } from '../Lib/Utils/format';
+import Toast from 'react-native-root-toast';
 
 
 const GAME_COMS = {2:<Coin />, 6:<OneDice />, 36:<TwoDice />, 100:<Etheroll />}
@@ -51,6 +52,24 @@ class GameContainerScreen extends Component {
     this.state = {
       stake: 0.1,
       valid: true,
+    }
+  }
+
+  _checkConnectStatus = async ()=>{
+    const Web3 = require('web3');
+    try{
+      const result = await web3.eth.net.isListening();
+      if (result) {
+        this._placeBet();
+      } else {
+        Toast.show(I18n.t('ServerConnectionException'+result));
+      }
+
+    }catch(err){
+      web3.setProvider(new Web3.providers.WebsocketProvider(global.ethWSUrl));
+      if (global.scclient != null) {
+        Toast.show(I18n.t('ServerConnectionException'));
+      }
     }
   }
 
@@ -216,7 +235,7 @@ class GameContainerScreen extends Component {
               {/* <Text style={[styles.darkLabel, {fontSize: 11}]}>{feeRate*100}% {I18n.t('fee')}, 5% {I18n.t('OfWinningsToYourInviter')}</Text> */}
             </View>
             <View style={styles.startButtonWrapper}>
-              <TouchableOpacity style={styles.startButton} onPress={this._placeBet}>
+              <TouchableOpacity style={styles.startButton} onPress={this._checkConnectStatus}>
                 <Text style={styles.startButtonText}> {I18n.t('Bet')}! </Text>
               </TouchableOpacity>
             </View>

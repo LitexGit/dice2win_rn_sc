@@ -50,7 +50,6 @@ import Toast from 'react-native-root-toast'
 socket.on('connect', async () => {
   Toast.show('SOCKET connect ');
   await Provider.checkWeb3Status();
-
 }).on('disconnect', async ()=>{
   Toast.show('SOCKET disconnect');
 }).on('reconnect', async ()=>{

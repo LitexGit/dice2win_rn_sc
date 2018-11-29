@@ -14,7 +14,7 @@
   "GameDice2Desc": "2 to 12 Winning bet pays up to 35.64×",
   "GameDice2": "Choose sum of dice to bet on",
 
-  "GameRollTitle": "Etheroll", 
+  "GameRollTitle": "Etheroll",
   "GameRollDesc": "1% to 97% Winning bet pays up to 99×",
   "GameRoll": "Adjust you win chance",
 
@@ -28,10 +28,10 @@
 
 
 
-  "RecordTabTitle": "Records", 
-  "RecordTabLabel": "Records", 
-  "GameHistory": "Game History", 
-  "Transactions": "Transactions", 
+  "RecordTabTitle": "Records",
+  "RecordTabLabel": "Records",
+  "GameHistory": "Game History",
+  "Transactions": "Transactions",
 
   "AccountTabTitle": "Account",
   "AccountTabLabel": "Account",
@@ -103,7 +103,7 @@
   "TxNotiTitle": "Transaction Notification",
   "TxNotiDesc": "transactions, bonus, etc",
   "LangSelectTitle": "Language",
-  
+
 
   "ShareLink": "Share link",
   "CopyAddress": "Copy address",
@@ -184,6 +184,7 @@
 
   "ChannelClosed": "Closed",
   "ChannelActive": "Active",
-  "ChannelPending": "Pending"
+  "ChannelPending": "Pending",
+  "ServerConnectionException":"Server connection exception"
 }
 

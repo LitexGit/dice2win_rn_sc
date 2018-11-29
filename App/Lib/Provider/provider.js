@@ -16,7 +16,6 @@ async function checkWeb3Status() {
   }
 }
 
-
 module.exports = {
   checkWeb3Status,
 }

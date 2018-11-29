@@ -183,7 +183,8 @@
 
   "ChannelClosed": "已关闭",
   "ChannelActive": "已激活",
-  "ChannelPending": "通道等待中"
+  "ChannelPending": "通道等待中",
+  "ServerConnectionException":"服务器连接异常"
 
 
 }
