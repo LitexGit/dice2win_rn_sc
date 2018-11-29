@@ -71,12 +71,14 @@ _onPressNavigate=()=>{
   render () {
     const { channel, web3Status, socketStatus} = this.props;
     const connetcStyle = web3Status && socketStatus ? {} : {backgroundColor: 'red'};
-    const connectDes =  web3Status && socketStatus ? '' : '服务器连接异常-';
+    const channelText = I18n.t('ChannelStatus') + ':' + this._getChannelStatusDescribe(channel.status) + ', ' + this._getChannelDescribe(channel.status) + '.';
+    const connectDes =  web3Status && socketStatus ? channelText : I18n.t('ServerConnectionException');
+
 
     return (
       <View style={styles.container}>
         <TouchableOpacity onPress={_=>this._onPressNavigate()}>
-          <Text style={[this._getChannelstyles(channel.status), connetcStyle]}>{connectDes}{I18n.t('ChannelStatus')}: {this._getChannelStatusDescribe(channel.status)}, {this._getChannelDescribe(channel.status)}.</Text>
+          <Text style={[this._getChannelstyles(channel.status), connetcStyle]}>{connectDes}</Text>
         </TouchableOpacity>
       </View>
     )
