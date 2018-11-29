@@ -183,7 +183,7 @@ class ChannelScreen extends Component {
 
   render () {
     const { channel, payments, refreshing, loading} = this.props;
-    const isTopUp = displayETH(channel.remoteBalance) > 1 ? false : true;
+    const isTopUp = displayETH(channel.remoteBalance) >= 1 ? false : true;
 
     return (
       <View style={styles.container}>
