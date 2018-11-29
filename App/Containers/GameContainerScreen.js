@@ -29,6 +29,9 @@ import { getMaxBet } from '../Lib/Utils/calculate';
 import { toFixed } from '../Lib/Utils/format';
 import Toast from 'react-native-root-toast';
 
+import Feather from 'react-native-vector-icons/Feather';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+
 
 const GAME_COMS = {2:<Coin />, 6:<OneDice />, 36:<TwoDice />, 100:<Etheroll />}
 
@@ -52,6 +55,19 @@ class GameContainerScreen extends Component {
     this.state = {
       stake: 0.1,
       valid: true,
+    }
+  }
+
+  _startTenOperation = ()=>{
+    const { isSelectedTen } = this.props;
+    if (!isSelectedTen) {
+      this._placeBet();
+      return;
+    }
+    for(index = 0 ; index < 10 ; index++ ) {
+      console.log('=============index=======================');
+      console.log(index);
+      console.log('=============index=======================');
     }
   }
 
@@ -154,6 +170,10 @@ class GameContainerScreen extends Component {
     }
   }
 
+  _onPressTenOperation=()=>{
+    this.props.tenOperation();
+  }
+
 
   componentDidMount(){
     this.props.navigation.setParams({ gotoRecords: _=>this.props.navigate('GameRecordScreen')})
@@ -172,7 +192,16 @@ class GameContainerScreen extends Component {
   }
 
   render () {
-    const { index=2, stake, status={}, result={}, rewardTime, winRate, setStake, channel} = this.props;
+    const { index=2, stake, status={}, result={}, rewardTime, winRate, setStake, channel, isSelectedTen} = this.props;
+    const selectedStyle = isSelectedTen ? {color: 'green'} : {color: '#999999'};
+    const selected = <Feather
+                        style={[styles.iconStyle, selectedStyle]}
+                        name='check-square'
+                        size={22}/>
+    const unSelected = <MaterialIcons
+                          style={[styles.iconStyle, selectedStyle]}
+                          name='check-box-outline-blank'
+                          size={22}/>
 
     return (
       <View style={styles.container}>
@@ -221,21 +250,16 @@ class GameContainerScreen extends Component {
             {!!W.address && channel.status == 2 && <Text style={[styles.darkLabel, {alignSelf:'center', margin: 5}]}>{I18n.t('ChannelRivalBalance')}:  <Text style={styles.balanceText}>{displayETH(channel.remoteBalance)}</Text> ETH</Text>}
 
             <View style={styles.rewardWrapper}>
-              {/* <View style={styles.infoWrapper}>
-                <View style={styles.info}>
-                  <Text style={styles.rewardText}>{I18n.t('WinningPays')}</Text>
-                  <Text style={styles.keyText}>{(this.props.rewardTime).toFixed(2)}x</Text>
-                </View>
-                <View style={styles.info}>
-                  <Text style={styles.rewardText}>{I18n.t('WinningChance')}</Text>
-                  <Text style={styles.keyText}>{(winRate * 100).toFixed(2)}%</Text>
-                </View>
-              </View> */}
               <Text style={styles.rewardText}>{I18n.t('YouWillWin')}  <Text style={styles.keyText}>{(rewardTime * stake).toFixed(DECIMAL)}</Text> ETH</Text>
-              {/* <Text style={[styles.darkLabel, {fontSize: 11}]}>{feeRate*100}% {I18n.t('fee')}, 5% {I18n.t('OfWinningsToYourInviter')}</Text> */}
+              <TouchableOpacity onPress={this._onPressTenOperation}>
+                <View style={styles.tenSection}>
+                  {isSelectedTen ? selected : unSelected}
+                  <Text style={[styles.tenText, selectedStyle]}>{I18n.t('PleaseStartYourtenOperation')}</Text>
+                </View>
+              </TouchableOpacity>
             </View>
             <View style={styles.startButtonWrapper}>
-              <TouchableOpacity style={styles.startButton} onPress={this._checkConnectStatus}>
+              <TouchableOpacity style={styles.startButton} onPress={this._startTenOperation}>
                 <Text style={styles.startButtonText}> {I18n.t('Bet')}! </Text>
               </TouchableOpacity>
             </View>
@@ -249,14 +273,14 @@ class GameContainerScreen extends Component {
 }
 
 const mapStateToProps = (state) => {
-  let {
-    game: {key, stake, status, result},
+  const {
+    game: {key, stake, status, result, isSelectedTen},
     confirmModal: { modalIsOpen, loading, gas },
     bet: { winRate, feeRate, rewardTime, betMask, },
     config: {contract_address},
     wallet: { fetching, balance, address, gasPrice, secret },
     user: {uid},
-    channel: { channel }
+    channel: { channel },
   } = state
   return {
     index:key, stake, status, result,
@@ -264,7 +288,8 @@ const mapStateToProps = (state) => {
     winRate, feeRate, rewardTime, betMask,
     contract_address,
     balanceFetching:fetching, balance, address, gasPrice, secret,
-    uid, channel
+    uid, channel,
+    isSelectedTen
   }
 }
 
@@ -272,21 +297,33 @@ const mapDispatchToProps = (dispatch) => {
   return {
     initGame: () => dispatch(GameActions.initGame()),
     request: () => dispatch(GameActions.gameRequest()),
-
     setStake: (stake) => dispatch(GameActions.setStake(stake)),
-
     openConfirmModal: (data) => dispatch(ConfirmModalActions.openConfirmModal(data)),
     openPwdModal: () => dispatch(PwdModalActions.openPwdModal()),
-
     sendStake: () => dispatch(WalletActions.sendStake()),
     loadWallet: () => dispatch(WalletActions.walletRequest()),
     getRandom: (data) => dispatch(WalletActions.getRandom(data)),
     placeBet: (data) => dispatch(WalletActions.placeBet(data)),
-
     goChannel: () => dispatch(NavigationActions.navigate({routeName: 'ChannelScreen'})),
+    navigate: (target) => dispatch(NavigationActions.navigate({routeName:target})),
+    tenOperation: () => dispatch(GameActions.tenOperation()),
 
-    navigate: (target) => dispatch(NavigationActions.navigate({routeName:target}))
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(GameContainerScreen)
+export default connect(mapStateToProps, mapDispatchToProps)(GameContainerScreen);
+
+
+
+
+{/* <View style={styles.infoWrapper}>
+  <View style={styles.info}>
+    <Text style={styles.rewardText}>{I18n.t('WinningPays')}</Text>
+    <Text style={styles.keyText}>{(this.props.rewardTime).toFixed(2)}x</Text>
+  </View>
+  <View style={styles.info}>
+    <Text style={styles.rewardText}>{I18n.t('WinningChance')}</Text>
+    <Text style={styles.keyText}>{(winRate * 100).toFixed(2)}%</Text>
+  </View>
+</View> */}
+{/* <Text style={[styles.darkLabel, {fontSize: 11}]}>{feeRate*100}% {I18n.t('fee')}, 5% {I18n.t('OfWinningsToYourInviter')}</Text> */}

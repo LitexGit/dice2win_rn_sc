@@ -30,7 +30,7 @@ export default StyleSheet.create({
     width: STAKE_BUTTON_SIZE * 2,
     borderRadius: 5,
     backgroundColor: Colors.facebook,
-    alignItems: 'center', 
+    alignItems: 'center',
     justifyContent: 'center',
   },
   stakeButtonText: {
@@ -61,7 +61,7 @@ export default StyleSheet.create({
     borderColor: Colors.bloodOrange,
     borderWidth: 1,
     backgroundColor: Colors.facebook,
-    alignItems: 'center', 
+    alignItems: 'center',
     justifyContent: 'center',
   },
 
@@ -79,14 +79,14 @@ export default StyleSheet.create({
   },
 
   balanceText: {
-    color: 'goldenrod', 
+    color: 'goldenrod',
     fontSize: 16
   },
 
   rewardWrapper:{
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
 
   keyText: {
@@ -95,7 +95,7 @@ export default StyleSheet.create({
   },
 
   rewardText: {
-    color: Colors.snow, 
+    color: Colors.snow,
     fontSize: 14,
     padding: 3,
   },
@@ -112,5 +112,19 @@ export default StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: Colors.neetGray,
+  },
+  tenSection:{
+    flexDirection: 'row',
+    alignContent: 'center',
+    justifyContent: 'center',
+    marginTop: 10,
+  },
+  iconStyle:{
+    marginRight: 8,
+    color: '#999999'
+  },
+  tenText:{
+    paddingTop: 4,
+    color: '#999999'
   }
 })

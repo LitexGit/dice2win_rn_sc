@@ -15,6 +15,7 @@ const {Types, Creators} = createActions({
   updateStatus: ['data'],
   refreshStatus: ['data'],
   updateResult: ['result'],
+  tenOperation:['data'],
 })
 
 export const GameTypes = Types
@@ -36,10 +37,10 @@ export const INITIAL_STATE = Immutable({
   fetching: null,
   payload: null,
   error: null,
-
   result: {2:{}, 6:{}, 36:{}, 100:{}},
   status: {2:'idle', 6:'idle', 36:'idle', 100:'idle'},
   bet: {2:null, 6:null, 36:null, 100:null},
+  isSelectedTen: false,
 })
 
 /* ------------- Selectors ------------- */
@@ -51,6 +52,14 @@ export const GameSelectors = {
 }
 
 /* ------------- Reducers ------------- */
+
+export const tenOperation = (state, action) => {
+  let {isSelectedTen=false} = state;
+  isSelectedTen = !isSelectedTen;
+  return state.merge({isSelectedTen});
+}
+
+
 export const updateBet = (state, action) => {
   let bet = {...state.bet, ...action.bet}
   return state.merge({bet})
@@ -105,5 +114,7 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.SET_GAME_KEY]: setGameKey,
   [Types.GAME_REQUEST]: request,
   [Types.GAME_SUCCESS]: success,
-  [Types.GAME_FAILURE]: failure
+  [Types.GAME_FAILURE]: failure,
+  [Types.TEN_OPERATION]: tenOperation
+
 })
