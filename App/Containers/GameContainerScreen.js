@@ -52,6 +52,7 @@ class GameContainerScreen extends Component {
 
   constructor(props) {
     super(props)
+    this.isContinue = false;
     this.state = {
       stake: 0.1,
       valid: true,
@@ -61,13 +62,14 @@ class GameContainerScreen extends Component {
   _startTenOperation = ()=>{
     const { isSelectedTen } = this.props;
     if (!isSelectedTen) {
-      this._placeBet();
+      this._checkConnectStatus();
       return;
     }
+    this.isContinue = true;
     for(index = 0 ; index < 10 ; index++ ) {
-      console.log('=============index=======================');
-      console.log(index);
-      console.log('=============index=======================');
+      if (!this.isContinue) return;
+      this._checkConnectStatus();
+      Toast.show('第'+index+'次');
     }
   }
 
@@ -78,10 +80,12 @@ class GameContainerScreen extends Component {
       if (result) {
         this._placeBet();
       } else {
+        this.isContinue = false;
         Toast.show(I18n.t('ServerConnectionException'+result));
       }
 
     }catch(err){
+      this.isContinue = false;
       web3.setProvider(new Web3.providers.WebsocketProvider(global.ethWSUrl));
       if (global.scclient != null) {
         Toast.show(I18n.t('ServerConnectionException'));
@@ -90,10 +94,11 @@ class GameContainerScreen extends Component {
   }
 
   _placeBet = () => {
-    let { index, stake, contract_address, address, betMask, openConfirmModal, navigate, uid, channel } = this.props
+    let { index, stake, contract_address, address, betMask, openConfirmModal, navigate, uid, channel, startTenBet} = this.props;
 
     let {valid} = this.state
     if(!valid) {
+      this.isContinue = false;
       alert(I18n.t('InvalidStake'))
       return
     }
@@ -104,8 +109,10 @@ class GameContainerScreen extends Component {
     })
 
     if(!W.address) {
+      this.isContinue = false;
       navigate('WalletManageScreen')
     } else if (channel.status != 2) {
+      this.isContinue = false;
       Alert.alert(
         I18n.t('Attention'),
         I18n.t('ChannelStatusException'),
@@ -115,21 +122,32 @@ class GameContainerScreen extends Component {
         { cancelable: false }
       )
     } else if(web3.utils.fromWei(channel.localBalance + "", 'ether') < stake) {
+      this.isContinue = false;
       alert('您的通道金额不足,请充值')
     } else if(web3.utils.fromWei(channel.remoteBalance + "", 'ether') < stake) {
+      this.isContinue = false;
       alert('对手方余额不足,等待对方追加资金')
     } else {
-      let confirmedActions = [{
-        action: ChannelActions.startBet,
-        data: { address, value: stake, betMask, modulo: index, password: '' }
-      }]
+      const {isSelectedTen} = this.props;
+      if (isSelectedTen) {
+        const params = { address, value: stake, betMask, modulo: index, password: '' };
+        console.log('====================================');
+        console.log(params);
+        console.log('====================================');
+        startTenBet(params);
+      } else {
+        let confirmedActions = [{
+          action: ChannelActions.startBet,
+          data: { address, value: stake, betMask, modulo: index, password: '' }
+        }]
+        openConfirmModal({
+          amount: stake,
+          from: address,
+          to: contract_address,
+          confirmedActions
+        })
+      }
 
-      openConfirmModal({
-        amount: stake,
-        from: address,
-        to: contract_address,
-        confirmedActions
-      })
     }
   }
 
@@ -307,6 +325,7 @@ const mapDispatchToProps = (dispatch) => {
     goChannel: () => dispatch(NavigationActions.navigate({routeName: 'ChannelScreen'})),
     navigate: (target) => dispatch(NavigationActions.navigate({routeName:target})),
     tenOperation: () => dispatch(GameActions.tenOperation()),
+    startTenBet: (params) => dispatch(ChannelActions.startTenBet(params)),
 
   }
 }

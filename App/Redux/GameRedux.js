@@ -49,6 +49,7 @@ export const GameSelectors = {
   getData: state => state.data,
   getGameId: state => state.game.key,
   getBet: state => state.game.bet,
+  getIsSelectedTen: state => state.game.isSelectedTen,
 }
 
 /* ------------- Reducers ------------- */

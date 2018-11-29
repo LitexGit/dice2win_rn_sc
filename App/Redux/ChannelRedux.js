@@ -22,6 +22,7 @@ const { Types, Creators } = createActions({
   checkGameDetail: ["data"],
   setConnectStatus: ["data"],
   updateProgress: ["data"],
+  startTenBet: ["data"],
 })
 
 export const ChannelTypes = Types
