@@ -27,7 +27,8 @@ import { setStake, refreshStatus } from './GameSagas'
 import { getSetting } from './SettingSagas'
 import { getNotification, initNotification, watchNotificationStatusChannel } from './NotificationSagas'
 import { register, getUser, fetchInviteCode } from './UserSagas'
-import { getChannel, openChannel, closeChannel, deposit, startBet, getAllChannels, getAllBets, getBetById, watchChannelListener, getPayments, syncChannel } from './ChannelSagas'
+import { getChannel, openChannel, closeChannel, deposit, startBet, getAllChannels, getAllBets, getBetById, watchChannelListener, getPayments, syncChannel, startTenBet} from './ChannelSagas';
+
 
 /* ------------- API ------------- */
 
@@ -99,9 +100,12 @@ export default function * root () {
     takeLatest(ChannelTypes.GET_BET_BY_ID, getBetById, api),
     takeLatest(ChannelTypes.GET_PAYMENTS, getPayments, api),
     takeLatest(ChannelTypes.SYNC_CHANNEL, syncChannel, api),
+    takeLatest(ChannelTypes.START_TEN_BET, startTenBet, api),
 
     // Notification Saga
-    takeLatest(NotificationTypes.INIT_NOTIFICATION, initNotification, api)
+    takeLatest(NotificationTypes.INIT_NOTIFICATION, initNotification, api),
+
+
 
   ])
 }

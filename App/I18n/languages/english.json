@@ -185,6 +185,7 @@
   "ChannelClosed": "Closed",
   "ChannelActive": "Active",
   "ChannelPending": "Pending",
-  "ServerConnectionException":"Server connection exception"
+  "ServerConnectionException":"Server connection exception",
+  "PleaseStartYourtenOperation": "Please start your ten - company operation"
 }
 

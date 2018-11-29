@@ -16,7 +16,7 @@ import GameActions from '../Redux/GameRedux'
 import { ChannelConfirmModalSelectors } from '../Redux/ChannelConfirmModalRedux'
 import { ConfigSelectors } from '../Redux/ConfigRedux'
 import { WalletSelectors } from '../Redux/WalletRedux'
-// import { GameSelectors } from '../Redux/GameRedux'
+import { GameSelectors } from '../Redux/GameRedux'
 import MessageBoxActions from '../Redux/MessageBoxRedux'
 // import RecordActions from '../Redux/RecordRedux'
 import WalletActions from '../Redux/WalletRedux'
@@ -116,6 +116,9 @@ function listenerInit(client) {
     channelListener.put(ChannelActions.updateProgress({progress:8}));
     channelListener.put(ChannelActions.setChannel(channel));
     channelListener.put(GameActions.updateResult({[bet.modulo]: { amount: winAmount, betDetail: bet} }));
+
+    // const isSelectedTen = select(GameSelectors.getIsSelectedTen);
+
     channelListener.put(GameActions.updateStatus({ status: {[bet.modulo]: status}}));
   }).on('ChannelOpen', (channel) => {
     channelListener.put(ChannelActions.setConnectStatus({web3Status:1}));
@@ -126,7 +129,7 @@ function listenerInit(client) {
     console.log(channel);
     channelListener.put(ChannelActions.setConnectStatus({web3Status:1}));
     channelListener.put (WalletActions.walletRequest());
-    channelListener.put(ChannelActions.setChannel(channel));
+    channelListener.put(ChannelActions.setChannel(channel));''
   }).on('BalanceProofUpdated', (channel) => {
     console.log('LISTEN Balance Proof Updated');
     console.log(channel);
@@ -298,6 +301,9 @@ export function * deposit (api, action) {
 
 // 下注
 export function * startBet (api, action) {
+  console.log('===========startBet=========================');
+  console.log(action);
+  console.log('============startBet========================');
 
   // 读取配置信息
   let sysConfig = yield select(ConfigSelectors.getConfig)
@@ -323,10 +329,10 @@ export function * startBet (api, action) {
   yield put(GameActions.updateStatus({ status: { 2 : 'placed' }}));
 
   // 转换成 BN
-  let amount = web3.utils.toWei(value.toString(), 'ether')
-
+  let amount = web3.utils.toWei(value.toString(), 'ether');
   try {
     let betInfo = yield scclient.startBet(channelId, partnerAddress, betMask, modulo, amount, randomSeed);
+
     // console.log(betInfo);
     if(betInfo == false) {
       yield put(MessageBoxActions.openMessageBox({ title: '警告', message: '交易太频繁' }));
@@ -338,6 +344,44 @@ export function * startBet (api, action) {
     yield put(MessageBoxActions.openMessageBox({ title: '警告', message: '交易太频繁' }));
     yield put(GameActions.updateStatus({ status: { 2 : 'idle' }}));
   }
+}
+
+// 下注
+export function * startTenBet (api, action) {
+
+  // 读取配置信息
+  const sysConfig = yield select(ConfigSelectors.getConfig)
+  const partnerAddress = sysConfig.partnerAddress
+
+  const {betMask, modulo, value} = action.data
+  const randomSeed = yield select(ConfirmModalSelectors.getGas)
+
+  const channelObject = yield select(ChannelSelectors.getChannel)
+  const channelId = channelObject.channel.channelId;
+
+  if(!scclient.walletUnlocked || !W.wallet) {
+    yield unlockWallet(ChannelActions.startBet, {betMask, modulo, value});
+    return;
+  }
+
+  console.log('=============action=======================');
+  console.log(action);
+  console.log('==============action======================');
+
+  // 转换成 BN
+  const amount = web3.utils.toWei(value.toString(), 'ether')
+  // try {
+    const betInfo = yield scclient.startBet(channelId, partnerAddress, betMask, modulo, amount, randomSeed);
+    console.log('===========betInfo=========================');
+    console.log(betInfo);
+    console.log('============betInfo========================');
+  //   if(betInfo == false) {
+  //     yield put(MessageBoxActions.openMessageBox({ title: '警告', message: '交易太频繁' }));
+  //   }
+  //   return;
+  // } catch(err) {
+  //   yield put(MessageBoxActions.openMessageBox({ title: '警告', message: '交易太频繁' }));
+  // }
 }
 
 // 获取所有通道
