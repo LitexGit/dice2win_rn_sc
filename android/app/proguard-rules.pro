@@ -22,6 +22,8 @@
 
 # React Native
 
+-keep class fun.eth4.game.BuildConfig { *; }
+
 # Keep our interfaces so they can be used by other ProGuard rules.
 # See http://sourceforge.net/p/proguard/bugs/466/
 -keep,allowobfuscation @interface com.facebook.proguard.annotations.DoNotStrip
@@ -68,3 +70,6 @@
 -dontwarn java.nio.file.*
 -dontwarn org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement
 -dontwarn okio.**
+
+-dontwarn javax.naming.**
+-dontwarn org.spongycastle.pqc.**

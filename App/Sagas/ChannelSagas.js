@@ -313,6 +313,12 @@ export function * startBet (api, action) {
     yield unlockWallet(ChannelActions.startBet, {betMask, modulo, value});
     return;
   }
+
+  if(!socket.connected){
+    yield put(MessageBoxActions.openMessageBox({ title: '警告', message: '网络连接错误' }));
+    return;
+  }
+
   // const betModulo = 2;
   yield put(GameActions.updateStatus({ status: { 2 : 'placed' }}));
 
