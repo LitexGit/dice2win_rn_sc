@@ -360,21 +360,11 @@ export function * startTenBet (api, action) {
     yield unlockWallet(ChannelActions.startBet, {betMask, modulo, value});
     return;
   }
-
-  console.log('==========startTenBet==========================');
-  console.log(startTenBet);
-  console.log('==========startTenBet==========================');
   // 转换成 BN
   const amount = web3.utils.toWei(value.toString(), 'ether')
   try {
     const betInfo = yield scclient.startBet(channelId, partnerAddress, betMask, modulo, amount, randomSeed);
-    console.log('===========betInfo=========================');
-    console.log(betInfo);
-    console.log('============betInfo========================');
   } catch(err) {
-    console.log('===========err=========================');
-    console.log(err);
-    console.log('============err========================');
   }
 }
 

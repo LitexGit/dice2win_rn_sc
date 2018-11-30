@@ -59,6 +59,10 @@ class GameContainerScreen extends Component {
     }
   }
 
+  componentWillUnmount = ()=>{
+    this.timer && clearInterval(this.timer);
+  }
+
   _startTenOperation = ()=>{
     const { isSelectedTen } = this.props;
     if (!isSelectedTen) {
@@ -66,11 +70,17 @@ class GameContainerScreen extends Component {
       return;
     }
     this.isContinue = true;
-    for(index = 0 ; index < 10 ; index++ ) {
-      if (!this.isContinue) return;
+
+    let index = 1;
+    this.timer = setInterval(() => {
+      if (!this.isContinue || index>10) {
+        this.timer && clearInterval(this.timer);
+        return;
+      };
       this._checkConnectStatus();
       Toast.show('第'+index+'次');
-    }
+      index++;
+    }, 900);
   }
 
   _checkConnectStatus = async ()=>{
@@ -131,9 +141,9 @@ class GameContainerScreen extends Component {
       const {isSelectedTen} = this.props;
       if (isSelectedTen) {
         const params = { address, value: stake, betMask, modulo: index, password: '' };
-        console.log('====================================');
-        console.log(params);
-        console.log('====================================');
+        // console.log('====================================');
+        // console.log(params);
+        // console.log('====================================');
         startTenBet(params);
       } else {
         let confirmedActions = [{
@@ -324,7 +334,6 @@ const mapDispatchToProps = (dispatch) => {
     navigate: (target) => dispatch(NavigationActions.navigate({routeName:target})),
     tenOperation: () => dispatch(GameActions.tenOperation()),
     startTenBet: (params) => dispatch(ChannelActions.startTenBet(params)),
-
   }
 }
 
