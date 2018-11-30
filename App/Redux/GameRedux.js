@@ -56,8 +56,7 @@ export const GameSelectors = {
 
 export const tenOperation = (state, action) => {
   let {isSelectedTen=false} = state;
-  // isSelectedTen = !isSelectedTen;
-  isSelectedTen = false;
+  isSelectedTen = !isSelectedTen;
   return state.merge({isSelectedTen});
 }
 

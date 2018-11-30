@@ -97,10 +97,10 @@ export function * navigateToBottomTab(api, action){
 
 // 随机生成一个wallet，将wallet对象返回
 export function * newWallet (api, action) {
-  console.tron.log('newWallet begin')
-  const wallet = yield call(ethers.Wallet.RNCreateRandom)
-  console.tron.log('newWallet', wallet)
-  yield put(WalletActions.setWallet(wallet))
+  console.tron.log('newWallet begin');
+  const wallet = yield call(ethers.Wallet.RNCreateRandom);
+  console.tron.log('newWallet', wallet);
+  yield put(WalletActions.setWallet(wallet));
 }
 
 // 新建wallet后，将wallet存入本地存储中

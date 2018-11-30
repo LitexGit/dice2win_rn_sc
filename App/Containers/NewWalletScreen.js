@@ -27,14 +27,11 @@ class NewWalletScreen extends Component {
   }
 
   _checkPwd () {
-
     let { alert, pwdValid } = this.props
-    
     if(!pwdValid) {
       alert(I18n.t('PwdInvalid'))
       return
     }
-
     if (!!this.props.pwd1 && this.props.pwd1 === this.props.pwd2) {
       this.props.newWallet()
       this.props.navigate('PreBackupScreen')

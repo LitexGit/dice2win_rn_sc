@@ -220,17 +220,15 @@ class GameContainerScreen extends Component {
                           style={[styles.iconStyle, selectedStyle]}
                           name='check-box-outline-blank'
                           size={22}/>
+    const resultView = isSelectedTen ? null : status[index] != 'idle' && <ResultModal modulo={index} status={status[index]} result={result[index]} />;
 
     return (
       <View style={styles.container}>
         { W.address && <StatusBar /> }
         <ScrollView style={styles.container}>
         <View style={styles.GameContainerScreen}>
-          {status[index] != 'idle' && (
-            <ResultModal modulo={index} status={status[index]} result={result[index]} />
-          )}
-
-          {status[index] === 'idle' && <View style={styles.gameConetent}>
+          {resultView}
+          {(isSelectedTen || status[index] === 'idle') && <View style={styles.gameConetent}>
             <KeyboardAvoidingView behavior='position' keyboardVerticalOffset={100} >
             {GAME_COMS[index]}
             <View style={styles.stakeBox}>
@@ -269,12 +267,12 @@ class GameContainerScreen extends Component {
 
             <View style={styles.rewardWrapper}>
               <Text style={styles.rewardText}>{I18n.t('YouWillWin')}  <Text style={styles.keyText}>{(rewardTime * stake).toFixed(DECIMAL)}</Text> ETH</Text>
-              {/* <TouchableOpacity onPress={this._onPressTenOperation}>
+              <TouchableOpacity onPress={this._onPressTenOperation}>
                 <View style={styles.tenSection}>
                   {isSelectedTen ? selected : unSelected}
                   <Text style={[styles.tenText, selectedStyle]}>{I18n.t('PleaseStartYourtenOperation')}</Text>
                 </View>
-              </TouchableOpacity> */}
+              </TouchableOpacity>
             </View>
             <View style={styles.startButtonWrapper}>
               <TouchableOpacity style={styles.startButton} onPress={this._startTenOperation}>

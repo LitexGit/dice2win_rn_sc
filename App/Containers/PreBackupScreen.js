@@ -47,7 +47,6 @@ class PreBackupScreen extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    // mnemonic: W.wallet.mnemonic
     mnemonic: state.wallet.wallet.mnemonic
   }
 }

@@ -43,15 +43,23 @@ class BackupScreen extends Component {
   }
 
   _displayWord () {
-    // console.log(this.state)
+    console.log(this.state)
     var mnemonic = this.props.mnemonic
     // var words = mnemonic.split(' ').sort(()=> .5 - Math.random());
-    var words = mnemonic.split(' ').sort(function() { return .5 - Math.random(); });
-    var wordState = new Array()
-    words.map((item, i) => wordState[i] = true)
-    this.setState({stateWord: words, wordState: wordState}, () => {
-      console.tron.log(this.state)
-    })
+    var words = mnemonic.split(' ').sort(
+      function() {
+        return .5 - Math.random();
+      }
+    );
+      var wordState = new Array()
+      words.map((item, i) => wordState[i] = true)
+      this.setState({
+        stateWord: words,
+        wordState: wordState
+      }, () => {
+        this.forceUpdate();
+        console.tron.log(this.state);
+      })
   }
 
   _addWord (i) {
@@ -90,9 +98,6 @@ class BackupScreen extends Component {
   }
 
   _checkMnemonic () {
-    // console.log('textarea:' + this.state.textarea)
-    // console.log('mnemonic:' + this.props.mnemonic)
-
     let { alert } = this.props
 
     if (this.state.textarea === this.props.mnemonic) {

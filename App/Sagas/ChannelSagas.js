@@ -116,9 +116,6 @@ function listenerInit(client) {
     channelListener.put(ChannelActions.updateProgress({progress:8}));
     channelListener.put(ChannelActions.setChannel(channel));
     channelListener.put(GameActions.updateResult({[bet.modulo]: { amount: winAmount, betDetail: bet} }));
-
-    // const isSelectedTen = select(GameSelectors.getIsSelectedTen);
-
     channelListener.put(GameActions.updateStatus({ status: {[bet.modulo]: status}}));
   }).on('ChannelOpen', (channel) => {
     channelListener.put(ChannelActions.setConnectStatus({web3Status:1}));
@@ -364,24 +361,21 @@ export function * startTenBet (api, action) {
     return;
   }
 
-  console.log('=============action=======================');
-  console.log(action);
-  console.log('==============action======================');
-
+  console.log('==========startTenBet==========================');
+  console.log(startTenBet);
+  console.log('==========startTenBet==========================');
   // 转换成 BN
   const amount = web3.utils.toWei(value.toString(), 'ether')
-  // try {
+  try {
     const betInfo = yield scclient.startBet(channelId, partnerAddress, betMask, modulo, amount, randomSeed);
     console.log('===========betInfo=========================');
     console.log(betInfo);
     console.log('============betInfo========================');
-  //   if(betInfo == false) {
-  //     yield put(MessageBoxActions.openMessageBox({ title: '警告', message: '交易太频繁' }));
-  //   }
-  //   return;
-  // } catch(err) {
-  //   yield put(MessageBoxActions.openMessageBox({ title: '警告', message: '交易太频繁' }));
-  // }
+  } catch(err) {
+    console.log('===========err=========================');
+    console.log(err);
+    console.log('============err========================');
+  }
 }
 
 // 获取所有通道
