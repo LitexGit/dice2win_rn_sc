@@ -447,9 +447,10 @@ export function * getAllBets (api, action) {
     const {createdAt} = item;
     const date = Moment(createdAt).format('YYYY-MM-DD');
     let time = Moment(createdAt).format('HH:mm:ss');
-    let { timeZone } = require('../Themes/Metrics')
-    time = new Date(`${date}T${time}`)
-      .toLocaleTimeString('zh-CN', {timeZone, hour12: false})
+
+    // let { timeZone } = require('../Themes/Metrics')
+    // time = new Date(`${date}T${time}`)
+    //   .toLocaleTimeString('zh-CN', {timeZone, hour12: false})
 
     return {...item, time, date, isOpen:false}
   })
@@ -485,9 +486,9 @@ export function * getPayments (api, action) {
     const {createdAt} = item;
     const date = Moment(createdAt).format('YYYY-MM-DD');
     let time = Moment(createdAt).format('HH:mm:ss');
-    let { timeZone } = require('../Themes/Metrics')
-    time = new Date(`${date}T${time}`)
-      .toLocaleTimeString('zh-CN', {timeZone, hour12: false})
+    // let { timeZone } = require('../Themes/Metrics')
+    // time = new Date(`${date}T${time}`)
+    //   .toLocaleTimeString('zh-CN', {timeZone, hour12: false})
     return {...item, time, date}
   })
 
