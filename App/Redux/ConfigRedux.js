@@ -1,6 +1,7 @@
 import { createReducer, createActions } from 'reduxsauce'
 import Immutable from 'seamless-immutable'
-import abi from '../Config/abi'
+import abi from '../Config/abi';
+import Config from 'react-native-config';
 
 /* ------------- Types and Action Creators ------------- */
 
@@ -17,7 +18,7 @@ export default Creators
 
 /* ------------- Initial State ------------- */
 
-const base_domain = 'http://apitest.eth4.fun';
+const base_domain = Config.BASE_DOMAIN;
 
 export const INITIAL_STATE = Immutable({
   data: null,

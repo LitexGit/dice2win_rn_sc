@@ -93,6 +93,7 @@ function socketConnected() {
 }
 
 const socketMessage = (msg) => {
+  socketStatusChannel.put(ChannelActions.setConnectStatus({socketStatus:1}))
   let {_msgId, bet_res:status, tx_hash:hash, modulo, dice_payment:amount} = msg
 
   socket.emit('ack', _msgId)
@@ -111,6 +112,7 @@ const socketMessage = (msg) => {
 
 
 const socketReportMessage = (msg) => {
+  socketStatusChannel.put(ChannelActions.setConnectStatus({socketStatus:1}))
   console.tron.log('Socket Report MSG: ', msg);
 
   if(!!msg && msg == 'address'){
@@ -122,6 +124,7 @@ const socketReportMessage = (msg) => {
 }
 
 const socketHistoryMessage = (msg) => {
+  socketStatusChannel.put(ChannelActions.setConnectStatus({socketStatus:1}))
   console.tron.log('Socket History MSG:', msg)
   if(!!msg){
     socketStatusChannel.put(RecordActions.handleGlobal(msg))
@@ -129,12 +132,12 @@ const socketHistoryMessage = (msg) => {
 }
 
 function socketError (err) {
-  socketStatusChannel.put(ChannelActions.setConnectStatus({socketStatus:0}))
+  socketStatusChannel.put(ChannelActions.setConnectStatus({socketStatus:1}))
   console.tron.log('Socket ERROR:', err.message)
 }
 
 function socketClosed (e) {
-  socketStatusChannel.put(ChannelActions.setConnectStatus({socketStatus:0}))
+  socketStatusChannel.put(ChannelActions.setConnectStatus({socketStatus:1}))
   socketStatusChannel.put(ConfigActions.socketStatus('off'))
   console.tron.log('Socket CLOSE', e)
 }

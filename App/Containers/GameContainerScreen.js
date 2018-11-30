@@ -196,7 +196,7 @@ class GameContainerScreen extends Component {
   componentDidMount(){
     this.props.navigation.setParams({ gotoRecords: _=>this.props.navigate('GameRecordScreen')})
     this.props.navigation.setParams({ title: GAME_TITLES[this.props.index]})
-    this.props.setStake(this.props.stake)
+    this.props.setStake(this.state.stake);
     this.props.loadWallet()
   }
 
@@ -269,12 +269,12 @@ class GameContainerScreen extends Component {
 
             <View style={styles.rewardWrapper}>
               <Text style={styles.rewardText}>{I18n.t('YouWillWin')}  <Text style={styles.keyText}>{(rewardTime * stake).toFixed(DECIMAL)}</Text> ETH</Text>
-              <TouchableOpacity onPress={this._onPressTenOperation}>
+              {/* <TouchableOpacity onPress={this._onPressTenOperation}>
                 <View style={styles.tenSection}>
                   {isSelectedTen ? selected : unSelected}
                   <Text style={[styles.tenText, selectedStyle]}>{I18n.t('PleaseStartYourtenOperation')}</Text>
                 </View>
-              </TouchableOpacity>
+              </TouchableOpacity> */}
             </View>
             <View style={styles.startButtonWrapper}>
               <TouchableOpacity style={styles.startButton} onPress={this._startTenOperation}>

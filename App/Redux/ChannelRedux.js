@@ -54,7 +54,7 @@ export const INITIAL_STATE = Immutable({
   refreshing: false,
   checkType:'selected',
   web3Status:1,
-  socketStatus:0,
+  socketStatus:1,
   progress: 0,
   progressArray:Object.values(ProgressConfig),
 })
