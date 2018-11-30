@@ -97,12 +97,7 @@ class WalletScreen extends Component {
     // this._trackClick('Telegram')
     let {telegroup} = this.props
     Linking.canOpenURL(telegroup).then(supported => {
-      if (supported) {
-        return Linking.openURL(telegroup)
-      } else {
-        console.log('==============supported======================');
-        console.log(supported);
-      }
+      return Linking.openURL(telegroup);
     }).catch(err => console.tron.log('error open telegram', err))
   }
 

@@ -246,8 +246,8 @@ class RecordScreen extends Component {
 }
 
 const mapStateToProps = (state) => {
-  const {tx} = state.record;
-  const {refreshing, loading, game=[]} = state.channel;
+  const {tx, refreshing, loading,} = state.record;
+  const {game=[]} = state.channel;
   const {base_etherscan} = state.config
   const {address} = state.wallet
 
