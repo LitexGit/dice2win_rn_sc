@@ -78,7 +78,9 @@ class GameContainerScreen extends Component {
         return;
       };
       this._checkConnectStatus();
-      Toast.show('第'+index+'次');
+      Toast.show('第'+index+'次', {
+        position: Toast.positions.CENTER,
+      });
       index++;
     }, 900);
   }

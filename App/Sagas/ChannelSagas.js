@@ -298,10 +298,6 @@ export function * deposit (api, action) {
 
 // 下注
 export function * startBet (api, action) {
-  console.log('===========startBet=========================');
-  console.log(action);
-  console.log('============startBet========================');
-
   // 读取配置信息
   let sysConfig = yield select(ConfigSelectors.getConfig)
   let partnerAddress = sysConfig.partnerAddress
