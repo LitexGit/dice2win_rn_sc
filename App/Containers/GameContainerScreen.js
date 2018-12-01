@@ -64,25 +64,26 @@ class GameContainerScreen extends Component {
   }
 
   _startTenOperation = ()=>{
-    const { isSelectedTen } = this.props;
+    let { isSelectedTen} = this.props;
     if (!isSelectedTen) {
       this._checkConnectStatus();
       return;
     }
     this.isContinue = true;
-
     let index = 1;
     this.timer = setInterval(() => {
       if (!this.isContinue || index>10) {
         this.timer && clearInterval(this.timer);
         return;
       };
-      this._checkConnectStatus();
-      Toast.show('第'+index+'次', {
-        position: Toast.positions.CENTER,
-      });
-      index++;
-    }, 900);
+      if (index == 1 ||  this.props.progress == 8) {
+        this._checkConnectStatus();
+        Toast.show('第'+index+'次', {
+          position: Toast.positions.CENTER,
+        });
+        index++;
+      };;
+    }, 500);
   }
 
   _checkConnectStatus = async ()=>{
@@ -222,7 +223,7 @@ class GameContainerScreen extends Component {
   }
 
   render () {
-    const { index=2, stake, status={}, result={}, rewardTime, winRate, setStake, channel, isSelectedTen} = this.props;
+    const { index=2, stake, status={}, result={}, rewardTime, winRate, setStake, channel, isSelectedTen, progress} = this.props;
     const selectedStyle = isSelectedTen ? {color: 'green'} : {color: '#999999'};
     const selected = <Feather
                         style={[styles.iconStyle, selectedStyle]}
@@ -233,6 +234,10 @@ class GameContainerScreen extends Component {
                           name='check-box-outline-blank'
                           size={22}/>
     const resultView = isSelectedTen ? null : status[index] != 'idle' && <ResultModal modulo={index} status={status[index]} result={result[index]} />;
+
+    console.log('===============progress=====================');
+    console.log(progress);
+    console.log('===============progress=====================');
 
     return (
       <View style={styles.container}>
@@ -308,8 +313,8 @@ const mapStateToProps = (state) => {
     config: {contract_address},
     wallet: { fetching, balance, address, gasPrice, secret },
     user: {uid},
-    channel: { channel },
-  } = state
+    channel: { channel, progress},
+  } = state;
   return {
     index:key, stake, status, result,
     modalIsOpen, loading, gas,
@@ -317,7 +322,8 @@ const mapStateToProps = (state) => {
     contract_address,
     balanceFetching:fetching, balance, address, gasPrice, secret,
     uid, channel,
-    isSelectedTen
+    isSelectedTen,
+    progress
   }
 }
 
