@@ -14,11 +14,14 @@ Dice2Win introduction
 ```
 "react": "16.3.1",
 "react-native": "^0.55.3",
+
+npm  6.8.0
+node v10.14.2
 ```
 
 ## :arrow_down: Setup
 
-**Step 1:** `git clone` [repo]（git@gitlab.f3m.club:dice/dice2win_rn_sc.git)
+**Step 1:** `git clone` [repo](https://github.com/typicode/husky)
 
 **Step 2:** `npm install`
 
@@ -42,10 +45,11 @@ ss.exclude_files = "**/__tests__/*",
 1. cd to the repo
 2. Run Build for either OS
   * for iOS
-    * run `react-native run-ios` or  `npm start ipx`
-  * for Android
-    * Run Genymotion
-    * run `react-native run-android`
+    * run `react-native run-ios`
+    * or  `npm start ipx`
+  * for Android (真机调试)
+    * 001: `adb reverse tcp:8081 tcp:8081`
+    * 002: Android Studio :arrow_forward:
 
 ## :closed_lock_with_key: Secrets
 ### xcode 10 third-party相关错误解决方案
