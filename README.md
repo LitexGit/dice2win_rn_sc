@@ -1,7 +1,9 @@
 #  Dice2Win
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](https://github.com/)
 ```
-Dice2Win introduction
+    ETH4fun is a demo powered by Ethereum State-channel. ETH4fun includes an Ethereum digital currency wallet with open&close channel and splice in&out besides basic wallet functions.
+    A simple dice game with auto mining operated on Rinkeby test net is also included to let you try our demo with a better experience.
+    Have some fun on our layer2-based, fast, easy, and secure dice game!
 ```
 ## :earth_asia: Environment
 ### :wrench: 开发工具
@@ -65,3 +67,12 @@ cd node_modules/react-native/third-party/glog-0.3.4/ && ../../scripts/ios-config
 ```
 cp ios/build/Build/Products/Debug-iphonesimulator/libfishhook.a  node_modules/react-native/Libraries/WebSocket/
 ```
+## :potable_water: Rinkeby Authenticated Faucet
+[Faucet](https://www.rinkeby.io/#faucet)
+
+## :satellite: Link
+[React Native中文网](https://reactnative.cn/)
+
+[Redux 中文文档](https://www.redux.org.cn/s)
+
+[Ignite CLI](https://vuex.vuejs.org/zh/)
