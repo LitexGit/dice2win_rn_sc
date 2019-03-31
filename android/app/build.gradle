@@ -124,6 +124,11 @@ android {
         targetSdkVersion 26
         versionCode 1
         versionName "1.0.1"
+        manifestPlaceholders = [
+                JPUSH_APPKEY: "",
+                APP_CHANNEL : "default"
+        ]
+
         multiDexEnabled true
         manifestPlaceholders = [
                 JPUSH_APPKEY: "baec4f18866a43237a7fc845",
@@ -181,6 +186,8 @@ android {
 }
 
 dependencies {
+    implementation project(':jcore-react-native')
+    implementation project(':jpush-react-native')
     compile project(':react-native-randombytes')
     compile project(':react-native-google-analytics-bridge')
     compile project(':react-native-haptic-feedback')

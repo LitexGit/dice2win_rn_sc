@@ -26,37 +26,37 @@ target 'Dice2Win' do
 
   pod 'RNFS', :path => '../node_modules/react-native-fs'
 
-  pod 'RNReactNativeHapticFeedback', :path => '../node_modules/react-native-haptic-feedback'
-
   pod 'react-native-google-analytics-bridge', :path => '../node_modules/react-native-google-analytics-bridge'
 
   pod 'react-native-sqlite-storage', :path => '../node_modules/react-native-sqlite-storage'
 
   pod 'react-native-randombytes', :path => '../node_modules/react-native-randombytes'
 
+  pod 'react-native-haptic-feedback', :path => '../node_modules/react-native-haptic-feedback'
+
   target 'Dice2WinTests' do
     inherit! :search_paths
     # Pods for testing
   end
-  
+
   post_install do |installer|
       installer.pods_project.targets.each do |target|
-          
+
           # The following is needed to ensure the "archive" step works in XCode.
           # It removes React & Yoga from the Pods project, as it is already included in the main project.
           # Without this, you'd see errors when you archive like:
           # "Multiple commands produce ... libReact.a"
           # "Multiple commands produce ... libyoga.a"
-          
+
           targets_to_ignore = %w(React yoga)
-          
+
           if targets_to_ignore.include? target.name
               target.remove_from_project
           end
-          
+
       end
   end
-  
+
 
 end
 
