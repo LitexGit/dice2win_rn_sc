@@ -5,42 +5,15 @@
     A simple dice game with auto mining operated on Rinkeby test net is also included to let you try our demo with a better experience.
     Have some fun on our layer2-based, fast, easy, and secure dice game!
 ```
-## :earth_asia: Environment
-### :wrench: 开发工具
-```
-0.ReactNative[JS]：Visual Studio code V1.32.0
-1.iOS：Xcode V10.1
-2.Android：Android Studio V3.2.1
-```
-### :blue_book: 开发环境
-```
-"react": "16.3.1",
-"react-native": "^0.55.3",
-
-npm  6.8.0
-node v10.14.2
-```
-
 ## :arrow_down: Setup
 
-**Step 1:** `git clone` [repo](https://github.com/typicode/husky)
+**Step 1:** `git clone https://github.com/shuaijianjian/eth4fun.git`
 
 **Step 2:** `npm install`
 
 **Step 3:** `react-native link`
 
-**Step 4:**
-```
-编辑 node_modules/react-native/React.podspec 在exclude_files下添加 "React/Fabric/*",
-ss.exclude_files = "**/__tests__/*",
-                  "IntegrationTests/*",
-                  "React/DevSupport/*",
-                  "React/Inspector/*",
-                  "ReactCommon/yoga/*",
-                  "React/Cxx*/*",
-                  "React/Fabric/*",
-```
-**Step 5:** `cd ios && pod install && cd ..`
+**Step 4:** `cd ios && pod install && cd ..`
 
 ## :arrow_forward: Run App
 
@@ -54,19 +27,19 @@ ss.exclude_files = "**/__tests__/*",
     * 002: Android Studio :arrow_forward:
 
 ## :closed_lock_with_key: Secrets
+
 ### xcode 10 third-party相关错误解决方案
-**Step 1:**
 ```
+Step 1
 cd  node_modules/react-native/scripts && ./ios-install-third-party.sh && cd ../../../
-```
-**Step 2:**
-```
+
+Step 2
 cd node_modules/react-native/third-party/glog-0.3.4/ && ../../scripts/ios-configure-glog.sh && cd ../../../../
-```
-**Step 3:**
-```
+
+Step 3
 cp ios/build/Build/Products/Debug-iphonesimulator/libfishhook.a  node_modules/react-native/Libraries/WebSocket/
 ```
+
 ## :potable_water: Rinkeby Authenticated Faucet
 [Faucet](https://www.rinkeby.io/#faucet)
 
