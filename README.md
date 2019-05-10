@@ -20,6 +20,7 @@
 1. cd to the repo
 2. Run Build for either OS
   * for iOS
+    * run `npm run bundle:ios`
     * run `react-native run-ios`
     * or  `npm start ipx`
   * for Android (真机调试)
@@ -49,6 +50,3 @@ cp ios/build/Build/Products/Debug-iphonesimulator/libfishhook.a node_modules/rea
 [Redux 中文文档](https://www.redux.org.cn/s)
 
 [Ignite CLI](https://vuex.vuejs.org/zh/)
-
-
-bundle:ios
