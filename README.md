@@ -7,7 +7,7 @@
 ```
 ## :arrow_down: Setup
 
-**Step 1:** `git clone https://github.com/shuaijianjian/eth4fun.git`
+**Step 1:** `git clone https://github.com/litexio/dice2win_rn_sc.git`
 
 **Step 2:** `npm install`
 
@@ -31,13 +31,13 @@
 ### xcode 10 third-party相关错误解决方案
 ```
 Step 1
-cd  node_modules/react-native/scripts && ./ios-install-third-party.sh && cd ../../../
+cd node_modules/react-native/scripts && ./ios-install-third-party.sh && cd ../../../
 
 Step 2
 cd node_modules/react-native/third-party/glog-0.3.4/ && ../../scripts/ios-configure-glog.sh && cd ../../../../
 
 Step 3
-cp ios/build/Build/Products/Debug-iphonesimulator/libfishhook.a  node_modules/react-native/Libraries/WebSocket/
+cp ios/build/Build/Products/Debug-iphonesimulator/libfishhook.a node_modules/react-native/Libraries/WebSocket/
 ```
 
 ## :potable_water: Rinkeby Authenticated Faucet
@@ -49,3 +49,6 @@ cp ios/build/Build/Products/Debug-iphonesimulator/libfishhook.a  node_modules/re
 [Redux 中文文档](https://www.redux.org.cn/s)
 
 [Ignite CLI](https://vuex.vuejs.org/zh/)
+
+
+bundle:ios

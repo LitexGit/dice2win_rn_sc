@@ -375,7 +375,7 @@ export function * getAllChannels (api, action) {
  * @param action
  */
 export function* syncChannel(api, action) {
-
+  if (!scclient) return
   yield Provider.checkWeb3Status();
   let sysConfig = yield select(ConfigSelectors.getConfig)
   let partnerAddress = sysConfig.partnerAddress
@@ -402,6 +402,8 @@ export function* syncChannel(api, action) {
 
 // 获取单个通道信息
 export function * getChannel (api, action) {
+
+  if (!scclient) return
   // console.log(W.wallet);
   if(scclient == null && dbInitializing == false) {
     yield initDB();
@@ -433,7 +435,7 @@ export function * getChannel (api, action) {
 
 // 获取所有下注信息
 export function * getAllBets (api, action) {
-
+  if (!scclient) return
   const {data:param={}} = action;
   const {type='game',data={}}= param;
   const {page=1, limit=20}=data;
